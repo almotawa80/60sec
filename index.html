@@ -533,7 +533,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170013">
+<meta name="app-version" content="202611170015">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1760,9 +1760,10 @@ document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stat
 /* الرجوع بالسحب: الصفحة تتبع الإصبع والخلفية (الرئيسية) ثابتة */
 ['store','badgesPage','profilePage'].forEach(function(id){
   var el=document.getElementById(id), home=document.getElementById('home'); if(!el||!home) return;
+  const pickBg=()=>{ home=document.getElementById(window._pfBack && id!=='profilePage' ? 'profilePage' : 'home'); };
   var sx=0,sy=0,t0=0,drag=false,lock=false,W=360;
   function reset(){ el.style.transition=''; el.style.transform=''; el.style.boxShadow=''; el.style.position=''; el.style.zIndex=''; el.style.animation=''; home.style.position=''; home.style.inset=''; home.style.zIndex=''; home.style.display=''; home.style.width=''; home.style.maxWidth=''; home.style.margin=''; }
-  el.addEventListener('touchstart',function(e){ var t=e.touches[0]; sx=t.clientX; sy=t.clientY; t0=Date.now(); drag=false; lock=false; W=el.offsetWidth||360; },{passive:true});
+  el.addEventListener('touchstart',function(e){ pickBg(); var t=e.touches[0]; sx=t.clientX; sy=t.clientY; t0=Date.now(); drag=false; lock=false; W=el.offsetWidth||360; },{passive:true});
   el.addEventListener('touchmove',function(e){
     var t=e.touches[0], dx=t.clientX-sx, dy=t.clientY-sy;
     if(!lock){
@@ -1770,7 +1771,7 @@ document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stat
       if(Math.abs(dx)>10 && Math.abs(dx)>Math.abs(dy)*1.2){
         drag=true; lock=true;
         el.style.animation='none'; el.style.position='relative'; el.style.zIndex='2'; el.style.boxShadow='-6px 0 24px rgba(0,0,0,.18)'; el.style.background='var(--hero)';
-        home.style.display='flex'; home.style.position='fixed'; home.style.top='0'; home.style.bottom='0'; home.style.left='50%'; home.style.width='100%'; home.style.maxWidth='480px'; home.style.transform='translateX(-50%)'; home.style.zIndex='1'; home.style.animation='none';
+        home.style.display='flex'; home.style.position='fixed'; home.style.top=(-(SCR[home.id]||0))+'px'; home.style.bottom=(SCR[home.id]?'auto':'0'); home.style.left='50%'; home.style.width='100%'; home.style.maxWidth='480px'; home.style.transform='translateX(-50%)'; home.style.zIndex='1'; home.style.animation='none';
       } else return;
     }
     if(drag){ if(e.cancelable) e.preventDefault(); el.style.transition='none'; el.style.transform='translateX('+dx+'px)'; }
