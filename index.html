@@ -425,7 +425,7 @@ button.bcount{padding:6px 9px}
 /* ثواني السؤال فوق البطاقة */
 .qwrap .qcard{padding-top:22px!important}
 .meta .qsec{position:static!important;transform:none!important;margin:0 auto;background:rgba(31,157,107,.12);color:#1f9d6b;border-radius:12px;padding:3px 12px;font-size:14px;font-weight:800;pointer-events:none}
-.meta .qsec,.meta .chip,#qNum{white-space:nowrap}.meta .qsec{font-size:13px!important;padding:3px 10px!important;max-width:42%;overflow:hidden;text-overflow:ellipsis}
+.meta .qsec,.meta .chip,#qNum{white-space:nowrap}.meta .qsec{font-size:13px!important;padding:3px 10px!important;max-width:52%;overflow:hidden;text-overflow:ellipsis}
 .meta .qsec.warn{background:rgba(240,138,0,.14);color:#f08a00}
 .meta .qsec.danger{background:rgba(211,35,47,.12);color:#d3232f;animation:qpulse .5s ease-in-out infinite alternate!important}
 
@@ -454,7 +454,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611162344">
+<meta name="app-version" content="202611162347">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1320,7 +1320,7 @@ function showQS(i, startAt){
   const q=g.qs[i]; g.qi=i; g.cur=q.it; g.phase='q'; g.locked=false; g.n=i+1;
   g.deadline = (startAt||performance.now()) + QMS; g.qMax = QMS/1000; g.pend=null; g.lastSec=0;
   $('qNum').textContent='السؤال '+toAr(i+1)+' من '+toAr(NQ);
-  const lv=q.it.lvl; $('lvlChip').textContent = LEVEL_NAME[lv]+' · '+toAr(PTS[lv])+'–'+toAr(PTS[lv]*1.5); $('lvlChip').dataset.l = lv;
+  const lv=q.it.lvl; $('lvlChip').textContent = LEVEL_NAME[lv]+' '+toAr(PTS[lv])+'–'+toAr(PTS[lv]*1.5); $('lvlChip').dataset.l = lv;
   const qc=$('qText'); qc.textContent=q.it.q; qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
   buildRing(); setQTimer(g.qMax);
   const ex=$('expl'); ex.textContent=''; ex.classList.remove('on');
@@ -1356,9 +1356,20 @@ function answerS(btn, ok, box){
   recompute(); waitLbl();
   if(PV){ const p=PV; rpc('sync_q',{p_id:PID,p_match:p.id,p_qi:rec.qi,p_ok:ok,p_ms:ms},3500).then(s=>{ if(s && G===g && !g.over) applyS(s); }); }
 }
-function waitLbl(){
-  const g=G; if(!g||g.phase!=='q'||!g.locked) return;
-  if(!g.oppA.some(a=>a.qi===g.qi) && g.deadline-performance.now()>800) { let nm=bot.name.split(' ')[0]; if(nm.length>7) nm=nm.slice(0,7)+'…'; $('qSec').textContent='بانتظار '+nm; }
+function waitLbl(rem){
+  const g=G; if(!g||!g.locked||(g.phase!=='q'&&g.phase!=='rev')) return;
+  const mine=g.mineA.find(a=>a.qi===g.qi), opp=g.oppA.find(a=>a.qi===g.qi);
+  if(!mine) return;
+  let nm=bot.name.split(' ')[0]; if(nm.length>7) nm=nm.slice(0,7)+'…';
+  const q=$('qSec');
+  if(!opp){
+    if(g.phase!=='q') return;
+    if(rem==null) rem=Math.max(0,g.deadline-performance.now());
+    q.textContent='بانتظار '+nm+' — '+toAr(Math.ceil(rem/1000))+' ث'; return;
+  }
+  const d=opp.ms-mine.ms, sec=String((Math.abs(d)/1000).toFixed(1)).replace('.','٫').replace(/\d/g,x=>AR_DIG[x]);
+  q.textContent = Math.abs(d)<150 ? 'أجبتما معاً' : (d>0 ? nm+' أجاب بعدك بـ '+sec+' ث' : nm+' أجاب قبلك بـ '+sec+' ث');
+  g.lblDone=g.qi;
 }
 function timeoutS(){
   const g=G; if(!g||g.locked||g.over||g.phase!=='q') return;
@@ -1396,7 +1407,8 @@ function loopS(){
     $('timer').textContent=toAr(Math.ceil(tl/1000));
     $('clock').classList.toggle('low', tl<=10000); $('clock').classList.toggle('mid', tl<=30000);
     $('ringFg').style.strokeDashoffset=RING*(1-tl/(NQ*QMS));
-    if(!g.locked){ setQTimer(rem/1000); if(rem<=0) timeoutS(); } else if(rem<=800){ $('qSec').textContent='٠ ث'; }
+    if(!g.locked){ setQTimer(rem/1000); if(rem<=0) timeoutS(); }
+    else if(g.lblDone!==g.qi){ setQTimer(rem/1000); if(g.mineA.some(a=>a.qi===g.qi)) waitLbl(rem); }
     if(!PV) localAdv(now);
     else if(rem<=0 && now-g.deadline>7000) takeover('انقطع الاتصال — أكمل ضد منافس آلي');
     if(g.deadline-now<=3000 && g.deadline-now>0){ const sec=Math.ceil((g.deadline-now)/1000); if(sec!==g.lastSec){ g.lastSec=sec; SND.tick(); } }
