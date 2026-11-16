@@ -435,7 +435,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111640">
+<meta name="app-version" content="2026111641">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -752,7 +752,7 @@ const dkey = d => d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
 /* حفظ بسيط في المتصفح */
 function load(){ try{ return JSON.parse(localStorage.getItem('minute_stats')||'{}'); }catch(e){ return {}; } }
 function save(s){ try{ localStorage.setItem('minute_stats', JSON.stringify(s)); }catch(e){} }
-let stats = Object.assign({best:0,wins:0,streak:0,played:0,correctTotal:0,dayStreak:0,lastDay:'',sound:true,balance:0,totalPoints:0,pointsDay:''}, load());
+let stats = Object.assign({best:0,wins:0,streak:0,played:0,correctTotal:0,dayStreak:0,lastDay:'',sound:true,balance:0,totalPoints:0,pointsDay:'',empNo:''}, load());
 stats.badges = stats.badges || {}; stats.redeemed = stats.redeemed || [];
 /* رصيد تجريبي للعرض */
 var DEMO=false; try{ DEMO=new URLSearchParams(location.search).has('demo'); }catch(e){}
@@ -984,7 +984,8 @@ function showFound(name, human, tok){
   const t = setInterval(()=>{ if(tok!==matchTok){ clearInterval(t); return; } n--; if(n<=0){ clearInterval(t); startGame(); } else { $('cd').textContent=n; SND.count(); } }, 800);
 }
 async function startMatch(){
-  if(!stats.playerName || !stats.gender){ askName(startMatch); return; }
+  if(needReg()){ askName(startMatch); return; }
+  await syncPlayer();
   if(!stats.seenDailyNote && pointsAvailable()){
     showModal('قبل أن تبدأ','<div style="line-height:1.9">تحدّي النقاط مرة واحدة يومياً، وبعدها يمكنك التدريب بدون نقاط.</div>',
       [{t:'موافق',full:true,f:()=>{ stats.seenDailyNote=1; save(stats); closeModal(); startMatch(); }},
@@ -1012,7 +1013,8 @@ async function startMatch(){
 /* ===== دعوة صديق برابط ===== */
 let inviteTok = 0;
 async function inviteFriend(){
-  if(!stats.playerName || !stats.gender){ askName(inviteFriend); return; }
+  if(needReg()){ askName(inviteFriend); return; }
+  await syncPlayer();
   const tok = ++inviteTok;
   const r = await rpc('create_invite',{p_id:PID,p_name:stats.playerName},6000);
   if(!r || !r.code){ toast('تعذّر إنشاء الدعوة، تأكد من الاتصال'); return; }
@@ -1041,7 +1043,7 @@ async function acceptInviteFromUrl(){
     if(!r || !r.match){ toast('الدعوة غير صالحة أو انتهت'); return; }
     PV = pvFrom(r); const tok=++matchTok; showFound(PV.oppName||'صديقك', true, tok);
   };
-  if(!stats.playerName || !stats.gender) askName(go); else go();
+  if(needReg()) askName(go); else go();
 }
 $('inviteBtn').onclick = inviteFriend;
 $('quitBtn').onclick = ()=>{
@@ -1057,7 +1059,7 @@ function startGame(){
   G = { used:new Set(), level:1, lvlStreak:0, cur:null, n:0, combo:0, maxCombo:0, correct:0, wrong:0,
         me:0, bot:0, start:performance.now(), qStart:0, over:false, timers:[], locked:false, lastSec:61 };
   G.scored = pointsAvailable();
-  if(G.scored){ stats.pointsDay = dkey(new Date()); save(stats); }
+  if(G.scored){ stats.pointsDay = dkey(new Date()); save(stats); if(!DEMO) rpc('start_scored',{p_id:PID},4000); }
   $('myLbl').textContent = G.scored ? 'أنت' : 'أنت (تدريب)';
   $('myScore').textContent=0; $('botScore').textContent=0; $('botLbl').textContent=bot.name;
   updateRace(); $('combo').classList.remove('on');
@@ -1247,6 +1249,7 @@ function endGame(){
   const scored = G.scored, bonus = (scored && R==='win' && !G.force) ? (PV ? 50 : 0) : 0, earned = (scored && G.force!=='lose') ? me + bonus : 0;
   lastRes = {me:me, bot:b, scored:scored, earned:earned, result: R};
   stats.balance += earned; stats.totalPoints += earned;
+  if(!DEMO) rpc('claim_points',{p_id:PID,p_points:earned,p_won:(R==='win')},5000).then(function(c){ if(c && typeof c.balance==='number'){ stats.balance=c.balance; save(stats); try{ renderStats(); }catch(e){} } });
   stats.played++;
   const today=dkey(new Date()), yest=dkey(new Date(Date.now()-864e5));
   if(stats.lastDay!==today){ stats.dayStreak = (stats.lastDay===yest) ? (stats.dayStreak||0)+1 : 1; stats.lastDay=today; }
@@ -1316,12 +1319,37 @@ async function drawCard(r,name){
   return c;
 }
 let shareFile=null, shareText='';
+const needReg = () => !stats.playerName || !stats.gender || (!DEMO && !stats.empNo);
+const normEmp = v => String(v||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,'');
+async function syncPlayer(){
+  if(DEMO || !stats.empNo) return;
+  const r = await rpc('get_player',{p_id:PID,p_name:stats.playerName||''},4000);
+  if(r && typeof r.balance==='number'){
+    stats.balance=r.balance; stats.totalPoints=r.total_points||0;
+    stats.pointsDay = r.points_available ? '' : dkey(new Date());
+    save(stats); try{ renderStats(); }catch(e){}
+  }
+}
 function askName(next){
-  let g = stats.gender || '';
-  showModal('بياناتك','<input id="nameIn" class="nameIn" maxlength="20" placeholder="الاسم أو الرقم الوظيفي" autocomplete="off"><div class="gpick"><button type="button" id="gM">ذكر</button><button type="button" id="gF">أنثى</button></div>',
-    [{t:'متابعة',full:true,f:()=>{ const v=$('nameIn').value.trim(); if(!v){ toast('اكتب اسمك أو رقمك الوظيفي'); return; } if(!g){ toast('اختر ذكر أو أنثى'); return; } stats.playerName=v; stats.gender=g; save(stats); closeModal(); renderGreet(); next(); }},
+  let g = stats.gender || ''; const locked = !!stats.empNo && !DEMO;
+  showModal('بياناتك','<input id="nameIn" class="nameIn" maxlength="30" placeholder="الاسم الكامل" autocomplete="off"><input id="empIn" class="nameIn" style="margin-top:10px" inputmode="numeric" maxlength="10" placeholder="الرقم الوظيفي" autocomplete="off"'+(locked?' readonly':'')+'>'+(locked?'<div style="font-size:12px;color:var(--muted);margin-top:6px">الرقم الوظيفي مرتبط بهذا الجهاز ولا يمكن تغييره</div>':'')+'<div class="gpick"><button type="button" id="gM">ذكر</button><button type="button" id="gF">أنثى</button></div>',
+    [{t:'متابعة',full:true,f:async()=>{
+        const v=$('nameIn').value.trim(), emp=normEmp($('empIn').value);
+        if(v.length<2){ toast('اكتب اسمك الكامل'); return; }
+        if(!DEMO && !/^[0-9]{3,10}$/.test(emp)){ toast('اكتب رقمك الوظيفي (أرقام فقط)'); return; }
+        if(!g){ toast('اختر ذكر أو أنثى'); return; }
+        if(!DEMO){
+          const r = await rpc('register_player',{p_id:PID,p_name:v,p_emp:emp,p_gender:g,p_balance:stats.empNo?0:(stats.balance||0)},6000);
+          if(!r){ toast('تعذّر الاتصال، حاول مرة أخرى'); return; }
+          if(r.error==='locked'){ toast('هذا الجهاز مسجّل برقم وظيفي آخر'); return; }
+          if(!r.ok){ toast('تحقق من الاسم والرقم الوظيفي'); return; }
+          if(r.id && r.id!==PID){ PID=r.id; try{ localStorage.setItem('mc_pid',PID); }catch(e){} }
+          stats.empNo=r.emp||emp; stats.balance=r.balance; stats.totalPoints=r.total_points||0;
+          stats.pointsDay = r.points_available ? '' : dkey(new Date());
+        }
+        stats.playerName=v; stats.gender=g; save(stats); closeModal(); renderGreet(); try{ renderStats(); }catch(e){} next(); }},
      {t:'إلغاء',ghost:true,full:true,f:closeModal}]);
-  $('nameIn').value = stats.playerName || '';
+  $('nameIn').value = stats.playerName || ''; $('empIn').value = stats.empNo || '';
   const mark=()=>{ $('gM').classList.toggle('on',g==='m'); $('gF').classList.toggle('on',g==='f'); };
   $('gM').onclick=()=>{g='m';mark();}; $('gF').onclick=()=>{g='f';mark();}; mark();
 }
@@ -1419,9 +1447,13 @@ function confirmRedeem(r){
   showModal('تأكيد الاستبدال','سيُخصم '+fmt(r.cost)+' نقطة مقابل «'+r.title+'».',
     [{t:'تأكيد',f:()=>doRedeem(r)},{t:'إلغاء',ghost:true,f:closeModal}]);
 }
-function doRedeem(r){
+async function doRedeem(r){
   if(stats.balance<r.cost){ closeModal(); return; }
-  stats.balance -= r.cost;
+  if(!DEMO){
+    const q = await rpc('redeem_points',{p_id:PID,p_cost:r.cost},6000);
+    if(!q || !q.ok){ closeModal(); if(q && typeof q.balance==='number'){ stats.balance=q.balance; save(stats); renderStats(); renderStore(); } toast(q?'رصيدك غير كافٍ':'تعذّر الاتصال، حاول مرة أخرى'); return; }
+    stats.balance = q.balance;
+  } else { stats.balance -= r.cost; }
   const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let code='';
   for(let i=0;i<8;i++) code+=A[Math.floor(Math.random()*A.length)];
   stats.redeemed.unshift({title:r.title, code:code, date:new Date().toLocaleDateString('ar-KW')});
@@ -1461,6 +1493,7 @@ try{
     }
   }).catch(function(){});
 }catch(e){} })();
+syncPlayer();
 loadRemoteQuestions().then(acceptInviteFromUrl);
 </script>
 </body>
