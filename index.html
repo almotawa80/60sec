@@ -433,7 +433,7 @@ button.bcount{padding:6px 9px}
       
       <button class="btn" id="goBtn">ابدأ التحدّي</button>
       <button class="btn" id="inviteBtn" style="margin-top:10px;background:transparent;color:var(--accent);border:2px solid var(--accent);box-shadow:none">تحدَّ صديقاً برابط</button>
-      <div class="hint" style="margin-top:10px;text-align:center;font-weight:700;color:var(--accent)">اكسب نقاطاً أكثر بتحدّي شخص حقيقي! مكافأة الفوز ٥٠ نقطة (ولا مكافأة ضد المنافس الآلي)</div>
+      <div class="hint" style="margin-top:12px;text-align:center;font-weight:700;font-size:15px;color:var(--text)">اكسب نقاطاً أكثر بتحدّي شخص حقيقي: ٥٠ نقطة</div>
       <div class="note" id="goNote"></div>
     </div>
   </section>
@@ -943,7 +943,7 @@ function showFound(name, human, tok){
   bot.name = name;
   show('match');
   $('searching').style.display='none'; $('inviteWait').style.display='none'; $('found').style.display='block';
-  $('foundMsg').textContent = (human ? 'تحدٍّ مباشر مع لاعب حقيقي — مكافأة الفوز ٥٠ نقطة' : 'لا يوجد لاعب متاح الآن — ستلعب ضد الجهاز (بدون مكافأة فوز)') + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط');
+  $('foundMsg').textContent = (human ? 'تحدٍّ مباشر مع لاعب حقيقي — مكافأة الفوز ٥٠ نقطة' : 'لا يوجد لاعب متاح الآن — ستلعب ضد الجهاز') + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط');
   $('botName').textContent = bot.name; if(human){ $('botAv').textContent = bot.name.charAt(0); } else { $('botAv').innerHTML = svg('robot',54); } $('botTag').innerHTML = human ? svg('bolt',13)+' متصل الآن' : svg('robot',14)+' منافس آلي'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت';
   let n = 3; $('cd').textContent = n; SND.count();
   const t = setInterval(()=>{ if(tok!==matchTok){ clearInterval(t); return; } n--; if(n<=0){ clearInterval(t); startGame(); } else { $('cd').textContent=n; SND.count(); } }, 800);
