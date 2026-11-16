@@ -376,8 +376,8 @@ html[data-theme="dark"] .pts50{color:#ff4d57}
 #goBtn .slbl{margin:0;padding:0 80px 0 14px;white-space:nowrap;font-weight:800;transition:opacity .15s;pointer-events:none}
 #goBtn .sknob{position:absolute;margin:0;right:6px;top:6px;width:60px;height:60px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.3);touch-action:none;will-change:transform}
 #goBtn .sknob.back{transition:transform .28s cubic-bezier(.2,.8,.2,1)}
-@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(-10px)}}
-#goBtn .sknob.hint{animation:nudge 1.6s ease-in-out 1}
+@keyframes nudge{0%{transform:translateX(0)}30%{transform:translateX(-34px)}48%{transform:translateX(4px)}62%{transform:translateX(-12px)}76%{transform:translateX(2px)}100%{transform:translateX(0)}}
+#goBtn .sknob.hint{animation:nudge 1.1s cubic-bezier(.3,.7,.3,1) 1}
 #goBtn.slide{background:linear-gradient(90deg,#55565b,#3a3b40)!important;color:#fff!important;border:0!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 6px 16px rgba(0,0,0,.18)!important}
 #goBtn .sknob{box-shadow:0 2px 8px rgba(0,0,0,.35)}
 #goBtn.slide{background:rgba(0,0,0,.09)!important;box-shadow:none!important;border:0!important;color:#6b6f76}
@@ -539,7 +539,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170025">
+<meta name="app-version" content="202611170026">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1654,7 +1654,16 @@ function endGame(){
     if(x>=max*0.6 || (vel>0.6 && x>=max*0.25)) fire(); else reset(); }
   btn.addEventListener('pointerup',up); btn.addEventListener('pointercancel',up);
   btn.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); max=btn.clientWidth-72; fire(); } });
-  setTimeout(function(){ if(!drag) knob.classList.add('hint'); },700);
+  var lastTouch=0;
+  function nudge(){
+    if(drag||done||document.hidden) return;
+    if(!$('home').classList.contains('active') || $('modal').classList.contains('on')) return;
+    if(Date.now()-lastTouch<4000) return;
+    knob.style.animation=''; knob.classList.remove('hint'); void knob.offsetWidth; knob.classList.add('hint');
+    setTimeout(function(){ knob.classList.remove('hint'); },1200);
+  }
+  btn.addEventListener('pointerdown',function(){ lastTouch=Date.now(); });
+  setTimeout(nudge,1200); setInterval(nudge,6000);
 })();
 
 $('againBtn').onclick = startMatch;
