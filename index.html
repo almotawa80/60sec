@@ -533,7 +533,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170018">
+<meta name="app-version" content="202611170019">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1888,8 +1888,25 @@ function shrinkImage(file){
       let q=.85, d=c.toDataURL('image/jpeg',q); while(d.length>55000 && q>.4){ q-=.1; d=c.toDataURL('image/jpeg',q); } res(d); };
     img.onerror=()=>{ URL.revokeObjectURL(url); rej(); }; img.src=url; });
 }
-$('pfBtn').onclick=()=>{ SCR.profilePage=0; window._pfBack=0; renderProfile(); try{ nameAS.reset(); mailAS.reset(); }catch(e){} show('profilePage'); };
-$('backBtn3').onclick=()=>{ window._pfBack=0; renderStats(); show('home'); };
+function flyAv(fromEl,toEl,toRound){
+  try{
+    if(!fromEl||!toEl||!fromEl.animate) return;
+    const a=fromEl.getBoundingClientRect(), b=toEl.getBoundingClientRect(); if(!a.width||!b.width) return;
+    const c=document.createElement('div'); const src=stats.avatar;
+    c.style.cssText='position:fixed;z-index:200;pointer-events:none;border-radius:50%;overflow:hidden;display:grid;place-items:center;color:#fff;font-weight:800;background:#c8102e center/cover no-repeat;left:'+a.left+'px;top:'+a.top+'px;width:'+a.width+'px;height:'+a.height+'px;font-size:'+(a.width*.42)+'px;box-shadow:0 8px 24px rgba(0,0,0,.3)';
+    if(src) c.style.backgroundImage='url("'+src+'")'; else c.textContent=avInit();
+    document.body.appendChild(c); toEl.style.visibility='hidden';
+    const sx=b.width/a.width, dx=(b.left+b.width/2)-(a.left+a.width/2), dy=(b.top+b.height/2)-(a.top+a.height/2);
+    const an=c.animate([{transform:'translate(0,0) scale(1)'},{transform:'translate('+dx+'px,'+dy+'px) scale('+sx+')'}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'});
+    const done=()=>{ toEl.style.visibility=''; c.remove(); }; an.onfinish=done; setTimeout(done,700);
+  }catch(e){ if(toEl) toEl.style.visibility=''; }
+}
+$('pfBtn').onclick=()=>{ SCR.profilePage=0; window._pfBack=0; renderProfile(); try{ nameAS.reset(); mailAS.reset(); }catch(e){}
+  const from=$('pfBtn'); const fr=from.getBoundingClientRect(); const ghost={getBoundingClientRect:()=>fr};
+  show('profilePage'); requestAnimationFrame(()=>{ const big=$('pfWrap'); const fake=document.createElement('div'); flyAv({getBoundingClientRect:()=>fr,animate:true}, $('pfBig')); }); };
+$('backBtn3').onclick=()=>{ window._pfBack=0; renderStats(); const pg=$('profilePage'); const swiped=!!pg.style.transform; const br=$('pfBig').getBoundingClientRect();
+  show('home'); if(!swiped && br.bottom>0) requestAnimationFrame(()=>flyAv({getBoundingClientRect:()=>br,animate:true}, $('pfBtn'))); };
+
 $('pfStore').onclick=()=>{ window._pfBack=1; openStore(); };
 const CR={img:null,src:'',x:0,y:0,base:1,z:1,R:140,ptrs:{},pinch:null};
 function crApply(){ const i=$('crImg'), sc=CR.base*CR.z; i.style.transform='translate('+(CR.x)+'px,'+(CR.y)+'px) scale('+sc+')'; }
