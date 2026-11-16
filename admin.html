@@ -64,9 +64,10 @@ tr:hover td{background:var(--hv)}
 .cc .st b{display:block;font-size:15px}.cc .st span{font-size:10.5px;color:var(--mu)}
 .cc .ln{font-size:12px;color:var(--mu);display:flex;justify-content:space-between;gap:8px;margin-top:4px}
 .cc .ln b{color:var(--tx);font-weight:600}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.25);margin-inline-end:6px;vertical-align:middle}.dot.off{background:#9ca3af;box-shadow:none;opacity:.5}
 .cc .mini{width:100%;margin-top:10px;padding:8px}
 @media(max-width:760px){
-.tw{display:none}.cl{display:grid;gap:8px;max-height:560px;overflow:auto}
+.tw{display:none}.cl{display:grid;gap:8px}.cl.g2{grid-template-columns:1fr 1fr}.cl.g2 .cc{padding:10px}.cl.g2 .t1{flex-wrap:wrap}.cl.g2 .t1 b{flex:1 1 60%;font-size:14px}.cl.g2 .st{grid-template-columns:1fr 1fr}.cl.g2 .ln{flex-direction:column;gap:0}
 header{padding:14px 14px 16px;gap:10px}
 header h1{flex:1 1 100%;font-size:17px;line-height:1.5}
 header .hb{flex:1 1 100%;flex-direction:column;align-items:stretch;gap:8px}
@@ -122,7 +123,7 @@ th,td{padding:8px 8px;font-size:12px}
     <div class="box" style="grid-column:1/-1"><h2>أعلى ١٠ لاعبين بالنقاط</h2><div class="cv"><canvas id="cTop"></canvas></div></div>
   </div>
   <div class="box" style="margin-bottom:16px"><h2>القسائم المطلوبة</h2><div class="tw"><table id="tRed"></table></div><div class="cl" id="clRed"></div></div>
-  <div class="box" style="margin-bottom:16px"><h2>اللاعبون <input id="q" placeholder="بحث بالاسم أو الرقم الوظيفي"></h2><div class="tw"><table id="tPl"></table></div><div class="cl" id="clPl"></div></div>
+  <div class="box" style="margin-bottom:16px"><h2>اللاعبون <input id="q" placeholder="بحث بالاسم أو الرقم الوظيفي"> <button class="btn" id="resetAll" style="background:var(--red);color:#fff;padding:7px 14px">تصفير الجميع</button></h2><div class="tw"><table id="tPl"></table></div><div class="cl g2" id="clPl"></div></div>
   <div class="box" style="margin-bottom:16px"><h2>أزواج لعبوا ضد بعض ٣ مرات أو أكثر</h2><div class="tw"><table id="tPr"></table></div><div class="cl" id="clPr"></div></div>
   <div class="box"><h2>محاولات تسجيل مشبوهة</h2><div class="tw"><table id="tEv"></table></div><div class="cl" id="clEv"></div></div>
 </main>
@@ -180,9 +181,12 @@ function renderRed(){
 }
 function renderPl(){
   const q=($('q').value||'').trim(), rows=D.players.filter(p=>!q||(p.name||'').includes(q)||(p.emp_no||'').includes(q));
-  $('tPl').innerHTML='<tr><th>#</th><th>الاسم</th><th>الرقم الوظيفي</th><th>إجمالي النقاط</th><th>الرصيد</th><th>مباريات</th><th>فوز</th><th>انسحاب</th><th>قسائم</th><th>آخر لعب</th><th>تسجيل</th></tr>'+
-  (rows.length?rows.map((p,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.emp_no)+'</td><td>'+fmt(p.total_points)+'</td><td>'+fmt(p.balance)+'</td><td>'+fmt(p.played)+'</td><td>'+fmt(p.wins)+'</td><td>'+fmt(p.quits)+'</td><td>'+fmt(p.vouchers)+'</td><td>'+dt(p.last_play)+'</td><td>'+dt(p.created_at)+'</td></tr>').join(''):'<tr><td colspan="11" style="color:var(--mu);text-align:center;padding:20px">لا يوجد لاعبون</td></tr>');
-  $('clPl').innerHTML=rows.length?rows.map((p,i)=>'<div class="cc"><div class="t1"><span class="no">'+(i+1)+'</span><b>'+esc(p.name)+'</b><span class="chip">'+esc(p.emp_no)+'</span></div><div class="st"><div><b>'+fmt(p.total_points)+'</b><span>النقاط</span></div><div><b>'+fmt(p.balance)+'</b><span>الرصيد</span></div><div><b>'+fmt(p.wins)+'/'+fmt(p.played)+'</b><span>فوز/لعب</span></div><div><b>'+fmt(p.quits)+'</b><span>انسحاب</span></div></div><div class="ln"><span>قسائم: <b>'+fmt(p.vouchers)+'</b></span><span>آخر لعب: <b>'+dt(p.last_play)+'</b></span></div></div>').join(''):'<div class="cc" style="text-align:center;color:var(--mu)">لا يوجد لاعبون</div>';
+  $('tPl').innerHTML='<tr><th>#</th><th>الاسم</th><th>الرقم الوظيفي</th><th>إجمالي النقاط</th><th>الرصيد</th><th>مباريات</th><th>فوز</th><th>انسحاب</th><th>قسائم</th><th>آخر لعب</th><th>تسجيل</th><th></th></tr>'+
+  (rows.length?rows.map((p,i)=>'<tr><td>'+(i+1)+'</td><td><i class="dot'+(p.online?'':' off')+'"></i>'+esc(p.name)+'</td><td>'+esc(p.emp_no)+'</td><td>'+fmt(p.total_points)+'</td><td>'+fmt(p.balance)+'</td><td>'+fmt(p.played)+'</td><td>'+fmt(p.wins)+'</td><td>'+fmt(p.quits)+'</td><td>'+fmt(p.vouchers)+'</td><td>'+dt(p.last_play)+'</td><td>'+dt(p.created_at)+'</td><td><button class="btn rz" style="background:var(--red);color:#fff;padding:5px 12px" data-e="'+esc(p.emp_no)+'" data-n="'+esc(p.name)+'">تصفير</button></td></tr>').join(''):'<tr><td colspan="12" style="color:var(--mu);text-align:center;padding:20px">لا يوجد لاعبون</td></tr>');
+  $('clPl').innerHTML=rows.length?rows.map((p,i)=>'<div class="cc"><div class="t1"><span class="no">'+(i+1)+'</span><b><i class="dot'+(p.online?'':' off')+'"></i>'+esc(p.name)+'</b><span class="chip">'+esc(p.emp_no)+'</span></div><div class="st"><div><b>'+fmt(p.total_points)+'</b><span>النقاط</span></div><div><b>'+fmt(p.balance)+'</b><span>الرصيد</span></div><div><b>'+fmt(p.wins)+'/'+fmt(p.played)+'</b><span>فوز/لعب</span></div><div><b>'+fmt(p.quits)+'</b><span>انسحاب</span></div></div><div class="ln"><span>قسائم: <b>'+fmt(p.vouchers)+'</b></span><span>آخر لعب: <b>'+dt(p.last_play)+'</b></span></div><button class="mini btn rz" style="background:var(--red);color:#fff" data-e="'+esc(p.emp_no)+'" data-n="'+esc(p.name)+'">تصفير النقاط</button></div>').join(''):'<div class="cc" style="text-align:center;color:var(--mu)">لا يوجد لاعبون</div>';
+
+  document.querySelectorAll('#tPl .rz, #clPl .rz').forEach(b=>b.onclick=async()=>{ if(!confirm('تصفير رصيد ونقاط '+b.dataset.n+' ؟')) return; b.disabled=true; try{ await rpc('admin_reset_points',{p_key:KEY,p_emp:b.dataset.e}); }catch(e){} load(); });
+  const ra=$('resetAll'); if(ra) ra.onclick=async()=>{ if(!confirm('تصفير رصيد ونقاط جميع اللاعبين؟ لا يمكن التراجع.')) return; if(!confirm('تأكيد أخير: تصفير الجميع؟')) return; try{ await rpc('admin_reset_points',{p_key:KEY}); }catch(e){} load(); };
 }
 function renderPairs(){
   const rows=PR||[];
