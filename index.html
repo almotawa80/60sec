@@ -304,7 +304,7 @@ button.bcount:active,.sndbtn:active{transform:scale(.93);background:rgba(255,255
 .vs{align-items:flex-start!important;gap:6px!important;width:100%}
 .vs .pcol{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
 .vs .pcol .av{margin:0 0 10px}
-.vs .pname{width:100%;font-size:16px;line-height:1.4;min-height:23px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vs .pname{width:100%;font-size:16px;line-height:1.35;min-height:44px;white-space:normal;overflow-wrap:anywhere;display:flex;align-items:flex-start;justify-content:center}
 .vs .tag{display:inline-flex;align-items:center;justify-content:center;gap:4px;font-size:12px;opacity:.9;margin-top:4px;min-height:18px;white-space:nowrap}
 .vs .vsb{flex:none;margin-top:28px}
 
@@ -445,7 +445,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611162322">
+<meta name="app-version" content="202611162323">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1458,7 +1458,7 @@ function endGame(){
     : 'جولة تدريبية<small>بدون نقاط — عُد غداً لتحدٍّ جديد بنقاط</small>';
   $('earned').style.color = scored ? '' : 'var(--muted)';
   const EMO = G.force==='lose' ? '🫣' : (R==='win' ? '🥳' : (R==='lose' ? '😤' : '🤝'));
-  $('resEmoji').style.display = 'none'; $('againBtn').style.display = (G.force==='lose') ? 'none' : '';
+  $('resEmoji').style.display = 'none'; $('againBtn').style.display = 'none';
   $('resTitle').textContent = title+' '+EMO;
   $('rMe').textContent=me; $('rBot').textContent=b; $('rBotLbl').textContent=bot.name;
   $('resExtra').textContent = G.force==='win' ? 'انسحب الخصم، فزت بالمباراة' : G.force==='lose' ? 'يمكنك المحاولة من جديد متى شئت' : isBest && me>0 ? 'رقم قياسي جديد لك!' : (R==='win' ? (G.tie==='win' ? 'تعادلتما في النقاط، وحسمت السرعة لصالحك' : 'أحسنت، الأسئلة تزداد صعوبة كلما تقدمت') : 'جرّب مرة أخرى، الدقيقة قصيرة!');
