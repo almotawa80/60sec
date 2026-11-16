@@ -1037,7 +1037,8 @@ async function pvPoll(){
   const oLeft = p.me===1 ? m.p2_left : m.p1_left, oIdle = p.me===1 ? m.p2_idle : m.p1_idle;
   const early = (performance.now()-g.start)/1000 < GAME_SECONDS-3;
   if(!g.over && early && (oLeft || (typeof oIdle==='number' && oIdle>10 && !g.oppDone))){
-    g.force='win'; toast('انسحب الخصم أو انقطع اتصاله'); endGame(); return;
+    PV=null; bot.name=nextBotName(); bot.skill=botSkill();
+    $('botLbl').textContent=bot.name; toast('انسحب الخصم — أكمل ضد منافس آلي'); scheduleBot(); return;
   }
   if(typeof opp==='number' && opp>g.bot){ g.bot=opp; $('botScore').textContent=g.bot; pop('botScore'); updateRace(); }
 }
