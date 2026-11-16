@@ -437,7 +437,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111646">
+<meta name="app-version" content="2026111648">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -470,7 +470,7 @@ button.bcount{padding:6px 9px}
       <div id="goDone" style="display:none;text-align:center;font-weight:800;font-size:17px;color:var(--text);margin-top:14px">أنهيت نقاط اليوم ✓</div>
       <div class="btn slide" id="goBtn" role="button" tabindex="0" aria-label="اسحب لبدء التحدّي"><div class="slbl" id="goLbl">اسحب لبدء التحدّي</div><div class="sknob" id="goKnob"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-6 6 6 6M20 6l-6 6 6 6" opacity=".9"/></svg></div></div>
       <button class="btn" id="inviteBtn" type="button" aria-label="تحدَّ زميلاً الآن"><span class="mrow"><span class="mav" id="invAv">أ</span><span class="mvs">VS</span><span class="mem">+</span></span><span class="mlb">تحدَّ زميلاً الآن</span><span class="mbd">+٥٠ نقطة</span></button>
-      <div class="hint" style="margin-top:12px;text-align:center;line-height:1.5"><div class="pts50">اكسب ٥٠ نقطة إضافية</div><div style="font-weight:700;font-size:15px;color:var(--text)">مقابل تحدّي شخص حقيقي</div></div>
+      <div class="hint" style="margin-top:12px;text-align:center;line-height:1.5"><div class="pts50">اكسب ٥٠ نقطة إضافية</div><div style="font-weight:700;font-size:15px;color:var(--text)">عند فوزك على كل زميل جديد</div></div>
       <div class="note" id="goNote"></div>
     </div>
   </section>
@@ -1004,7 +1004,7 @@ async function startMatch(){
   const t0 = Date.now(); let res = null;
   const wait = 30000; let skip = false;
   const sb = $('skipWait'); if(sb) sb.onclick = ()=>{ skip = true; };
-  const tip=$('srchTip'); if(tip) tip.textContent = pointsAvailable() ? 'انتظر لاعباً حقيقياً واربح ٥٠ نقطة إضافية، أو ابدأ الآن ضد المنافس الآلي' : 'جولة تدريبية بدون نقاط. انتظر لاعباً حقيقياً أو ابدأ الآن ضد المنافس الآلي';
+  const tip=$('srchTip'); if(tip) tip.textContent = pointsAvailable() ? 'انتظر لاعباً حقيقياً واربح ٥٠ نقطة عند الفوز عليه (مرة لكل منافس جديد)، أو ابدأ الآن ضد المنافس الآلي' : 'جولة تدريبية بدون نقاط. انتظر لاعباً حقيقياً أو ابدأ الآن ضد المنافس الآلي';
   const sub = $('srchSub');
   while(Date.now()-t0 < wait && !skip){
     if(sub) sub.textContent = 'نبحث عن لاعب متاح الآن… '+Math.max(0,Math.ceil((wait-(Date.now()-t0))/1000))+' ث';
@@ -1258,7 +1258,8 @@ function endGame(){
   const scored = G.scored, bonus = (scored && R==='win' && !G.force) ? (PV ? 50 : 0) : 0, earned = (scored && G.force!=='lose') ? me + bonus : 0;
   lastRes = {me:me, bot:b, scored:scored, earned:earned, result: R};
   stats.balance += earned; stats.totalPoints += earned;
-  if(!DEMO) rpc('finish_game',{p_id:PID,p_points:earned,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose')},5000).then(function(c){ if(c && typeof c.balance==='number'){ stats.balance=c.balance; save(stats); try{ renderStats(); }catch(e){} } });
+  if(!DEMO) rpc('finish_game2',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus},5000).then(function(c){ if(c && typeof c.balance==='number'){ stats.balance=c.balance; save(stats); try{ renderStats(); }catch(e){}
+    if(scored && c.earned!==earned){ lastRes.earned=c.earned; try{ $('earned').innerHTML='+'+fmt(c.earned)+' نقطة<small>'+me+' من الجولة'+(c.blocked?' — لا مكافأة فوز: سبق أن فزت على هذا المنافس':'')+' — رصيدك '+fmt(c.balance)+'</small>'; }catch(e){} } } });
   stats.played++;
   const today=dkey(new Date()), yest=dkey(new Date(Date.now()-864e5));
   if(stats.lastDay!==today){ stats.dayStreak = (stats.lastDay===yest) ? (stats.dayStreak||0)+1 : 1; stats.lastDay=today; }
