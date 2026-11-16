@@ -377,6 +377,11 @@ html[data-theme="dark"] #goBtn.slide{background:rgba(255,255,255,.14)!important;
 html[data-theme="dark"] #goBtn.slide{background:rgba(225,29,46,.26)!important;color:#ffb3ba!important}
 #goBtn .sknob{top:50%!important;margin-top:-30px!important;right:6px!important;background:#c8102e!important;color:#fff!important}
 html[data-theme="dark"] #goBtn .sknob{background:#e11d2e!important}
+html:not([data-theme="dark"]) #invUrl{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.45);color:#fff}
+html:not([data-theme="dark"]) #invShare{background:#fff!important;color:#c8102e!important;border:0!important}
+html:not([data-theme="dark"]) #invCancel{background:transparent!important;color:#fff!important;border:1.5px solid rgba(255,255,255,.7)!important}
+html[data-theme="dark"] #invUrl{background:var(--tile);border:1px solid var(--line)}
+html[data-theme="dark"] #invCancel{background:transparent!important;color:var(--muted)!important;border:1px solid var(--line)!important}
 #inviteBtn{display:flex!important;flex-direction:column;align-items:center;gap:8px;padding:14px 12px!important;border-radius:22px!important;background:var(--card,#fff)!important;border:1.5px solid rgba(200,16,46,.35)!important;box-shadow:none!important;color:var(--text,#1f2125)!important;height:auto!important}
 #inviteBtn .mrow{display:flex;align-items:center;justify-content:center;gap:16px}
 #inviteBtn .mav,#inviteBtn .mem{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:22px;font-weight:800}
@@ -429,7 +434,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111634">
+<meta name="app-version" content="2026111635">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -477,11 +482,11 @@ button.bcount{padding:6px 9px}
       </div>
       <div id="inviteWait" style="display:none;width:100%;text-align:center">
         <div class="radar"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
-        <div class="big">بانتظار صديقك…</div>
+        <div class="big">بانتظار زميلك…</div>
         <div class="sub" style="margin:6px auto 18px;max-width:300px;line-height:1.7">شارك الرابط، وعندما يفتحه تبدأ المباراة بينكما مباشرة. أبقِ هذه الصفحة مفتوحة.</div>
-        <div id="invUrl" dir="ltr" style="word-break:break-all;background:var(--tile);border:1px solid var(--line);border-radius:14px;padding:12px;font-size:13px;margin:0 auto 14px;max-width:320px"></div>
+        <div id="invUrl" dir="ltr" style="word-break:break-all;border-radius:14px;padding:12px;font-size:13px;margin:0 auto 14px;max-width:320px"></div>
         <button class="btn" id="invShare" style="max-width:320px;margin:0 auto">مشاركة الرابط</button>
-        <button class="btn" id="invCancel" style="max-width:320px;margin:10px auto 0;background:transparent;color:var(--muted);border:1px solid var(--line);box-shadow:none">إلغاء الدعوة</button>
+        <button class="btn" id="invCancel" style="max-width:320px;margin:10px auto 0;box-shadow:none">إلغاء الدعوة</button>
       </div>
       <div id="found" style="display:none;width:100%">
         <div class="sub" id="foundMsg" style="white-space:pre-line;margin:0 auto 26px;text-align:center;max-width:300px;line-height:1.7"></div>
