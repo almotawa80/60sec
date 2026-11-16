@@ -71,7 +71,10 @@ body{font-family:'Noto Kufi Arabic',system-ui,sans-serif;color:var(--text);backg
 .pl .n{font-size:12px;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pl .s{font-size:30px;font-weight:800;line-height:1.15}
 .pl .s.pop{animation:pop .35s}
-@keyframes pop{40%{transform:scale(1.35)}}
+@keyframes pop{40%{transform:scale(1.35)}}#quitBtn{position:fixed!important;left:50%!important;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom))!important;width:calc(100% - 32px)!important;max-width:448px;margin:0!important;z-index:20;box-shadow:0 6px 18px rgba(211,35,47,.28)}
+#game .sheet{padding-bottom:calc(84px + env(safe-area-inset-bottom))!important}
+#game:not(.active) #quitBtn{display:none}
+
 .fpts{position:fixed;left:50%;top:34%;z-index:60;pointer-events:none;font-weight:900;transform:translateX(-50%);animation:fpts 1.05s ease-out forwards;white-space:nowrap}
 .fpts.l1{font-size:22px;color:#16a34a}
 .fpts.l2{font-size:30px;color:#0ea5e9;text-shadow:0 2px 14px rgba(14,165,233,.45)}
@@ -445,7 +448,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611162324">
+<meta name="app-version" content="202611162329">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
