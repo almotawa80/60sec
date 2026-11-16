@@ -263,6 +263,7 @@ body{font-family:'Noto Kufi Arabic',system-ui,sans-serif}
 .exclusive b{font-size:14.5px;line-height:1.6}
 .nameIn{width:100%;border:2px solid var(--line);background:var(--page);color:var(--text);border-radius:14px;padding:12px;font:inherit;font-size:16px;text-align:center;outline:none}
 .nameIn:focus{border-color:var(--accent)}
+.gpick{display:flex;gap:10px;margin-top:12px}.gpick button{flex:1;border:2px solid var(--line);background:var(--page);color:var(--text);border-radius:14px;padding:11px;font:inherit;font-weight:800;font-size:15px}.gpick button.on{border-color:var(--accent);background:var(--accent);color:#fff}
 .shareimg{width:100%;max-height:52vh;object-fit:contain;border-radius:14px;display:block;margin:0 auto}
 .hint{font-size:12px;color:var(--muted);margin-top:8px}
 .mbox{max-height:92vh;overflow:auto}
@@ -347,7 +348,9 @@ button.bcount:active,.sndbtn:active{transform:scale(.93);background:rgba(255,255
 @keyframes qpulse2{to{transform:scale(1.12)}}
 
 /* الوضع الداكن */
-html[data-theme="dark"]{--page:#111213;--card:#2b2c2e;--text:#f3f3f4;--muted:#9da1a8;--line:#3b3c40;--tile:#36373a;--shadow:0 4px 14px rgba(0,0,0,.45)}
+html[data-theme="dark"]{--hero:#202124;--page:#111312;--card:#2a2b2e;--text:#f3f3f4;--muted:#9da1a8;--line:#34353a;--tile:#2a2b2e;--accent:#e0262f;--shadow:none}
+html[data-theme="dark"] .race .m,html[data-theme="dark"] .vsb{color:var(--accent)}
+html[data-theme="dark"] .hero:before,html[data-theme="dark"] .hero:after{display:none}
 html[data-theme="dark"] .sheet{background:var(--page)}
 html[data-theme="dark"] #demoTop{background:var(--card)!important;color:#ff6b75!important;border-color:#ff6b75!important}
 html[data-theme="dark"] .toast{background:#f3f3f4;color:#1f2125}
@@ -405,6 +408,7 @@ button.bcount{padding:6px 9px}
       <div class="sp"></div>
       
       <button class="btn" id="goBtn">ابدأ التحدّي</button>
+      <button class="btn" id="inviteBtn" style="margin-top:10px;background:transparent;color:var(--accent);border:2px solid var(--accent);box-shadow:none">تحدَّ صديقاً برابط</button>
       <div class="note" id="goNote"></div>
     </div>
   </section>
@@ -520,7 +524,7 @@ const REWARDS = [
 
 /* ===== بنك الأسئلة: [السؤال، الصحيح، خطأ١، خطأ٢، خطأ٣، المستوى(١ سهل ٢ متوسط ٣ صعب)، التفسير] ===== */
 const BANK = {
-  lang: {name:'اللغة العربية', q:[
+  lang: {on:false, name:'اللغة العربية', q:[
     ['الفاعل في جملة «كتبَ الطالبُ الدرسَ» هو:','الطالبُ','الدرسَ','كتبَ','لا يوجد',1,'الفاعل هو من قام بالفعل، وهو مرفوع.'],
     ['علامة رفع المثنى:','الألف','الواو','الضمة','الياء',2,'المثنى يُرفع بالألف ويُنصب ويُجر بالياء.'],
     ['جمع كلمة «كتاب»:','كُتُب','كاتبون','كتابات','أكتاب',1,'«كُتُب» جمع تكسير لكلمة كتاب.'],
@@ -550,7 +554,7 @@ const BANK = {
     ['جمع كلمة «يد»:','أيدٍ','يدات','يدون','أيدين',3,'«أيدٍ» جمع تكسير لكلمة يد.'],
     ['معنى المثل «السعيد من اتعظ بغيره»:','يتعلم العاقل من أخطاء غيره','الحظ يصنع السعادة','المال يجلب السعادة','الصمت حكمة',2,'يعني أن العاقل يستفيد من تجارب الآخرين.']
   ]},
-  din: {name:'الدين', q:[
+  din: {name:'شرعية عامة', q:[
     ['كم عدد أركان الإسلام؟','خمسة','أربعة','ستة','سبعة',1,'أركان الإسلام خمسة: الشهادتان والصلاة والزكاة والصوم والحج.'],
     ['ما أول سورة في ترتيب المصحف؟','الفاتحة','البقرة','الناس','الإخلاص',1,'الفاتحة هي أول سور المصحف.'],
     ['ما أطول سورة في القرآن الكريم؟','البقرة','آل عمران','النساء','الكهف',1,'سورة البقرة أطول سور القرآن.'],
@@ -578,9 +582,18 @@ const BANK = {
     ['أول الخلفاء الراشدين:','أبو بكر الصديق','عمر بن الخطاب','عثمان بن عفان','علي بن أبي طالب',1,'تولى أبو بكر الصديق الخلافة أولاً.'],
     ['في أي سورة آية الكرسي؟','البقرة','آل عمران','النساء','يس',2,'آية الكرسي في سورة البقرة.'],
     ['كم عدد الأنبياء المذكورين بأسمائهم في القرآن؟','٢٥','١٢','٤٠','٧',3,'ذُكر في القرآن خمسة وعشرون نبياً بأسمائهم.'],
-    ['في أي سنة هجرية وقعت غزوة بدر؟','الثانية','الأولى','الرابعة','الثامنة',3,'وقعت غزوة بدر في رمضان من السنة الثانية للهجرة.']
+    ['في أي سنة هجرية وقعت غزوة بدر؟','الثانية','الأولى','الرابعة','الثامنة',3,'وقعت غزوة بدر في رمضان من السنة الثانية للهجرة.'],
+    ['كم عدد أركان الإيمان؟','ستة','خمسة','سبعة','أربعة',1,'أركان الإيمان ستة: الإيمان بالله وملائكته وكتبه ورسله واليوم الآخر والقدر.'],
+    ['المصدر الأول من مصادر التشريع الإسلامي:','القرآن الكريم','القياس','الإجماع','العرف',1,'القرآن الكريم هو المصدر الأول ثم السنة ثم الإجماع والقياس.'],
+    ['أطول آية في القرآن الكريم هي آية:','الدَّين','الكرسي','النور','الطلاق',2,'آية الدَّين في سورة البقرة وهي أطول آية في القرآن.'],
+    ['السورة التي تعدل ثلث القرآن كما ورد في الحديث:','الإخلاص','الفاتحة','الكافرون','الفلق',2,'ورد في الصحيح أن «قل هو الله أحد» تعدل ثلث القرآن.'],
+    ['الصلاة الوسطى المذكورة في القرآن عند جمهور العلماء هي:','العصر','الظهر','المغرب','العشاء',2,'ذهب الجمهور إلى أن الصلاة الوسطى هي صلاة العصر.'],
+    ['الحكم الذي يُثاب فاعله ولا يُعاقب تاركه يسمى:','المندوب','الواجب','المحرم','المباح',2,'المندوب أو المستحب يُثاب فاعله ولا يأثم تاركه.'],
+    ['الإجماع في أصول الفقه هو:','اتفاق مجتهدي الأمة في عصر على حكم شرعي','رأي أغلب الناس','قرار الحاكم','اتفاق أهل بلد واحد',2,'الإجماع اتفاق مجتهدي الأمة بعد النبي ﷺ على حكم شرعي.'],
+    ['نصاب زكاة الذهب تقريباً:','٨٥ جراماً','٢٠ جراماً','١٠٠ جرام','٥٠ جراماً',2,'نصاب الذهب عشرون مثقالاً وتقدّر بنحو ٨٥ جراماً.'],
+    ['القياس في أصول الفقه هو:','إلحاق فرع بأصل في الحكم لعلة جامعة','الأخذ بظاهر النص دون نظر','العمل بالعادة','ترك الحكم للقاضي',3,'القياس إلحاق مسألة لا نص فيها بمسألة منصوص عليها لاشتراكهما في العلة.'],
   ]},
-  cul: {name:'الثقافة العامة', q:[
+  cul: {on:false, name:'الثقافة العامة', q:[
     ['ما عاصمة اليابان؟','طوكيو','أوساكا','كيوتو','سول',1,'عاصمة اليابان طوكيو.'],
     ['أكبر كوكب في المجموعة الشمسية:','المشتري','زحل','الأرض','نبتون',1,'المشتري أكبر كواكب المجموعة الشمسية.'],
     ['كم عدد قارات العالم؟','سبع','خمس','ست','ثمانٍ',1,'قارات العالم سبع.'],
@@ -611,7 +624,29 @@ const BANK = {
     ['من نُسب إليه اختراع الهاتف؟','ألكسندر غراهام بيل','إديسون','تسلا','ماركوني',3,'نُسب اختراع الهاتف إلى ألكسندر غراهام بيل.'],
     ['ما عاصمة دولة الكويت؟','مدينة الكويت','الجهراء','حولي','الأحمدي',1,'عاصمة الكويت هي مدينة الكويت.']
   ]},
-  eco: {name:'الاقتصاد', q:[
+  fin: {name:'شرعية مالية', q:[
+    ['المرابحة هي بيع السلعة:','بثمن شرائها مع ربح معلوم','بدون علم المشتري بالثمن','بثمن غير محدد','مقابل فائدة على القرض',2,'في المرابحة يُعلم البائع المشتري بثمن الشراء والربح.'],
+    ['في عقد المضاربة:','مال من طرف وعمل من طرف آخر','المال والعمل من طرف واحد','قرض بفائدة ثابتة','بيع ما لا يملك',2,'المضاربة: مال من رب المال وعمل من المضارب.'],
+    ['الصكوك الإسلامية تمثل:','حصة شائعة في أصول أو مشروع','قرضاً بفائدة','وديعة بلا عائد','سهماً في بنك فقط',3,'الصك يمثل حصة شائعة في أصول أو منافع.'],
+    ['الإجارة في التمويل الإسلامي:','بيع منفعة أصل بأجرة معلومة','بيع سلعة بثمن مؤجل فقط','مشاركة في رأس المال','قرض حسن',3,'الإجارة عقد على منفعة أصل مقابل أجرة معلومة.'],
+    ['الربا المحرّم في القرض هو:','زيادة مشروطة على أصل القرض','ربح البيع المباح','أجرة العمل','الهبة بلا شرط',1,'كل قرض جرّ نفعاً مشروطاً فهو ربا.'],
+    ['نسبة زكاة النقود وعروض التجارة:','٢٫٥٪','٥٪','١٠٪','٢٠٪',1,'تجب الزكاة في النقود وعروض التجارة بنسبة ربع العُشر أي ٢٫٥٪ إذا بلغت النصاب وحال الحول.'],
+    ['القرض الحسن هو قرض:','بلا زيادة ابتغاء الأجر','بفائدة ثابتة','مشروط بهدية','مقابل رهن فقط',1,'القرض الحسن يُردّ بمثله دون زيادة، والمقصود به الإحسان.'],
+    ['الغرر في العقود هو:','جهالة تُفضي إلى النزاع','ربح مرتفع','الاتفاق على أجل','الاتفاق على الأجرة',2,'الغرر الكثير في المعاوضات منهيٌّ عنه لما يؤدي إليه من النزاع.'],
+    ['الأصل في المعاملات المالية:','الإباحة حتى يدل دليل على التحريم','التحريم حتى يدل دليل على الإباحة','الكراهة','المنع إلا بإذن الحاكم',2,'القاعدة: الأصل في المعاملات الإباحة ما لم يرد نص بالمنع.'],
+    ['في عقد المضاربة يتحمل الخسارة المالية:','رب المال ما لم يقصّر المضارب','المضارب وحده','البنك المركزي','الضامن دائماً',2,'رب المال يخسر ماله والمضارب يخسر جهده، إلا إن تعدّى أو قصّر فيضمن.'],
+    ['التورّق هو:','شراء سلعة بثمن مؤجل وبيعها نقداً لغير البائع للحصول على السيولة','بيع السلعة لبائعها نفسه بأقل نقداً','قرض بفائدة','تأجير أصل بأجرة معلومة',3,'التورق صورة من البيع المؤجل يُقصد بها النقد، وشروطه الضابطة مهمة.'],
+    ['عقد السَّلَم هو:','تعجيل الثمن وتأجيل تسليم سلعة موصوفة','تعجيل السلعة وتأجيل الثمن','بيع سلعة غير موصوفة','بيع الدين بالدين',3,'في السلم يُدفع الثمن في المجلس ويُؤجَّل المبيع الموصوف في الذمة.'],
+    ['عقد الاستصناع هو عقد على:','صنع شيء موصوف في الذمة','منفعة أصل قائم','قرض نقدي','حفظ الأمانة',3,'يطلب المستصنِع من الصانع أن يصنع له شيئاً بمواصفات محددة وثمن معلوم.'],
+    ['ربا الفضل يقع في:','بيع الجنس الربوي بجنسه مع زيادة في أحد البدلين','تأخير سداد الدَّين فقط','بيع السلع المختلفة','عقود الإجارة',3,'ربا الفضل زيادة في المبادلة بين جنسين ربويين متماثلين.'],
+    ['المشاركة المتناقصة هي شركة:','يتخارج فيها أحد الشريكين تدريجياً بشراء حصة الآخر','لا ينتهي فيها العقد أبداً','يضمن فيها أحد الشريكين رأس مال الآخر','تقوم على الفائدة الثابتة',3,'ينتقل الملك تدريجياً من الممول إلى الشريك العميل بعقود بيع مستقلة.'],
+    ['يُشترط في بيع الذهب بالنقود:','التقابض في مجلس العقد','تأجيل أحد البدلين','الاتفاق على فائدة','تدخل وسيط',2,'الذهب والفضة والنقود من الأموال الربوية، ويُشترط في صرفها التقابض.'],
+    ['هيئة الرقابة الشرعية في المصرف الإسلامي:','تتحقق من توافق عمل المصرف مع أحكام الشريعة','تحدد أسعار الأسهم','تمنح التراخيص المصرفية','تدير الفروع',2,'الهيئة تفتي وتراجع المنتجات والعقود وتتابع التزام المصرف بقراراتها.'],
+    ['الحساب الجاري في المصرف الإسلامي يُكيَّف غالباً على أنه:','قرض من العميل للمصرف','مضاربة','وديعة استثمارية','إجارة',3,'يضمن المصرف الحساب الجاري ويتصرف فيه، فيكون قرضاً لا يُدفع عنه عائد مشروط.'],
+    ['التكافل الإسلامي يقوم على:','التبرع والتعاون على تحمل الأضرار','المعاوضة بين المؤمِّن والمؤمَّن له','الفائدة المركبة','المقامرة',2,'يتبرع المشتركون بجزء من الاشتراكات لتعويض من يصيبه الضرر.'],
+    ['بيع العينة هو:','بيع سلعة بثمن مؤجل ثم شراؤها من المشتري نفسه بأقل نقداً','بيع سلعة بأجل ثم تسليمها','بيع الدين بالدين','بيع بثمن حاضر',3,'العينة حيلة على الربا تؤول إلى قرض بزيادة.'],
+  ]},
+  eco: {on:false, name:'الاقتصاد', q:[
     ['التضخم يعني:','ارتفاع عام ومستمر في الأسعار','انخفاض الأسعار','زيادة الرواتب','زيادة عدد البنوك',1,'التضخم ارتفاع عام ومستمر في مستوى الأسعار.'],
     ['العملة الرسمية في اليابان:','الين','اليوان','الوون','الروبية',1,'عملة اليابان الين.'],
     ['أعلى عملة قيمةً مقابل الدولار تقريباً:','الدينار الكويتي','الجنيه الإسترليني','اليورو','الفرنك السويسري',2,'الدينار الكويتي من أعلى العملات قيمة في العالم.'],
@@ -833,28 +868,108 @@ const LEVEL_NAME = {1:'سهل',2:'متوسط',3:'صعب'};
 const POINTS = {1:10,2:15,3:20};
 const GAME_SECONDS = 60, Q_SECONDS = 15, Q_BY_LEVEL = {1:12, 2:15, 3:20};
 const ALL = [];
-Object.values(BANK).forEach(c=>c.q.forEach(r=>ALL.push({q:r[0],right:r[1],w:[r[2],r[3],r[4]],lvl:r[5],ex:r[6]||'',cat:c.name})));
+Object.values(BANK).filter(c=>c.on!==false).forEach(c=>c.q.forEach(r=>ALL.push({q:r[0],right:r[1],w:[r[2],r[3],r[4]],lvl:r[5],ex:r[6]||'',cat:c.name})));
 
-const BOT_NAMES = ['بوماجد'];
+const BOT_M = ['بوماجد','بوخالد','بوأحمد','بوعلي','بوفهد','بومشاري','بوعزيز','بوجاسم','بومحمد'];
+const BOT_F = ['منى','بشرى','بدرية','مضاوي','إيمان','دلال','فطوم','نوره'];
+function nextBotName(){
+  const L = stats.gender==='f' ? BOT_F : BOT_M, k = stats.gender==='f' ? 'botIdxF' : 'botIdxM';
+  if(typeof stats[k] !== 'number') stats[k] = Math.floor(Math.random()*L.length);
+  const nm = L[stats[k] % L.length]; stats[k] = (stats[k]+1) % L.length; save(stats); return nm;
+}
 const RING = 276.46;
+
+/* ===== الاتصال بالخادم (Supabase) ===== */
+const SB_URL='https://trommpfqabfoabptcpmh.supabase.co', SB_KEY='sb_publishable_84oOtzfC1ATGXnthyNHnxg_NB5AMGBs';
+let PID = null; try{ PID = localStorage.getItem('mc_pid'); }catch(e){}
+if(!PID){ PID = (typeof crypto!=='undefined' && crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return (c==='x'?r:(r&3|8)).toString(16)})); try{ localStorage.setItem('mc_pid',PID); }catch(e){} }
+async function rpc(fn,args,ms){
+  let t = null;
+  try{
+    const ctl = new AbortController(); t = setTimeout(()=>ctl.abort(), ms||4000);
+    const r = await fetch(SB_URL+'/rest/v1/rpc/'+fn,{method:'POST',signal:ctl.signal,headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(args||{})});
+    if(!r.ok) return null; return await r.json();
+  }catch(e){ return null; } finally{ clearTimeout(t); }
+}
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+async function loadRemoteQuestions(){
+  let rows = await rpc('get_questions',{},6000);
+  try{ if(Array.isArray(rows) && rows.length) localStorage.setItem('mc_q',JSON.stringify(rows)); else rows = JSON.parse(localStorage.getItem('mc_q')||'null'); }catch(e){}
+  if(!Array.isArray(rows)) return;
+  const norm = t=>t.replace(/[^ء-يa-zA-Z0-9]/g,'');
+  const have = new Set(ALL.map(x=>norm(x.q)));
+  rows.forEach(r=>{ const k=norm(r[1]); if(have.has(k)) return; have.add(k); ALL.push({q:r[1],right:r[2],w:[r[3],r[4],r[5]],lvl:r[6],ex:r[7]||'',cat:r[0]}); });
+}
 
 /* ===== مطابقة الخصم ===== */
 let bot = {name:'', skill:.6};
-function startMatch(){
+let PV = null;            // مباراة حقيقية: {id, me, oppName}
+let matchTok = 0;
+function pvFrom(res){ if(!res || !res.match) return null; const m=res.match; return {id:m.id, me:res.me, oppName: res.me===1 ? m.p2_name : m.p1_name}; }
+function botSkill(){ const skill = .5 + Math.min(stats.wins,20)*.012 + Math.min(stats.streak,4)*.03 + rnd(-.05,.05); return Math.max(.45, Math.min(.88, skill)); }
+function showFound(name, human, tok){
+  if(tok!==matchTok) return;
+  bot.name = name;
+  show('match');
+  $('searching').style.display='none'; $('found').style.display='block';
+  $('foundMsg').textContent = (human ? 'تحدٍّ مباشر مع لاعب حقيقي' : 'تم العثور على منافس') + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط');
+  $('botName').textContent = bot.name; $('botAv').textContent = bot.name.charAt(0); $('botTag').innerHTML = svg('bolt',13)+' متصل الآن'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت';
+  let n = 3; $('cd').textContent = n; SND.count();
+  const t = setInterval(()=>{ if(tok!==matchTok){ clearInterval(t); return; } n--; if(n<=0){ clearInterval(t); startGame(); } else { $('cd').textContent=n; SND.count(); } }, 800);
+}
+async function startMatch(){
+  if(!stats.playerName || !stats.gender){ askName(startMatch); return; }
   audio();
+  const tok = ++matchTok; PV = null;
   show('match');
   $('searching').style.display='block'; $('found').style.display='none';
-  const skill = .5 + Math.min(stats.wins,20)*.012 + Math.min(stats.streak,4)*.03 + rnd(-.05,.05);
-  bot = { name: BOT_NAMES[Math.floor(Math.random()*BOT_NAMES.length)],
-          skill: Math.max(.45, Math.min(.88, skill)) };
-  setTimeout(()=>{
-    $('searching').style.display='none'; $('found').style.display='block';
-    $('foundMsg').textContent='تم العثور على منافس' + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط');
-    $('botName').textContent = bot.name; $('botAv').textContent = bot.name.charAt(0); $('botTag').innerHTML = svg('bolt',13)+' متصل الآن'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت';
-    let n = 3; $('cd').textContent = n; SND.count();
-    const t = setInterval(()=>{ n--; if(n<=0){ clearInterval(t); startGame(); } else { $('cd').textContent=n; SND.count(); } }, 800);
-  }, 3000 + Math.floor(Math.random()*2200));
+  bot = { name:'', skill: botSkill() };
+  const t0 = Date.now(); let res = null;
+  const wait = 6500 + Math.floor(Math.random()*2500);
+  while(Date.now()-t0 < wait){
+    res = await rpc('join_queue',{p_id:PID,p_name:stats.playerName},3500);
+    if(tok!==matchTok) return;
+    if(res && res.match) break;
+    await sleep(1400); if(tok!==matchTok) return;
+  }
+  if(res && res.match){ PV = pvFrom(res); showFound(PV.oppName||'لاعب', true, tok); return; }
+  rpc('leave_queue',{p_id:PID},3000);
+  showFound(nextBotName(), false, tok);
 }
+
+/* ===== دعوة صديق برابط ===== */
+let inviteTok = 0;
+async function inviteFriend(){
+  if(!stats.playerName || !stats.gender){ askName(inviteFriend); return; }
+  const tok = ++inviteTok;
+  const r = await rpc('create_invite',{p_id:PID,p_name:stats.playerName},6000);
+  if(!r || !r.code){ toast('تعذّر إنشاء الدعوة، تأكد من الاتصال'); return; }
+  const url = location.origin + location.pathname + '?c=' + r.code;
+  const text = stats.playerName + ' يتحداك في «تحدّي الدقيقة»! افتح الرابط لنبدأ المباراة الآن:\n' + url;
+  showModal('تحدَّ صديقاً','<div class="hint" style="margin-bottom:10px">شارك الرابط مع صديقك، وعندما يفتحه تبدأ المباراة بينكما مباشرة.</div><div class="nameIn" style="direction:ltr;font-size:13px;word-break:break-all">'+url+'</div><div class="hint" id="invWait" style="margin-top:12px">بانتظار صديقك…</div>',
+    [{t:'مشاركة الرابط',full:true,f:async()=>{ try{ if(navigator.share){ await navigator.share({text}); return; } }catch(e){ return; } try{ await navigator.clipboard.writeText(text); toast('تم نسخ الدعوة'); }catch(e){ toast('انسخ الرابط يدوياً'); } }},
+     {t:'إلغاء الدعوة',ghost:true,full:true,f:()=>{ inviteTok++; closeModal(); }}]);
+  const t0 = Date.now();
+  while(tok===inviteTok && Date.now()-t0 < 10*60*1000){
+    await sleep(1500); if(tok!==inviteTok) return;
+    const c = await rpc('check_invite',{p_code:r.code,p_id:PID},4000);
+    if(c && c.state==='ready'){ inviteTok++; closeModal(); PV = pvFrom(c); const mt=++matchTok; showFound(PV.oppName||'صديقك', true, mt); return; }
+    if(c && c.state==='gone') break;
+  }
+  if(tok===inviteTok){ closeModal(); toast('انتهت الدعوة'); }
+}
+async function acceptInviteFromUrl(){
+  let code=null; try{ code = new URLSearchParams(location.search).get('c'); }catch(e){}
+  if(!code) return;
+  try{ history.replaceState(null,'',location.pathname); }catch(e){}
+  const go = async()=>{
+    const r = await rpc('accept_invite',{p_code:code,p_id:PID,p_name:stats.playerName},6000);
+    if(!r || !r.match){ toast('الدعوة غير صالحة أو انتهت'); return; }
+    PV = pvFrom(r); const tok=++matchTok; showFound(PV.oppName||'صديقك', true, tok);
+  };
+  if(!stats.playerName || !stats.gender) askName(go); else go();
+}
+$('inviteBtn').onclick = inviteFriend;
 
 /* ===== اللعب ===== */
 let G = null;
@@ -869,7 +984,30 @@ function startGame(){
   show('game'); SND.go();
   nextQuestion(); tick();
   G.timers.push(setInterval(tick, 100));
-  scheduleBot();
+  if(PV){ G.sent=-1; pvPoll(); G.timers.push(setInterval(pvPoll, 1000)); } else scheduleBot();
+}
+async function pvPoll(){
+  if(!G || !PV) return;
+  const g=G, p=PV;
+  if(g.me!==g.sent){ g.sent=g.me; rpc('submit_score',{p_id:PID,p_match:p.id,p_score:g.me,p_done:false},3000); }
+  const m = await rpc('get_match',{p_id:PID,p_match:p.id},3000);
+  if(!m || g!==G) return;
+  const opp = p.me===1 ? m.p2_score : m.p1_score;
+  g.oppDone = p.me===1 ? m.p2_done : m.p1_done;
+  if(typeof opp==='number' && opp>g.bot){ g.bot=opp; $('botScore').textContent=g.bot; pop('botScore'); updateRace(); }
+}
+async function finishRound(){
+  if(!G || G.over || G.finishing) return;
+  G.finishing = true;
+  if(!PV){ endGame(); return; }
+  G.locked = true; $('opts').classList.add('lock');
+  const g=G;
+  await rpc('submit_score',{p_id:PID,p_match:PV.id,p_score:g.me,p_done:true},4000);
+  const t0=Date.now();
+  while(g===G && !g.over && Date.now()-t0<4500){
+    await pvPoll(); if(g.oppDone) break; await sleep(600);
+  }
+  if(g===G && !g.over) endGame();
 }
 function pick(){
   let pool = ALL.filter(x=>!G.used.has(x));
@@ -897,7 +1035,7 @@ function tick(){
     setQTimer(ql);
     if(ql<=0) onTimeout();
   }
-  if(left<=0) endGame();
+  if(left<=0) finishRound();
 }
 function scheduleBot(){
   if(!G || G.over) return;
@@ -1060,10 +1198,13 @@ async function drawCard(r,name){
 }
 let shareFile=null, shareText='';
 function askName(next){
-  showModal('اسمك على بطاقة المشاركة','<input id="nameIn" class="nameIn" maxlength="20" placeholder="اكتب اسمك" autocomplete="off">',
-    [{t:'متابعة',full:true,f:()=>{ const v=$('nameIn').value.trim(); if(!v){ toast('اكتب اسمك أولاً'); return; } stats.playerName=v; save(stats); renderGreet(); next(); }},
+  let g = stats.gender || '';
+  showModal('بياناتك','<input id="nameIn" class="nameIn" maxlength="20" placeholder="الاسم أو الرقم الوظيفي" autocomplete="off"><div class="gpick"><button type="button" id="gM">ذكر</button><button type="button" id="gF">أنثى</button></div>',
+    [{t:'متابعة',full:true,f:()=>{ const v=$('nameIn').value.trim(); if(!v){ toast('اكتب اسمك أو رقمك الوظيفي'); return; } if(!g){ toast('اختر ذكر أو أنثى'); return; } stats.playerName=v; stats.gender=g; save(stats); closeModal(); renderGreet(); next(); }},
      {t:'إلغاء',ghost:true,full:true,f:closeModal}]);
   $('nameIn').value = stats.playerName || '';
+  const mark=()=>{ $('gM').classList.toggle('on',g==='m'); $('gF').classList.toggle('on',g==='f'); };
+  $('gM').onclick=()=>{g='m';mark();}; $('gF').onclick=()=>{g='f';mark();}; mark();
 }
 async function openShare(){
   if(!lastRes) return;
@@ -1180,6 +1321,7 @@ $('greet').onclick = ()=>askName(()=>{ closeModal(); renderGreet(); });
 renderGreet();
 $('meAv').innerHTML = svg('user',44);
 applyTheme(); renderSound(); renderStats();
+loadRemoteQuestions().then(acceptInviteFromUrl);
 </script>
 </body>
 </html>
