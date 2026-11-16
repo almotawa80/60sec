@@ -444,7 +444,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611162310">
+<meta name="app-version" content="202611162316">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1457,7 +1457,7 @@ function endGame(){
   $('earned').style.color = scored ? '' : 'var(--muted)';
   const quitView = (G.force==='lose');
   $('resEmoji').style.display = quitView ? 'none' : ''; $('againBtn').style.display = quitView ? 'none' : '';
-  $('resEmoji').innerHTML=svg(emoji,32); $('resTitle').textContent = quitView ? title+' 🏳️' : title;
+  $('resEmoji').innerHTML=svg(emoji,32); $('resTitle').textContent = quitView ? title+' 🫣' : title;
   $('rMe').textContent=me; $('rBot').textContent=b; $('rBotLbl').textContent=bot.name;
   $('resExtra').textContent = G.force==='win' ? 'انسحب الخصم، فزت بالمباراة' : G.force==='lose' ? 'يمكنك المحاولة من جديد متى شئت' : isBest && me>0 ? 'رقم قياسي جديد لك!' : (R==='win' ? (G.tie==='win' ? 'تعادلتما في النقاط، وحسمت السرعة لصالحك' : 'أحسنت، الأسئلة تزداد صعوبة كلما تقدمت') : 'جرّب مرة أخرى، الدقيقة قصيرة!');
   show('result');
