@@ -468,6 +468,7 @@ button.bcount{padding:6px 9px}
       <div class="qwrap" id="qWrap"><div class="qcard" id="qText"></div><svg class="qring" id="qRing" aria-hidden="true"><path id="qRingPath" pathLength="100" fill="none" stroke-width="4" stroke-linecap="round"/></svg></div>
       <div class="opts" id="opts"></div>
       <div class="expl" id="expl"></div>
+      <button class="btn ghost" id="quitBtn" style="margin-top:14px;padding:12px;font-size:15px">استسلام / خروج</button>
     </div>
   </section>
 
@@ -923,7 +924,7 @@ async function loadRemoteQuestions(){
 let bot = {name:'', skill:.6};
 let PV = null;            // مباراة حقيقية: {id, me, oppName}
 let matchTok = 0;
-function pvFrom(res){ if(!res || !res.match) return null; const m=res.match; return {id:m.id, me:res.me, oppName: res.me===1 ? m.p2_name : m.p1_name}; }
+function pvFrom(res){ if(!res || !res.match) return null; const m=res.match; return {id:m.id, me:res.me, seed:(m.seed==null?null:+m.seed), oppName: res.me===1 ? m.p2_name : m.p1_name}; }
 function botSkill(){ const skill = .5 + Math.min(stats.wins,20)*.012 + Math.min(stats.streak,4)*.03 + rnd(-.05,.05); return Math.max(.45, Math.min(.88, skill)); }
 function showFound(name, human, tok){
   if(tok!==matchTok) return;
@@ -989,6 +990,12 @@ async function acceptInviteFromUrl(){
   if(!stats.playerName || !stats.gender) askName(go); else go();
 }
 $('inviteBtn').onclick = inviteFriend;
+$('quitBtn').onclick = ()=>{
+  if(!G || G.over) return;
+  showModal('الاستسلام','<div class="hint">'+(PV?'سيُحتسب فوز لخصمك ولن تحصل على نقاط هذه الجولة.':'لن تحصل على نقاط هذه الجولة.')+'</div>',
+    [{t:'نعم، استسلم',full:true,f:()=>{ closeModal(); if(!G||G.over) return; if(PV) rpc('leave_match',{p_id:PID,p_match:PV.id},3000); G.force='lose'; endGame(); }},
+     {t:'متابعة اللعب',ghost:true,full:true,f:closeModal}]);
+};
 
 /* ===== اللعب ===== */
 let G = null;
@@ -1013,6 +1020,11 @@ async function pvPoll(){
   if(!m || g!==G) return;
   const opp = p.me===1 ? m.p2_score : m.p1_score;
   g.oppDone = p.me===1 ? m.p2_done : m.p1_done;
+  const oLeft = p.me===1 ? m.p2_left : m.p1_left, oIdle = p.me===1 ? m.p2_idle : m.p1_idle;
+  const early = (performance.now()-g.start)/1000 < GAME_SECONDS-3;
+  if(!g.over && early && (oLeft || (typeof oIdle==='number' && oIdle>10 && !g.oppDone))){
+    g.force='win'; toast('انسحب الخصم أو انقطع اتصاله'); endGame(); return;
+  }
   if(typeof opp==='number' && opp>g.bot){ g.bot=opp; $('botScore').textContent=g.bot; pop('botScore'); updateRace(); }
 }
 async function finishRound(){
@@ -1028,7 +1040,23 @@ async function finishRound(){
   }
   if(g===G && !g.over) endGame();
 }
+function mkRng(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function pickSeeded(){
+  const rng = mkRng(PV.seed*131 + G.n + 1);
+  const lv = G.n<2?1 : G.n<5?2 : (G.n%2?3:2);
+  let pool = ALL.filter(x=>!G.used.has(x));
+  if(!pool.length){ G.used.clear(); pool = ALL.slice(); }
+  pool.sort((a,b)=>a.q<b.q?-1:a.q>b.q?1:0);
+  const order = [1,2,3].sort((a,b)=>Math.abs(a-lv)-Math.abs(b-lv));
+  let cand = [];
+  for(const l of order){ cand = pool.filter(x=>x.lvl===l); if(cand.length) break; }
+  const diff = cand.filter(x=>!G.cur || x.cat!==G.cur.cat);
+  if(diff.length) cand = diff;
+  const it = cand[Math.floor(rng()*cand.length)];
+  G.used.add(it); G.rng = rng; return it;
+}
 function pick(){
+  if(typeof PV!=='undefined' && PV && PV.seed!=null) return pickSeeded();
   let pool = ALL.filter(x=>!G.used.has(x));
   if(!pool.length){ G.used.clear(); pool = ALL.slice(); }
   const order = [1,2,3].sort((a,b)=>Math.abs(a-G.level)-Math.abs(b-G.level));
@@ -1096,7 +1124,8 @@ function setQTimer(ql){
 }
 function nextQuestion(){
   const it = pick(); G.cur = it; G.n++; G.qStart = performance.now();
-  const opts = shuffle([{t:it.right,ok:true}, ...it.w.map(t=>({t,ok:false}))]);
+  let opts = [{t:it.right,ok:true}, ...it.w.map(t=>({t,ok:false}))];
+  if(PV && PV.seed!=null && G.rng){ for(let i=opts.length-1;i>0;i--){ const j=Math.floor(G.rng()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; } } else opts = shuffle(opts);
   $('qNum').textContent = 'السؤال '+G.n;
   $('lvlChip').textContent = LEVEL_NAME[it.lvl]; $('lvlChip').dataset.l = it.lvl;
   const qc = $('qText'); qc.textContent = it.q; qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
@@ -1154,13 +1183,14 @@ function endGame(){
   if(!G || G.over) return;
   G.over = true; G.timers.forEach(t=>{clearInterval(t);clearTimeout(t)});
   const me=G.me, b=G.bot; lastMe = me;
+  const R = G.force || (me>b?'win':(me<b?'lose':'draw'));
   let emoji,title;
-  if(me>b){ emoji='trophy'; title='فزت!'; stats.wins++; stats.streak++; SND.win(); }
-  else if(me<b){ emoji='refresh'; title='خسرت هذه الجولة'; stats.streak=0; SND.lose(); }
+  if(R==='win'){ emoji='trophy'; title='فزت!'; stats.wins++; stats.streak++; SND.win(); }
+  else if(R==='lose'){ emoji='refresh'; title=G.force?'استسلمت':'خسرت هذه الجولة'; stats.streak=0; SND.lose(); }
   else { emoji='equal'; title='تعادل'; SND.draw(); }
   const isBest = me>stats.best; if(isBest) stats.best=me;
-  const scored = G.scored, bonus = (scored && me>b) ? 20 : 0, earned = scored ? me + bonus : 0;
-  lastRes = {me:me, bot:b, scored:scored, earned:earned, result: me>b?'win':(me<b?'lose':'draw')};
+  const scored = G.scored, bonus = (scored && R==='win' && !G.force) ? 20 : 0, earned = (scored && G.force!=='lose') ? me + bonus : 0;
+  lastRes = {me:me, bot:b, scored:scored, earned:earned, result: R};
   stats.balance += earned; stats.totalPoints += earned;
   stats.played++;
   const today=dkey(new Date()), yest=dkey(new Date(Date.now()-864e5));
@@ -1176,7 +1206,7 @@ function endGame(){
   $('earned').style.color = scored ? '' : 'var(--muted)';
   $('resEmoji').innerHTML=svg(emoji,32); $('resTitle').textContent=title;
   $('rMe').textContent=me; $('rBot').textContent=b; $('rBotLbl').textContent=bot.name;
-  $('resExtra').textContent = isBest && me>0 ? 'رقم قياسي جديد لك!' : (me>b ? 'أحسنت، الأسئلة تزداد صعوبة كلما تقدمت' : 'جرّب مرة أخرى، الدقيقة قصيرة!');
+  $('resExtra').textContent = G.force==='win' ? 'انسحب الخصم، فزت بالمباراة' : G.force==='lose' ? 'يمكنك المحاولة من جديد متى شئت' : isBest && me>0 ? 'رقم قياسي جديد لك!' : (R==='win' ? 'أحسنت، الأسئلة تزداد صعوبة كلما تقدمت' : 'جرّب مرة أخرى، الدقيقة قصيرة!');
   show('result');
 }
 
