@@ -21,6 +21,7 @@ header{background:var(--red);color:#fff;padding:18px 24px;display:flex;align-ite
 header h1{font-size:20px;font-weight:800;flex:1}
 header small{opacity:.85;font-size:12px}
 .btn{font-family:inherit;border:0;border-radius:999px;padding:9px 18px;font-weight:600;cursor:pointer;background:#fff;color:var(--red);font-size:13px}
+.hb,.hp,.hs{display:flex;gap:8px;align-items:center}
 .btn.o{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.7)}
 main{max-width:1280px;margin:0 auto;padding:20px 16px 60px}
 .live{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
@@ -56,7 +57,10 @@ tr:hover td{background:var(--hv)}
 @media(max-width:760px){
 header{padding:14px 14px 16px;gap:10px}
 header h1{flex:1 1 100%;font-size:17px;line-height:1.5}
-header .btn{padding:7px 14px;font-size:12px;flex:1 1 auto}
+header .hb{flex:1 1 100%;flex-direction:column;align-items:stretch;gap:8px}
+header .hp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+header .hs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+header .btn{padding:10px 8px;font-size:13px;width:100%;white-space:nowrap}
 main{padding:12px 10px 50px}
 .live{grid-template-columns:repeat(3,1fr);gap:8px}
 .lv{flex-direction:column;align-items:flex-start;gap:6px;padding:12px}
@@ -89,11 +93,7 @@ th,td{padding:8px 8px;font-size:12px}
 <div id="app" class="hide">
 <header>
   <h1>لوحة تحكّم تحدّي الدقيقة<br><small id="upd">—</small></h1>
-  <button class="btn" id="xls">تصدير Excel</button>
-  <button class="btn" id="prn">طباعة / PDF</button>
-  <button class="btn o" id="ref">تحديث</button>
-  <button class="btn o" id="thm">الوضع الداكن</button>
-  <button class="btn o" id="out">خروج</button>
+  <div class="hb"><div class="hp"><button class="btn" id="xls">تصدير Excel</button><button class="btn" id="prn">طباعة / PDF</button></div><div class="hs"><button class="btn o" id="ref">تحديث</button><button class="btn o" id="thm">داكن</button><button class="btn o" id="out">خروج</button></div></div>
 </header>
 <main>
   <div class="live">
@@ -120,7 +120,7 @@ const SB_URL='https://trommpfqabfoabptcpmh.supabase.co', SB_KEY='sb_publishable_
 let KEY=''; try{ KEY=sessionStorage.getItem('mc_admin')||''; }catch(e){}
 let D=null, charts={}, timer=null;
 let DARK=false; try{ const sv=localStorage.getItem('mc_admin_dark'); DARK = sv===null ? matchMedia('(prefers-color-scheme: dark)').matches : sv==='1'; }catch(e){}
-function applyTheme(){ document.documentElement.classList.toggle('dark',DARK); $('thm').textContent=DARK?'الوضع الفاتح':'الوضع الداكن'; if(typeof Chart!=='undefined'){ Chart.defaults.color=DARK?'#b7bcc5':'#666'; } }
+function applyTheme(){ document.documentElement.classList.toggle('dark',DARK); $('thm').textContent=DARK?'فاتح':'داكن'; if(typeof Chart!=='undefined'){ Chart.defaults.color=DARK?'#b7bcc5':'#666'; } }
 const $=id=>document.getElementById(id);
 const fmt=n=>Number(n||0).toLocaleString('en-US');
 const dt=s=>{ if(!s) return '—'; const d=new Date(s); return d.toLocaleDateString('en-GB')+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); };
