@@ -551,7 +551,7 @@ html:not([data-theme="dark"]) .onlrow .onl{box-shadow:0 2px 8px rgba(0,0,0,.08)!
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170032">
+<meta name="app-version" content="202611170034">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -2041,7 +2041,7 @@ async function beat(){
   const r=await rpc('heartbeat',{p_id:PID},4000);
   if(!r || typeof r.online!=='number') return;
   const n=Math.max(1,r.online), pl=r.playing||0;
-  $('onlTxt').innerHTML='<b>'+n+'</b> <span class="sw">⚔️</span>'; $('onl').title=n+' متصل الآن';
+  $('onlTxt').innerHTML='<b>'+n+'</b> متصل الآن'; $('onl').title=n+' متصل الآن';
   $('onl').style.display='flex';
 }
 beat(); setInterval(beat,30000); document.addEventListener('visibilitychange',()=>{ if(!document.hidden) beat(); });
