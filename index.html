@@ -522,9 +522,9 @@ button.bcount{padding:6px 9px}
 #profilePage .pfcard{margin-top:-58px;position:relative;z-index:3}
 #profilePage .pfbig{border:4px solid var(--page);box-shadow:0 0 0 3px var(--accent),0 10px 24px rgba(0,0,0,.28);box-sizing:border-box}
 #profilePage .pfplus{bottom:6px;left:6px}
-.pfhold{position:relative;margin-inline-start:auto;flex:none;display:block}
+.pfhold{position:relative;margin-inline-start:auto;flex:none;display:flex;align-items:center;gap:8px}
 .pfhold .pfbtn{margin:0}
-.onl{position:absolute;left:50%;bottom:-11px;transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:#1f2125;border:1.5px solid rgba(255,255,255,.7);white-space:nowrap;font-size:11px;font-weight:800;color:#fff;pointer-events:none;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.onl{position:static;display:flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:#1f2125;border:1.5px solid rgba(255,255,255,.7);white-space:nowrap;font-size:11px;font-weight:800;color:#fff;pointer-events:none;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .onl i{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:onlp 1.8s infinite}
 .onl b{color:#4ade80;font-weight:800}
 @keyframes onlp{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
@@ -539,7 +539,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170024">
+<meta name="app-version" content="202611170025">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -555,7 +555,7 @@ button.bcount{padding:6px 9px}
           <circle cx="24" cy="27" r="16"/><path d="M24 27V17M19 6h10M24 6v5M38 12l-3 3"/>
         </svg>
         <div class="ttl"><h1>تحدّي الدقيقة</h1><span class="greet" id="greet"></span></div>
-        <span class="pfhold"><button class="pfbtn" id="pfBtn" aria-label="ملفي"><span class="pfav" id="pfAv"></span></button><span class="onl" id="onl" style="display:none"><i></i><span id="onlTxt"></span></span></span>
+        <span class="pfhold"><span class="onl" id="onl" style="display:none"><i></i><span id="onlTxt"></span></span><button class="pfbtn" id="pfBtn" aria-label="ملفي"><span class="pfav" id="pfAv"></span></button></span>
       </div>
     </div>
     <div class="sheet">
