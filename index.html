@@ -435,7 +435,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111636">
+<meta name="app-version" content="2026111637">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1267,10 +1267,10 @@ function endGame(){
   var btn=$('goBtn'), knob=$('goKnob'), lbl=$('goLbl'); if(!btn||!knob) return;
   var startX=0, x=0, max=0, drag=false, done=false;
   function reset(){ knob.classList.add('back'); knob.style.transform='translateX(0)'; lbl.style.opacity=1; x=0; done=false; }
-  function fire(){ if(done) return; done=true; knob.classList.add('back'); knob.style.transform='translateX('+(-max)+'px)'; lbl.style.opacity=.45; try{ navigator.vibrate&&navigator.vibrate(25); }catch(e){}
+  function fire(){ if(done) return; done=true; knob.classList.add('back'); knob.style.transform='translateX('+(-max)+'px)'; lbl.style.opacity=.05; try{ navigator.vibrate&&navigator.vibrate(25); }catch(e){}
     setTimeout(function(){ startMatch(); setTimeout(reset,600); },120); }
   knob.addEventListener('pointerdown',function(e){ if(done) return; drag=true; knob.classList.remove('back'); startX=e.clientX; max=btn.clientWidth-60-12; try{ knob.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); });
-  knob.addEventListener('pointermove',function(e){ if(!drag) return; x=Math.max(0,Math.min(max,startX-e.clientX)); knob.style.transform='translateX('+(-x)+'px)'; lbl.style.opacity=String(1-0.55*x/max); });
+  knob.addEventListener('pointermove',function(e){ if(!drag) return; x=Math.max(0,Math.min(max,startX-e.clientX)); knob.style.transform='translateX('+(-x)+'px)'; lbl.style.opacity=String(Math.max(.05,1-1.25*x/max)); });
   function up(){ if(!drag) return; drag=false; if(x>=max*0.8) fire(); else reset(); }
   knob.addEventListener('pointerup',up); knob.addEventListener('pointercancel',up);
   btn.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); max=btn.clientWidth-72; fire(); } });
