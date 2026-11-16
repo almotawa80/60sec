@@ -10,7 +10,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
-:root{--red:#c8102e;--bg:#f4f4f6;--card:#fff;--tx:#1f2125;--mu:#6b7078;--ln:#e5e6ea;--ok:#1a8f4c}
+:root{--red:#c8102e;--bg:#f4f4f6;--card:#fff;--tx:#1f2125;--mu:#6b7078;--ln:#e5e6ea;--ok:#1a8f4c;--th:#fafafb;--hv:#fafafb}
+html.dark{--bg:#17181b;--card:#222428;--tx:#ececef;--mu:#9a9fa8;--ln:#34373d;--th:#2a2d32;--hv:#2a2d32;--red:#e0293f}
+html.dark header{background:#b3132a}
+html.dark .tag.n{background:#4a3d12;color:#ffd96b}html.dark .tag.d{background:#133a24;color:#7ee2a6}
+html.dark .mini,html.dark .box h2 input,html.dark #login input{background:#17181b;color:var(--tx)}
 *{box-sizing:border-box;margin:0}
 body{font-family:'Noto Kufi Arabic',system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:14px}
 header{background:var(--red);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
@@ -21,7 +25,7 @@ header small{opacity:.85;font-size:12px}
 main{max-width:1280px;margin:0 auto;padding:20px 16px 60px}
 .live{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
 .lv{background:var(--card);border-radius:16px;padding:16px 18px;border:1px solid var(--ln);display:flex;align-items:center;gap:12px}
-.dot{width:12px;height:12px;border-radius:50%;background:var(--ok);animation:pl 1.4s infinite}
+.dot{flex:none;width:12px;height:12px;border-radius:50%;background:var(--ok);animation:pl 1.4s infinite}
 @keyframes pl{0%{box-shadow:0 0 0 0 rgba(26,143,76,.5)}100%{box-shadow:0 0 0 12px rgba(26,143,76,0)}}
 .lv b{font-size:30px;font-weight:800}.lv span{color:var(--mu);font-size:13px}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
@@ -36,19 +40,39 @@ main{max-width:1280px;margin:0 auto;padding:20px 16px 60px}
 .cv{position:relative;height:260px}
 .tw{overflow:auto;max-height:420px;border:1px solid var(--ln);border-radius:12px}
 table{border-collapse:collapse;width:100%;font-size:13px}
-th{position:sticky;top:0;background:#fafafb;text-align:right;padding:9px 10px;font-weight:600;color:var(--mu);border-bottom:1px solid var(--ln);white-space:nowrap}
+th{position:sticky;top:0;background:var(--th);text-align:right;padding:9px 10px;font-weight:600;color:var(--mu);border-bottom:1px solid var(--ln);white-space:nowrap}
 td{padding:9px 10px;border-bottom:1px solid var(--ln);white-space:nowrap}
-tr:hover td{background:#fafafb}
+tr:hover td{background:var(--hv)}
 .tag{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600}
 .tag.n{background:#fff3cd;color:#8a6d00}.tag.d{background:#dff5e8;color:#136b39}
-.mini{font-family:inherit;border:1px solid var(--ln);background:#fff;border-radius:999px;padding:4px 12px;cursor:pointer;font-size:12px}
+.mini{font-family:inherit;color:var(--tx);border:1px solid var(--ln);background:#fff;border-radius:999px;padding:4px 12px;cursor:pointer;font-size:12px}
 #login{max-width:340px;margin:12vh auto;background:var(--card);border-radius:18px;padding:26px;text-align:center;border:1px solid var(--ln)}
 #login h2{margin-bottom:6px;font-size:18px}#login p{color:var(--mu);font-size:13px;margin-bottom:16px}
 #login input{width:100%;font-family:inherit;border:1px solid var(--ln);border-radius:12px;padding:12px;font-size:15px;text-align:center;margin-bottom:12px}
 #login .btn{background:var(--red);color:#fff;width:100%;padding:12px}
 #err{color:var(--red);font-size:13px;min-height:18px;margin-top:8px}
 .hide{display:none!important}
-@media(max-width:760px){.live{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.box h2 input{width:130px}}
+@media(max-width:760px){
+header{padding:14px 14px 16px;gap:10px}
+header h1{flex:1 1 100%;font-size:17px;line-height:1.5}
+header .btn{padding:7px 14px;font-size:12px;flex:1 1 auto}
+main{padding:12px 10px 50px}
+.live{grid-template-columns:repeat(3,1fr);gap:8px}
+.lv{flex-direction:column;align-items:flex-start;gap:6px;padding:12px}
+.lv b{font-size:24px;line-height:1}
+.lv span{font-size:11px;line-height:1.4;display:block}
+.lv>div{line-height:1.2}
+.lv br{display:none}
+.dot{flex:none;width:10px;height:10px}
+.kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.k{padding:12px}.k b{font-size:21px}.k em{display:block;margin:2px 0 0}
+.grid{grid-template-columns:1fr;gap:10px}
+.box{padding:12px}
+.cv{height:230px}
+.box h2{flex-wrap:wrap}
+.box h2 input{width:100%;margin:6px 0 0}
+th,td{padding:8px 8px;font-size:12px}
+}
 @media print{header .btn{display:none}.tw{max-height:none;overflow:visible}body{background:#fff}.box,.k,.lv{break-inside:avoid}}
 </style>
 </head>
@@ -67,6 +91,7 @@ tr:hover td{background:#fafafb}
   <button class="btn" id="xls">تصدير Excel</button>
   <button class="btn" id="prn">طباعة / PDF</button>
   <button class="btn o" id="ref">تحديث</button>
+  <button class="btn o" id="thm">الوضع الداكن</button>
   <button class="btn o" id="out">خروج</button>
 </header>
 <main>
@@ -93,6 +118,8 @@ tr:hover td{background:#fafafb}
 const SB_URL='https://trommpfqabfoabptcpmh.supabase.co', SB_KEY='sb_publishable_84oOtzfC1ATGXnthyNHnxg_NB5AMGBs';
 let KEY=''; try{ KEY=sessionStorage.getItem('mc_admin')||''; }catch(e){}
 let D=null, charts={}, timer=null;
+let DARK=false; try{ const sv=localStorage.getItem('mc_admin_dark'); DARK = sv===null ? matchMedia('(prefers-color-scheme: dark)').matches : sv==='1'; }catch(e){}
+function applyTheme(){ document.documentElement.classList.toggle('dark',DARK); $('thm').textContent=DARK?'الوضع الفاتح':'الوضع الداكن'; if(typeof Chart!=='undefined'){ Chart.defaults.color=DARK?'#b7bcc5':'#666'; } }
 const $=id=>document.getElementById(id);
 const fmt=n=>Number(n||0).toLocaleString('en-US');
 const dt=s=>{ if(!s) return '—'; const d=new Date(s); return d.toLocaleDateString('en-GB')+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); };
@@ -110,6 +137,7 @@ async function load(){
 }
 function mk(id,cfg){ if(charts[id]) charts[id].destroy(); if(typeof Chart==='undefined') return; charts[id]=new Chart($(id),cfg); }
 function render(){
+  applyTheme();
   const t=D.totals, L=D.live;
   $('upd').textContent='آخر تحديث: '+dt(D.now);
   $('lPlay').textContent=fmt(L.playing); $('lOn').textContent=fmt(L.online); $('lSrch').textContent=fmt(L.searching);
@@ -119,10 +147,10 @@ function render(){
     ['فائزون بقسائم',t.voucher_winners,'',1],['قسائم مطلوبة',t.vouchers_requested,'',1],['قسائم تم صرفها',t.vouchers_delivered,'من '+fmt(t.vouchers_requested),1],['نقاط مستبدلة',t.points_redeemed,'',0]];
   $('kpis').innerHTML=k.map(x=>'<div class="k'+(x[3]?' r':'')+'"><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b>'+(x[2]?'<em>'+x[2]+'</em>':'')+'</div>').join('');
   const days=D.days, lb=days.map(d=>d.dy.slice(5));
-  const grid={color:'#eceef1'}, base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{family:'Noto Kufi Arabic'}}}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid}}};
-  mk('cDays',{type:'bar',data:{labels:lb,datasets:[{label:'زائرون',data:days.map(d=>d.visitors),backgroundColor:'#d5d8de'},{label:'مباريات',data:days.map(d=>d.plays),backgroundColor:'#c8102e'},{label:'انسحابات',data:days.map(d=>d.quits),backgroundColor:'#f2a900'}]},options:base});
+  const grid={color:DARK?'#34373d':'#eceef1'}, base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{family:'Noto Kufi Arabic'}}}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid}}};
+  mk('cDays',{type:'bar',data:{labels:lb,datasets:[{label:'زائرون',data:days.map(d=>d.visitors),backgroundColor:DARK?'#6b7078':'#d5d8de'},{label:'مباريات',data:days.map(d=>d.plays),backgroundColor:'#c8102e'},{label:'انسحابات',data:days.map(d=>d.quits),backgroundColor:'#f2a900'}]},options:base});
   mk('cPts',{type:'line',data:{labels:lb,datasets:[{label:'نقاط',data:days.map(d=>d.points),borderColor:'#c8102e',backgroundColor:'rgba(200,16,46,.12)',fill:true,tension:.3}]},options:base});
-  mk('cHum',{type:'doughnut',data:{labels:['ضد لاعب حقيقي','ضد منافس آلي'],datasets:[{data:[t.vs_human,t.vs_bot],backgroundColor:['#c8102e','#d5d8de']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'Noto Kufi Arabic'}}}}}});
+  mk('cHum',{type:'doughnut',data:{labels:['ضد لاعب حقيقي','ضد منافس آلي'],datasets:[{data:[t.vs_human,t.vs_bot],backgroundColor:['#c8102e',DARK?'#6b7078':'#d5d8de']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'Noto Kufi Arabic'}}}}}});
   mk('cVou',{type:'doughnut',data:{labels:['تم الصرف','بانتظار الصرف'],datasets:[{data:[t.vouchers_delivered,t.vouchers_requested-t.vouchers_delivered],backgroundColor:['#1a8f4c','#f2a900']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'Noto Kufi Arabic'}}}}}});
   const top=D.players.slice(0,10);
   mk('cTop',{type:'bar',data:{labels:top.map(p=>p.name),datasets:[{label:'إجمالي النقاط',data:top.map(p=>p.total_points),backgroundColor:'#c8102e'}]},options:Object.assign({},base,{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid},y:{grid:{display:false}}}})});
@@ -155,8 +183,10 @@ function exportXls(){
 }
 async function enter(){ KEY=$('key').value.trim()||KEY; if(!KEY) return; $('err').textContent=''; if(await load()){ try{sessionStorage.setItem('mc_admin',KEY);}catch(e){} clearInterval(timer); timer=setInterval(load,15000); } }
 $('go').onclick=enter; $('key').onkeydown=e=>{ if(e.key==='Enter') enter(); };
+$('thm').onclick=()=>{ DARK=!DARK; try{localStorage.setItem('mc_admin_dark',DARK?'1':'0');}catch(e){} if(D) render(); else applyTheme(); };
 $('ref').onclick=load; $('prn').onclick=()=>window.print(); $('xls').onclick=exportXls; $('q').oninput=()=>D&&renderPl();
 $('out').onclick=()=>{ try{sessionStorage.removeItem('mc_admin');}catch(e){} KEY=''; clearInterval(timer); location.reload(); };
+applyTheme();
 if(KEY) enter();
 </script>
 </body>
