@@ -123,6 +123,7 @@ th,td{padding:8px 8px;font-size:12px}
   </div>
   <div class="box" style="margin-bottom:16px"><h2>القسائم المطلوبة</h2><div class="tw"><table id="tRed"></table></div><div class="cl" id="clRed"></div></div>
   <div class="box" style="margin-bottom:16px"><h2>اللاعبون <input id="q" placeholder="بحث بالاسم أو الرقم الوظيفي"></h2><div class="tw"><table id="tPl"></table></div><div class="cl" id="clPl"></div></div>
+  <div class="box" style="margin-bottom:16px"><h2>أزواج لعبوا ضد بعض ٣ مرات أو أكثر</h2><div class="tw"><table id="tPr"></table></div><div class="cl" id="clPr"></div></div>
   <div class="box"><h2>محاولات تسجيل مشبوهة</h2><div class="tw"><table id="tEv"></table></div><div class="cl" id="clEv"></div></div>
 </main>
 </div>
@@ -130,7 +131,7 @@ th,td{padding:8px 8px;font-size:12px}
 <script>
 const SB_URL='https://trommpfqabfoabptcpmh.supabase.co', SB_KEY='sb_publishable_84oOtzfC1ATGXnthyNHnxg_NB5AMGBs';
 let KEY=''; try{ KEY=sessionStorage.getItem('mc_admin')||''; }catch(e){}
-let D=null, charts={}, timer=null;
+let D=null, PR=[], charts={}, timer=null;
 let DARK=false; try{ const sv=localStorage.getItem('mc_admin_dark'); DARK = sv===null ? matchMedia('(prefers-color-scheme: dark)').matches : sv==='1'; }catch(e){}
 function applyTheme(){ document.documentElement.classList.toggle('dark',DARK); $('thm').textContent=DARK?'فاتح':'داكن'; if(typeof Chart!=='undefined'){ Chart.defaults.color=DARK?'#b7bcc5':'#666'; } }
 const $=id=>document.getElementById(id);
@@ -144,6 +145,7 @@ async function rpc(fn,args){
 async function load(){
   try{
     const r=await rpc('admin_report',{p_key:KEY});
+    try{ const pr=await rpc('admin_pairs',{p_key:KEY}); PR=(pr&&pr.ok)?pr.pairs:[]; }catch(e){ PR=[]; }
     if(!r||!r.ok){ KEY=''; try{sessionStorage.removeItem('mc_admin');}catch(e){} $('app').classList.add('hide'); $('login').classList.remove('hide'); $('err').textContent='كلمة السر غير صحيحة'; return false; }
     D=r; $('login').classList.add('hide'); $('app').classList.remove('hide'); render(); return true;
   }catch(e){ $('err').textContent='تعذّر الاتصال بالخادم'; return false; }
@@ -167,7 +169,7 @@ function render(){
   mk('cVou',{type:'doughnut',data:{labels:['تم الصرف','بانتظار الصرف'],datasets:[{data:[t.vouchers_delivered,t.vouchers_requested-t.vouchers_delivered],backgroundColor:['#1a8f4c','#f2a900']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'Noto Kufi Arabic'}}}}}});
   const top=D.players.slice(0,10);
   mk('cTop',{type:'bar',data:{labels:top.map(p=>p.name),datasets:[{label:'إجمالي النقاط',data:top.map(p=>p.total_points),backgroundColor:'#c8102e'}]},options:Object.assign({},base,{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid},y:{grid:{display:false}}}})});
-  renderRed(); renderPl(); renderEv();
+  renderRed(); renderPl(); renderPairs(); renderEv();
 }
 function renderRed(){
   const rows=D.redemptions;
@@ -181,6 +183,12 @@ function renderPl(){
   $('tPl').innerHTML='<tr><th>#</th><th>الاسم</th><th>الرقم الوظيفي</th><th>إجمالي النقاط</th><th>الرصيد</th><th>مباريات</th><th>فوز</th><th>انسحاب</th><th>قسائم</th><th>آخر لعب</th><th>تسجيل</th></tr>'+
   (rows.length?rows.map((p,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.emp_no)+'</td><td>'+fmt(p.total_points)+'</td><td>'+fmt(p.balance)+'</td><td>'+fmt(p.played)+'</td><td>'+fmt(p.wins)+'</td><td>'+fmt(p.quits)+'</td><td>'+fmt(p.vouchers)+'</td><td>'+dt(p.last_play)+'</td><td>'+dt(p.created_at)+'</td></tr>').join(''):'<tr><td colspan="11" style="color:var(--mu);text-align:center;padding:20px">لا يوجد لاعبون</td></tr>');
   $('clPl').innerHTML=rows.length?rows.map((p,i)=>'<div class="cc"><div class="t1"><span class="no">'+(i+1)+'</span><b>'+esc(p.name)+'</b><span class="chip">'+esc(p.emp_no)+'</span></div><div class="st"><div><b>'+fmt(p.total_points)+'</b><span>النقاط</span></div><div><b>'+fmt(p.balance)+'</b><span>الرصيد</span></div><div><b>'+fmt(p.wins)+'/'+fmt(p.played)+'</b><span>فوز/لعب</span></div><div><b>'+fmt(p.quits)+'</b><span>انسحاب</span></div></div><div class="ln"><span>قسائم: <b>'+fmt(p.vouchers)+'</b></span><span>آخر لعب: <b>'+dt(p.last_play)+'</b></span></div></div>').join(''):'<div class="cc" style="text-align:center;color:var(--mu)">لا يوجد لاعبون</div>';
+}
+function renderPairs(){
+  const rows=PR||[];
+  $('tPr').innerHTML='<tr><th>اللاعب الأول</th><th>اللاعب الثاني</th><th>عدد المباريات</th><th>مكافآت ٥٠ مُنحت</th><th>آخر مباراة</th></tr>'+
+  (rows.length?rows.map(x=>'<tr><td>'+esc(x.na)+' <small style="color:var(--mu)">'+esc(x.ea||'')+'</small></td><td>'+esc(x.nb)+' <small style="color:var(--mu)">'+esc(x.eb||'')+'</small></td><td><b>'+fmt(x.n)+'</b></td><td>'+fmt(x.bonuses)+'</td><td>'+dt(x.last_at)+'</td></tr>').join(''):'<tr><td colspan="5" style="color:var(--mu);text-align:center;padding:20px">لا توجد أزواج متكررة</td></tr>');
+  $('clPr').innerHTML=rows.length?rows.map(x=>'<div class="cc"><div class="t1"><b>'+esc(x.na)+' ↔ '+esc(x.nb)+'</b><span class="chip">'+fmt(x.n)+' مباريات</span></div><div class="ln"><span>الرقمان الوظيفيان</span><b>'+esc(x.ea||'—')+' / '+esc(x.eb||'—')+'</b></div><div class="ln"><span>مكافآت ٥٠ مُنحت</span><b>'+fmt(x.bonuses)+'</b></div><div class="ln"><span>آخر مباراة</span><b>'+dt(x.last_at)+'</b></div></div>').join(''):'<div class="cc" style="text-align:center;color:var(--mu)">لا توجد أزواج متكررة</div>';
 }
 function renderEv(){
   const rows=D.events, kind={device_other_emp:'جهاز واحد برقم وظيفي آخر',emp_new_device:'الرقم نفسه على جهاز جديد'};
