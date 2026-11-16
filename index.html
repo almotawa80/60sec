@@ -444,7 +444,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611162234">
+<meta name="app-version" content="202611162245">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1420,7 +1420,6 @@ function finishS(){
   const map={}; g.mineA.forEach(a=>map[a.qi]=a); let st=0, mx=0, cor=0;
   for(let i=0;i<NQ;i++){ const a=map[i]; if(a&&a.ok){ st++; cor++; mx=Math.max(mx,st); stats.correctTotal=(stats.correctTotal||0)+1; if(LVS[i]===3) stats.hardCorrect=(stats.hardCorrect||0)+1; } else st=0; }
   g.correct=cor; g.wrong=NQ-cor; g.maxCombo=mx; recompute();
-  if(g.me===g.bot && g.me>0){ if(g.tbMe<g.tbOpp) g.tie='win'; else if(g.tbMe>g.tbOpp) g.tie='lose'; }
   if(PV) rpc('submit_score',{p_id:PID,p_match:PV.id,p_score:g.me,p_done:true},3000);
   endGame();
 }
@@ -1438,7 +1437,7 @@ function endGame(){
   else { emoji='equal'; title='تعادل'; SND.draw(); }
   const isBest = me>stats.best; if(isBest) stats.best=me;
   const scored = G.scored, bonus = (scored && R==='win' && !G.force) ? (PV ? 50 : 0) : 0, earned = (scored && G.force!=='lose') ? me + bonus : 0;
-  lastRes = {me:me, bot:b, scored:scored, earned:earned, result: R};
+  lastRes = {me:me, bot:b, opp:(bot.name||''), scored:scored, earned:earned, result: R};
   stats.balance += earned; stats.totalPoints += earned;
   if(!DEMO) rpc('finish_game2',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus},5000).then(function(c){ if(c && typeof c.balance==='number'){ stats.balance=c.balance; save(stats); try{ renderStats(); }catch(e){}
     if(scored && c.earned!==earned){ lastRes.earned=c.earned; try{ $('earned').innerHTML='+'+fmt(c.earned)+' نقطة<small>'+me+' من الجولة'+(c.blocked?' — لا مكافأة فوز: سبق أن فزت على هذا الزميل بالرابط':'')+' — رصيدك '+fmt(c.balance)+'</small>'; }catch(e){} } } });
@@ -1499,13 +1498,15 @@ async function drawCard(r,name){
   x.fillStyle='#fff'; x.font='800 84px "Noto Kufi Arabic", sans-serif'; x.fillText('تحدّي الدقيقة',540,440);
   /* اللوحة البيضاء */
   rr(x,90,520,900,620,56,'#ffffff');
-  x.fillStyle='#6b7078'; x.font='500 34px "Noto Kufi Arabic", sans-serif'; x.fillText('اللاعب',540,598);
-  x.fillStyle='#1f2125'; fitFont(x,name,780,80,'800'); x.fillText(name,540,690);
-  x.fillStyle='#e7e8eb'; x.fillRect(240,730,600,4);
-  x.fillStyle='#d3232f'; x.font='800 46px "Noto Kufi Arabic", sans-serif';
-  x.fillText(r.result==='win'?'فاز في التحدّي':(r.result==='lose'?'خاض التحدّي':'تعادل في التحدّي'),540,810);
-  x.fillStyle='#d3232f'; x.font='800 220px "Noto Kufi Arabic", sans-serif'; x.fillText(String(r.me),540,1020);
-  x.fillStyle='#6b7078'; x.font='500 40px "Noto Kufi Arabic", sans-serif'; x.fillText('نقطة',540,1095);
+  x.fillStyle='#d3232f'; x.font='800 54px "Noto Kufi Arabic", sans-serif';
+  x.fillText(r.result==='win'?'فاز في التحدّي':(r.result==='lose'?'خاض التحدّي':'تعادل في التحدّي'),540,610);
+  x.fillStyle='#e7e8eb'; x.fillRect(240,650,600,4); x.fillRect(538,700,4,380);
+  const opp=r.opp||'المنافس';
+  x.fillStyle='#1f2125'; fitFont(x,name,380,52,'800'); x.fillText(name,765,760);
+  x.fillStyle='#1f2125'; fitFont(x,opp,380,52,'800'); x.fillText(opp,315,760);
+  x.fillStyle=r.result==='lose'?'#6b7078':'#d3232f'; x.font='800 190px "Noto Kufi Arabic", sans-serif'; x.fillText(String(r.me),765,970);
+  x.fillStyle=r.result==='win'?'#6b7078':'#d3232f'; x.font='800 190px "Noto Kufi Arabic", sans-serif'; x.fillText(String(r.bot),315,970);
+  x.fillStyle='#6b7078'; x.font='500 38px "Noto Kufi Arabic", sans-serif'; x.fillText('نقطة',765,1050); x.fillText('نقطة',315,1050);
   /* النص السفلي */
   x.fillStyle='#fff'; x.font='800 56px "Noto Kufi Arabic", sans-serif'; x.fillText('هل تستطيع التغلب عليّ؟',540,1260);
   return c;
@@ -1549,7 +1550,7 @@ async function openShare(){
   if(!lastRes) return;
   if(!stats.playerName){ askName(openShare); return; }
   const name=stats.playerName;
-  shareText='حصلت على '+lastRes.me+' نقطة في «تحدّي الدقيقة»! هل تستطيع التغلب عليّ؟ — '+name;
+  shareText=name+' '+lastRes.me+' نقطة ضد '+(lastRes.opp||'المنافس')+' '+lastRes.bot+' في «تحدّي الدقيقة»! هل تستطيع التغلب عليّ؟';
   const c = await drawCard(lastRes,name);
   const url = c.toDataURL('image/png');
   shareFile = null;
