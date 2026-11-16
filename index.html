@@ -448,7 +448,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611162329">
+<meta name="app-version" content="202611162333">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1275,7 +1275,7 @@ function buildQs(seed){
 }
 function startGameSync(){
   const seed = (PV && PV.seed!=null) ? PV.seed : Math.floor(Math.random()*1e9);
-  G = { sync:true, qs:buildQs(seed), qi:-1, phase:'wait', deadline:0, nextAt:0, nextQi:0, mineA:[], oppA:[],
+  G = { sync:true, qUsed:[], qs:buildQs(seed), qi:-1, phase:'wait', deadline:0, nextAt:0, nextQi:0, mineA:[], oppA:[],
         combo:0, maxCombo:0, correct:0, wrong:0, me:0, bot:0, tbMe:0, tbOpp:0, start:performance.now(), over:false, timers:[], locked:false, cur:null, qMax:10 };
   G.scored = pointsAvailable();
   if(G.scored){ stats.pointsDay = dkey(new Date()); save(stats); if(!DEMO) rpc('start_scored',{p_id:PID},4000); }
@@ -1283,7 +1283,7 @@ function startGameSync(){
   $('myLbl').textContent = G.scored ? 'أنت' : 'أنت (تدريب)';
   $('myScore').textContent=0; $('botScore').textContent=0; $('botLbl').textContent=bot.name;
   updateRace(); $('combo').classList.remove('on');
-  $('qNum').textContent='السؤال ١ من ٦'; $('timer').textContent='١٠';
+  $('qNum').textContent='السؤال ١ من ٦'; $('timer').textContent='٦٠';
   $('qText').textContent='استعد… جارٍ تجهيز السؤال الأول'; $('opts').innerHTML=''; $('lvlChip').textContent=''; $('qSec').textContent=''; $('qRingPath').style.strokeDashoffset=0; $('ringFg').style.strokeDashoffset=0;
   const ex0=$('expl'); ex0.textContent=''; ex0.classList.remove('on'); $('clock').classList.remove('low','mid');
   if(PV){ $('cd').textContent='…'; }
@@ -1384,9 +1384,11 @@ function loopS(){
   }
   if(g.phase==='q'){
     const rem=Math.max(0,g.deadline-now);
-    $('timer').textContent=toAr(Math.ceil(rem/1000));
-    $('clock').classList.toggle('low', rem<=3000); $('clock').classList.toggle('mid', rem<=5000);
-    $('ringFg').style.strokeDashoffset=RING*(1-rem/QMS);
+    if(!g.locked || !g.qUsed[g.qi]) g.qUsed[g.qi]=Math.min(QMS,Math.max(0,QMS-rem));
+    const used=g.qUsed.reduce((a,b)=>a+(b||0),0), tl=Math.max(0,NQ*QMS-used);
+    $('timer').textContent=toAr(Math.ceil(tl/1000));
+    $('clock').classList.toggle('low', tl<=10000); $('clock').classList.toggle('mid', tl<=30000);
+    $('ringFg').style.strokeDashoffset=RING*(1-tl/(NQ*QMS));
     if(!g.locked){ setQTimer(rem/1000); if(rem<=0) timeoutS(); } else if(rem<=800){ $('qSec').textContent='٠ ث'; }
     if(!PV) localAdv(now);
     else if(rem<=0 && now-g.deadline>7000) takeover('انقطع الاتصال — أكمل ضد منافس آلي');
