@@ -382,7 +382,17 @@ html:not([data-theme="dark"]) #goBtn .slbl{background-image:linear-gradient(100d
 html[data-theme="dark"] #goBtn.slide{background:rgba(225,29,46,.26)!important;color:#ffb3ba!important}
 #goBtn .sknob{top:50%!important;margin-top:-30px!important;right:6px!important;background:#c8102e!important;color:#fff!important}
 html[data-theme="dark"] #goBtn .sknob{background:#e11d2e!important}
-#inviteBtn{border-radius:999px!important}
+#inviteBtn{display:flex!important;flex-direction:column;align-items:center;gap:8px;padding:14px 12px!important;border-radius:22px!important;background:var(--card,#fff)!important;border:1.5px solid rgba(200,16,46,.35)!important;box-shadow:none!important;color:var(--text,#1f2125)!important;height:auto!important}
+#inviteBtn .mrow{display:flex;align-items:center;justify-content:center;gap:16px}
+#inviteBtn .mav,#inviteBtn .mem{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:22px;font-weight:800}
+#inviteBtn .mav{background:#c8102e;color:#fff}
+#inviteBtn .mem{border:2px dashed #c8102e;color:#c8102e;font-size:28px;font-weight:600;animation:mpulse 1.8s ease-in-out infinite}
+@keyframes mpulse{50%{transform:scale(1.1);background:rgba(200,16,46,.1)}}
+#inviteBtn .mvs{font-weight:800;font-size:15px;color:#6b7078}
+#inviteBtn .mlb{font-weight:800;font-size:17px}
+#inviteBtn .mbd{background:#c8102e;color:#fff;font-size:12px;font-weight:800;padding:3px 12px;border-radius:999px}
+html[data-theme="dark"] #inviteBtn{border-color:rgba(255,77,87,.5)!important;background:var(--card)!important}
+html[data-theme="dark"] #inviteBtn .mem{border-color:#ff4d57;color:#ff4d57}
 html[data-theme="dark"] .race .m,html[data-theme="dark"] .vsb{color:var(--accent)}
 html[data-theme="dark"] .hero:before,html[data-theme="dark"] .hero:after{display:none}
 html[data-theme="dark"] .sheet{background:var(--page)}
@@ -424,7 +434,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111631">
+<meta name="app-version" content="2026111632">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -456,7 +466,7 @@ button.bcount{padding:6px 9px}
       
       <div id="goDone" style="display:none;text-align:center;font-weight:800;font-size:17px;color:var(--text);margin-top:14px">أنهيت نقاط اليوم ✓</div>
       <div class="btn slide" id="goBtn" role="button" tabindex="0" aria-label="اسحب لبدء التحدّي"><div class="slbl" id="goLbl">اسحب لبدء التحدّي</div><div class="sknob" id="goKnob"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-6 6 6 6M20 6l-6 6 6 6" opacity=".9"/></svg></div></div>
-      <button class="btn" id="inviteBtn" style="margin-top:10px;background:transparent;color:var(--accent);border:2px solid var(--accent);box-shadow:none">تحدَّ زميلاً الآن</button>
+      <button class="btn" id="inviteBtn" type="button" aria-label="تحدَّ زميلاً الآن"><span class="mrow"><span class="mav" id="invAv">أ</span><span class="mvs">VS</span><span class="mem">+</span></span><span class="mlb">تحدَّ زميلاً الآن</span><span class="mbd">+٥٠ نقطة</span></button>
       <div class="hint" style="margin-top:12px;text-align:center;line-height:1.5"><div class="pts50">اكسب ٥٠ نقطة إضافية</div><div style="font-weight:700;font-size:15px;color:var(--text)">مقابل تحدّي شخص حقيقي</div></div>
       <div class="note" id="goNote"></div>
     </div>
@@ -885,6 +895,7 @@ const pointsAvailable = () => stats.pointsDay !== dkey(new Date());
 function renderStats(){
   $('stBest').textContent=stats.best; $('stWins').textContent=stats.wins; $('stStreak').textContent=shownDays();
   const pa = pointsAvailable();
+  try{ $('invAv').textContent=((stats.playerName||'أ').trim().charAt(0)||'أ'); }catch(e){}
   $('goLbl').textContent = pa ? 'ابدأ التحدّي' : 'اسحب للتدريب'; $('goDone').style.display = pa ? 'none' : 'block';
   $('goNote').textContent = pa ? 'تحدّي النقاط مرة واحدة يومياً، وبعدها يمكنك التدريب بدون نقاط'
                                : 'استخدمت تحدّي اليوم، عُد غداً لتحدٍّ جديد بنقاط';
