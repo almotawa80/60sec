@@ -469,6 +469,44 @@ button.bcount{padding:6px 9px}
 .pfstats small{font-size:11px;color:var(--muted)}
 .av.hasimg,.mav.hasimg{background-size:cover!important;background-position:center!important;font-size:0!important}
 .av.hasimg svg,.mav.hasimg svg{display:none}
+
+.pfwrap{position:relative;width:110px;height:110px;border:0;padding:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pfwrap .pfbig{width:110px;height:110px}
+.pfplus{position:absolute;bottom:2px;left:2px;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;font-size:24px;font-weight:800;line-height:30px;display:grid;place-items:center;border:3px solid var(--page);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.pfplus.ed{font-size:15px}
+.pfmail{flex-wrap:wrap;padding:8px 0}
+.pfmail>span{flex:1 1 100%}
+.pfmail input{flex:1;min-width:0;height:40px;border-radius:12px!important;background:rgba(127,127,127,.12)!important;padding:0 12px!important}
+.pfmail input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px var(--card) inset!important;-webkit-text-fill-color:var(--text)!important}
+.asheet{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center}
+.asheet.on{display:flex;animation:fade .2s}
+.asbox{width:100%;max-width:480px;padding:10px 12px calc(12px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
+.asbox button{font:inherit;font-size:17px;font-weight:700;border:0;border-radius:16px;padding:15px;background:var(--card);color:var(--text);cursor:pointer}
+.asbox button.danger{color:#d3232f}
+.asbox button.cancel{margin-top:4px;font-weight:800}
+.cropov{position:fixed;inset:0;z-index:95;background:#000;display:none;flex-direction:column;color:#fff;touch-action:none}
+.cropov.on{display:flex}
+.crtop{display:flex;align-items:center;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top)) 16px 12px}
+.crtop b{font-size:16px}
+.crtop button{font:inherit;font-size:16px;font-weight:700;border:0;background:none;color:#fff;cursor:pointer;padding:6px}
+.crtop button.ok{color:#ffd24a;font-weight:800}
+.crstage{position:relative;flex:1;overflow:hidden}
+.crstage img{position:absolute;left:50%;top:50%;transform-origin:0 0;user-select:none;-webkit-user-drag:none;max-width:none}
+.crmask{position:absolute;left:50%;top:50%;width:280px;height:280px;margin:-140px 0 0 -140px;border-radius:50%;box-shadow:0 0 0 2000px rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.85);pointer-events:none}
+.crzoom{display:flex;align-items:center;gap:12px;padding:14px 28px 6px;font-size:22px}
+.crzoom input{flex:1;accent-color:#e11d2e}
+.crhint{text-align:center;font-size:13px;opacity:.7;padding:0 16px calc(18px + env(safe-area-inset-bottom))}
+
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:60px;border-bottom:1px solid rgba(127,127,127,.15)}
+.setrow:last-child{border-bottom:0}
+.setrow>span{font-size:15px;font-weight:700}
+.seg{display:flex;background:rgba(127,127,127,.14);border-radius:999px;padding:3px;gap:2px}
+.seg button{font:inherit;font-size:14px;font-weight:700;border:0;background:none;color:var(--muted);border-radius:999px;padding:7px 14px;display:flex;align-items:center;gap:6px;cursor:pointer}
+.seg button.on{background:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.bigrow{width:100%;display:flex;align-items:center;gap:10px;font:inherit;border:0;border-radius:18px;padding:16px;margin-bottom:10px;background:var(--card);color:var(--text);cursor:pointer;text-align:start}
+.bigrow .bl{flex:1;font-size:16px;font-weight:800}
+.bigrow .bc{font-weight:800;font-size:15px;opacity:.9}
+.bigrow.red{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(211,35,47,.25)}
 </style>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%22112%22%20fill%3D%22%23fff%22/%3E%3Cg%20stroke%3D%22%238d929b%22%20stroke-width%3D%2216%22%20stroke-linecap%3D%22round%22%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%280%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%2815%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%2830%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%2845%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%2860%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%2875%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%2890%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28105%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28120%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28135%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28150%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28165%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28180%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28195%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28210%20256%20256%29%22%20stroke-opacity%3D%221%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28225%20256%20256%29%22%20stroke-opacity%3D%22.3%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28240%20256%20256%29%22%20stroke-opacity%3D%22.3%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28255%20256%20256%29%22%20stroke-opacity%3D%22.3%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28270%20256%20256%29%22%20stroke-opacity%3D%22.3%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28285%20256%20256%29%22%20stroke-opacity%3D%22.3%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28300%20256%20256%29%22%20stroke-opacity%3D%22.3%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28315%20256%20256%29%22%20stroke-opacity%3D%22.3%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28330%20256%20256%29%22%20stroke-opacity%3D%22.3%22/%3E%3Cline%20x1%3D%22256%22%20y1%3D%2246%22%20x2%3D%22256%22%20y2%3D%2286%22%20transform%3D%22rotate%28345%20256%20256%29%22%20stroke-opacity%3D%22.3%22/%3E%3C/g%3E%3Cpath%20transform%3D%22translate%28119.0%20217.6%29%20scale%280.10139%29%22%20d%3D%22M2524.3%20691.8%20L2519.7%20696.8%20L2509.7%20698.5%20L2034.7%20698.4%20L1999.7%20695.3%20L1948.7%20694.8%20L1909.2%20690.8%20L1859.7%20678.5%20L1825.7%20666.4%20L1775.7%20642.0%20L1757.3%20630.8%20L1721.5%20604.8%20L1693.7%20579.8%20L1651.1%20533.8%20L1585.8%20438.8%20L1514.7%20351.8%20L1453.9%20291.8%20L1390.7%20238.9%20L1323.7%20191.3%20L1245.7%20145.3%20L1216.7%20131.0%20L1135.7%2096.1%20L1058.7%2071.0%20L1007.7%2058.9%20L939.7%2045.7%20L860.7%2037.6%20L852.0%2034.8%20L850.2%2030.8%20L854.7%2027.6%20L867.7%2024.4%20L949.7%2012.7%20L1103.7%200.2%20L1247.7%200.4%20L1378.7%2011.2%20L1475.7%2024.2%20L1600.7%2049.6%20L1689.1%2073.8%20L1760.5%2096.8%20L1825.7%20120.7%20L1885.7%20145.6%20L1985.7%20192.5%20L2070.7%20241.0%20L2147.7%20290.1%20L2254.7%20371.4%20L2348.7%20456.1%20L2425.7%20541.8%20L2498.2%20639.8%20L2522.3%20677.8Z%20M0.7%20688.8%20L0.5%20681.8%20L32.9%20614.8%20L56.6%20574.8%20L105.3%20505.8%20L155.8%20445.8%20L193.0%20408.8%20L248.7%20361.6%20L280.7%20337.6%20L339.7%20299.5%20L408.7%20264.0%20L464.7%20239.5%20L543.5%20215.8%20L596.7%20204.0%20L687.7%20192.3%20L785.7%20192.2%20L866.7%20202.5%20L935.7%20216.2%20L968.9%20227.8%20L974.1%20231.8%20L973.1%20234.8%20L966.7%20237.3%20L926.7%20239.5%20L862.7%20250.3%20L817.7%20263.0%20L756.7%20288.3%20L714.7%20312.1%20L679.7%20335.6%20L620.7%20385.1%20L581.7%20428.3%20L537.0%20494.8%20L494.8%20573.8%20L464.0%20612.8%20L429.7%20641.9%20L390.5%20666.8%20L364.7%20678.2%20L331.2%20688.8%20L283.7%20694.7%20L18.7%20694.8%20L6.7%20693.4Z%22%20fill%3D%22%23d02030%22/%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -480,7 +518,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611162356">
+<meta name="app-version" content="202611170005">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -591,8 +629,7 @@ button.bcount{padding:6px 9px}
     </div>
     <div class="sheet">
       <div class="pfcard">
-        <div class="pfbig" id="pfBig"></div>
-        <div class="pfacts"><label class="pfa" for="pfFile">تغيير الصورة</label><button class="pfa ghost" id="pfDel" type="button">حذف الصورة</button></div>
+        <button class="pfwrap" id="pfWrap" type="button" aria-label="صورتك"><span class="pfbig" id="pfBig"></span><span class="pfplus" id="pfPlus">+</span></button>
         <input type="file" id="pfFile" accept="image/*" hidden>
       </div>
       <div class="pfsec">
@@ -608,14 +645,27 @@ button.bcount{padding:6px 9px}
         <div><b id="pfBest">0</b><small>أفضل نتيجة</small></div>
       </div>
       <h3 class="pfh">الإعدادات</h3>
-      <div class="pfsec">
-        <div class="pfrow"><span>الوضع الداكن / الفاتح</span><b></b><button class="sndbtn" id="themeBtn" aria-label="الوضع الداكن والفاتح"></button></div>
-        <div class="pfrow"><span>الصوت</span><b></b><button class="sndbtn" id="sndBtn" aria-label="الصوت"></button></div>
-        <div class="pfrow"><span>شاراتي</span><b></b><button class="bcount" id="badgesBtn" aria-label="الشارات"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M15.5 12.9L17 22l-5-3-5 3 1.5-9.1"/></svg><span style="opacity:.9"><span id="bcHead">0</span>/<span id="bcTotal">9</span></span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button></div>
-        <div class="pfrow"><span>قسائمي ومتجر النقاط</span><b></b><button class="pfedit" id="pfStore" type="button">فتح</button></div>
+      <div class="pfsec pfset">
+        <div class="setrow"><span>المظهر</span><div class="seg" id="segTheme"><button type="button" data-v="light"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>فاتح</button><button type="button" data-v="dark"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>داكن</button></div></div>
+        <div class="setrow"><span>الصوت</span><div class="seg" id="segSnd"><button type="button" data-v="1"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>تشغيل</button><button type="button" data-v="0"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>إيقاف</button></div></div>
       </div>
+      <button class="bigrow red" id="badgesBtn" type="button"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M15.5 12.9L17 22l-5-3-5 3 1.5-9.1"/></svg><span class="bl">شاراتي</span><span class="bc"><span id="bcHead">0</span>/<span id="bcTotal">16</span></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="bigrow" id="pfStore" type="button"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9M12 8S10 3 7.5 4.5 9 8 12 8zM12 8s2-5 4.5-3.5S15 8 12 8z"/></svg><span class="bl">قسائمي ومتجر النقاط</span><span class="bc"></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
     </div>
   </section>
+
+<div class="asheet" id="avSheet"><div class="asbox">
+  <button type="button" id="avEdit">تعديل الصورة</button>
+  <button type="button" id="avChange">تغيير الصورة</button>
+  <button type="button" id="avDel" class="danger">حذف الصورة</button>
+  <button type="button" id="avCancel" class="cancel">إلغاء</button>
+</div></div>
+<div class="cropov" id="cropOv">
+  <div class="crtop"><button type="button" id="crCancel">إلغاء</button><b>اضبط الصورة</b><button type="button" id="crSave" class="ok">حفظ</button></div>
+  <div class="crstage" id="crStage"><img id="crImg" alt=""><div class="crmask"></div></div>
+  <div class="crzoom"><span>−</span><input type="range" id="crZoom" min="1" max="4" step="0.01" value="1"><span>+</span></div>
+  <div class="crhint">اسحب الصورة لتحريكها، وكبّرها بالإصبعين أو بالشريط</div>
+</div>
   <!-- متجر النقاط -->
   <section id="store" class="screen">
     <div class="hero compact">
@@ -963,10 +1013,10 @@ const SND = {
   badge:()=>{ [1175,1568,1976,2349].forEach((f,i)=>tone(f,i*.07,.25,'sine',.1)); }
 };
 SND.end = SND.lose;
-function applyTheme(){ document.documentElement.setAttribute('data-theme', stats.theme==='dark'?'dark':'light'); const b=$('themeBtn'); if(b) b.innerHTML = svg(stats.theme==='dark'?'sun':'moon',18); }
-function renderSound(){ $('sndBtn').innerHTML = svg(stats.sound?'speaker':'mute',18); }
-$('themeBtn').onclick = ()=>{ stats.theme = stats.theme==='dark' ? 'light' : 'dark'; save(stats); applyTheme(); toast(stats.theme==='dark'?'الوضع الداكن':'الوضع الفاتح'); };
-$('sndBtn').onclick = ()=>{ stats.sound=!stats.sound; save(stats); renderSound(); audio(); if(stats.sound) SND.ok(); toast(stats.sound?'الصوت يعمل':'الصوت متوقف'); };
+function applyTheme(){ document.documentElement.setAttribute('data-theme', stats.theme==='dark'?'dark':'light'); document.querySelectorAll('#segTheme button').forEach(b=>b.classList.toggle('on', b.dataset.v===(stats.theme==='dark'?'dark':'light'))); }
+function renderSound(){ document.querySelectorAll('#segSnd button').forEach(b=>b.classList.toggle('on', b.dataset.v===(stats.sound?'1':'0'))); }
+document.querySelectorAll('#segTheme button').forEach(b=>b.onclick=()=>{ if(stats.theme===b.dataset.v) return; stats.theme=b.dataset.v; save(stats); applyTheme(); });
+document.querySelectorAll('#segSnd button').forEach(b=>b.onclick=()=>{ const v=b.dataset.v==='1'; if(stats.sound===v) return; stats.sound=v; save(stats); renderSound(); audio(); if(v) SND.ok(); });
 
 /* ===== الرئيسية: إحصاءات وشارات وراعٍ ===== */
 let toastT;
@@ -1799,7 +1849,7 @@ function renderProfile(){
   if(document.activeElement!==$('pfEmail')) $('pfEmail').value = stats.email||'';
   $('pfTot').textContent=fmt(stats.totalPoints); $('pfBal').textContent=fmt(stats.balance);
   $('pfWins').textContent=fmt(stats.wins)+'/'+fmt(stats.played); $('pfBest').textContent=fmt(stats.best);
-  $('pfDel').style.display = stats.avatar ? '' : 'none';
+  const pl=$('pfPlus'); pl.textContent = stats.avatar ? '✎' : '+'; pl.classList.toggle('ed', !!stats.avatar);
 }
 function shrinkImage(file){
   return new Promise((res,rej)=>{
@@ -1814,15 +1864,53 @@ $('pfBtn').onclick=()=>{ renderProfile(); show('profilePage'); };
 $('backBtn3').onclick=()=>{ window._pfBack=0; renderStats(); show('home'); };
 $('pfStore').onclick=()=>{ window._pfBack=1; openStore(); };
 $('pfNameEd').onclick=()=>askName(()=>{ closeModal(); renderGreet(); renderProfile(); });
-$('pfFile').onchange=async(e)=>{
-  const f=e.target.files&&e.target.files[0]; e.target.value=''; if(!f) return;
-  let d; try{ d=await shrinkImage(f); }catch(_){ toast('تعذّر قراءة الصورة'); return; }
-  const old=stats.avatar; stats.avatar=d; save(stats); renderProfile();
+const CR={img:null,src:'',x:0,y:0,base:1,z:1,R:140,ptrs:{},pinch:null};
+function crApply(){ const i=$('crImg'), sc=CR.base*CR.z; i.style.transform='translate('+(CR.x)+'px,'+(CR.y)+'px) scale('+sc+')'; }
+function crClamp(){ const sc=CR.base*CR.z, w=CR.img.width*sc, h=CR.img.height*sc;
+  CR.x=Math.min(-CR.R, Math.max(CR.R-w, CR.x)); CR.y=Math.min(-CR.R, Math.max(CR.R-h, CR.y)); }
+function crZoomTo(z){ const old=CR.base*CR.z; z=Math.max(1,Math.min(4,z)); const nw=CR.base*z;
+  /* تكبير حول مركز الدائرة */ CR.x=CR.x*nw/old; CR.y=CR.y*nw/old; CR.z=z; $('crZoom').value=z; crClamp(); crApply(); }
+function openCrop(src){
+  const im=new Image(); im.onload=()=>{ CR.img=im; CR.src=src; CR.base=Math.max(2*CR.R/im.width, 2*CR.R/im.height); CR.z=1; $('crZoom').value=1;
+    const i=$('crImg'); i.src=src; i.style.width=im.width+'px'; i.style.height=im.height+'px';
+    CR.x=-im.width*CR.base/2; CR.y=-im.height*CR.base/2; crApply(); $('cropOv').classList.add('on'); };
+  im.onerror=()=>toast('تعذّر قراءة الصورة'); im.src=src; }
+(function(){ const st=$('crStage');
+  st.addEventListener('pointerdown',e=>{ CR.ptrs[e.pointerId]={x:e.clientX,y:e.clientY}; try{st.setPointerCapture(e.pointerId);}catch(_){}
+    const k=Object.keys(CR.ptrs); if(k.length===2){ const a=CR.ptrs[k[0]],b=CR.ptrs[k[1]]; CR.pinch={d:Math.hypot(a.x-b.x,a.y-b.y),z:CR.z}; } });
+  st.addEventListener('pointermove',e=>{ const p=CR.ptrs[e.pointerId]; if(!p||!CR.img) return; const k=Object.keys(CR.ptrs);
+    if(k.length===2 && CR.pinch){ p.x=e.clientX; p.y=e.clientY; const a=CR.ptrs[k[0]],b=CR.ptrs[k[1]]; crZoomTo(CR.pinch.z*Math.hypot(a.x-b.x,a.y-b.y)/CR.pinch.d); return; }
+    CR.x+=e.clientX-p.x; CR.y+=e.clientY-p.y; p.x=e.clientX; p.y=e.clientY; crClamp(); crApply(); });
+  const up=e=>{ delete CR.ptrs[e.pointerId]; if(Object.keys(CR.ptrs).length<2) CR.pinch=null; };
+  st.addEventListener('pointerup',up); st.addEventListener('pointercancel',up);
+  $('crZoom').oninput=e=>crZoomTo(+e.target.value);
+})();
+$('crCancel').onclick=()=>$('cropOv').classList.remove('on');
+$('crSave').onclick=async()=>{
+  const S=256, c=document.createElement('canvas'); c.width=S; c.height=S; const x=c.getContext('2d'); const sc=CR.base*CR.z;
+  const sx=(-CR.R-CR.x)/sc, sy=(-CR.R-CR.y)/sc, sw=2*CR.R/sc;
+  x.fillStyle='#fff'; x.fillRect(0,0,S,S); x.drawImage(CR.img,sx,sy,sw,sw,0,0,S,S);
+  let q=.88, d=c.toDataURL('image/jpeg',q); while(d.length>55000 && q>.4){ q-=.1; d=c.toDataURL('image/jpeg',q); }
+  $('cropOv').classList.remove('on');
+  try{ localStorage.setItem('mc_avsrc', CR.src); }catch(_){}
+  const old=stats.avatar; stats.avatar=d; save(stats); renderProfile(); renderStats();
   if(DEMO) return;
   const r=await rpc('set_profile',{p_id:PID,p_avatar:d},8000);
   if(!r||!r.ok){ stats.avatar=old; save(stats); renderProfile(); toast('تعذّر حفظ الصورة، حاول مجدداً'); } else toast('تم حفظ الصورة');
 };
-$('pfDel').onclick=async()=>{ const old=stats.avatar; stats.avatar=''; save(stats); renderProfile(); if(DEMO) return;
+function loadForCrop(file){ return new Promise((res,rej)=>{ const url=URL.createObjectURL(file), im=new Image();
+  im.onload=()=>{ const M=1200, k=Math.min(1,M/Math.max(im.width,im.height)), c=document.createElement('canvas'); c.width=Math.round(im.width*k); c.height=Math.round(im.height*k);
+    c.getContext('2d').drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg',.88)); };
+  im.onerror=()=>{ URL.revokeObjectURL(url); rej(); }; im.src=url; }); }
+$('pfFile').onchange=async(e)=>{ const f=e.target.files&&e.target.files[0]; e.target.value=''; if(!f) return;
+  try{ openCrop(await loadForCrop(f)); }catch(_){ toast('تعذّر قراءة الصورة'); } };
+const closeSheet=()=>$('avSheet').classList.remove('on');
+$('pfWrap').onclick=()=>{ if(!stats.avatar){ $('pfFile').click(); return; } $('avSheet').classList.add('on'); };
+$('avSheet').onclick=e=>{ if(e.target.id==='avSheet') closeSheet(); };
+$('avCancel').onclick=closeSheet;
+$('avChange').onclick=()=>{ closeSheet(); $('pfFile').click(); };
+$('avEdit').onclick=()=>{ closeSheet(); let src=''; try{ src=localStorage.getItem('mc_avsrc')||''; }catch(_){} openCrop(src||stats.avatar); };
+$('avDel').onclick=async()=>{ closeSheet(); const old=stats.avatar; stats.avatar=''; save(stats); try{ localStorage.removeItem('mc_avsrc'); }catch(_){} renderProfile(); renderStats(); if(DEMO) return;
   const r=await rpc('set_profile',{p_id:PID,p_clear_avatar:true},6000); if(!r||!r.ok){ stats.avatar=old; save(stats); renderProfile(); toast('تعذّر حذف الصورة'); } else toast('تم حذف الصورة'); };
 $('pfMailSave').onclick=async()=>{ const v=($('pfEmail').value||'').trim();
   if(v && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){ toast('صيغة البريد غير صحيحة'); return; }
