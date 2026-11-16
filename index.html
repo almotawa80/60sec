@@ -435,7 +435,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111641">
+<meta name="app-version" content="2026111643">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -479,7 +479,9 @@ button.bcount{padding:6px 9px}
       <div id="searching">
         <div class="radar"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
         <div class="big">جارٍ البحث عن منافس…</div>
-        <div class="sub" style="margin-top:6px">نبحث عن لاعب متاح الآن</div>
+        <div class="sub" style="margin-top:6px" id="srchSub">نبحث عن لاعب متاح الآن</div>
+        <div class="sub" style="margin:14px auto 0;max-width:300px;line-height:1.8">انتظر لاعباً حقيقياً واربح ٥٠ نقطة إضافية، أو ابدأ الآن ضد المنافس الآلي</div>
+        <button class="btn" id="skipWait" type="button" style="max-width:320px;margin:16px auto 0">ابدأ الآن ضد المنافس الآلي</button>
       </div>
       <div id="inviteWait" style="display:none;width:100%;text-align:center">
         <div class="radar"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
@@ -998,12 +1000,15 @@ async function startMatch(){
   $('searching').style.display='block'; $('found').style.display='none'; $('inviteWait').style.display='none';
   bot = { name:'', skill: botSkill() };
   const t0 = Date.now(); let res = null;
-  const wait = 6500 + Math.floor(Math.random()*2500);
-  while(Date.now()-t0 < wait){
+  const wait = 30000; let skip = false;
+  const sb = $('skipWait'); if(sb) sb.onclick = ()=>{ skip = true; };
+  const sub = $('srchSub');
+  while(Date.now()-t0 < wait && !skip){
+    if(sub) sub.textContent = 'نبحث عن لاعب متاح الآن… '+Math.max(0,Math.ceil((wait-(Date.now()-t0))/1000))+' ث';
     res = await rpc('join_queue',{p_id:PID,p_name:stats.playerName},3500);
     if(tok!==matchTok) return;
     if(res && res.match) break;
-    await sleep(1400); if(tok!==matchTok) return;
+    for(let k=0;k<7 && !skip;k++){ await sleep(200); } if(tok!==matchTok) return;
   }
   if(res && res.match){ PV = pvFrom(res); showFound(PV.oppName||'لاعب', true, tok); return; }
   rpc('leave_queue',{p_id:PID},3000);
