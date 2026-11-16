@@ -1368,9 +1368,10 @@ function doRedeem(r){
   const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let code='';
   for(let i=0;i<8;i++) code+=A[Math.floor(Math.random()*A.length)];
   stats.redeemed.unshift({title:r.title, code:code, date:new Date().toLocaleDateString('ar-KW')});
+  try{ rpc('request_redeem',{p_id:PID,p_name:stats.playerName||'',p_reward:r.title,p_cost:r.cost,p_code:code},5000); }catch(e){}
   save(stats); renderStats(); renderStore();
   SND.badge();
-  showModal('تم تسجيل طلبك','رمز الطلب:<br><code>'+code+'</code><br>هذا طلب تجريبي، ويُنفَّذ الاستبدال الفعلي عبر نظام البنك.',[{t:'حسناً',f:closeModal}]);
+  showModal('تم تسجيل طلبك','رمز الطلب:<br><code>'+code+'</code><br>تم تسجيل طلبك وسيتم التواصل معك لتسليم القسيمة. احتفظ بهذا الرمز.',[{t:'حسناً',f:closeModal}]);
   badgeEvent();
 }
 $('storeBtn').onclick = openStore;
