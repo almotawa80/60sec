@@ -537,7 +537,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170020">
+<meta name="app-version" content="202611170022">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1133,12 +1133,13 @@ function pvFrom(res){ if(!res || !res.match) return null; const m=res.match; ret
 function botSkill(){ const skill = .5 + Math.min(stats.wins,20)*.012 + Math.min(stats.streak,4)*.03 + rnd(-.05,.05); return Math.max(.45, Math.min(.88, skill)); }
 function showFound(name, human, tok){
   if(tok!==matchTok) return;
+  window._oppAv=''; window._wasHuman=!!human;
   bot.name = name;
   show('match');
   $('searching').style.display='none'; $('inviteWait').style.display='none'; $('found').style.display='block';
   $('foundMsg').textContent = (human ? 'تحدٍّ مباشر مع لاعب حقيقي — مكافأة الفوز ٥٠ نقطة' : 'لا يوجد لاعب متاح الآن — ستلعب ضد الجهاز') + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط');
   $('botName').textContent = bot.name; $('botAv').classList.remove('hasimg'); $('botAv').style.backgroundImage=''; if(human){ $('botAv').textContent = bot.name.charAt(0); } else { $('botAv').innerHTML = svg('robot',54); } $('botTag').innerHTML = human ? svg('bolt',13)+' متصل الآن' : svg('robot',14)+' منافس آلي'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت'; if(stats.avatar) setAv($('meAv'), stats.avatar); else { $('meAv').classList.remove('hasimg'); $('meAv').style.backgroundImage=''; $('meAv').innerHTML=svg('user',44); }
-  if(human && PV){ const pv=PV; rpc('opp_avatar',{p_id:PID,p_match:pv.id},4000).then(a=>{ if(a && typeof a==='string' && PV===pv) setAv($('botAv'), a); }); }
+  if(human && PV){ const pv=PV; rpc('opp_avatar',{p_id:PID,p_match:pv.id},4000).then(a=>{ if(a && typeof a==='string' && PV===pv){ setAv($('botAv'), a); window._oppAv=a; } }); }
   let n = 3; $('cd').textContent = n; SND.count();
   const t = setInterval(()=>{ if(tok!==matchTok){ clearInterval(t); return; } n--; if(n<=0){ clearInterval(t); startGame(); } else { $('cd').textContent=n; SND.count(); } }, 800);
 }
@@ -1604,7 +1605,7 @@ function endGame(){
   else { emoji='equal'; title='تعادل'; SND.draw(); }
   const isBest = me>stats.best; if(isBest) stats.best=me;
   const scored = G.scored, bonus = (scored && R==='win' && !G.force) ? (PV ? 50 : 0) : 0, earned = (scored && G.force!=='lose') ? me + bonus : 0;
-  lastRes = {me:me, bot:b, opp:(bot.name||''), scored:scored, earned:earned, result: R};
+  lastRes = {me:me, bot:b, opp:(bot.name||''), meAv:stats.avatar||'', oppAv:(window._oppAv||''), human:!!(PV||window._wasHuman), scored:scored, earned:earned, result: R};
   stats.balance += earned; stats.totalPoints += earned;
   if(!DEMO) rpc('finish_game2',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus},5000).then(function(c){ if(c && typeof c.balance==='number'){ stats.balance=c.balance; save(stats); try{ renderStats(); }catch(e){}
     if(scored && c.earned!==earned){ lastRes.earned=c.earned; try{ $('earned').innerHTML='+'+fmt(c.earned)+' نقطة<small>'+me+' من الجولة'+(c.blocked?' — لا مكافأة فوز: سبق أن فزت على هذا الزميل بالرابط':'')+' — رصيدك '+fmt(c.balance)+'</small>'; }catch(e){} } } });
@@ -1660,6 +1661,19 @@ $('homeBtn').onclick = ()=>{ renderStats(); show('home'); };
 /* ===== مشاركة بطاقة النتيجة ===== */
 function rr(x,px,py,w,h,r,fill){ x.beginPath(); x.moveTo(px+r,py); x.arcTo(px+w,py,px+w,py+h,r); x.arcTo(px+w,py+h,px,py+h,r); x.arcTo(px,py+h,px,py,r); x.arcTo(px,py,px+w,py,r); x.closePath(); x.fillStyle=fill; x.fill(); }
 function fitFont(x,txt,maxW,size,weight){ let z=size; for(;;){ x.font=weight+' '+z+'px "Noto Kufi Arabic", sans-serif'; if(x.measureText(txt).width<=maxW || z<=30) break; z-=4; } }
+function loadImg(src){ return new Promise(res=>{ if(!src) return res(null); const i=new Image(); i.onload=()=>res(i); i.onerror=()=>res(null); i.src=src; }); }
+async function cardAv(x,cx,cy,R,src,ch,robot,hi){
+  const im=await loadImg(src);
+  x.save(); x.beginPath(); x.arc(cx,cy,R+8,0,Math.PI*2); x.fillStyle=hi?'#d3232f':'#c9ccd2'; x.fill();
+  x.beginPath(); x.arc(cx,cy,R+2,0,Math.PI*2); x.fillStyle='#fff'; x.fill();
+  x.beginPath(); x.arc(cx,cy,R-2,0,Math.PI*2); x.closePath(); x.clip();
+  if(im){ const m=Math.min(im.width,im.height); x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,cx-R,cy-R,2*R,2*R); }
+  else { x.fillStyle=robot?'#3a3b40':'#c8102e'; x.fillRect(cx-R,cy-R,2*R,2*R);
+    x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle';
+    if(robot){ x.strokeStyle='#fff'; x.lineWidth=7; x.lineJoin='round'; x.strokeRect(cx-34,cy-22,68,50); x.beginPath(); x.moveTo(cx,cy-22); x.lineTo(cx,cy-38); x.stroke(); x.beginPath(); x.arc(cx,cy-42,6,0,Math.PI*2); x.fill(); x.beginPath(); x.arc(cx-14,cy,7,0,Math.PI*2); x.arc(cx+14,cy,7,0,Math.PI*2); x.fill(); x.fillRect(cx-14,cy+13,28,6); }
+    else { x.font='800 '+(R*0.95)+'px "Noto Kufi Arabic", sans-serif'; x.fillText(ch||'؟',cx,cy+6); } }
+  x.restore();
+}
 async function drawCard(r,name){
   try{ await document.fonts.load('800 64px "Noto Kufi Arabic"'); await document.fonts.load('500 34px "Noto Kufi Arabic"'); }catch(e){}
   const W=1080,H=1350, c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d');
@@ -1676,16 +1690,19 @@ async function drawCard(r,name){
   x.direction='rtl'; x.textAlign='center'; x.textBaseline='alphabetic';
   x.fillStyle='#fff'; x.font='800 84px "Noto Kufi Arabic", sans-serif'; x.fillText('تحدّي الدقيقة',540,440);
   /* اللوحة البيضاء */
-  rr(x,90,520,900,620,56,'#ffffff');
-  x.fillStyle='#d3232f'; x.font='800 54px "Noto Kufi Arabic", sans-serif';
-  x.fillText(r.result==='win'?'فاز في التحدّي':(r.result==='lose'?'خاض التحدّي':'تعادل في التحدّي'),540,610);
-  x.fillStyle='#e7e8eb'; x.fillRect(240,650,600,4); x.fillRect(538,700,4,380);
+  rr(x,90,500,900,680,56,'#ffffff');
+  x.fillStyle='#d3232f'; x.font='800 50px "Noto Kufi Arabic", sans-serif';
+  x.fillText(r.result==='win'?'فاز في التحدّي':(r.result==='lose'?'خاض التحدّي':'تعادل في التحدّي'),540,580);
+  x.fillStyle='#e7e8eb'; x.fillRect(240,612,600,4); x.fillRect(538,650,4,490);
   const opp=r.opp||'المنافس';
-  x.fillStyle='#1f2125'; fitFont(x,name,380,52,'800'); x.fillText(name,765,760);
-  x.fillStyle='#1f2125'; fitFont(x,opp,380,52,'800'); x.fillText(opp,315,760);
-  x.fillStyle=r.result==='lose'?'#6b7078':'#d3232f'; x.font='800 190px "Noto Kufi Arabic", sans-serif'; x.fillText(String(r.me),765,970);
-  x.fillStyle=r.result==='win'?'#6b7078':'#d3232f'; x.font='800 190px "Noto Kufi Arabic", sans-serif'; x.fillText(String(r.bot),315,970);
-  x.fillStyle='#6b7078'; x.font='500 38px "Noto Kufi Arabic", sans-serif'; x.fillText('نقطة',765,1050); x.fillText('نقطة',315,1050);
+  await cardAv(x,765,725,78,r.meAv,(name||'أ').trim().charAt(0),false,r.result!=='lose');
+  await cardAv(x,315,725,78,r.oppAv,opp.trim().charAt(0),!r.human,r.result!=='win');
+  x.direction='rtl'; x.textAlign='center'; x.textBaseline='alphabetic';
+  x.fillStyle='#1f2125'; fitFont(x,name,380,46,'800'); x.fillText(name,765,866);
+  x.fillStyle='#1f2125'; fitFont(x,opp,380,46,'800'); x.fillText(opp,315,866);
+  x.fillStyle=r.result==='lose'?'#6b7078':'#d3232f'; x.font='800 170px "Noto Kufi Arabic", sans-serif'; x.fillText(String(r.me),765,1050);
+  x.fillStyle=r.result==='win'?'#6b7078':'#d3232f'; x.font='800 170px "Noto Kufi Arabic", sans-serif'; x.fillText(String(r.bot),315,1050);
+  x.fillStyle='#6b7078'; x.font='500 36px "Noto Kufi Arabic", sans-serif'; x.fillText('نقطة',765,1120); x.fillText('نقطة',315,1120);
   /* النص السفلي */
   x.fillStyle='#fff'; x.font='800 56px "Noto Kufi Arabic", sans-serif'; x.fillText('هل تستطيع التغلب عليّ؟',540,1260);
   return c;
@@ -1902,8 +1919,18 @@ function flyAv(fromEl,toEl,toRound){
     if(src) c.style.backgroundImage='url("'+src+'")'; else c.textContent=avInit();
     document.body.appendChild(c); toEl.style.visibility='hidden';
     const sx=b.width/a.width, dx=(b.left+b.width/2)-(a.left+a.width/2), dy=(b.top+b.height/2)-(a.top+a.height/2);
-    const an=c.animate([{transform:'translate(0,0) scale(1)'},{transform:'translate('+dx+'px,'+dy+'px) scale('+sx+')'}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'});
-    const done=()=>{ toEl.style.visibility=''; c.remove(); }; an.onfinish=done; setTimeout(done,700);
+    const up=sx>1, lift=Math.min(60,Math.abs(dy)*0.25);
+    const an=c.animate([
+      {transform:'translate(0,0) scale(1)',offset:0},
+      {transform:'translate(0,0) scale('+(up?0.88:1.12)+')',offset:0.12},
+      {transform:'translate('+(dx*0.55)+'px,'+(dy*0.55-lift)+'px) scale('+(1+(sx-1)*0.6)+')',offset:0.55},
+      {transform:'translate('+dx+'px,'+dy+'px) scale('+(sx*(up?1.08:0.92))+')',offset:0.85},
+      {transform:'translate('+dx+'px,'+dy+'px) scale('+sx+')',offset:1}
+    ],{duration:620,easing:'cubic-bezier(.45,0,.25,1)'});
+    const ring=document.createElement('div'); ring.style.cssText='position:fixed;z-index:199;pointer-events:none;border-radius:50%;border:3px solid #e11d2e;left:'+b.left+'px;top:'+b.top+'px;width:'+b.width+'px;height:'+b.height+'px;opacity:0';
+    let done=false; const fin=()=>{ if(done) return; done=true; toEl.style.visibility=''; c.remove();
+      document.body.appendChild(ring); ring.animate([{opacity:.9,transform:'scale(1)'},{opacity:0,transform:'scale(1.35)'}],{duration:450,easing:'ease-out'}).onfinish=()=>ring.remove(); setTimeout(()=>ring.remove(),600); };
+    an.onfinish=fin; setTimeout(fin,900);
   }catch(e){ if(toEl) toEl.style.visibility=''; }
 }
 $('pfBtn').onclick=()=>{ SCR.profilePage=0; window._pfBack=0; renderProfile(); try{ nameAS.reset(); mailAS.reset(); }catch(e){}
