@@ -435,7 +435,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111639">
+<meta name="app-version" content="2026111640">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -898,8 +898,7 @@ function renderStats(){
   const pa = pointsAvailable();
   try{ $('invAv').textContent=((stats.playerName||'أ').trim().charAt(0)||'أ'); }catch(e){}
   $('goLbl').textContent = pa ? 'ابدأ التحدّي' : 'اسحب للتدريب'; $('goDone').style.display = pa ? 'none' : 'block';
-  $('goNote').textContent = pa ? 'تحدّي النقاط مرة واحدة يومياً، وبعدها يمكنك التدريب بدون نقاط' : '';
-  $('goNote').style.display = pa ? '' : 'none';
+  $('goNote').style.display = 'none';
   $('wBal').textContent=fmt(stats.balance); $('sBal').textContent=fmt(stats.balance);
   renderBadges();
 }
@@ -986,6 +985,12 @@ function showFound(name, human, tok){
 }
 async function startMatch(){
   if(!stats.playerName || !stats.gender){ askName(startMatch); return; }
+  if(!stats.seenDailyNote && pointsAvailable()){
+    showModal('قبل أن تبدأ','<div style="line-height:1.9">تحدّي النقاط مرة واحدة يومياً، وبعدها يمكنك التدريب بدون نقاط.</div>',
+      [{t:'موافق',full:true,f:()=>{ stats.seenDailyNote=1; save(stats); closeModal(); startMatch(); }},
+       {t:'إغلاق',ghost:true,full:true,f:()=>{ stats.seenDailyNote=1; save(stats); closeModal(); }}]);
+    return;
+  }
   audio();
   const tok = ++matchTok; PV = null;
   show('match');
