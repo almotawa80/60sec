@@ -91,7 +91,19 @@ main{padding:12px 10px 50px}
 .box h2 input{width:100%;margin:6px 0 0}
 th,td{padding:8px 8px;font-size:12px}
 }
-@media print{header .btn{display:none}.tw{max-height:none;overflow:visible}body{background:#fff}.box,.k,.lv{break-inside:avoid}}
+@media print{
+@page{size:A4;margin:12mm}
+body{background:#fff!important}
+.np,#q,#resetAll,.mini,header .btn,header .hb{display:none!important}
+#app,main,.wrap{max-width:none!important;padding:0!important}
+.grid{grid-template-columns:1fr 1fr!important;gap:10px!important}
+.grid .box{break-inside:avoid;padding:12px!important}
+.cv{height:210px!important;width:100%!important}
+.cv canvas{width:100%!important;height:100%!important}
+.live{grid-template-columns:repeat(3,1fr)!important}
+.box,.k,.lv,.kg{break-inside:avoid}
+.tw{max-height:none;overflow:visible}
+}
 </style>
 </head>
 <body>
@@ -120,12 +132,12 @@ th,td{padding:8px 8px;font-size:12px}
     <div class="box"><h2>النقاط الموزّعة يومياً</h2><div class="cv"><canvas id="cPts"></canvas></div></div>
     <div class="box"><h2>نوع المنافس</h2><div class="cv"><canvas id="cHum"></canvas></div></div>
     <div class="box"><h2>حالة القسائم</h2><div class="cv"><canvas id="cVou"></canvas></div></div>
-    <div class="box" style="grid-column:1/-1"><h2>أعلى ١٠ لاعبين بالنقاط</h2><div class="cv"><canvas id="cTop"></canvas></div></div>
+    <div class="box np" style="grid-column:1/-1"><h2>أعلى ١٠ لاعبين بالنقاط</h2><div class="cv"><canvas id="cTop"></canvas></div></div>
   </div>
-  <div class="box" style="margin-bottom:16px"><h2>القسائم المطلوبة</h2><div class="tw"><table id="tRed"></table></div><div class="cl" id="clRed"></div></div>
-  <div class="box" style="margin-bottom:16px"><h2>اللاعبون <input id="q" placeholder="بحث بالاسم أو الرقم الوظيفي"> <button class="btn" id="resetAll" style="background:var(--red);color:#fff;padding:7px 14px">تصفير الجميع</button></h2><div class="tw"><table id="tPl"></table></div><div class="cl g2" id="clPl"></div></div>
-  <div class="box" style="margin-bottom:16px"><h2>أزواج لعبوا ضد بعض ٣ مرات أو أكثر</h2><div class="tw"><table id="tPr"></table></div><div class="cl" id="clPr"></div></div>
-  <div class="box"><h2>محاولات تسجيل مشبوهة</h2><div class="tw"><table id="tEv"></table></div><div class="cl" id="clEv"></div></div>
+  <div class="box np" style="margin-bottom:16px"><h2>القسائم المطلوبة</h2><div class="tw"><table id="tRed"></table></div><div class="cl" id="clRed"></div></div>
+  <div class="box np" style="margin-bottom:16px"><h2>اللاعبون <input id="q" placeholder="بحث بالاسم أو الرقم الوظيفي"> <button class="btn" id="resetAll" style="background:var(--red);color:#fff;padding:7px 14px">تصفير الجميع</button></h2><div class="tw"><table id="tPl"></table></div><div class="cl g2" id="clPl"></div></div>
+  <div class="box np" style="margin-bottom:16px"><h2>أزواج لعبوا ضد بعض ٣ مرات أو أكثر</h2><div class="tw"><table id="tPr"></table></div><div class="cl" id="clPr"></div></div>
+  <div class="box np"><h2>محاولات تسجيل مشبوهة</h2><div class="tw"><table id="tEv"></table></div><div class="cl" id="clEv"></div></div>
 </main>
 </div>
 
@@ -212,10 +224,13 @@ function exportXls(){
 async function enter(){ KEY=$('key').value.trim()||KEY; if(!KEY) return; $('err').textContent=''; if(await load()){ try{sessionStorage.setItem('mc_admin',KEY);}catch(e){} clearInterval(timer); timer=setInterval(load,15000); } }
 $('go').onclick=enter; $('key').onkeydown=e=>{ if(e.key==='Enter') enter(); };
 $('thm').onclick=()=>{ DARK=!DARK; try{localStorage.setItem('mc_admin_dark',DARK?'1':'0');}catch(e){} if(D) render(); else applyTheme(); };
-$('ref').onclick=load; $('prn').onclick=()=>window.print(); $('xls').onclick=exportXls; $('q').oninput=()=>D&&renderPl();
+$('ref').onclick=load; $('prn').onclick=()=>{ prepPrint(); setTimeout(()=>window.print(),150); }; $('xls').onclick=exportXls; $('q').oninput=()=>D&&renderPl();
 $('out').onclick=()=>{ try{sessionStorage.removeItem('mc_admin');}catch(e){} KEY=''; clearInterval(timer); location.reload(); };
 applyTheme();
 if(KEY) enter();
+function prepPrint(){ try{ Object.values(charts).forEach(function(c){ c.resize(330,210); }); }catch(e){} }
+window.addEventListener('beforeprint',prepPrint);
+window.addEventListener('afterprint',function(){ try{ Object.values(charts).forEach(function(c){ c.resize(); }); }catch(e){} });
 </script>
 </body>
 </html>
