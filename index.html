@@ -541,7 +541,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170027">
+<meta name="app-version" content="202611170029">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1929,7 +1929,7 @@ function flyAv(fromEl,toEl,toRound){
     const c=document.createElement('div'); const src=stats.avatar;
     c.style.cssText='position:fixed;z-index:200;pointer-events:none;border-radius:50%;overflow:hidden;display:grid;place-items:center;color:#fff;font-weight:800;background:#c8102e center/cover no-repeat;left:'+a.left+'px;top:'+a.top+'px;width:'+a.width+'px;height:'+a.height+'px;font-size:'+(a.width*.42)+'px;box-shadow:0 8px 24px rgba(0,0,0,.3)';
     if(src) c.style.backgroundImage='url("'+src+'")'; else c.textContent=avInit();
-    document.body.appendChild(c); toEl.style.visibility='hidden';
+    document.body.appendChild(c); toEl.style.visibility='hidden'; const plus=(toEl.id==='pfBig')?$('pfPlus'):null; if(plus) plus.style.visibility='hidden';
     const sx=b.width/a.width, dx=(b.left+b.width/2)-(a.left+a.width/2), dy=(b.top+b.height/2)-(a.top+a.height/2);
     const up=sx>1, lift=Math.min(60,Math.abs(dy)*0.25);
     const an=c.animate([
@@ -1940,10 +1940,10 @@ function flyAv(fromEl,toEl,toRound){
       {transform:'translate('+dx+'px,'+dy+'px) scale('+sx+')',offset:1}
     ],{duration:620,easing:'cubic-bezier(.45,0,.25,1)'});
     const ring=document.createElement('div'); ring.style.cssText='position:fixed;z-index:199;pointer-events:none;border-radius:50%;border:3px solid #e11d2e;left:'+b.left+'px;top:'+b.top+'px;width:'+b.width+'px;height:'+b.height+'px;opacity:0';
-    let done=false; const fin=()=>{ if(done) return; done=true; toEl.style.visibility=''; c.remove();
+    let done=false; const fin=()=>{ if(done) return; done=true; toEl.style.visibility=''; c.remove(); if(plus){ plus.style.visibility=''; try{ plus.animate([{transform:'scale(0)',opacity:0},{transform:'scale(1.25)',opacity:1,offset:.7},{transform:'scale(1)',opacity:1}],{duration:320,easing:'ease-out'}); }catch(e){} }
       document.body.appendChild(ring); ring.animate([{opacity:.9,transform:'scale(1)'},{opacity:0,transform:'scale(1.35)'}],{duration:450,easing:'ease-out'}).onfinish=()=>ring.remove(); setTimeout(()=>ring.remove(),600); };
     an.onfinish=fin; setTimeout(fin,900);
-  }catch(e){ if(toEl) toEl.style.visibility=''; }
+  }catch(e){ if(toEl) toEl.style.visibility=''; try{ $('pfPlus').style.visibility=''; }catch(_){} }
 }
 $('pfBtn').onclick=()=>{ SCR.profilePage=0; window._pfBack=0; renderProfile(); try{ nameAS.reset(); mailAS.reset(); }catch(e){}
   const from=$('pfBtn'); const fr=from.getBoundingClientRect(); const ghost={getBoundingClientRect:()=>fr};
