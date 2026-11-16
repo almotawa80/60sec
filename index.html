@@ -363,6 +363,12 @@ html{touch-action:manipulation;-webkit-text-size-adjust:100%}
 input,select,textarea{font-size:16px!important}
 .pts50{font-size:26px;font-weight:800;color:#c8102e}
 html[data-theme="dark"] .pts50{color:#ff4d57}
+#goBtn.slide{position:relative;height:72px;padding:0!important;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;display:flex;align-items:center;justify-content:center;text-align:center;font-size:18px;line-height:1.25;cursor:pointer}
+#goBtn .slbl{margin:0;padding:0 84px;font-weight:800;transition:opacity .15s;pointer-events:none}
+#goBtn .sknob{position:absolute;margin:0;right:6px;top:6px;width:60px;height:60px;border-radius:50%;background:#fff;color:var(--accent);display:grid;place-items:center;box-shadow:0 3px 10px rgba(0,0,0,.25);touch-action:none;will-change:transform}
+#goBtn .sknob.back{transition:transform .25s ease}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(-10px)}}
+#goBtn .sknob.hint{animation:nudge 1.6s ease-in-out 1}
 html[data-theme="dark"] .race .m,html[data-theme="dark"] .vsb{color:var(--accent)}
 html[data-theme="dark"] .hero:before,html[data-theme="dark"] .hero:after{display:none}
 html[data-theme="dark"] .sheet{background:var(--page)}
@@ -404,7 +410,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111623">
+<meta name="app-version" content="2026111624">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -434,7 +440,7 @@ button.bcount{padding:6px 9px}
       </div>
       <div class="sp"></div>
       
-      <button class="btn" id="goBtn">ابدأ التحدّي</button>
+      <div class="btn slide" id="goBtn" role="button" tabindex="0" aria-label="اسحب لبدء التحدّي"><div class="slbl" id="goLbl">اسحب لبدء التحدّي</div><div class="sknob" id="goKnob"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-6 6 6 6M20 6l-6 6 6 6" opacity=".9"/></svg></div></div>
       <button class="btn" id="inviteBtn" style="margin-top:10px;background:transparent;color:var(--accent);border:2px solid var(--accent);box-shadow:none">تحدَّ زميلاً الآن</button>
       <div class="hint" style="margin-top:12px;text-align:center;line-height:1.5"><div class="pts50">اكسب ٥٠ نقطة إضافية</div><div style="font-weight:700;font-size:15px;color:var(--text)">مقابل تحدّي شخص حقيقي</div></div>
       <div class="note" id="goNote"></div>
@@ -864,7 +870,7 @@ const pointsAvailable = () => stats.pointsDay !== dkey(new Date());
 function renderStats(){
   $('stBest').textContent=stats.best; $('stWins').textContent=stats.wins; $('stStreak').textContent=shownDays();
   const pa = pointsAvailable();
-  $('goBtn').innerHTML = pa ? 'ابدأ تحدّي اليوم' : 'أنهيت نقاط اليوم ✓<small style=\"display:block;font-size:15px;font-weight:600;opacity:.85;margin-top:4px\">العب للتدريب</small>';
+  $('goLbl').innerHTML = pa ? 'اسحب لبدء تحدّي اليوم' : 'أنهيت نقاط اليوم ✓<small style="display:block;font-size:13px;font-weight:600;opacity:.8;margin-top:2px">اسحب للتدريب</small>';
   $('goNote').textContent = pa ? 'تحدّي النقاط مرة واحدة يومياً، وبعدها يمكنك التدريب بدون نقاط'
                                : 'استخدمت تحدّي اليوم، عُد غداً لتحدٍّ جديد بنقاط';
   $('wBal').textContent=fmt(stats.balance); $('sBal').textContent=fmt(stats.balance);
@@ -1228,7 +1234,22 @@ function endGame(){
 }
 
 /* ===== الأزرار ===== */
-$('goBtn').onclick = startMatch;
+
+/* زر السحب لبدء التحدّي */
+(function(){
+  var btn=$('goBtn'), knob=$('goKnob'), lbl=$('goLbl'); if(!btn||!knob) return;
+  var startX=0, x=0, max=0, drag=false, done=false;
+  function reset(){ knob.classList.add('back'); knob.style.transform='translateX(0)'; lbl.style.opacity=1; x=0; done=false; }
+  function fire(){ if(done) return; done=true; knob.classList.add('back'); knob.style.transform='translateX('+(-max)+'px)'; lbl.style.opacity=0; try{ navigator.vibrate&&navigator.vibrate(25); }catch(e){}
+    setTimeout(function(){ startMatch(); setTimeout(reset,600); },120); }
+  knob.addEventListener('pointerdown',function(e){ if(done) return; drag=true; knob.classList.remove('back'); startX=e.clientX; max=btn.clientWidth-60-12; try{ knob.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); });
+  knob.addEventListener('pointermove',function(e){ if(!drag) return; x=Math.max(0,Math.min(max,startX-e.clientX)); knob.style.transform='translateX('+(-x)+'px)'; lbl.style.opacity=String(1-x/max); });
+  function up(){ if(!drag) return; drag=false; if(x>=max*0.8) fire(); else reset(); }
+  knob.addEventListener('pointerup',up); knob.addEventListener('pointercancel',up);
+  btn.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); max=btn.clientWidth-72; fire(); } });
+  setTimeout(function(){ knob.classList.add('hint'); },700);
+})();
+
 $('againBtn').onclick = startMatch;
 $('homeBtn').onclick = ()=>{ renderStats(); show('home'); };
 /* ===== مشاركة بطاقة النتيجة ===== */
