@@ -430,6 +430,14 @@ button.bcount{padding:6px 9px}
         <div class="big">جارٍ البحث عن منافس…</div>
         <div class="sub" style="margin-top:6px">نبحث عن لاعب متاح الآن</div>
       </div>
+      <div id="inviteWait" style="display:none;width:100%;text-align:center">
+        <div class="radar"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
+        <div class="big">بانتظار صديقك…</div>
+        <div class="sub" style="margin:6px auto 18px;max-width:300px;line-height:1.7">شارك الرابط، وعندما يفتحه تبدأ المباراة بينكما مباشرة. أبقِ هذه الصفحة مفتوحة.</div>
+        <div id="invUrl" dir="ltr" style="word-break:break-all;background:var(--tile);border:1px solid var(--line);border-radius:14px;padding:12px;font-size:13px;margin:0 auto 14px;max-width:320px"></div>
+        <button class="btn" id="invShare" style="max-width:320px;margin:0 auto">مشاركة الرابط</button>
+        <button class="btn" id="invCancel" style="max-width:320px;margin:10px auto 0;background:transparent;color:var(--muted);border:1px solid var(--line);box-shadow:none">إلغاء الدعوة</button>
+      </div>
       <div id="found" style="display:none;width:100%">
         <div class="sub" id="foundMsg" style="white-space:pre-line;margin:0 auto 26px;text-align:center;max-width:300px;line-height:1.7"></div>
         <div class="vs">
@@ -700,7 +708,7 @@ function save(s){ try{ localStorage.setItem('minute_stats', JSON.stringify(s)); 
 let stats = Object.assign({best:0,wins:0,streak:0,played:0,correctTotal:0,dayStreak:0,lastDay:'',sound:true,balance:0,totalPoints:0,pointsDay:''}, load());
 stats.badges = stats.badges || {}; stats.redeemed = stats.redeemed || [];
 /* رصيد تجريبي للعرض */
-var DEMO=new URLSearchParams(location.search).has('demo');
+var DEMO=false; try{ DEMO=new URLSearchParams(location.search).has('demo'); }catch(e){}
 if(DEMO && !stats.demoSeeded2){ stats.demoSeeded2=true; if(!stats.played){ stats.played=14; stats.wins=9; stats.streak=2; stats.best=185; stats.correctTotal=58; stats.dayStreak=3; stats.lastDay=(function(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();})(); } save(stats); }
 if(DEMO && !stats.demoSeeded3){ stats.balance = 7000; stats.totalPoints = Math.max(stats.totalPoints||0, 7000); stats.demoSeeded = stats.demoSeeded3 = true; save(stats); }
 
@@ -921,7 +929,7 @@ function showFound(name, human, tok){
   if(tok!==matchTok) return;
   bot.name = name;
   show('match');
-  $('searching').style.display='none'; $('found').style.display='block';
+  $('searching').style.display='none'; $('inviteWait').style.display='none'; $('found').style.display='block';
   $('foundMsg').textContent = (human ? 'تحدٍّ مباشر مع لاعب حقيقي' : 'تم العثور على منافس') + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط');
   $('botName').textContent = bot.name; $('botAv').textContent = bot.name.charAt(0); $('botTag').innerHTML = svg('bolt',13)+' متصل الآن'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت';
   let n = 3; $('cd').textContent = n; SND.count();
@@ -932,7 +940,7 @@ async function startMatch(){
   audio();
   const tok = ++matchTok; PV = null;
   show('match');
-  $('searching').style.display='block'; $('found').style.display='none';
+  $('searching').style.display='block'; $('found').style.display='none'; $('inviteWait').style.display='none';
   bot = { name:'', skill: botSkill() };
   const t0 = Date.now(); let res = null;
   const wait = 6500 + Math.floor(Math.random()*2500);
@@ -956,17 +964,18 @@ async function inviteFriend(){
   if(!r || !r.code){ toast('تعذّر إنشاء الدعوة، تأكد من الاتصال'); return; }
   const url = location.origin + location.pathname + '?c=' + r.code;
   const text = stats.playerName + ' يتحداك في «تحدّي الدقيقة»! افتح الرابط لنبدأ المباراة الآن:\n' + url;
-  showModal('تحدَّ صديقاً','<div class="hint" style="margin-bottom:10px">شارك الرابط مع صديقك، وعندما يفتحه تبدأ المباراة بينكما مباشرة.</div><div class="nameIn" style="direction:ltr;font-size:13px;word-break:break-all">'+url+'</div><div class="hint" id="invWait" style="margin-top:12px">بانتظار صديقك…</div>',
-    [{t:'مشاركة الرابط',full:true,f:async()=>{ try{ if(navigator.share){ await navigator.share({text}); return; } }catch(e){ return; } try{ await navigator.clipboard.writeText(text); toast('تم نسخ الدعوة'); }catch(e){ toast('انسخ الرابط يدوياً'); } }},
-     {t:'إلغاء الدعوة',ghost:true,full:true,f:()=>{ inviteTok++; closeModal(); }}]);
+  const share=async()=>{ try{ if(navigator.share){ await navigator.share({text}); return; } }catch(e){ return; } try{ await navigator.clipboard.writeText(text); toast('تم نسخ الدعوة'); }catch(e){ toast('انسخ الرابط يدوياً'); } };
+  matchTok++; show('match'); $('searching').style.display='none'; $('found').style.display='none'; $('inviteWait').style.display='block';
+  $('invUrl').textContent = url; $('invShare').onclick = share;
+  $('invCancel').onclick = ()=>{ inviteTok++; $('inviteWait').style.display='none'; show('home'); };
   const t0 = Date.now();
   while(tok===inviteTok && Date.now()-t0 < 10*60*1000){
     await sleep(1500); if(tok!==inviteTok) return;
     const c = await rpc('check_invite',{p_code:r.code,p_id:PID},4000);
-    if(c && c.state==='ready'){ inviteTok++; closeModal(); PV = pvFrom(c); const mt=++matchTok; showFound(PV.oppName||'صديقك', true, mt); return; }
+    if(c && c.state==='ready'){ inviteTok++; PV = pvFrom(c); const mt=++matchTok; showFound(PV.oppName||'صديقك', true, mt); return; }
     if(c && c.state==='gone') break;
   }
-  if(tok===inviteTok){ closeModal(); toast('انتهت الدعوة'); }
+  if(tok===inviteTok){ $('inviteWait').style.display='none'; show('home'); toast('انتهت الدعوة'); }
 }
 async function acceptInviteFromUrl(){
   let code=null; try{ code = new URLSearchParams(location.search).get('c'); }catch(e){}
