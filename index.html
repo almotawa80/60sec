@@ -437,7 +437,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111645">
+<meta name="app-version" content="2026111646">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -482,7 +482,7 @@ button.bcount{padding:6px 9px}
         <div class="radar"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
         <div class="big">جارٍ البحث عن منافس…</div>
         <div class="sub" style="margin-top:6px" id="srchSub">نبحث عن لاعب متاح الآن</div>
-        <div class="sub" style="margin:14px auto 0;max-width:300px;line-height:1.8">انتظر لاعباً حقيقياً واربح ٥٠ نقطة إضافية، أو ابدأ الآن ضد المنافس الآلي</div>
+        <div class="sub" id="srchTip" style="margin:14px auto 0;max-width:300px;line-height:1.8">انتظر لاعباً حقيقياً واربح ٥٠ نقطة إضافية، أو ابدأ الآن ضد المنافس الآلي</div>
         <button class="btn" id="skipWait" type="button" style="max-width:320px;margin:16px auto 0">ابدأ الآن ضد المنافس الآلي</button>
       </div>
       <div id="inviteWait" style="display:none;width:100%;text-align:center">
@@ -1004,6 +1004,7 @@ async function startMatch(){
   const t0 = Date.now(); let res = null;
   const wait = 30000; let skip = false;
   const sb = $('skipWait'); if(sb) sb.onclick = ()=>{ skip = true; };
+  const tip=$('srchTip'); if(tip) tip.textContent = pointsAvailable() ? 'انتظر لاعباً حقيقياً واربح ٥٠ نقطة إضافية، أو ابدأ الآن ضد المنافس الآلي' : 'جولة تدريبية بدون نقاط. انتظر لاعباً حقيقياً أو ابدأ الآن ضد المنافس الآلي';
   const sub = $('srchSub');
   while(Date.now()-t0 < wait && !skip){
     if(sub) sub.textContent = 'نبحث عن لاعب متاح الآن… '+Math.max(0,Math.ceil((wait-(Date.now()-t0))/1000))+' ث';
