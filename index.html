@@ -965,9 +965,10 @@ async function inviteFriend(){
   if(!r || !r.code){ toast('تعذّر إنشاء الدعوة، تأكد من الاتصال'); return; }
   const url = location.origin + location.pathname + '?c=' + r.code;
   const text = stats.playerName + ' يتحداك في «تحدّي الدقيقة»! افتح الرابط لنبدأ المباراة الآن:\n' + url;
-  const share=async()=>{ try{ if(navigator.share){ await navigator.share({text}); return; } }catch(e){ return; } try{ await navigator.clipboard.writeText(text); toast('تم نسخ الدعوة'); }catch(e){ toast('انسخ الرابط يدوياً'); } };
+  const sent=()=>{ $('invUrl').style.display='none'; $('invShare').style.display='none'; };
+  const share=async()=>{ try{ if(navigator.share){ await navigator.share({text}); sent(); return; } }catch(e){ return; } try{ await navigator.clipboard.writeText(text); toast('تم نسخ الدعوة'); sent(); }catch(e){ toast('انسخ الرابط يدوياً'); } };
   matchTok++; show('match'); $('searching').style.display='none'; $('found').style.display='none'; $('inviteWait').style.display='block';
-  $('invUrl').textContent = url; $('invShare').onclick = share;
+  $('invUrl').style.display=''; $('invShare').style.display=''; $('invUrl').textContent = url; $('invShare').onclick = share;
   $('invCancel').onclick = ()=>{ inviteTok++; $('inviteWait').style.display='none'; show('home'); };
   const t0 = Date.now();
   while(tok===inviteTok && Date.now()-t0 < 10*60*1000){
