@@ -733,6 +733,7 @@ if(DEMO && !stats.demoSeeded3){ stats.balance = 7000; stats.totalPoints = Math.m
 const IC = {
   flag:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
   trophy:'<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 3.8M18 2H6v7a6 6 0 0 0 12 0V2z"/>',
+  robot:'<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M9 4h6M2 13v3M22 13v3"/><circle cx="9" cy="13" r=".6"/><circle cx="15" cy="13" r=".6"/><path d="M9 17h6"/>',
   bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>',
   flame:'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.5-2-1-3-1.1-2.1-.2-4.1 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.2.4-2.3 1-3a2.5 2.5 0 0 0 2.500 2.500z"/>',
   star:'<path d="M12 3l2.2 4.8 5.2.6-3.9 3.5 1.1 5.1L12 14.4 7.4 17l1.1-5.1L4.6 8.4l5.2-.6L12 3z"/>',
@@ -948,7 +949,7 @@ function showFound(name, human, tok){
   show('match');
   $('searching').style.display='none'; $('inviteWait').style.display='none'; $('found').style.display='block';
   $('foundMsg').textContent = (human ? 'تحدٍّ مباشر مع لاعب حقيقي' : 'لا يوجد لاعب متاح الآن — ستلعب ضد الجهاز') + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط');
-  $('botName').textContent = bot.name; $('botAv').textContent = bot.name.charAt(0); $('botTag').innerHTML = human ? svg('bolt',13)+' متصل الآن' : svg('bolt',13)+' جهاز (منافس آلي)'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت';
+  $('botName').textContent = bot.name; if(human){ $('botAv').textContent = bot.name.charAt(0); } else { $('botAv').innerHTML = svg('robot',54); } $('botTag').innerHTML = human ? svg('bolt',13)+' متصل الآن' : svg('robot',14)+' جهاز (منافس آلي)'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت';
   let n = 3; $('cd').textContent = n; SND.count();
   const t = setInterval(()=>{ if(tok!==matchTok){ clearInterval(t); return; } n--; if(n<=0){ clearInterval(t); startGame(); } else { $('cd').textContent=n; SND.count(); } }, 800);
 }
