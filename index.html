@@ -444,7 +444,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611162245">
+<meta name="app-version" content="202611162304">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1280,6 +1280,8 @@ function startGameSync(){
   $('myScore').textContent=0; $('botScore').textContent=0; $('botLbl').textContent=bot.name;
   updateRace(); $('combo').classList.remove('on');
   $('qNum').textContent='السؤال ١ من ٦'; $('timer').textContent='١٠';
+  $('qText').textContent='استعد… جارٍ تجهيز السؤال الأول'; $('opts').innerHTML=''; $('lvlChip').textContent=''; $('qSec').textContent=''; $('qRingPath').style.strokeDashoffset=0; $('ringFg').style.strokeDashoffset=0;
+  const ex0=$('expl'); ex0.textContent=''; ex0.classList.remove('on'); $('clock').classList.remove('low','mid');
   show('game'); SND.go();
   G.timers.push(setInterval(loopS,100));
   if(PV){ pollS(); G.timers.push(setInterval(pollS,500)); }
