@@ -2041,7 +2041,7 @@ async function beat(){
   const r=await rpc('heartbeat',{p_id:PID},4000);
   if(!r || typeof r.online!=='number') return;
   const n=Math.max(1,r.online), pl=r.playing||0;
-  $('onlTxt').innerHTML='<b>'+n+'</b> <span class="sw">⚔️</span> متصل الآن'; $('onl').title=n+' متصل الآن';
+  $('onlTxt').innerHTML='<b>'+n+'</b> <span class="sw">⚔️</span>'; $('onl').title=n+' متصل الآن';
   $('onl').style.display='flex';
 }
 beat(); setInterval(beat,30000); document.addEventListener('visibilitychange',()=>{ if(!document.hidden) beat(); });
