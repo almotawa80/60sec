@@ -72,6 +72,13 @@ body{font-family:'Noto Kufi Arabic',system-ui,sans-serif;color:var(--text);backg
 .pl .s{font-size:30px;font-weight:800;line-height:1.15}
 .pl .s.pop{animation:pop .35s}
 @keyframes pop{40%{transform:scale(1.35)}}
+.fpts{position:fixed;left:50%;top:34%;z-index:60;pointer-events:none;font-weight:900;transform:translateX(-50%);animation:fpts 1.05s ease-out forwards;white-space:nowrap}
+.fpts.l1{font-size:22px;color:#16a34a}
+.fpts.l2{font-size:30px;color:#0ea5e9;text-shadow:0 2px 14px rgba(14,165,233,.45)}
+.fpts.l3{font-size:40px;color:#f5b301;text-shadow:0 0 22px rgba(245,179,1,.85),0 2px 6px rgba(0,0,0,.25)}
+.fpts small{display:block;font-size:14px;text-align:center;opacity:.9}
+@keyframes fpts{0%{opacity:0;transform:translate(-50%,16px) scale(.7)}25%{opacity:1;transform:translate(-50%,0) scale(1.15)}100%{opacity:0;transform:translate(-50%,-46px) scale(1)}}
+
 .clock{position:relative;width:84px;height:84px}
 .clock svg{width:100%;height:100%;transform:rotate(-90deg)}
 .clock .bg{stroke:rgba(255,255,255,.25)}
@@ -432,12 +439,12 @@ button.bcount{padding:6px 9px}
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="تحدّي الدقيقة">
-<meta property="og:description" content="تحدٍّ شرعي سريع في 60 ثانية — هل تقبل التحدي؟">
+<meta property="og:description" content="تحدٍّ شرعي سريع في ٦ أسئلة — هل تقبل التحدي؟">
 <meta property="og:image" content="https://almotawa80.github.io/minute-challenge/icon-512.png">
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111649">
+<meta name="app-version" content="202611162234">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -585,9 +592,9 @@ button.bcount{padding:6px 9px}
 <script>
 /* ===== المكافآت (القيم تجريبية، عدّلها هنا) ===== */
 const REWARDS = [
-  {id:'gift_arabica', type:'gift', title:'قسيمة أرابيكا ٥ د.ك',       cost:1800, icon:'gift'},
-  {id:'gift_pick',    type:'gift', title:'قسيمة بيك ٥ د.ك',           cost:1800, icon:'gift'},
-  {id:'gift_wooden',  type:'gift', title:'قسيمة وودن بيكري ٥ د.ك',    cost:1800, icon:'gift'}
+  {id:'gift_arabica', type:'gift', title:'قسيمة أرابيكا ٥ د.ك',       cost:1500, icon:'gift'},
+  {id:'gift_pick',    type:'gift', title:'قسيمة بيك ٥ د.ك',           cost:1500, icon:'gift'},
+  {id:'gift_wooden',  type:'gift', title:'قسيمة وودن بيكري ٥ د.ك',    cost:1500, icon:'gift'}
 ];
 
 /* ===== بنك الأسئلة: [السؤال، الصحيح، خطأ١، خطأ٢، خطأ٣، المستوى(١ سهل ٢ متوسط ٣ صعب)، التفسير] ===== */
@@ -811,11 +818,11 @@ const BADGES = [
   {id:'win1',   n:'أول فوز',        s:'أول فوز', d:'اربح أول تحدٍّ لك',                     i:'trophy',   t:c=>stats.wins>=1},
   {id:'share',  n:'مشارك',          s:'مشارك',   d:'شارك نتيجتك مع صديق',                   i:'share',    t:c=>(stats.shared||0)>=1},
   {id:'redeem', n:'مستبدل',         s:'مستبدل',  d:'استبدل أول مكافأة من متجر النقاط',       i:'gift',     t:c=>stats.redeemed.length>=1},
-  {id:'fast',   n:'سريع البديهة',   s:'سريع',    d:'اجمع ١٠٠ نقطة أو أكثر في جولة',          i:'timer',     t:c=>c.me>=100},
-  {id:'pro',    n:'محترف',          s:'محترف',   d:'اجمع ٢٠٠ نقطة أو أكثر في جولة',          i:'award',    t:c=>c.me>=200},
-  {id:'fire',   n:'متتالية نارية',  s:'نارية',   d:'٥ إجابات صحيحة متتالية',                i:'flame',    t:c=>c.combo>=5},
-  {id:'rocket', n:'صاروخ',          s:'صاروخ',   d:'١٠ إجابات صحيحة متتالية',               i:'rocket',   t:c=>c.combo>=10},
-  {id:'perfect',n:'بلا أخطاء',      s:'دقيق',    d:'٥ إجابات صحيحة أو أكثر بدون أي خطأ',     i:'checkc',   t:c=>c.wrong===0&&c.correct>=5},
+  {id:'fast',   n:'سريع البديهة',   s:'سريع',    d:'اجمع ٦٠ نقطة أو أكثر في جولة',           i:'timer',     t:c=>c.me>=60},
+  {id:'pro',    n:'محترف',          s:'محترف',   d:'اجمع ١٠٠ نقطة أو أكثر في جولة',          i:'award',    t:c=>c.me>=100},
+  {id:'fire',   n:'متتالية نارية',  s:'نارية',   d:'٤ إجابات صحيحة متتالية',                i:'flame',    t:c=>c.combo>=4},
+  {id:'rocket', n:'صاروخ',          s:'صاروخ',   d:'جولة كاملة: ١٢٠ نقطة',                  i:'rocket',   t:c=>c.me>=120},
+  {id:'perfect',n:'بلا أخطاء',      s:'دقيق',    d:'٦ إجابات صحيحة بدون أي خطأ',           i:'checkc',   t:c=>c.wrong===0&&c.correct>=6},
   {id:'hat',    n:'ثلاثية',         s:'ثلاثية',  d:'اربح ٣ مرات متتالية',                   i:'stars3',     t:c=>stats.streak>=3},
   {id:'champ',  n:'بطل',            s:'بطل',     d:'اربح ١٠ تحديات',                        i:'crown',    t:c=>stats.wins>=10},
   {id:'hard',   n:'جريء',           s:'جريء',    d:'أجب صحيحاً عن ١٠ أسئلة صعبة',            i:'mountain', t:c=>(stats.hardCorrect||0)>=10},
@@ -935,7 +942,7 @@ function showBadge(b,on,v){
 
 /* ===== الأسئلة ===== */
 const LEVEL_NAME = {1:'سهل',2:'متوسط',3:'صعب'};
-const POINTS = {1:10,2:15,3:20};
+const POINTS = {1:10,2:20,3:30};
 const GAME_SECONDS = 60, Q_SECONDS = 15, Q_BY_LEVEL = {1:12, 2:15, 3:20};
 const ALL = [];
 Object.values(BANK).filter(c=>c.on!==false).forEach(c=>c.q.forEach(r=>ALL.push({q:r[0],right:r[1],w:[r[2],r[3],r[4]],lvl:r[5],ex:r[6]||'',cat:c.name})));
@@ -1063,7 +1070,7 @@ $('quitBtn').onclick = ()=>{
 
 /* ===== اللعب ===== */
 let G = null;
-function startGame(){
+function startGameOld(){
   G = { used:new Set(), level:1, lvlStreak:0, cur:null, n:0, combo:0, maxCombo:0, correct:0, wrong:0,
         me:0, bot:0, start:performance.now(), qStart:0, over:false, timers:[], locked:false, lastSec:61 };
   G.scored = pointsAvailable();
@@ -1243,13 +1250,188 @@ function onTimeout(){
   setTimeout(()=>{ if(G && !G.over) nextQuestion(); }, 1700);
 }
 
+/* ===== الجولة المتزامنة: ٦ أسئلة × ١٠ ثوانٍ ===== */
+const SYNC_MODE = true, NQ = 6, QMS = 10000, LVS = [1,1,2,2,3,3], PTS = {1:10,2:20,3:30}, REVEAL = 1300;
+function startGame(){ return SYNC_MODE ? startGameSync() : startGameOld(); }
+function buildQs(seed){
+  const used = new Set(), out = []; let prev = null;
+  for(let i=0;i<NQ;i++){
+    const rng = mkRng(seed*131 + i + 1);
+    let pool = ALL.filter(x=>x.lvl===LVS[i] && !used.has(x));
+    if(!pool.length) pool = ALL.filter(x=>!used.has(x));
+    if(!pool.length) pool = ALL.slice();
+    pool.sort((a,b)=>a.q<b.q?-1:a.q>b.q?1:0);
+    const diff = pool.filter(x=>!prev || x.cat!==prev.cat); if(diff.length) pool = diff;
+    const it = pool[Math.floor(rng()*pool.length)]; used.add(it); prev = it;
+    const opts = [{t:it.right,ok:true}, ...it.w.map(t=>({t,ok:false}))];
+    for(let k=opts.length-1;k>0;k--){ const j=Math.floor(rng()*(k+1)); [opts[k],opts[j]]=[opts[j],opts[k]]; }
+    out.push({it,opts});
+  }
+  return out;
+}
+function startGameSync(){
+  const seed = (PV && PV.seed!=null) ? PV.seed : Math.floor(Math.random()*1e9);
+  G = { sync:true, qs:buildQs(seed), qi:-1, phase:'wait', deadline:0, nextAt:0, nextQi:0, mineA:[], oppA:[],
+        combo:0, maxCombo:0, correct:0, wrong:0, me:0, bot:0, tbMe:0, tbOpp:0, start:performance.now(), over:false, timers:[], locked:false, cur:null, qMax:10 };
+  G.scored = pointsAvailable();
+  if(G.scored){ stats.pointsDay = dkey(new Date()); save(stats); if(!DEMO) rpc('start_scored',{p_id:PID},4000); }
+  if(!DEMO) rpc('set_playing',{p_id:PID},3000);
+  $('myLbl').textContent = G.scored ? 'أنت' : 'أنت (تدريب)';
+  $('myScore').textContent=0; $('botScore').textContent=0; $('botLbl').textContent=bot.name;
+  updateRace(); $('combo').classList.remove('on');
+  $('qNum').textContent='السؤال ١ من ٦'; $('timer').textContent='١٠';
+  show('game'); SND.go();
+  G.timers.push(setInterval(loopS,100));
+  if(PV){ pollS(); G.timers.push(setInterval(pollS,500)); }
+  else { G.phase='pre'; G.nextQi=0; G.nextAt=performance.now()+700; }
+}
+function recompute(){
+  const g=G; if(!g) return;
+  const map={}; g.mineA.forEach(a=>map[a.qi]=a);
+  let me=0, tbMe=0, st=0;
+  for(let i=0;i<=Math.max(0,g.qi);i++){ const a=map[i]; if(a&&a.ok){ st++; } else if(a || i<g.qi) st=0; }
+  g.mineA.forEach(a=>{ if(a.ok){ me+=PTS[LVS[a.qi]]; tbMe+=a.ms; } });
+  let ob=0, tbOpp=0; g.oppA.forEach(a=>{ if(a.ok){ ob+=PTS[LVS[a.qi]]; tbOpp+=a.ms; } });
+  g.tbMe=tbMe; g.tbOpp=tbOpp;
+  if(me!==g.me){ g.me=me; $('myScore').textContent=me; pop('myScore'); }
+  if(ob!==g.bot){ g.bot=ob; $('botScore').textContent=ob; pop('botScore'); }
+  updateRace();
+  g.combo=st; if(st>g.maxCombo) g.maxCombo=st;
+  if(st>=2){ $('combo').innerHTML=svg('flame',15)+' ×'+st; $('combo').classList.add('on'); } else $('combo').classList.remove('on');
+  const oa = g.phase==='q' && g.oppA.some(a=>a.qi===g.qi);
+  $('botLbl').textContent = bot.name + (oa ? ' • أجاب' : '');
+}
+function showQS(i, startAt){
+  const g=G; if(!g||g.over) return;
+  const q=g.qs[i]; g.qi=i; g.cur=q.it; g.phase='q'; g.locked=false; g.n=i+1;
+  g.deadline = (startAt||performance.now()) + QMS; g.qMax = QMS/1000; g.pend=null; g.lastSec=0;
+  $('qNum').textContent='السؤال '+toAr(i+1)+' من '+toAr(NQ);
+  const lv=q.it.lvl; $('lvlChip').textContent = LEVEL_NAME[lv]+' · '+toAr(PTS[lv])+' نقطة'; $('lvlChip').dataset.l = lv;
+  const qc=$('qText'); qc.textContent=q.it.q; qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
+  buildRing(); setQTimer(g.qMax);
+  const ex=$('expl'); ex.textContent=''; ex.classList.remove('on');
+  const box=$('opts'); box.innerHTML=''; box.classList.remove('lock');
+  const LET=['أ','ب','ج','د'];
+  q.opts.forEach((o,idx)=>{
+    const b=document.createElement('button'); b.className='opt'; b.dataset.ok=o.ok?'1':'0';
+    b.innerHTML=`<span class="lt">${LET[idx]}</span><span class="tx"></span><span class="st">${svg(o.ok?'check':'x',16)}</span>`;
+    b.querySelector('.tx').textContent=o.t; b.onclick=()=>answerS(b,o.ok,box); box.appendChild(b);
+  });
+  recompute();
+  if(!PV) botAns(i, 0);
+}
+function floatPts(pts,lvl,fast){
+  const d=document.createElement('div'); d.className='fpts l'+lvl; d.innerHTML='+'+toAr(pts)+(fast?'<small>سريع!</small>':'');
+  document.body.appendChild(d); setTimeout(()=>d.remove(),1100);
+}
+function answerS(btn, ok, box){
+  const g=G; if(!g||g.over||g.locked||g.phase!=='q') return;
+  g.locked=true; box.classList.add('lock');
+  const ms=Math.min(QMS,Math.max(0,Math.round(performance.now()-(g.deadline-QMS)))), lv=g.cur.lvl;
+  btn.classList.add(ok?'ok':'bad');
+  if(!ok){
+    [...box.children].forEach(c=>{ if(c.dataset.ok==='1') c.classList.add('ok'); else if(c!==btn) c.classList.add('dim'); });
+    SND.bad(); showExpl('');
+  } else {
+    [...box.children].forEach(c=>{ if(c!==btn) c.classList.add('dim'); });
+    SND.ok(); floatPts(PTS[lv],lv,ms<3000); showExpl('');
+  }
+  try{ navigator.vibrate && navigator.vibrate(ok?20:[30,40,30]); }catch(e){}
+  const rec={qi:g.qi,ok:ok,ms:ms};
+  g.mineA = g.mineA.filter(a=>a.qi!==rec.qi).concat([rec]); g.pend={rec:rec,t:performance.now()};
+  recompute(); waitLbl();
+  if(PV){ const p=PV; rpc('sync_q',{p_id:PID,p_match:p.id,p_qi:rec.qi,p_ok:ok,p_ms:ms},3500).then(s=>{ if(s && G===g && !g.over) applyS(s); }); }
+}
+function waitLbl(){
+  const g=G; if(!g||g.phase!=='q'||!g.locked) return;
+  if(!g.oppA.some(a=>a.qi===g.qi) && g.deadline-performance.now()>800) $('qSec').textContent='بانتظار '+bot.name.split(' ')[0]+'…';
+}
+function timeoutS(){
+  const g=G; if(!g||g.locked||g.over||g.phase!=='q') return;
+  g.locked=true; const box=$('opts'); box.classList.add('lock');
+  [...box.children].forEach(c=>{ if(c.dataset.ok==='1') c.classList.add('ok'); else c.classList.add('dim'); });
+  SND.bad(); showExpl('انتهى وقت السؤال'); recompute();
+}
+function botAns(i, elapsed){
+  const g=G; if(!g||g.over||PV) return;
+  if(g.oppA.some(a=>a.qi===i)) return;
+  const adj={1:.12,2:0,3:-.15}[LVS[i]], p=Math.max(.2,Math.min(.95,bot.skill+adj));
+  const t=Math.max(600, Math.min(9000-elapsed, 2200+(1-bot.skill)*2400+rnd(0,3200)-elapsed));
+  const ok=Math.random()<p;
+  g.timers.push(setTimeout(()=>{
+    if(G!==g||g.over||PV||g.qi!==i||g.oppA.some(a=>a.qi===i)) return;
+    g.oppA.push({qi:i,ok:ok,ms:Math.round(t+elapsed)}); recompute();
+  }, t));
+}
+function localAdv(now){
+  const g=G; if(g.phase!=='q') return;
+  const a=g.mineA.some(x=>x.qi===g.qi), b=g.oppA.some(x=>x.qi===g.qi);
+  if((a&&b) || now>=g.deadline+200){ g.phase='rev'; g.nextQi=g.qi+1; g.nextAt=now+REVEAL; }
+}
+function loopS(){
+  const g=G; if(!g||g.over) return; const now=performance.now();
+  if((g.phase==='pre'||g.phase==='rev') && g.nextAt && now>=g.nextAt){
+    const at=g.nextAt; g.nextAt=0;
+    if(g.nextQi>=NQ){ finishS(); return; }
+    showQS(g.nextQi, at); return;
+  }
+  if(g.phase==='q'){
+    const rem=Math.max(0,g.deadline-now);
+    $('timer').textContent=toAr(Math.ceil(rem/1000));
+    $('clock').classList.toggle('low', rem<=3000); $('clock').classList.toggle('mid', rem<=5000);
+    $('ringFg').style.strokeDashoffset=RING*(1-rem/QMS);
+    if(!g.locked){ setQTimer(rem/1000); if(rem<=0) timeoutS(); } else if(rem<=800){ $('qSec').textContent='٠ ث'; }
+    if(!PV) localAdv(now);
+    else if(rem<=0 && now-g.deadline>7000) takeover('انقطع الاتصال — أكمل ضد منافس آلي');
+    if(g.deadline-now<=3000 && g.deadline-now>0){ const sec=Math.ceil((g.deadline-now)/1000); if(sec!==g.lastSec){ g.lastSec=sec; SND.tick(); } }
+  }
+}
+function takeover(msg){
+  const g=G; if(!g||g.over||!PV) return;
+  PV=null; bot.name=nextBotName(); bot.skill=botSkill();
+  $('botLbl').textContent=bot.name; toast(msg||'انسحب الخصم — أكمل ضد منافس آلي'); const now=performance.now();
+  if(g.phase==='wait'){ g.phase='pre'; g.nextQi=0; g.nextAt=now+700; }
+  else if(g.phase==='q'){ botAns(g.qi, Math.max(0, QMS-(g.deadline-now))); }
+  else if((g.phase==='pre'||g.phase==='rev') && !g.nextAt){ g.nextAt=now+REVEAL; }
+  recompute();
+}
+async function pollS(){
+  const g=G; if(!g||g.over||!PV||g.polling) return; g.polling=true;
+  const p=PV, s=await rpc('sync_q',{p_id:PID,p_match:p.id,p_ready:(g.phase==='wait')},2500);
+  g.polling=false; if(G!==g||g.over||!PV) return;
+  if(s) applyS(s);
+}
+function applyS(s){
+  const g=G; if(!g||g.over||!PV||!s) return; const now=performance.now();
+  let mine=s.mine||[];
+  if(g.pend && now-g.pend.t<3500 && !mine.some(a=>a.qi===g.pend.rec.qi) && g.pend.rec.qi===s.qi) mine=mine.concat([g.pend.rec]);
+  g.mineA=mine; g.oppA=s.opp||[];
+  const idle = typeof s.opp_idle==='number' ? s.opp_idle : 0;
+  if(s.qi<NQ && (s.opp_left || idle>10)){ recompute(); takeover(); return; }
+  if(g.phase==='q' && s.qi===g.qi && typeof s.rem==='number') g.deadline=now+s.rem;
+  if(g.phase==='wait' && s.started && s.qi===0){ g.phase='pre'; g.nextQi=0; g.nextAt=now+(s.starts_in||0); }
+  else if(g.phase!=='wait' && g.phase!=='done' && s.qi>g.qi && !((g.phase==='pre'||g.phase==='rev') && g.nextQi===s.qi)){
+    g.phase='rev'; g.nextQi=s.qi; g.nextAt=now+(s.qi>=NQ?REVEAL:Math.max(0,s.starts_in||0));
+  }
+  recompute(); waitLbl();
+}
+function finishS(){
+  const g=G; if(!g||g.over||g.phase==='done') return; g.phase='done';
+  const map={}; g.mineA.forEach(a=>map[a.qi]=a); let st=0, mx=0, cor=0;
+  for(let i=0;i<NQ;i++){ const a=map[i]; if(a&&a.ok){ st++; cor++; mx=Math.max(mx,st); stats.correctTotal=(stats.correctTotal||0)+1; if(LVS[i]===3) stats.hardCorrect=(stats.hardCorrect||0)+1; } else st=0; }
+  g.correct=cor; g.wrong=NQ-cor; g.maxCombo=mx; recompute();
+  if(g.me===g.bot && g.me>0){ if(g.tbMe<g.tbOpp) g.tie='win'; else if(g.tbMe>g.tbOpp) g.tie='lose'; }
+  if(PV) rpc('submit_score',{p_id:PID,p_match:PV.id,p_score:g.me,p_done:true},3000);
+  endGame();
+}
+
 /* ===== النهاية ===== */
 let lastMe = 0, lastRes = null;
 function endGame(){
   if(!G || G.over) return;
   G.over = true; G.timers.forEach(t=>{clearInterval(t);clearTimeout(t)});
   const me=G.me, b=G.bot; lastMe = me;
-  const R = G.force || (me>b?'win':(me<b?'lose':'draw'));
+  const R = G.force || (me>b?'win':(me<b?'lose':(G.tie||'draw')));
   let emoji,title;
   if(R==='win'){ emoji='trophy'; title='فزت!'; stats.wins++; stats.streak++; SND.win(); }
   else if(R==='lose'){ emoji='refresh'; title=G.force?'استسلمت':'خسرت هذه الجولة'; stats.streak=0; SND.lose(); }
@@ -1274,7 +1456,7 @@ function endGame(){
   $('earned').style.color = scored ? '' : 'var(--muted)';
   $('resEmoji').innerHTML=svg(emoji,32); $('resTitle').textContent=title;
   $('rMe').textContent=me; $('rBot').textContent=b; $('rBotLbl').textContent=bot.name;
-  $('resExtra').textContent = G.force==='win' ? 'انسحب الخصم، فزت بالمباراة' : G.force==='lose' ? 'يمكنك المحاولة من جديد متى شئت' : isBest && me>0 ? 'رقم قياسي جديد لك!' : (R==='win' ? 'أحسنت، الأسئلة تزداد صعوبة كلما تقدمت' : 'جرّب مرة أخرى، الدقيقة قصيرة!');
+  $('resExtra').textContent = G.force==='win' ? 'انسحب الخصم، فزت بالمباراة' : G.force==='lose' ? 'يمكنك المحاولة من جديد متى شئت' : isBest && me>0 ? 'رقم قياسي جديد لك!' : (R==='win' ? (G.tie==='win' ? 'تعادلتما في النقاط، وحسمت السرعة لصالحك' : 'أحسنت، الأسئلة تزداد صعوبة كلما تقدمت') : 'جرّب مرة أخرى، الدقيقة قصيرة!');
   show('result');
 }
 
@@ -1506,6 +1688,29 @@ try{
 if(!DEMO) rpc('log_visit',{p_id:PID},4000);
 syncPlayer();
 loadRemoteQuestions().then(acceptInviteFromUrl);
+
+/* تنبيه تثبيت التطبيق على الشاشة الرئيسية (سفاري iPhone/iPad) */
+(function(){ try{
+  if(DEMO) return;
+  var ua=navigator.userAgent||'', ios=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  var safari=/Safari/.test(ua)&&!/CriOS|FxiOS|EdgiOS|OPiOS|GSA|Instagram|FBAN|FBAV|Line/.test(ua);
+  var standalone=window.navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);
+  if(!ios||!safari||standalone) return;
+  var K='mc_a2hs', v=localStorage.getItem(K); if(v==='never') return;
+  var today=new Date().toDateString(); if(v===today) return;
+  setTimeout(function(){
+    if($('modal').classList.contains('on') || !$('home').classList.contains('active')) return;
+    var shareIc='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+    showModal('ثبّت التحدّي كتطبيق',
+      '<div style="line-height:2;text-align:right">لتجربة أسرع وبشاشة كاملة، أضف اللعبة إلى الشاشة الرئيسية:<br>'
+      +'<b>١.</b> اضغط زر المشاركة '+shareIc+' أسفل شاشة سفاري<br>'
+      +'<b>٢.</b> مرّر للأسفل واختر «إضافة إلى الشاشة الرئيسية»<br>'
+      +'<b>٣.</b> اضغط «إضافة» في الأعلى<br>'
+      +'ثم افتح اللعبة من الأيقونة الجديدة.</div>',
+      [{t:'فهمت',full:true,f:function(){ localStorage.setItem(K,'never'); closeModal(); }},
+       {t:'ذكّرني لاحقاً',ghost:true,full:true,f:function(){ localStorage.setItem(K,today); closeModal(); }}]);
+  }, 2500);
+}catch(e){} })();
 </script>
 </body>
 </html>
