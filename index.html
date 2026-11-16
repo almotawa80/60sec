@@ -444,7 +444,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611162316">
+<meta name="app-version" content="202611162318">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1282,10 +1282,10 @@ function startGameSync(){
   $('qNum').textContent='السؤال ١ من ٦'; $('timer').textContent='١٠';
   $('qText').textContent='استعد… جارٍ تجهيز السؤال الأول'; $('opts').innerHTML=''; $('lvlChip').textContent=''; $('qSec').textContent=''; $('qRingPath').style.strokeDashoffset=0; $('ringFg').style.strokeDashoffset=0;
   const ex0=$('expl'); ex0.textContent=''; ex0.classList.remove('on'); $('clock').classList.remove('low','mid');
-  show('game'); SND.go();
+  if(PV){ $('cd').textContent='…'; }
   G.timers.push(setInterval(loopS,100));
   if(PV){ pollS(); G.timers.push(setInterval(pollS,500)); }
-  else { G.phase='pre'; G.nextQi=0; G.nextAt=performance.now()+700; }
+  else { G.phase='pre'; G.nextQi=0; G.nextAt=performance.now()+30; }
 }
 function recompute(){
   const g=G; if(!g) return;
@@ -1305,6 +1305,7 @@ function recompute(){
 }
 function showQS(i, startAt){
   const g=G; if(!g||g.over) return;
+  if(!g.shown){ g.shown=true; show('game'); SND.go(); }
   const q=g.qs[i]; g.qi=i; g.cur=q.it; g.phase='q'; g.locked=false; g.n=i+1;
   g.deadline = (startAt||performance.now()) + QMS; g.qMax = QMS/1000; g.pend=null; g.lastSec=0;
   $('qNum').textContent='السؤال '+toAr(i+1)+' من '+toAr(NQ);
