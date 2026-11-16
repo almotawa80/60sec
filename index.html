@@ -454,7 +454,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611162347">
+<meta name="app-version" content="202611162351">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1275,7 +1275,8 @@ function buildQs(seed){
     const diff = pool.filter(x=>!prev || x.cat!==prev.cat); if(diff.length) pool = diff;
     const it = pool[Math.floor(rng()*pool.length)]; used.add(it); prev = it;
     const opts = [{t:it.right,ok:true}, ...it.w.map(t=>({t,ok:false}))];
-    for(let k=opts.length-1;k>0;k--){ const j=Math.floor(rng()*(k+1)); [opts[k],opts[j]]=[opts[j],opts[k]]; }
+    const orng = mkRng(seed*131 + i + 1 + (PV ? PV.me*7919 : 0));
+    for(let k=opts.length-1;k>0;k--){ const j=Math.floor(orng()*(k+1)); [opts[k],opts[j]]=[opts[j],opts[k]]; }
     out.push({it,opts});
   }
   return out;
