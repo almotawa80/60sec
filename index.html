@@ -455,7 +455,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611162335">
+<meta name="app-version" content="202611162338">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -832,7 +832,7 @@ const BADGES = [
   {id:'fast',   n:'سريع البديهة',   s:'سريع',    d:'اجمع ٦٠ نقطة أو أكثر في جولة',           i:'timer',     t:c=>c.me>=60},
   {id:'pro',    n:'محترف',          s:'محترف',   d:'اجمع ١٠٠ نقطة أو أكثر في جولة',          i:'award',    t:c=>c.me>=100},
   {id:'fire',   n:'متتالية نارية',  s:'نارية',   d:'٤ إجابات صحيحة متتالية',                i:'flame',    t:c=>c.combo>=4},
-  {id:'rocket', n:'صاروخ',          s:'صاروخ',   d:'جولة كاملة: ١٢٠ نقطة',                  i:'rocket',   t:c=>c.me>=120},
+  {id:'rocket', n:'صاروخ',          s:'صاروخ',   d:'اجمع ١٥٠ نقطة أو أكثر في جولة',          i:'rocket',   t:c=>c.me>=150},
   {id:'perfect',n:'بلا أخطاء',      s:'دقيق',    d:'٦ إجابات صحيحة بدون أي خطأ',           i:'checkc',   t:c=>c.wrong===0&&c.correct>=6},
   {id:'hat',    n:'ثلاثية',         s:'ثلاثية',  d:'اربح ٣ مرات متتالية',                   i:'stars3',     t:c=>stats.streak>=3},
   {id:'champ',  n:'بطل',            s:'بطل',     d:'اربح ١٠ تحديات',                        i:'crown',    t:c=>stats.wins>=10},
@@ -1263,6 +1263,7 @@ function onTimeout(){
 
 /* ===== الجولة المتزامنة: ٦ أسئلة × ١٠ ثوانٍ ===== */
 const SYNC_MODE = true, NQ = 6, QMS = 10000, LVS = [1,1,2,2,3,3], PTS = {1:10,2:20,3:30}, REVEAL = 1300;
+function ptsFor(lvl,ms){ const b=PTS[lvl]; const rem=Math.max(0,Math.min(QMS,QMS-(ms||0))); return b+Math.round(b*0.5*rem/QMS); }
 function startGame(){ return SYNC_MODE ? startGameSync() : startGameOld(); }
 function buildQs(seed){
   const used = new Set(), out = []; let prev = null;
@@ -1303,8 +1304,8 @@ function recompute(){
   const map={}; g.mineA.forEach(a=>map[a.qi]=a);
   let me=0, tbMe=0, st=0;
   for(let i=0;i<=Math.max(0,g.qi);i++){ const a=map[i]; if(a&&a.ok){ st++; } else if(a || i<g.qi) st=0; }
-  g.mineA.forEach(a=>{ if(a.ok){ me+=PTS[LVS[a.qi]]; tbMe+=a.ms; } });
-  let ob=0, tbOpp=0; g.oppA.forEach(a=>{ if(a.ok){ ob+=PTS[LVS[a.qi]]; tbOpp+=a.ms; } });
+  g.mineA.forEach(a=>{ if(a.ok){ me+=ptsFor(LVS[a.qi],a.ms); tbMe+=a.ms; } });
+  let ob=0, tbOpp=0; g.oppA.forEach(a=>{ if(a.ok){ ob+=ptsFor(LVS[a.qi],a.ms); tbOpp+=a.ms; } });
   g.tbMe=tbMe; g.tbOpp=tbOpp;
   if(me!==g.me){ g.me=me; $('myScore').textContent=me; pop('myScore'); }
   if(ob!==g.bot){ g.bot=ob; $('botScore').textContent=ob; pop('botScore'); }
@@ -1320,7 +1321,7 @@ function showQS(i, startAt){
   const q=g.qs[i]; g.qi=i; g.cur=q.it; g.phase='q'; g.locked=false; g.n=i+1;
   g.deadline = (startAt||performance.now()) + QMS; g.qMax = QMS/1000; g.pend=null; g.lastSec=0;
   $('qNum').textContent='السؤال '+toAr(i+1)+' من '+toAr(NQ);
-  const lv=q.it.lvl; $('lvlChip').textContent = LEVEL_NAME[lv]+' · '+toAr(PTS[lv])+' نقطة'; $('lvlChip').dataset.l = lv;
+  const lv=q.it.lvl; $('lvlChip').textContent = LEVEL_NAME[lv]+' · '+toAr(PTS[lv])+'–'+toAr(PTS[lv]*1.5); $('lvlChip').dataset.l = lv;
   const qc=$('qText'); qc.textContent=q.it.q; qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
   buildRing(); setQTimer(g.qMax);
   const ex=$('expl'); ex.textContent=''; ex.classList.remove('on');
@@ -1348,7 +1349,7 @@ function answerS(btn, ok, box){
     SND.bad(); showExpl('');
   } else {
     [...box.children].forEach(c=>{ if(c!==btn) c.classList.add('dim'); });
-    SND.ok(); floatPts(PTS[lv],lv,ms<3000); showExpl('');
+    SND.ok(); floatPts(ptsFor(lv,ms),lv,ms<3000); showExpl('');
   }
   try{ navigator.vibrate && navigator.vibrate(ok?20:[30,40,30]); }catch(e){}
   const rec={qi:g.qi,ok:ok,ms:ms};
