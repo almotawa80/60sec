@@ -1028,7 +1028,7 @@ function renderStats(){
   $('stBest').textContent=stats.best; $('stWins').textContent=stats.wins; $('stStreak').textContent=shownDays();
   const pa = pointsAvailable();
   try{ setAv($('invAv'), stats.avatar, avInit()); setAv($('pfAv'), stats.avatar, avInit()); }catch(e){}
-  $('goLbl').textContent = pa ? 'ابدأ التحدّي' : 'اسحب للتدريب'; $('goDone').style.display = pa ? 'none' : 'block';
+  $('goLbl').textContent = pa ? 'اسحب للتحدّي' : 'اسحب للتدريب'; $('goDone').style.display = pa ? 'none' : 'block';
   $('goNote').style.display = 'none';
   $('wBal').textContent=fmt(stats.balance); $('sBal').textContent=fmt(stats.balance);
   renderBadges();
