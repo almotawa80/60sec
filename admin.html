@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>لوحة تحكّم تحدّي الدقيقة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+:root{--red:#c8102e;--bg:#f4f4f6;--card:#fff;--tx:#1f2125;--mu:#6b7078;--ln:#e5e6ea;--ok:#1a8f4c}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Noto Kufi Arabic',system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:14px}
+header{background:var(--red);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:20px;font-weight:800;flex:1}
+header small{opacity:.85;font-size:12px}
+.btn{font-family:inherit;border:0;border-radius:999px;padding:9px 18px;font-weight:600;cursor:pointer;background:#fff;color:var(--red);font-size:13px}
+.btn.o{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.7)}
+main{max-width:1280px;margin:0 auto;padding:20px 16px 60px}
+.live{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.lv{background:var(--card);border-radius:16px;padding:16px 18px;border:1px solid var(--ln);display:flex;align-items:center;gap:12px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--ok);animation:pl 1.4s infinite}
+@keyframes pl{0%{box-shadow:0 0 0 0 rgba(26,143,76,.5)}100%{box-shadow:0 0 0 12px rgba(26,143,76,0)}}
+.lv b{font-size:30px;font-weight:800}.lv span{color:var(--mu);font-size:13px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.k{background:var(--card);border-radius:16px;padding:16px;border:1px solid var(--ln)}
+.k span{display:block;color:var(--mu);font-size:12px;margin-bottom:6px}
+.k b{font-size:26px;font-weight:800}.k em{font-style:normal;color:var(--mu);font-size:12px;margin-inline-start:6px}
+.k.r b{color:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.box{background:var(--card);border-radius:16px;padding:16px;border:1px solid var(--ln)}
+.box h2{font-size:15px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.box h2 input{margin-inline-start:auto;font-family:inherit;border:1px solid var(--ln);border-radius:999px;padding:6px 14px;font-size:13px;width:220px}
+.cv{position:relative;height:260px}
+.tw{overflow:auto;max-height:420px;border:1px solid var(--ln);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{position:sticky;top:0;background:#fafafb;text-align:right;padding:9px 10px;font-weight:600;color:var(--mu);border-bottom:1px solid var(--ln);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--ln);white-space:nowrap}
+tr:hover td{background:#fafafb}
+.tag{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600}
+.tag.n{background:#fff3cd;color:#8a6d00}.tag.d{background:#dff5e8;color:#136b39}
+.mini{font-family:inherit;border:1px solid var(--ln);background:#fff;border-radius:999px;padding:4px 12px;cursor:pointer;font-size:12px}
+#login{max-width:340px;margin:12vh auto;background:var(--card);border-radius:18px;padding:26px;text-align:center;border:1px solid var(--ln)}
+#login h2{margin-bottom:6px;font-size:18px}#login p{color:var(--mu);font-size:13px;margin-bottom:16px}
+#login input{width:100%;font-family:inherit;border:1px solid var(--ln);border-radius:12px;padding:12px;font-size:15px;text-align:center;margin-bottom:12px}
+#login .btn{background:var(--red);color:#fff;width:100%;padding:12px}
+#err{color:var(--red);font-size:13px;min-height:18px;margin-top:8px}
+.hide{display:none!important}
+@media(max-width:760px){.live{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.box h2 input{width:130px}}
+@media print{header .btn{display:none}.tw{max-height:none;overflow:visible}body{background:#fff}.box,.k,.lv{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div id="login">
+  <h2>لوحة تحكّم تحدّي الدقيقة</h2>
+  <p>أدخل كلمة السر للمتابعة</p>
+  <input id="key" type="password" autocomplete="off" placeholder="كلمة السر">
+  <button class="btn" id="go">دخول</button>
+  <div id="err"></div>
+</div>
+
+<div id="app" class="hide">
+<header>
+  <h1>لوحة تحكّم تحدّي الدقيقة<br><small id="upd">—</small></h1>
+  <button class="btn" id="xls">تصدير Excel</button>
+  <button class="btn" id="prn">طباعة / PDF</button>
+  <button class="btn o" id="ref">تحديث</button>
+  <button class="btn o" id="out">خروج</button>
+</header>
+<main>
+  <div class="live">
+    <div class="lv"><i class="dot"></i><div><b id="lPlay">0</b><br><span>يلعبون الآن</span></div></div>
+    <div class="lv"><i class="dot"></i><div><b id="lOn">0</b><br><span>متصلون آخر دقيقتين</span></div></div>
+    <div class="lv"><i class="dot"></i><div><b id="lSrch">0</b><br><span>يبحثون عن منافس</span></div></div>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <div class="grid">
+    <div class="box"><h2>الزائرون واللعب يوماً بيوم (٣٠ يوماً)</h2><div class="cv"><canvas id="cDays"></canvas></div></div>
+    <div class="box"><h2>النقاط الموزّعة يومياً</h2><div class="cv"><canvas id="cPts"></canvas></div></div>
+    <div class="box"><h2>نوع المنافس</h2><div class="cv"><canvas id="cHum"></canvas></div></div>
+    <div class="box"><h2>حالة القسائم</h2><div class="cv"><canvas id="cVou"></canvas></div></div>
+    <div class="box" style="grid-column:1/-1"><h2>أعلى ١٠ لاعبين بالنقاط</h2><div class="cv"><canvas id="cTop"></canvas></div></div>
+  </div>
+  <div class="box" style="margin-bottom:16px"><h2>القسائم المطلوبة</h2><div class="tw"><table id="tRed"></table></div></div>
+  <div class="box" style="margin-bottom:16px"><h2>اللاعبون <input id="q" placeholder="بحث بالاسم أو الرقم الوظيفي"></h2><div class="tw"><table id="tPl"></table></div></div>
+  <div class="box"><h2>محاولات تسجيل مشبوهة</h2><div class="tw"><table id="tEv"></table></div></div>
+</main>
+</div>
+
+<script>
+const SB_URL='https://trommpfqabfoabptcpmh.supabase.co', SB_KEY='sb_publishable_84oOtzfC1ATGXnthyNHnxg_NB5AMGBs';
+let KEY=''; try{ KEY=sessionStorage.getItem('mc_admin')||''; }catch(e){}
+let D=null, charts={}, timer=null;
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n||0).toLocaleString('en-US');
+const dt=s=>{ if(!s) return '—'; const d=new Date(s); return d.toLocaleDateString('en-GB')+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); };
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function rpc(fn,args){
+  const r=await fetch(SB_URL+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(args)});
+  if(!r.ok) throw new Error('http'); return r.json();
+}
+async function load(){
+  try{
+    const r=await rpc('admin_report',{p_key:KEY});
+    if(!r||!r.ok){ KEY=''; try{sessionStorage.removeItem('mc_admin');}catch(e){} $('app').classList.add('hide'); $('login').classList.remove('hide'); $('err').textContent='كلمة السر غير صحيحة'; return false; }
+    D=r; $('login').classList.add('hide'); $('app').classList.remove('hide'); render(); return true;
+  }catch(e){ $('err').textContent='تعذّر الاتصال بالخادم'; return false; }
+}
+function mk(id,cfg){ if(charts[id]) charts[id].destroy(); if(typeof Chart==='undefined') return; charts[id]=new Chart($(id),cfg); }
+function render(){
+  const t=D.totals, L=D.live;
+  $('upd').textContent='آخر تحديث: '+dt(D.now);
+  $('lPlay').textContent=fmt(L.playing); $('lOn').textContent=fmt(L.online); $('lSrch').textContent=fmt(L.searching);
+  const k=[['الزائرون (إجمالي)',t.visitors,'',0],['زائرو اليوم',t.visitors_today,'',0],['المسجّلون',t.registered,'',0],
+    ['المباريات',t.plays,'اليوم '+fmt(t.plays_today),0],['الفائزون (لاعبون)',t.winners,'فوز '+fmt(t.wins),1],['المنسحبون (مرات)',t.quits,'',0],
+    ['النقاط الموزّعة',t.points_given,'اليوم '+fmt(t.points_today),1],['أرصدة حالية',t.balance,'',0],
+    ['فائزون بقسائم',t.voucher_winners,'',1],['قسائم مطلوبة',t.vouchers_requested,'',1],['قسائم تم صرفها',t.vouchers_delivered,'من '+fmt(t.vouchers_requested),1],['نقاط مستبدلة',t.points_redeemed,'',0]];
+  $('kpis').innerHTML=k.map(x=>'<div class="k'+(x[3]?' r':'')+'"><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b>'+(x[2]?'<em>'+x[2]+'</em>':'')+'</div>').join('');
+  const days=D.days, lb=days.map(d=>d.dy.slice(5));
+  const grid={color:'#eceef1'}, base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{family:'Noto Kufi Arabic'}}}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid}}};
+  mk('cDays',{type:'bar',data:{labels:lb,datasets:[{label:'زائرون',data:days.map(d=>d.visitors),backgroundColor:'#d5d8de'},{label:'مباريات',data:days.map(d=>d.plays),backgroundColor:'#c8102e'},{label:'انسحابات',data:days.map(d=>d.quits),backgroundColor:'#f2a900'}]},options:base});
+  mk('cPts',{type:'line',data:{labels:lb,datasets:[{label:'نقاط',data:days.map(d=>d.points),borderColor:'#c8102e',backgroundColor:'rgba(200,16,46,.12)',fill:true,tension:.3}]},options:base});
+  mk('cHum',{type:'doughnut',data:{labels:['ضد لاعب حقيقي','ضد منافس آلي'],datasets:[{data:[t.vs_human,t.vs_bot],backgroundColor:['#c8102e','#d5d8de']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'Noto Kufi Arabic'}}}}}});
+  mk('cVou',{type:'doughnut',data:{labels:['تم الصرف','بانتظار الصرف'],datasets:[{data:[t.vouchers_delivered,t.vouchers_requested-t.vouchers_delivered],backgroundColor:['#1a8f4c','#f2a900']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'Noto Kufi Arabic'}}}}}});
+  const top=D.players.slice(0,10);
+  mk('cTop',{type:'bar',data:{labels:top.map(p=>p.name),datasets:[{label:'إجمالي النقاط',data:top.map(p=>p.total_points),backgroundColor:'#c8102e'}]},options:Object.assign({},base,{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid},y:{grid:{display:false}}}})});
+  renderRed(); renderPl(); renderEv();
+}
+function renderRed(){
+  const rows=D.redemptions;
+  $('tRed').innerHTML='<tr><th>الرمز</th><th>الاسم</th><th>الرقم الوظيفي</th><th>القسيمة</th><th>النقاط</th><th>التاريخ</th><th>الحالة</th><th></th></tr>'+
+  (rows.length?rows.map(r=>{const dn=r.status==='تم الصرف';return '<tr><td><b>'+esc(r.code)+'</b></td><td>'+esc(r.player_name)+'</td><td>'+esc(r.emp_no||'—')+'</td><td>'+esc(r.reward)+'</td><td>'+fmt(r.cost)+'</td><td>'+dt(r.created_at)+'</td><td><span class="tag '+(dn?'d':'n')+'">'+(dn?'تم الصرف':'بانتظار الصرف')+'</span></td><td><button class="mini" data-c="'+esc(r.code)+'" data-s="'+(dn?'جديد':'تم الصرف')+'">'+(dn?'تراجع':'تم الصرف')+'</button></td></tr>';}).join(''):'<tr><td colspan="8" style="color:var(--mu);text-align:center;padding:20px">لا توجد طلبات بعد</td></tr>');
+  $('tRed').querySelectorAll('button').forEach(b=>b.onclick=async()=>{ b.disabled=true; try{ await rpc('admin_set_redeem',{p_key:KEY,p_code:b.dataset.c,p_status:b.dataset.s}); }catch(e){} load(); });
+}
+function renderPl(){
+  const q=($('q').value||'').trim(), rows=D.players.filter(p=>!q||(p.name||'').includes(q)||(p.emp_no||'').includes(q));
+  $('tPl').innerHTML='<tr><th>#</th><th>الاسم</th><th>الرقم الوظيفي</th><th>إجمالي النقاط</th><th>الرصيد</th><th>مباريات</th><th>فوز</th><th>انسحاب</th><th>قسائم</th><th>آخر لعب</th><th>تسجيل</th></tr>'+
+  (rows.length?rows.map((p,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.emp_no)+'</td><td>'+fmt(p.total_points)+'</td><td>'+fmt(p.balance)+'</td><td>'+fmt(p.played)+'</td><td>'+fmt(p.wins)+'</td><td>'+fmt(p.quits)+'</td><td>'+fmt(p.vouchers)+'</td><td>'+dt(p.last_play)+'</td><td>'+dt(p.created_at)+'</td></tr>').join(''):'<tr><td colspan="11" style="color:var(--mu);text-align:center;padding:20px">لا يوجد لاعبون</td></tr>');
+}
+function renderEv(){
+  const rows=D.events, kind={device_other_emp:'جهاز واحد برقم وظيفي آخر',emp_new_device:'الرقم نفسه على جهاز جديد'};
+  $('tEv').innerHTML='<tr><th>الوقت</th><th>الاسم</th><th>الرقم المسجّل</th><th>الرقم المُدخل</th><th>النوع</th></tr>'+
+  (rows.length?rows.map(e=>'<tr><td>'+dt(e.created_at)+'</td><td>'+esc(e.name)+'</td><td>'+esc(e.bound_emp)+'</td><td>'+esc(e.tried_emp)+'</td><td>'+esc(kind[e.kind]||e.kind)+'</td></tr>').join(''):'<tr><td colspan="5" style="color:var(--mu);text-align:center;padding:20px">لا توجد محاولات</td></tr>');
+}
+function exportXls(){
+  if(!D||typeof XLSX==='undefined') return;
+  const wb=XLSX.utils.book_new(), t=D.totals;
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet([{'الزائرون':t.visitors,'المسجّلون':t.registered,'المباريات':t.plays,'الفائزون':t.winners,'مرات الفوز':t.wins,'الانسحابات':t.quits,'النقاط الموزّعة':t.points_given,'الأرصدة الحالية':t.balance,'فائزون بقسائم':t.voucher_winners,'قسائم مطلوبة':t.vouchers_requested,'قسائم مصروفة':t.vouchers_delivered}]),'الملخص');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(D.days.map(d=>({'اليوم':d.dy,'زائرون':d.visitors,'لاعبون':d.players,'مباريات':d.plays,'فوز':d.wins,'انسحاب':d.quits,'ضد لاعب حقيقي':d.human,'نقاط':d.points}))),'يومياً');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(D.players.map(p=>({'الاسم':p.name,'الرقم الوظيفي':p.emp_no,'إجمالي النقاط':p.total_points,'الرصيد':p.balance,'مباريات':p.played,'فوز':p.wins,'انسحاب':p.quits,'قسائم':p.vouchers,'آخر لعب':p.last_play,'تاريخ التسجيل':p.created_at}))),'اللاعبون');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(D.redemptions.map(r=>({'الرمز':r.code,'الاسم':r.player_name,'الرقم الوظيفي':r.emp_no,'القسيمة':r.reward,'النقاط':r.cost,'الحالة':r.status,'التاريخ':r.created_at}))),'القسائم');
+  XLSX.writeFile(wb,'تحدي-الدقيقة-'+D.today+'.xlsx');
+}
+async function enter(){ KEY=$('key').value.trim()||KEY; if(!KEY) return; $('err').textContent=''; if(await load()){ try{sessionStorage.setItem('mc_admin',KEY);}catch(e){} clearInterval(timer); timer=setInterval(load,15000); } }
+$('go').onclick=enter; $('key').onkeydown=e=>{ if(e.key==='Enter') enter(); };
+$('ref').onclick=load; $('prn').onclick=()=>window.print(); $('xls').onclick=exportXls; $('q').oninput=()=>D&&renderPl();
+$('out').onclick=()=>{ try{sessionStorage.removeItem('mc_admin');}catch(e){} KEY=''; clearInterval(timer); location.reload(); };
+if(KEY) enter();
+</script>
+</body>
+</html>

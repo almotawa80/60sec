@@ -435,7 +435,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111643">
+<meta name="app-version" content="2026111644">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1065,6 +1065,7 @@ function startGame(){
         me:0, bot:0, start:performance.now(), qStart:0, over:false, timers:[], locked:false, lastSec:61 };
   G.scored = pointsAvailable();
   if(G.scored){ stats.pointsDay = dkey(new Date()); save(stats); if(!DEMO) rpc('start_scored',{p_id:PID},4000); }
+  if(!DEMO) rpc('set_playing',{p_id:PID},3000);
   $('myLbl').textContent = G.scored ? 'أنت' : 'أنت (تدريب)';
   $('myScore').textContent=0; $('botScore').textContent=0; $('botLbl').textContent=bot.name;
   updateRace(); $('combo').classList.remove('on');
@@ -1254,7 +1255,7 @@ function endGame(){
   const scored = G.scored, bonus = (scored && R==='win' && !G.force) ? (PV ? 50 : 0) : 0, earned = (scored && G.force!=='lose') ? me + bonus : 0;
   lastRes = {me:me, bot:b, scored:scored, earned:earned, result: R};
   stats.balance += earned; stats.totalPoints += earned;
-  if(!DEMO) rpc('claim_points',{p_id:PID,p_points:earned,p_won:(R==='win')},5000).then(function(c){ if(c && typeof c.balance==='number'){ stats.balance=c.balance; save(stats); try{ renderStats(); }catch(e){} } });
+  if(!DEMO) rpc('finish_game',{p_id:PID,p_points:earned,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose')},5000).then(function(c){ if(c && typeof c.balance==='number'){ stats.balance=c.balance; save(stats); try{ renderStats(); }catch(e){} } });
   stats.played++;
   const today=dkey(new Date()), yest=dkey(new Date(Date.now()-864e5));
   if(stats.lastDay!==today){ stats.dayStreak = (stats.lastDay===yest) ? (stats.dayStreak||0)+1 : 1; stats.lastDay=today; }
@@ -1498,6 +1499,7 @@ try{
     }
   }).catch(function(){});
 }catch(e){} })();
+if(!DEMO) rpc('log_visit',{p_id:PID},4000);
 syncPlayer();
 loadRemoteQuestions().then(acceptInviteFromUrl);
 </script>
