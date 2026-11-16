@@ -352,7 +352,6 @@ html[data-theme="dark"]{--hero:#202124;--page:#111312;--card:#2a2b2e;--text:#f3f
 html[data-theme="dark"] .wallet{background:var(--card);box-shadow:none;border:1px solid var(--line)}
 html[data-theme="dark"] .wallet b{color:var(--text)}
 html[data-theme="dark"] .wbtn{background:#3a3b40;color:var(--text)}
-html[data-theme="dark"] #goBtn{background:var(--card);color:var(--text);border:1px solid var(--line);box-shadow:none}
 html[data-theme="dark"] #inviteBtn{background:transparent!important;color:var(--text)!important;border:1px solid var(--line)!important}
 html[data-theme="dark"] html[data-theme="dark"] #quitBtn{background:var(--accent)!important;color:#fff!important;border:0!important}
 #game #store .bklogo.bks,#badgesPage #app{position:relative}
@@ -365,10 +364,19 @@ input,select,textarea{font-size:16px!important}
 html[data-theme="dark"] .pts50{color:#ff4d57}
 #goBtn.slide{position:relative;height:72px;border-radius:999px!important;padding:0!important;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;display:flex;align-items:center;justify-content:center;text-align:center;font-size:18px;line-height:1.25;cursor:pointer}
 #goBtn .slbl{margin:0;padding:0 80px 0 14px;white-space:nowrap;font-weight:800;transition:opacity .15s;pointer-events:none}
-#goBtn .sknob{position:absolute;margin:0;right:6px;top:6px;width:60px;height:60px;border-radius:50%;background:#fff;color:var(--accent);display:grid;place-items:center;box-shadow:0 3px 10px rgba(0,0,0,.25);touch-action:none;will-change:transform}
+#goBtn .sknob{position:absolute;margin:0;right:4px;top:4px;width:64px;height:64px;border-radius:50%;background:#fff;color:var(--accent);display:grid;place-items:center;box-shadow:0 3px 10px rgba(0,0,0,.25);touch-action:none;will-change:transform}
 #goBtn .sknob.back{transition:transform .25s ease}
 @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(-10px)}}
 #goBtn .sknob.hint{animation:nudge 1.6s ease-in-out 1}
+#goBtn.slide{background:linear-gradient(90deg,#55565b,#3a3b40)!important;color:#fff!important;border:0!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 6px 16px rgba(0,0,0,.18)!important}
+#goBtn .slbl{background:linear-gradient(90deg,rgba(255,255,255,.4) 0%,#fff 45%,rgba(255,255,255,.4) 90%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:shim 2.6s linear infinite}
+@keyframes shim{from{background-position:120% 0}to{background-position:-100% 0}}
+#goBtn .sknob{box-shadow:0 2px 8px rgba(0,0,0,.35)}
+#goBtn.slide{background:rgba(0,0,0,.09)!important;box-shadow:none!important;border:0!important;color:#6b6f76}
+html[data-theme="dark"] #goBtn.slide{background:rgba(255,255,255,.14)!important;border:0!important;color:#c9ccd2}
+#goBtn .slbl{background:linear-gradient(100deg,currentColor 35%,#fff 50%,currentColor 65%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shim 2.4s linear infinite;font-weight:700}
+html:not([data-theme="dark"]) #goBtn .slbl{background-image:linear-gradient(100deg,currentColor 35%,#111 50%,currentColor 65%)}
+@keyframes shim{from{background-position:130% 0}to{background-position:-130% 0}}
 html[data-theme="dark"] .race .m,html[data-theme="dark"] .vsb{color:var(--accent)}
 html[data-theme="dark"] .hero:before,html[data-theme="dark"] .hero:after{display:none}
 html[data-theme="dark"] .sheet{background:var(--page)}
@@ -410,7 +418,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="2026111627">
+<meta name="app-version" content="2026111628">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1243,7 +1251,7 @@ function endGame(){
   function reset(){ knob.classList.add('back'); knob.style.transform='translateX(0)'; lbl.style.opacity=1; x=0; done=false; }
   function fire(){ if(done) return; done=true; knob.classList.add('back'); knob.style.transform='translateX('+(-max)+'px)'; lbl.style.opacity=0; try{ navigator.vibrate&&navigator.vibrate(25); }catch(e){}
     setTimeout(function(){ startMatch(); setTimeout(reset,600); },120); }
-  knob.addEventListener('pointerdown',function(e){ if(done) return; drag=true; knob.classList.remove('back'); startX=e.clientX; max=btn.clientWidth-60-12; try{ knob.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); });
+  knob.addEventListener('pointerdown',function(e){ if(done) return; drag=true; knob.classList.remove('back'); startX=e.clientX; max=btn.clientWidth-64-8; try{ knob.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); });
   knob.addEventListener('pointermove',function(e){ if(!drag) return; x=Math.max(0,Math.min(max,startX-e.clientX)); knob.style.transform='translateX('+(-x)+'px)'; lbl.style.opacity=String(1-x/max); });
   function up(){ if(!drag) return; drag=false; if(x>=max*0.8) fire(); else reset(); }
   knob.addEventListener('pointerup',up); knob.addEventListener('pointercancel',up);
