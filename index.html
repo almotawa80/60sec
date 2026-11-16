@@ -1627,7 +1627,7 @@ document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stat
     function clean(){ el.style.background=''; home.style.transform=''; home.style.top=''; home.style.bottom=''; home.style.left=''; home.style.animation=''; reset(); }
     if(dx>W*0.35 || v>0.6){
       el.style.transform='translateX('+(sg*W)+'px)';
-      setTimeout(function(){ var b=document.getElementById(id==='store'?'backBtn':'backBtn2'); if(b) b.click(); clean(); },210);
+      setTimeout(function(){ var b=document.getElementById(id==='store'?'backBtn':'backBtn2'); if(b) b.click(); clean(); home.style.animation='none'; setTimeout(function(){ home.style.animation=''; },450); },210);
     } else {
       el.style.transform='translateX(0)';
       setTimeout(clean,230);
