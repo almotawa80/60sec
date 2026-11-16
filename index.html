@@ -570,7 +570,7 @@ html:not([data-theme="dark"]) .onlrow .onl{box-shadow:0 2px 8px rgba(0,0,0,.08)!
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170040">
+<meta name="app-version" content="202611170048">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1717,6 +1717,7 @@ async function cardAv(x,cx,cy,R,src,ch,robot,hi){
     else { x.font='800 '+(R*0.95)+'px "Noto Kufi Arabic", sans-serif'; x.fillText(ch||'؟',cx,cy+6); } }
   x.restore();
 }
+const BKLOGO_D='M2524.3 691.8 L2519.7 696.8 L2509.7 698.5 L2034.7 698.4 L1999.7 695.3 L1948.7 694.8 L1909.2 690.8 L1859.7 678.5 L1825.7 666.4 L1775.7 642.0 L1757.3 630.8 L1721.5 604.8 L1693.7 579.8 L1651.1 533.8 L1585.8 438.8 L1514.7 351.8 L1453.9 291.8 L1390.7 238.9 L1323.7 191.3 L1245.7 145.3 L1216.7 131.0 L1135.7 96.1 L1058.7 71.0 L1007.7 58.9 L939.7 45.7 L860.7 37.6 L852.0 34.8 L850.2 30.8 L854.7 27.6 L867.7 24.4 L949.7 12.7 L1103.7 0.2 L1247.7 0.4 L1378.7 11.2 L1475.7 24.2 L1600.7 49.6 L1689.1 73.8 L1760.5 96.8 L1825.7 120.7 L1885.7 145.6 L1985.7 192.5 L2070.7 241.0 L2147.7 290.1 L2254.7 371.4 L2348.7 456.1 L2425.7 541.8 L2498.2 639.8 L2522.3 677.8Z M0.7 688.8 L0.5 681.8 L32.9 614.8 L56.6 574.8 L105.3 505.8 L155.8 445.8 L193.0 408.8 L248.7 361.6 L280.7 337.6 L339.7 299.5 L408.7 264.0 L464.7 239.5 L543.5 215.8 L596.7 204.0 L687.7 192.3 L785.7 192.2 L866.7 202.5 L935.7 216.2 L968.9 227.8 L974.1 231.8 L973.1 234.8 L966.7 237.3 L926.7 239.5 L862.7 250.3 L817.7 263.0 L756.7 288.3 L714.7 312.1 L679.7 335.6 L620.7 385.1 L581.7 428.3 L537.0 494.8 L494.8 573.8 L464.0 612.8 L429.7 641.9 L390.5 666.8 L364.7 678.2 L331.2 688.8 L283.7 694.7 L18.7 694.8 L6.7 693.4Z';
 async function drawCard(r,name){
   try{ await document.fonts.load('800 64px "Noto Kufi Arabic"'); await document.fonts.load('500 34px "Noto Kufi Arabic"'); }catch(e){}
   const W=1080,H=1350, c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d');
@@ -1724,12 +1725,14 @@ async function drawCard(r,name){
   x.fillStyle='rgba(255,255,255,.07)';
   x.beginPath(); x.arc(150,150,260,0,Math.PI*2); x.fill();
   x.beginPath(); x.arc(980,1250,320,0,Math.PI*2); x.fill();
+  /* شعار البنك */
+  try{ const lw=300, sc=lw/2525; x.save(); x.translate(540-lw/2,70); x.scale(sc,sc); x.fillStyle='#fff'; x.fill(new Path2D(BKLOGO_D),'evenodd'); x.restore(); }catch(e){}
   /* شعار المؤقت */
-  x.strokeStyle='#fff'; x.fillStyle='#fff'; x.lineWidth=14; x.lineCap='round';
-  x.beginPath(); x.arc(540,250,84,0,Math.PI*2); x.stroke();
-  rr(x,508,120,64,20,8,'#fff');
-  x.beginPath(); x.moveTo(540,250); x.lineTo(540,200); x.stroke();
-  x.beginPath(); x.moveTo(540,140); x.lineTo(540,166); x.stroke();
+  x.strokeStyle='#fff'; x.fillStyle='#fff'; x.lineWidth=11; x.lineCap='round';
+  x.beginPath(); x.arc(540,290,62,0,Math.PI*2); x.stroke();
+  rr(x,516,196,48,16,6,'#fff');
+  x.beginPath(); x.moveTo(540,290); x.lineTo(540,252); x.stroke();
+  x.beginPath(); x.moveTo(540,212); x.lineTo(540,228); x.stroke();
   x.direction='rtl'; x.textAlign='center'; x.textBaseline='alphabetic';
   x.fillStyle='#fff'; x.font='800 84px "Noto Kufi Arabic", sans-serif'; x.fillText('تحدّي الدقيقة',540,440);
   /* اللوحة البيضاء */
