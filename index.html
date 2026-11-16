@@ -404,6 +404,7 @@ button.bcount{padding:6px 9px}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
+<meta name="app-version" content="2026111621">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1396,6 +1397,17 @@ try{
   ['gesturestart','gesturechange','gestureend'].forEach(function(ev){ document.addEventListener(ev,function(e){ e.preventDefault(); },{passive:false}); });
   (function(){ var last=0; document.addEventListener('touchend',function(e){ var n=Date.now(); if(n-last<350) e.preventDefault(); last=n; },{passive:false}); })();
 }catch(e){}
+
+/* تحديث تلقائي للنسخة (للأيقونة على الشاشة الرئيسية) */
+(function(){ try{
+  var cur=(document.querySelector('meta[name="app-version"]')||{}).content;
+  fetch(location.pathname+'?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){
+    var m=t.match(/name="app-version" content="([^"]+)"/);
+    if(m && cur && m[1]!==cur && !sessionStorage.getItem('mc_reloaded_'+m[1])){
+      sessionStorage.setItem('mc_reloaded_'+m[1],'1'); location.reload();
+    }
+  }).catch(function(){});
+}catch(e){} })();
 loadRemoteQuestions().then(acceptInviteFromUrl);
 </script>
 </body>
