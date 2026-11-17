@@ -652,7 +652,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170850">
+<meta name="app-version" content="202611170900">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -2189,7 +2189,7 @@ $('backBtn2').onclick = ()=>{ renderStats(); if(window._pfBack){ window._pfBack=
 $('backBtn').onclick = ()=>{ renderStats(); if(window._pfBack){ window._pfBack=0; renderProfile(); show('profilePage'); } else show('home'); };
 $('modal').onclick = e=>{ if(e.target.id==='modal') closeModal(); };
 
-function renderGreet(){ $('greet').textContent = 'أهلاً، ' + (stats.playerName || 'عبدالله العنزي'); }
+function renderGreet(){ $('greet').textContent = stats.playerName ? 'أهلاً، ' + stats.playerName : 'أهلاً بك'; }
 $('greet').onclick = ()=>askName(()=>{ closeModal(); renderGreet(); });
 renderGreet();
 $('meAv').innerHTML = svg('user',44);
