@@ -784,3 +784,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 #home #goBtn .sknob{width:52px!important;height:52px!important;margin-top:-26px!important;right:9px!important}
 /* المتصدرون: نقاط التحدي فقط (التدريب بدون نقاط) — نشيل تبويب كل الجولات */
 #lbMode{display:none!important}
+/* زر ✕ لإلغاء التحدي */
+#searching,#inviteWait{position:relative}
+.rdX{position:absolute;top:-58px;left:-6px;z-index:4;width:40px;height:40px;border-radius:50%;padding:0;display:grid;place-items:center;color:#fff;cursor:pointer;
+  background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c);border:3px solid #fff;box-shadow:0 0 0 2px #c8102e,0 4px 8px rgba(0,0,0,.35)}
+.rdX:active{transform:scale(.92)}

@@ -461,9 +461,10 @@ drawCard = async function(r,name){
   const bg=await loadImg('img/road/map3.jpg');
   if(bg){ const s=Math.max(W/bg.width,H/bg.height), w=bg.width*s, h=bg.height*s; x.drawImage(bg,(W-w)/2,(H-h)/2,w,h); }
   const ov=x.createRadialGradient(540,620,80,540,620,900); ov.addColorStop(0,'rgba(120,20,30,.45)'); ov.addColorStop(1,'rgba(20,10,5,.85)'); x.fillStyle=ov; x.fillRect(0,0,W,H);
-  try{ const lw=300, sc=lw/2525; x.save(); x.translate(540-lw/2,60); x.scale(sc,sc); x.fillStyle='#fff'; x.fill(new Path2D(BKLOGO_D),'evenodd'); x.restore(); }catch(e){}
+  try{ const lw=300, sc=lw/2525; x.save(); x.translate(540-lw/2,44); x.scale(sc,sc); const LP=new Path2D(BKLOGO_D); x.lineJoin='round'; x.strokeStyle='#fff'; x.lineWidth=7/sc; x.stroke(LP); x.fillStyle='#d81f2e'; x.fill(LP,'evenodd'); x.restore(); }catch(e){}
   x.direction='rtl'; x.textAlign='center'; x.textBaseline='alphabetic';
-  x.fillStyle='#fff'; x.font='800 64px "Noto Kufi Arabic", sans-serif'; x.fillText('تحدّي الدقيقة',540,240);
+  x.fillStyle='#fff'; x.font='800 64px "Noto Kufi Arabic", sans-serif'; x.fillText('تحدّي الدقيقة',540,215);
+  x.save(); x.translate(0,36); /* نزّل البطاقة عشان ما تلزق في العنوان */
   /* البطاقة */
   const cx0=70, cy0=330, cw=940, ch=820;
   rr(x,cx0-14,cy0-14,cw+28,ch+28,66,'#c8102e'); rr(x,cx0-6,cy0-6,cw+12,ch+12,60,'#fff');
@@ -493,11 +494,22 @@ drawCard = async function(r,name){
   if(st && typeof st.pos==='number'){ br = st.arrived ? '🏁 وصل الفرع الرئيسي' : '🚩 في فرع '+ROUTE[Math.min(st.pos,HQ)]+' · باقي '+(HQ-Math.min(st.pos,HQ))+' للرئيسي'; }
   if(br){ x.font='800 40px "Noto Kufi Arabic", sans-serif'; const tw=Math.min(820,x.measureText(br).width+90);
     rr(x,540-tw/2,975,tw,96,48,'#f2b51e'); rr(x,540-tw/2+6,981,tw-12,84,42,'#fff'); x.fillStyle='#a50f1c'; fitFont(x,br,tw-70,40,'800'); x.fillText(br,540,1037); }
+  x.restore();
   /* النص السفلي */
-  x.fillStyle='#fff'; x.font='800 54px "Noto Kufi Arabic", sans-serif'; x.fillText('هل تستطيع التغلب عليّ؟',540,1265);
+  x.fillStyle='#fff'; x.font='800 54px "Noto Kufi Arabic", sans-serif'; x.fillText('هل تستطيع التغلب عليّ؟',540,1290);
   return c;
 };
 
 /* الطريق: بدون وضع داكن، دايماً فاتح */
 (function(){ try{ stats.theme='light'; }catch(e){} applyTheme=function(){ document.documentElement.setAttribute('data-theme','light'); }; applyTheme(); })();
 
+
+/* زر ✕ في زاوية بطاقة البحث/الدعوة لإلغاء التحدي */
+(function(){
+  const X='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  const sr=document.getElementById('searching'), iw=document.getElementById('inviteWait');
+  if(sr){ sr.insertAdjacentHTML('afterbegin','<button type="button" class="rdX" id="srX" aria-label="إلغاء">'+X+'</button>');
+    document.getElementById('srX').onclick=function(){ try{ matchTok++; }catch(e){} try{ rpc('leave_queue',{p_id:PID},3000); }catch(e){} show('home'); }; }
+  if(iw){ iw.insertAdjacentHTML('afterbegin','<button type="button" class="rdX" id="invX" aria-label="إلغاء">'+X+'</button>');
+    document.getElementById('invX').onclick=function(){ const c=document.getElementById('invCancel'); if(c) c.click(); }; }
+})();

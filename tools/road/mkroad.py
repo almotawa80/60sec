@@ -130,5 +130,11 @@ _clk = ('<div class="spT p0"><svg viewBox="0 0 200 200" width="190" height="190"
  '<text x="100" y="128" text-anchor="middle" font-family="Noto Kufi Arabic,system-ui,sans-serif" font-weight="900" font-size="60" fill="#b20d1c" stroke="#fff" stroke-width="2" paint-order="stroke">60</text>'
  '<text x="100" y="152" text-anchor="middle" font-family="Noto Kufi Arabic,system-ui,sans-serif" font-weight="800" font-size="14" fill="#8a6a45">ثانية</text></svg>')
 if _i > 0: s = s[:_i] + _clk + s[_j:]
+# أيقونة الطريق (ساعة الشعار) — خاصة بصفحة الطريق
+import re as _re
+s = _re.sub(r'<link rel="icon" type="image/svg\+xml" href="[^"]*">', '<link rel="icon" type="image/svg+xml" href="img/road/favicon.svg">', s, count=1)
+s = s.replace('<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">', '<link rel="icon" type="image/png" sizes="32x32" href="img/road/fav-32.png">')
+s = s.replace('<link rel="apple-touch-icon" href="apple-touch-icon.png">', '<link rel="apple-touch-icon" href="img/road/apple-touch-icon.png">')
+s = s.replace('content="https://almotawa80.github.io/60sec/icon-512.png"', 'content="https://almotawa80.github.io/60sec/img/road/icon-512.png"')
 open(dst, 'w', encoding='utf-8').write(s)
 print('ok', len(s))
