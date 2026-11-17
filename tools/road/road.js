@@ -427,3 +427,15 @@ function rdGoLbl(){
 }
 (function(){ const _rs=renderStats; renderStats=function(){ const r=_rs.apply(this,arguments); try{ rdGoLbl(); }catch(e){} return r; }; })();
 (function(){ const _rc=roadCard; roadCard=function(){ const r=_rc.apply(this,arguments); try{ rdGoLbl(); }catch(e){} return r; }; })();
+
+/* شريط فرع اليوم داخل بطاقة البحث عن منافس */
+function rdSrBr(){
+  const s=$('searching'); if(!s) return; let b=$('srBr');
+  if(!b){ b=document.createElement('div'); b.id='srBr'; const r=s.querySelector('.radar'); s.insertBefore(b, r ? r.nextSibling : s.firstChild); }
+  const st=RD.st, ok=rdLoggedIn() && st && typeof st.pos==='number' && !st.arrived && st.pos<=HQ;
+  if(RD.mall) b.textContent='⚡ تحدي المحطة';
+  else if(RD.replay!=null) b.textContent='🔁 إعادة فرع '+ROUTE[RD.replay];
+  else if(pointsAvailable() && ok) b.textContent='🚩 تحدي فرع '+ROUTE[st.pos];
+  else b.textContent='🎯 جولة تدريب · بدون نقاط';
+}
+(function(){ const _sm=startMatch; startMatch=function(){ try{ rdSrBr(); }catch(e){} return _sm.apply(this,arguments); }; })();
