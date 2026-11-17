@@ -649,28 +649,32 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 #splash .pB{clip-path:polygon(100% 15.8%,100% 53.5%,62.3% 53.5%)}
 #splash .pC{clip-path:polygon(0 53.5%,62.3% 53.5%,15.8% 100%,0 100%)}
 #splash .pD{clip-path:polygon(62.3% 53.5%,100% 53.5%,100% 100%,15.8% 100%)}
-#splash.go .spT{animation:spIn .55s cubic-bezier(.2,1.4,.4,1) both}
-#splash.cut1 .spT{animation:none;transition:transform .15s ease-out}
-#splash.cut1 .pA,#splash.cut1 .pC{transform:translate(-5px,-5px)}
-#splash.cut1 .pB,#splash.cut1 .pD{transform:translate(5px,5px)}
-#splash.cut2 .spT{transition:transform .9s cubic-bezier(.3,.6,.4,1),opacity .9s ease-in}
-#splash.cut2 .pA{transform:translate(-40px,-62px) rotate(-10deg);opacity:0}
-#splash.cut2 .pB{transform:translate(48px,-50px) rotate(9deg);opacity:0}
-#splash.cut2 .pC{transform:translate(-46px,56px) rotate(-7deg);opacity:0}
-#splash.cut2 .pD{transform:translate(42px,64px) rotate(11deg);opacity:0}
+#splash.go .spT{animation:spIn .7s cubic-bezier(.16,1.3,.3,1) both}
+#splash.cut1 .spT{animation:none;transition:transform .42s cubic-bezier(.18,1.35,.4,1)}
+#splash.cut1 .pA,#splash.cut1 .pC{transform:translate(-9px,-3px) rotate(-1.2deg)}
+#splash.cut1 .pB,#splash.cut1 .pD{transform:translate(9px,3px) rotate(1.2deg)}
+#splash.cut2 .spT{transition:none}
+#splash.cut2 .pA{animation:spFA 1.25s both}
+#splash.cut2 .pB{animation:spFB 1.25s both}
+#splash.cut2 .pC{animation:spFC 1.25s both}
+#splash.cut2 .pD{animation:spFD 1.25s both}
 #splash .spFl{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none}
 #splash.cut1 .spFl,#splash.cut2 .spFl{animation:spFl .35s ease-out}
 #splash .spTtl{position:absolute;left:0;right:0;top:calc(50% - 4vh);margin-top:-28px;font-weight:900;font-size:34px;text-align:center;opacity:0;transform:translateY(24px)}
-#splash.cut2 .spTtl{animation:spTtl .55s cubic-bezier(.2,1.3,.4,1) .4s forwards}
+#splash.cut2 .spTtl{animation:spTtl .8s cubic-bezier(.16,1.1,.3,1) .6s forwards}
 #splash .spGl{position:absolute;left:32px;top:39px;width:156px;height:156px;border-radius:50%;overflow:hidden;pointer-events:none}
 #splash .spGl::after{content:"";position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.55) 50%,transparent 58%);transform:translateX(-70%);opacity:0}
 #splash.go .spGl::after{animation:spGlint .5s ease-out .3s}
 #splash.cut1 .spGl{display:none}
 #spCv{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
 #splash.cut2 .spW{animation:spShk .28s linear .045s}
-@keyframes spIn{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}
+@keyframes spFA{0%{transform:translate(-9px,-3px) rotate(-1.2deg);opacity:1;animation-timing-function:cubic-bezier(.15,.7,.35,1)}28%{transform:translate(-46px,-58px) rotate(-9deg);opacity:1;animation-timing-function:cubic-bezier(.55,0,.9,.5)}50%{opacity:1}88%{opacity:0}100%{transform:translate(-92px,330px) rotate(-34deg);opacity:0}}
+@keyframes spFB{0%{transform:translate(9px,3px) rotate(1.2deg);opacity:1;animation-timing-function:cubic-bezier(.15,.7,.35,1)}28%{transform:translate(52px,-50px) rotate(8deg);opacity:1;animation-timing-function:cubic-bezier(.55,0,.9,.5)}50%{opacity:1}88%{opacity:0}100%{transform:translate(104px,320px) rotate(30deg);opacity:0}}
+@keyframes spFC{0%{transform:translate(-9px,-3px) rotate(-1.2deg);opacity:1;animation-timing-function:cubic-bezier(.15,.7,.35,1)}28%{transform:translate(-50px,30px) rotate(-6deg);opacity:1;animation-timing-function:cubic-bezier(.55,0,.9,.5)}50%{opacity:1}88%{opacity:0}100%{transform:translate(-110px,360px) rotate(-26deg);opacity:0}}
+@keyframes spFD{0%{transform:translate(9px,3px) rotate(1.2deg);opacity:1;animation-timing-function:cubic-bezier(.15,.7,.35,1)}28%{transform:translate(46px,38px) rotate(10deg);opacity:1;animation-timing-function:cubic-bezier(.55,0,.9,.5)}50%{opacity:1}88%{opacity:0}100%{transform:translate(96px,370px) rotate(36deg);opacity:0}}
+@keyframes spIn{from{transform:scale(.55) rotate(-8deg);opacity:0;filter:blur(6px)}to{transform:none;opacity:1;filter:none}}
 @keyframes spFl{0%{opacity:.35}100%{opacity:0}}
-@keyframes spTtl{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes spTtl{from{opacity:0;transform:translateY(18px) scale(.92);filter:blur(8px);letter-spacing:6px}to{opacity:1;transform:none;filter:none;letter-spacing:0}}
 @keyframes spGlint{0%{transform:translateX(-70%);opacity:1}100%{transform:translateX(70%);opacity:0}}
 @keyframes spShk{0%,100%{transform:translateY(-7.6px)}25%{transform:translate(4px,-10.6px)}50%{transform:translate(-4px,-4.6px)}75%{transform:translate(2px,-5.6px)}}
 @media (prefers-reduced-motion:reduce){#splash.go .spT,#splash.cut2 .spT,#splash.cut2 .spW,#splash.go .spGl::after{animation:none!important;transition:opacity .4s!important;transform:none!important}}
@@ -696,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171512">
+<meta name="app-version" content="202611171520">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -2314,8 +2318,8 @@ function swing(A,B,onCut,done,hitStop){
   const tb=tEdge(P,-ux,-uy)+60, tf=tEdge(Q,ux,uy)+60;
   const S={x:P.x-ux*tb,y:P.y-uy*tb}, E={x:Q.x+ux*tf,y:Q.y+uy*tf};
   const total=Math.hypot(E.x-S.x,E.y-S.y), mid=(tb+ul/2)/total;
-  const DUR=260; let t0=performance.now(), cut=false, hold=0;
-  const ease=k=>k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+  const DUR=300; let t0=performance.now(), cut=false, hold=0;
+  const ease=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
   const at=q=>({x:S.x+(E.x-S.x)*q,y:S.y+(E.y-S.y)*q});
   const L=Math.hypot(W,H);
   function blade(T,a){
@@ -2339,11 +2343,14 @@ function swing(A,B,onCut,done,hitStop){
 }
 /* آثار القص على الزجاج تبقى لحظة ثم تختفي */
 const TRAILS={list:[],cur:null};
-function line(S,T,a){ cx.save(); cx.globalAlpha=a; cx.lineCap='round'; cx.shadowColor='#fff'; cx.shadowBlur=22; cx.strokeStyle='#fff'; cx.lineWidth=4; cx.beginPath(); cx.moveTo(S.x,S.y); cx.lineTo(T.x,T.y); cx.stroke(); cx.shadowBlur=0; cx.lineWidth=1.5; cx.stroke(); cx.restore(); }
+function line(S,T,a){ const dx=T.x-S.x, dy=T.y-S.y, l=Math.hypot(dx,dy)||1, nx=-dy/l, ny=dx/l, w=5*a+1;
+  cx.save(); cx.globalAlpha=a; const g=cx.createLinearGradient(S.x,S.y,T.x,T.y); g.addColorStop(0,'rgba(255,255,255,0)'); g.addColorStop(.55,'rgba(255,255,255,.75)'); g.addColorStop(1,'#fff');
+  cx.shadowColor='#fff'; cx.shadowBlur=24; cx.fillStyle=g; cx.beginPath(); cx.moveTo(S.x,S.y); cx.lineTo(T.x+nx*w,T.y+ny*w); cx.lineTo(T.x-nx*w,T.y-ny*w); cx.closePath(); cx.fill();
+  cx.shadowBlur=0; cx.lineCap='round'; cx.strokeStyle=g; cx.lineWidth=1.4; cx.beginPath(); cx.moveTo(S.x,S.y); cx.lineTo(T.x,T.y); cx.stroke(); cx.restore(); }
 function paint(){
   cx.clearRect(0,0,innerWidth,innerHeight); const now=performance.now();
-  TRAILS.list=TRAILS.list.filter(l=>now-l.t<700);
-  TRAILS.list.forEach(l=>line(l.S,l.T,1-(now-l.t)/700));
+  TRAILS.list=TRAILS.list.filter(l=>now-l.t<800);
+  TRAILS.list.forEach(l=>{ const k=(now-l.t)/800; line(l.S,l.T,1-k*k); });
   if(TRAILS.cur) line(TRAILS.cur.S,TRAILS.cur.T,1);
 }
 let fadeRaf=0;
@@ -2356,7 +2363,7 @@ if(stats.sound) loadSword();
 sp.classList.add('go');
 if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){ timers.push(setTimeout(()=>sp.classList.add('cut1','cut2'),500), setTimeout(close,2200)); }
 else timers.push(setTimeout(()=>{ playSword(); swing(C2,C7,()=>sp.classList.add('cut1'),()=>{ fadeLoop();
-  timers.push(setTimeout(()=>{ cancelAnimationFrame(fadeRaf); playSword(.9); swing(C9,C3,()=>sp.classList.add('cut2'),()=>{ fadeLoop(); timers.push(setTimeout(close,1350)); },45); },380)); }); },650));
+  timers.push(setTimeout(()=>{ cancelAnimationFrame(fadeRaf); playSword(.9); swing(C9,C3,()=>sp.classList.add('cut2'),()=>{ fadeLoop(); timers.push(setTimeout(close,1500)); },60); },380)); }); },650));
 sp.addEventListener('click',skip);
 })();
 $('badgesBtn').onclick = ()=>{ window._pfBack=1; renderBadges(); show('badgesPage'); };
