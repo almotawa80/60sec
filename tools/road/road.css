@@ -564,3 +564,10 @@ body:has(#roadPage.active) .toast.show{transform:translate(-50%,0)}
 #rpPop .pp-go:active{box-shadow:0 2px 0 #7a0c12}
 #rpPop .pp-x{background:radial-gradient(circle at 40% 30%,#ff7a7a,#e0222a 60%,#a50f16)}
 #rpPop .pp-done{background:#f3e2bf;color:#5a3412}
+/* نزّلنا الأيقونات تحت منطقة التغبيش اللي يسويها الآيفون فوق الشاشة */
+#roadPage .rp-hud{padding-top:calc(58px + env(safe-area-inset-top))}
+#roadPage .rp-chips{top:calc(58px + env(safe-area-inset-top))}
+#roadPage .rp-chap{top:calc(60px + env(safe-area-inset-top))}
+body:has(#roadPage.active) .toast{top:calc(200px + env(safe-area-inset-top))}
+#r2In{margin-bottom:250px}
+#r2In::after{height:250px}
