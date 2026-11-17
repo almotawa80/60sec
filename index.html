@@ -585,7 +585,7 @@ html:not([data-theme="dark"]) .onlrow .onl{box-shadow:0 2px 8px rgba(0,0,0,.08)!
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170330">
+<meta name="app-version" content="202611170345">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1064,7 +1064,7 @@ function awardBadges(){
 /* أحداث خارج الجولة (مشاركة، استبدال): تُكشف شارتها الخاصة مباشرة */
 function badgeEvent(){
   const f=[]; SPECIAL.forEach(s=>{ const b=bdById(s.id); if(!stats.badges[b.id] && bdOk(b)){ stats.badges[b.id]=1; stats.bq=stats.bq.filter(x=>x!==b.id); f.push(b); } });
-  save(stats); renderStats();
+  save(stats); renderStats(); if(f.length) syncProgress();
   if(f.length){ toast('شارة جديدة: '+f.map(x=>x.n).join('، ')); SND.badge(); }
 }
 
@@ -1705,7 +1705,7 @@ function endGame(){
   if(window._viaInv && G.force!=='lose'){ stats.invited=(stats.invited||0)+1; } window._viaInv=false;
   if(scored && G.force!=='lose'){ stats.bestScored=Math.max(stats.bestScored||0, me); if(G.wrong===0 && G.correct>=6) stats.perfects=(stats.perfects||0)+1; }
   const fresh = awardBadges();
-  save(stats); renderStats();
+  save(stats); renderStats(); syncProgress();
   if(fresh.length) setTimeout(SND.badge, 1100);
   $('newBadges').innerHTML = fresh.map((bd,i)=>`<div class="nb" style="animation-delay:${i*.2}s"><div class="bi">${svg(bd.i,24)}</div><div><small>شارة جديدة</small><b>${bd.n}</b><span>${bd.d}</span></div></div>`).join('');
   if(stats.bq.length) $('newBadges').innerHTML += '<div class="nbq">'+svg('award',14)+' لديك '+stats.bq.length+' '+(stats.bq.length>2?'شارات':'شارة')+' بانتظار الكشف في الجولات القادمة</div>';
@@ -1823,6 +1823,18 @@ async function syncPlayer(){
     stats.pointsDay = r.points_available ? '' : dkey(new Date());
     save(stats); try{ renderStats(); }catch(e){}
   }
+  syncProgress();
+}
+/* مزامنة الشارات والعدادات مع الخادم (تبقى عند تغيير الجهاز) */
+const PCNT = ['daysPlayed','bestScored','perfects','correctTotal','hardCorrect','bestStreak','humanWins','invited','shared'];
+async function syncProgress(){
+  if(DEMO || !stats.empNo) return;
+  const c={}; PCNT.forEach(k=>{ if(stats[k]) c[k]=stats[k]; });
+  const r = await rpc('sync_progress',{p_id:PID,p_badges:Object.keys(stats.badges),p_counters:c},5000);
+  if(!r || !r.ok) return;
+  Object.keys(r.badges||{}).forEach(k=>{ if(bdById(k) && !stats.badges[k]){ stats.badges[k]=1; stats.bq=stats.bq.filter(x=>x!==k); } });
+  PCNT.forEach(k=>{ const v=(r.counters||{})[k]; if(typeof v==='number' && v>(stats[k]||0)) stats[k]=v; });
+  save(stats); try{ renderBadges(); }catch(e){}
 }
 function askName(next){
   let g = stats.gender || ''; const locked = !!stats.empNo && !DEMO;
@@ -1841,7 +1853,7 @@ function askName(next){
           stats.empNo=r.emp||emp; stats.balance=r.balance; stats.totalPoints=r.total_points||0;
           stats.pointsDay = r.points_available ? '' : dkey(new Date());
         }
-        stats.playerName=v; stats.gender=g; save(stats); closeModal(); renderGreet(); try{ renderStats(); }catch(e){} next(); }},
+        stats.playerName=v; stats.gender=g; save(stats); setTimeout(syncProgress,300); closeModal(); renderGreet(); try{ renderStats(); }catch(e){} next(); }},
      {t:'إلغاء',ghost:true,full:true,f:closeModal}]);
   $('nameIn').value = stats.playerName || ''; $('empIn').value = stats.empNo || '';
   const mark=()=>{ $('gM').classList.toggle('on',g==='m'); $('gF').classList.toggle('on',g==='f'); };
