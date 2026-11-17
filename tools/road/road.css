@@ -175,3 +175,75 @@ html[data-theme="dark"] .pftile{border:1px solid var(--line)}
 .m3mall.open .b{animation:rdWig 2.4s ease-in-out infinite}
 
 body:has(#roadPage.active) .bklogo{display:none}
+/* مباني بوبيان: فرع بقوس حجري وزجاج + البرج الرئيسي الذهبي */
+.m3bld .bk{width:178px;height:116px;position:relative;background:linear-gradient(90deg,#f3ecdc,#e4d8bf);border-radius:3px 3px 0 0;box-shadow:inset -16px 0 0 rgba(0,0,0,.07),0 2px 0 #cbbd9f}
+.m3bld .ar{position:absolute;left:58px;bottom:0;width:74px;height:136px;border-radius:37px 37px 0 0;background:repeating-linear-gradient(0deg,#cfae74 0 9px,#bf9c62 9px 10px);box-shadow:inset -6px 0 0 rgba(0,0,0,.1)}
+.m3bld .gl{position:absolute;left:9px;right:9px;bottom:0;top:9px;border-radius:28px 28px 0 0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.45) 0 1.5px,transparent 1.5px 11px),repeating-linear-gradient(0deg,rgba(255,255,255,.35) 0 1.5px,transparent 1.5px 13px),linear-gradient(165deg,#b6efe2,#3f9f8f 70%,#2f7f72)}
+.m3bld .gl2{position:absolute;right:10px;top:34px;bottom:0;width:30px;border-radius:14px 0 0 0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.4) 0 1.5px,transparent 1.5px 9px),linear-gradient(165deg,#b6efe2,#3f9f8f)}
+.m3bld .gl3{position:absolute;left:12px;top:40px;bottom:0;width:14px;background:linear-gradient(165deg,#b6efe2,#3f9f8f)}
+.m3bld .lo{position:absolute;left:24px;top:12px;width:26px;height:13px;border:5px solid #e0262f;border-bottom:0;border-radius:26px 26px 0 0;box-sizing:border-box}
+.m3bld .lg{position:static;transform:none;margin-top:8px;background:#fff;color:#1d1f24;border-bottom:5px solid var(--c);font-size:17px;font-weight:900;padding:2px 12px;border-radius:9px;white-space:nowrap;box-shadow:0 3px 6px rgba(0,0,0,.25)}
+.m3hq{display:flex;flex-direction:column;align-items:center}
+.m3hq .tw2{width:112px;height:300px;position:relative;clip-path:polygon(0 9%,100% 0,100% 100%,0 100%);background:linear-gradient(90deg,#e2c06a 0 7px,transparent 7px calc(100% - 7px),#b48b35 calc(100% - 7px)),repeating-linear-gradient(90deg,rgba(255,255,255,.25) 0 1.5px,transparent 1.5px 13px),repeating-linear-gradient(0deg,rgba(255,236,170,.0) 0 14px,rgba(255,236,170,.55) 14px 16px,rgba(255,236,170,0) 16px 30px),linear-gradient(180deg,#a9b6e4,#53639f 60%,#3a4677)}
+.m3hq .tw2 .lo{position:absolute;right:12px;top:30px;width:20px;height:10px;border:4px solid #e0262f;border-bottom:0;border-radius:20px 20px 0 0;box-sizing:border-box}
+.m3hq .pod{width:190px;height:48px;background:repeating-linear-gradient(90deg,#e6c46e 0 6px,#b48b35 6px 8px);border-radius:3px 3px 0 0;position:relative}
+.m3hq .pod::after{content:"";position:absolute;left:50%;bottom:0;width:34px;height:30px;margin-left:-17px;background:linear-gradient(165deg,#c9d3f2,#6b79ad)}
+.m3hq .nm{margin-top:8px;background:#e0262f;color:#fff;font-size:19px;font-weight:900;padding:3px 14px;border-radius:10px;white-space:nowrap;box-shadow:0 3px 6px rgba(0,0,0,.25)}
+.r3sky .hqfar .mini{display:flex;flex-direction:column;align-items:center}
+.r3sky .hqfar .mini .t{width:26px;height:74px;clip-path:polygon(0 9%,100% 0,100% 100%,0 100%);background:linear-gradient(90deg,#e2c06a 0 2px,transparent 2px calc(100% - 2px),#b48b35 calc(100% - 2px)),linear-gradient(180deg,#a9b6e4,#53639f)}
+.r3sky .hqfar .mini .p{width:44px;height:11px;background:repeating-linear-gradient(90deg,#e6c46e 0 2px,#b48b35 2px 3px)}
+/* السيارة من الخلف، متجهة للأمام */
+.m3car{font-size:0;position:relative;width:104px;height:84px;animation:carBob .5s ease-in-out infinite alternate}
+.m3car .sh{position:absolute;left:4px;right:4px;bottom:-6px;height:14px;border-radius:50%;background:rgba(0,0,0,.35);filter:blur(3px)}
+.m3car .wl,.m3car .wr{position:absolute;bottom:0;width:20px;height:22px;background:#17181b;border-radius:5px}
+.m3car .wl{left:8px}.m3car .wr{right:8px}
+.m3car .bo{position:absolute;left:0;right:0;bottom:10px;height:44px;border-radius:14px 14px 10px 10px;background:linear-gradient(180deg,#ff4651,#c4141d)}
+.m3car .cb{position:absolute;left:16px;right:16px;bottom:50px;height:30px;border-radius:16px 16px 4px 4px;background:#c4141d}
+.m3car .cb::after{content:"";position:absolute;left:6px;right:6px;top:5px;bottom:2px;border-radius:12px 12px 3px 3px;background:linear-gradient(160deg,#cfe6ff,#4b6a8f)}
+.m3car .tl,.m3car .tr{position:absolute;bottom:34px;width:22px;height:9px;border-radius:4px;background:#ffe14a;box-shadow:0 0 10px #ffd400}
+.m3car .tl{left:6px}.m3car .tr{right:6px}
+.m3car .pl{position:absolute;left:50%;bottom:16px;width:40px;height:14px;margin-left:-20px;background:#fff;border-radius:3px;font-size:9px;font-weight:900;color:#c4141d;line-height:14px;text-align:center}
+.m3car .ex{position:absolute;bottom:4px;left:22px;width:12px;height:12px;border-radius:50%;background:rgba(220,220,220,.8);animation:carPuff .9s linear infinite}
+@keyframes carBob{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+@keyframes carPuff{from{transform:translate(0,0) scale(.6);opacity:.9}to{transform:translate(-14px,8px) scale(1.8);opacity:0}}
+@keyframes roadRun{to{stroke-dashoffset:-74}}
+.r3plane .run{animation:roadRun .6s linear infinite}
+.r3sky .hqfar{transform-origin:50% 100%;transition:none}
+.r3sky.near .hqfar{opacity:1}
+.r3sky .hqfar .mini .t{width:30px;height:90px;position:relative;background:linear-gradient(90deg,#e2c06a 0 2px,transparent 2px calc(100% - 2px),#b48b35 calc(100% - 2px)),repeating-linear-gradient(90deg,rgba(255,255,255,.25) 0 .6px,transparent .6px 4px),repeating-linear-gradient(0deg,transparent 0 5px,rgba(255,236,170,.55) 5px 5.6px),linear-gradient(180deg,#a9b6e4,#53639f 60%,#3a4677)}
+.r3sky .hqfar .mini .lo{position:absolute;right:4px;top:10px;width:7px;height:4px;border:1.5px solid #e0262f;border-bottom:0;border-radius:7px 7px 0 0;box-sizing:border-box}
+.r3sky .hqfar .mini .p{width:52px;height:13px;background:repeating-linear-gradient(90deg,#e6c46e 0 2px,#b48b35 2px 3px)}
+.m3bld .lo{display:none}
+.m3bld .gl3{top:62px}
+.m3bld .lo2{position:absolute;left:4px;top:10px;width:52px;display:flex;flex-direction:column;align-items:center;line-height:1}
+.m3bld .lo2 svg{width:30px;height:auto;display:block}
+.m3bld .lo2 b{font-size:9px;font-weight:900;color:#1d1f24;margin-top:3px;white-space:nowrap}
+.m3bld .lo2 em{font-style:normal;font-size:6.5px;font-weight:700;color:#1d1f24;white-space:nowrap}
+.r3sky .hqfar .mini .lo{display:none}
+.r3sky .hqfar .mini .t .lo2{position:absolute;right:3px;top:9px;width:12px}
+.r3sky .hqfar .mini .t .lo2 svg{width:12px;height:auto;display:block}
+.r3sky .hqfar .mini .p{position:relative}
+.r3sky .hqfar .mini .p .lo3{position:absolute;left:3px;top:2px;display:flex;align-items:center;gap:1px;line-height:1;background:rgba(255,255,255,.85);padding:.5px 1.5px;border-radius:1px}
+.r3sky .hqfar .mini .p .lo3 svg{width:7px;height:auto;display:block}
+.r3sky .hqfar .mini .p .lo3 b{font-size:3px;color:#1d1f24}
+.r3sky .hqfar .mini .p .lo3 em{display:none}
+.m3bld .lo2{direction:ltr;flex-direction:row;align-items:flex-end;gap:2px;left:3px;width:auto;top:12px}
+.m3bld .lo2 svg{width:18px;height:5px;flex:none;margin-bottom:9px}
+.m3bld .lo2 .tx{display:flex;flex-direction:column;align-items:center;font-style:normal}
+.m3bld .lo2 b{font-size:8px;margin:0}
+.m3bld .lo2 em{font-size:5.5px}
+.r3plane .lo2 svg,.r3sky .lo2 svg,.r3sky .lo3 svg{position:static;left:auto;top:auto}
+.m3bld .lo2 svg{width:22px;height:6px;margin-bottom:10px}
+.m3bld .bk{width:210px}
+.m3bld .ar{left:88px}
+.m3bld .lo2{left:6px;z-index:1}
+.m3bld .lo2{flex-direction:column;align-items:center;gap:2px;left:10px;top:10px}
+.m3bld .lo2 svg{width:30px;height:8px;margin:0}
+.m3bld .lo2 b{font-size:9px}
+.m3bld .lo2 em{font-size:6px}
+.r3sky .hqfar .mini .p .lo3{flex-direction:column;gap:0}
+.m3bld .lo2 .tx,.r3sky .lo3 .tx{display:none}
+.m3bld .lo2{left:14px;top:16px}
+.m3bld .lo2 svg{width:48px;height:13px}
+.r3sky .hqfar .mini .p .lo3{background:none;left:50%;top:3px;transform:translateX(-50%)}
+.r3sky .hqfar .mini .p .lo3 svg{width:10px;height:3px}
