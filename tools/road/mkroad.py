@@ -102,10 +102,12 @@ rep('<div class="num" id="timer">60</div>', '<div class="num" id="timer">10</div
 # swipe-back only right-to-left (finger moves left)
 rep("var t=e.touches[0], dx=t.clientX-sx, dy=t.clientY-sy;", "var t=e.touches[0], dx=Math.min(0,t.clientX-sx), dy=t.clientY-sy;")
 rep("var t=e.changedTouches[0], rdx=t.clientX-sx,", "var t=e.changedTouches[0], rdx=Math.min(0,t.clientX-sx),")
-# sword knob: press-and-hold instead of swipe (iOS only unlocks audio on a tap, not a drag)
-_a=s.index('/* زر السحب لبدء التحدّي */'); _b=s.index('\n})();', _a)+len('\n})();')
-s=s[:_a]+open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'hold.js'),encoding='utf-8').read()+s[_b:]
-rep("$('goLbl').textContent = pa ? 'اسحب للتحدّي' : 'اسحب للتدريب';", "$('goLbl').textContent = pa ? 'ثبّت على السيف للتحدّي' : 'ثبّت على السيف للتدريب';")
-s=s.replace('aria-label="اسحب لبدء التحدّي"><div class="slbl" id="goLbl">اسحب لبدء التحدّي</div>','aria-label="ثبّت على السيف لبدء التحدّي"><div class="slbl" id="goLbl">ثبّت على السيف للتحدّي</div>')
+# splash: wait for a tap on the clock, then the sword cuts it (the tap lets iOS play the sound)
+rep("else timers.push(setTimeout(()=>{ playSword(); swing(C2,C7,", "else window._spGo=(()=>{ playSword(); swing(C2,C7,")
+rep("""},380)); }); },650));
+sp.addEventListener('click',skip);""", """},380)); }); });
+if(window._spGo){ sp.insertAdjacentHTML('beforeend','<div class="spTap">اضغط على الساعة واكسرها ⚔️</div>');
+  sp.addEventListener('click',()=>{ const f=window._spGo; if(f){ window._spGo=null; sp.classList.add('tapped'); try{ unlockAudio(); }catch(e){} f(); } else skip(); }); }
+else sp.addEventListener('click',skip);""")
 open(dst, 'w', encoding='utf-8').write(s)
 print('ok', len(s))
