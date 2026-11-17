@@ -663,7 +663,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171400">
+<meta name="app-version" content="202611171410">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1218,8 +1218,8 @@ const SND = {
   badge:()=>{ [1175,1568,1976,2349].forEach((f,i)=>tone(f,i*.07,.25,'sine',.1)); }
 };
 SND.end = SND.lose;
-/* طلب خالد: لا أصوات أثناء اللعب. يبقى صوت السيف عند السحب، وصوت الفوز في النهاية فقط */
-['ok','bad','tick','count','go','lose','draw','badge','end'].forEach(k=>{ SND[k]=()=>{}; });
+/* طلب خالد: أصوات اللعب = العد ٣٢١ والانطلاق، الصح والخطأ، وتكتكة قرب انتهاء الوقت، والسيف والفوز. الباقي صامت */
+['lose','draw','badge','end'].forEach(k=>{ SND[k]=()=>{}; });
 function applyTheme(){ document.documentElement.setAttribute('data-theme', stats.theme==='dark'?'dark':'light'); document.querySelectorAll('#segTheme button').forEach(b=>b.classList.toggle('on', b.dataset.v===(stats.theme==='dark'?'dark':'light'))); }
 function renderSound(){ document.querySelectorAll('#segSnd button').forEach(b=>b.classList.toggle('on', b.dataset.v===(stats.sound?'1':'0'))); }
 document.querySelectorAll('#segTheme button').forEach(b=>b.onclick=()=>{ if(stats.theme===b.dataset.v) return; stats.theme=b.dataset.v; save(stats); applyTheme(); });
