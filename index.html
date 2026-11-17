@@ -674,7 +674,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171440">
+<meta name="app-version" content="202611171600">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -813,6 +813,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
       <div class="pfsec">
         <div class="pfrow pfin"><span>الاسم</span><input id="pfNameIn" maxlength="30" autocomplete="name" placeholder="الاسم الكامل"><i class="pfst" id="pfNameSt"></i></div>
         <div class="pfrow"><span>الرقم الوظيفي</span><b id="pfEmp"></b><i class="pflock">ثابت</i></div>
+        <div class="pfrow" id="pfDeptR" hidden><span>الإدارة</span><b id="pfDept"></b><i class="pflock">من القائمة</i></div>
         <div class="pfrow pfin"><span>البريد</span><input id="pfEmail" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" maxlength="120" dir="ltr"><i class="pfst" id="pfMailSt"></i></div>
       </div>
       <h3 class="pfh">إحصاءاتي</h3>
@@ -2299,6 +2300,7 @@ function renderProfile(){
   try{ setAv($('invAv'), stats.avatar, avInit()); }catch(e){}
   if(document.activeElement!==$('pfNameIn')) $('pfNameIn').value = stats.playerName||''; $('pfEmp').textContent = stats.empNo||'—';
   if(document.activeElement!==$('pfEmail')) $('pfEmail').value = stats.email||'';
+  $('pfDept').textContent=stats.dept||''; $('pfDeptR').hidden=!stats.dept;
   $('pfTot').textContent=fmt(stats.totalPoints); $('pfBal').textContent=fmt(stats.balance);
   $('pfWins').textContent=fmt(stats.wins)+'/'+fmt(stats.played); $('pfBest').textContent=fmt(stats.best);
   const pl=$('pfPlus'); pl.textContent = stats.avatar ? '✎' : '+'; pl.classList.toggle('ed', !!stats.avatar);
@@ -2335,7 +2337,7 @@ function flyAv(fromEl,toEl,toRound){
     an.onfinish=fin; setTimeout(fin,900);
   }catch(e){ if(toEl) toEl.style.visibility=''; try{ $('pfPlus').style.visibility=''; }catch(_){} }
 }
-$('pfBtn').onclick=()=>{ SCR.profilePage=0; window._pfBack=0; renderProfile(); try{ nameAS.reset(); mailAS.reset(); }catch(e){}
+$('pfBtn').onclick=()=>{ SCR.profilePage=0; window._pfBack=0; renderProfile(); if(stats.empNo) rpc('my_dept',{p_id:PID},4000).then(d=>{ if(typeof d==='string' && d!==stats.dept){ stats.dept=d; try{ save(stats); }catch(e){} renderProfile(); } }).catch(()=>{}); try{ nameAS.reset(); mailAS.reset(); }catch(e){}
   const from=$('pfBtn'); const fr=from.getBoundingClientRect(); const ghost={getBoundingClientRect:()=>fr};
   show('profilePage'); requestAnimationFrame(()=>{ const big=$('pfWrap'); const fake=document.createElement('div'); flyAv({getBoundingClientRect:()=>fr,animate:true}, $('pfBig')); }); };
 $('backBtn3').onclick=()=>{ window._pfBack=0; renderStats(); const pg=$('profilePage'); const swiped=!!pg.style.transform; const br=$('pfBig').getBoundingClientRect();
