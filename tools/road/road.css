@@ -465,3 +465,27 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
 @keyframes spTick{0%{transform:scale(1.035)}100%{transform:scale(1)}}
 #splash .spNm{top:auto;bottom:calc(16% + 34px + env(safe-area-inset-bottom));font-size:28px}
 #splash .spNm:empty{display:none}
+/* سحب السيف قبل الضربة: ينسحب، يرتفع، يكبر قدّام اللاعب ثم يضرب */
+/* السيف يمّ الساعة: المسكة تحت والرأس متجه للساعة 2، والإصبع تحت المسكة */
+#splash .spSw{left:auto;right:10px;top:122px;margin-left:0;width:42px;transform:rotate(-120deg);transform-origin:50% 50%;animation:spSwB2 2.2s ease-in-out infinite}
+@keyframes spSwB2{0%,100%{transform:rotate(-120deg) translateY(0)}50%{transform:rotate(-117deg) translateY(5px)}}
+#splash .spFg{position:absolute;left:110px;top:218px;width:58px;height:58px;z-index:4;pointer-events:none;opacity:.72;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25));transform-origin:47% 20%;animation:spFgT 1.2s ease-in-out infinite}
+@keyframes spFgT{0%,100%{transform:translate(0,8px) scale(1);opacity:.6}40%{transform:translate(0,0) scale(1);opacity:.8}55%{transform:translate(0,0) scale(.86);opacity:.85}70%{transform:translate(0,0) scale(1);opacity:.8}}
+#splash.tapped .spFg{opacity:0;transition:opacity .15s;animation:none}
+#splash.pull .spSw{transition:none;opacity:1;animation:spPull .85s cubic-bezier(.45,0,.25,1) forwards}
+@keyframes spPull{
+ 0%{transform:rotate(-120deg);opacity:1}
+ 12%{transform:translate(3px,5px) rotate(-116deg) scale(.95)}
+ 40%{transform:translate(-30px,-70px) rotate(-100deg) scale(1.7);opacity:1}
+ 70%{transform:translate(-120px,-20px) rotate(-170deg) scale(2.6);opacity:1}
+ 100%{transform:translate(-170px,80px) rotate(-215deg) scale(3.2);opacity:0}}
+/* زر الرجوع دائري مثل الآيفون */
+#roadPage .rp-back{width:40px;height:40px;padding:0;border-radius:50%;justify-content:center;gap:0;flex:0 0 auto}
+#roadPage .rp-back svg{margin-right:-2px}
+/* مسافة تحت الخريطة عشان فرع الخيران يطلع فوق الزر الأحمر (امتداد معكوس لنفس الرسمة) */
+#r2In{margin-bottom:200px}
+#r2In::after{content:'';position:absolute;left:0;right:0;top:100%;height:200px;background:url(img/road/map7.jpg) center bottom/100% auto no-repeat;transform:scaleY(-1);pointer-events:none}
+/* الجوال بالعرض: نغطي اللعبة ونطلب الرجوع للوضع العامودي */
+@media (orientation:landscape) and (max-height:520px){
+ body::after{content:'📱\A لفّ الجوال للوضع العامودي';white-space:pre;position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;text-align:center;background:#c8102e;color:#fff;font:800 22px/1.9 'Noto Kufi Arabic',system-ui,sans-serif}
+}
