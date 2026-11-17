@@ -30,7 +30,7 @@ s = re.sub(r'<meta name="app-version" content="[^"]*">', '<meta name="app-versio
 s = re.sub(r'<title>[^<]*</title>', '<title>تحدّي الدقيقة · الطريق إلى الرئيسي</title>', s, count=1)
 s = s.replace('content="https://almotawa80.github.io/60sec/"', 'content="https://almotawa80.github.io/60sec/road.html"')
 
-s = s.replace('٦٠ ثانية · أسئلة سريعة · نقاط وجوائز','🏁 الطريق إلى الرئيسي · من الخيران إلى الفرع الرئيسي')
+s = s.replace('٦٠ ثانية · أسئلة سريعة · نقاط وجوائز','🏁 من الخيران إلى الفرع الرئيسي')
 # ---------- CSS ----------
 css = open(sys.argv[3], encoding='utf-8').read()
 rep('</head>', '<style>\n' + css + '\n</style>\n</head>')

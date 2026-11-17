@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261117193120">
+<meta name="app-version" content="road-20261117193828">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1494,6 +1494,25 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .rdX{position:absolute;top:-58px;left:-6px;z-index:4;width:40px;height:40px;border-radius:50%;padding:0;display:grid;place-items:center;color:#fff;cursor:pointer;
   background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c);border:3px solid #fff;box-shadow:0 0 0 2px #c8102e,0 4px 8px rgba(0,0,0,.35)}
 .rdX:active{transform:scale(.92)}
+/* ===== شاشة الدخول بثيم الطريق ===== */
+#gate{background:radial-gradient(circle at 50% 30%,rgba(120,20,30,.35),rgba(20,10,5,.82) 78%),url(img/road/map0.jpg) center/cover no-repeat,#2a1408!important}
+#gate .gtop{background:none!important;padding:calc(34px + env(safe-area-inset-top)) 20px 64px!important}
+#gate .gwm{display:none}
+#gate .gmark{width:118px;margin:4px auto 10px;filter:drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff) drop-shadow(0 3px 3px rgba(0,0,0,.4))}
+#gate .gmark path{fill:#d81f2e!important}
+#gate h1{font-size:38px!important;text-shadow:0 3px 0 #7a0c12,2px 0 0 #7a0c12,-2px 0 0 #7a0c12,0 6px 12px rgba(0,0,0,.4)}
+#gate .gtop p{display:inline-block;opacity:1!important;margin-top:12px!important;background:#fff;border:3px solid #f2b51e;border-radius:999px;padding:6px 16px;color:#a50f1c;font-weight:800;font-size:13px!important;line-height:1.6;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+#gate .gcard{margin-top:-10px!important;padding:64px 18px 18px!important;border-radius:30px!important;background:linear-gradient(#fffaf0,#fde9c4)!important;border:4px solid #fff;box-shadow:0 0 0 4px #c8102e,inset 0 -6px 0 rgba(160,110,40,.15),0 12px 30px rgba(0,0,0,.45)!important;overflow:visible;color:#5a3412}
+#gate h2{position:absolute;left:-14px;right:-14px;top:-22px;height:74px;margin:0!important;display:flex;align-items:center;justify-content:center;background:linear-gradient(#ff5a65,#d81f2e 60%,#a50f1c);clip-path:polygon(0 18%,10% 0,50% 22%,90% 0,100% 18%,96% 72%,50% 100%,4% 72%);color:#fff!important;font-size:24px!important;text-shadow:0 3px 0 #7a0c12,2px 0 0 #7a0c12,-2px 0 0 #7a0c12;padding-bottom:6px;box-sizing:border-box}
+#gate .gsub{color:#6b4520!important;font-weight:700;text-align:center;background:#fff;border:3px solid #3fb7c9;border-radius:18px;padding:8px 12px}
+#gate .gfld span{color:#8a5a2a!important;font-weight:800!important}
+#gate .gfld input{background:#fff!important;border:2px solid #e6d3ae!important;color:#5a3412!important;text-align:center;box-shadow:inset 0 2px 0 rgba(160,110,40,.12)}
+#gate .gfld input:focus{border-color:#c8102e!important;box-shadow:0 0 0 3px rgba(200,16,46,.15)}
+#gate .gpick button{background:#fff!important;border:2px solid #e6d3ae!important;color:#8a6a45!important;border-radius:18px!important;box-shadow:0 3px 0 #d9c19a}
+#gate .gpick button.on{background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c)!important;border:3px solid #fff!important;color:#fff!important;box-shadow:0 0 0 2px #c8102e,0 3px 0 #7a0c12!important;text-shadow:0 2px 0 #7a0c12}
+#gate #gGo{border:3px solid #fff!important;border-radius:20px!important;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c)!important;box-shadow:0 5px 0 #7a0c12,0 8px 14px rgba(0,0,0,.25)!important;color:#fff!important;font-weight:900;font-size:20px;text-shadow:0 2px 0 #7a0c12}
+#gate .ghelp{color:#8a6a45!important;font-weight:700}
+#gate .gerr{color:#c8102e!important}
 
 </style>
 </head>
@@ -1741,7 +1760,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
     <svg class="gwm" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="14"/><path d="M30.500 30.500L43 43"/><path d="M20 12v8l5 3"/></svg>
     <svg class="gmark" viewBox="0 0 2525 699" aria-label="بنك بوبيان"><path fill="#fff" fill-rule="evenodd" d="M2524.3 691.8 L2519.7 696.8 L2509.7 698.5 L2034.7 698.4 L1999.7 695.3 L1948.7 694.8 L1909.2 690.8 L1859.7 678.5 L1825.7 666.4 L1775.7 642.0 L1757.3 630.8 L1721.5 604.8 L1693.7 579.8 L1651.1 533.8 L1585.8 438.8 L1514.7 351.8 L1453.9 291.8 L1390.7 238.9 L1323.7 191.3 L1245.7 145.3 L1216.7 131.0 L1135.7 96.1 L1058.7 71.0 L1007.7 58.9 L939.7 45.7 L860.7 37.6 L852.0 34.8 L850.2 30.8 L854.7 27.6 L867.7 24.4 L949.7 12.7 L1103.7 0.2 L1247.7 0.4 L1378.7 11.2 L1475.7 24.2 L1600.7 49.6 L1689.1 73.8 L1760.5 96.8 L1825.7 120.7 L1885.7 145.6 L1985.7 192.5 L2070.7 241.0 L2147.7 290.1 L2254.7 371.4 L2348.7 456.1 L2425.7 541.8 L2498.2 639.8 L2522.3 677.8Z M0.7 688.8 L0.5 681.8 L32.9 614.8 L56.6 574.8 L105.3 505.8 L155.8 445.8 L193.0 408.8 L248.7 361.6 L280.7 337.6 L339.7 299.5 L408.7 264.0 L464.7 239.5 L543.5 215.8 L596.7 204.0 L687.7 192.3 L785.7 192.2 L866.7 202.5 L935.7 216.2 L968.9 227.8 L974.1 231.8 L973.1 234.8 L966.7 237.3 L926.7 239.5 L862.7 250.3 L817.7 263.0 L756.7 288.3 L714.7 312.1 L679.7 335.6 L620.7 385.1 L581.7 428.3 L537.0 494.8 L494.8 573.8 L464.0 612.8 L429.7 641.9 L390.5 666.8 L364.7 678.2 L331.2 688.8 L283.7 694.7 L18.7 694.8 L6.7 693.4Z"/></svg>
     <h1>تحدّي الدقيقة</h1>
-    <p id="gHi">🏁 الطريق إلى الرئيسي · من الخيران إلى الفرع الرئيسي</p>
+    <p id="gHi">🏁 من الخيران إلى الفرع الرئيسي</p>
   </div>
   <form class="gcard" id="gForm" autocomplete="off" novalidate>
     <h2>تسجيل الدخول</h2>
@@ -2894,7 +2913,7 @@ async function doLogin(empV,codeV,g,err){
 }
 /* بوابة الدخول */
 let GG = '';
-function gateFill(pre){ if(pre){ $('gEmp').value=pre.e||''; $('gCode').value=pre.c||''; const sp=splitName(pre.n||''); $('gHi').textContent = sp.t ? 'أهلاً '+sp.t+' 👋 بياناتك جاهزة، اضغط دخول' : '🏁 الطريق إلى الرئيسي · من الخيران إلى الفرع الرئيسي'; }
+function gateFill(pre){ if(pre){ $('gEmp').value=pre.e||''; $('gCode').value=pre.c||''; const sp=splitName(pre.n||''); $('gHi').textContent = sp.t ? 'أهلاً '+sp.t+' 👋 بياناتك جاهزة، اضغط دخول' : '🏁 من الخيران إلى الفرع الرئيسي'; }
   $('gGen').style.display = stats.gender ? 'none' : ''; }
 (function(){ const mark=()=>$('gGen').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.g===GG));
   $('gGen').querySelectorAll('button').forEach(b=>b.onclick=()=>{ GG=b.dataset.g; mark(); $('gErr').textContent=''; });
