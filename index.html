@@ -654,7 +654,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170910">
+<meta name="app-version" content="202611170920">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1912,7 +1912,7 @@ async function syncPlayer(){
   if(DEMO || !stats.empNo) return;
   const r = await rpc('get_player',{p_id:PID,p_name:stats.playerName||''},4000);
   if(r && typeof r.balance==='number'){
-    stats.balance=r.balance; stats.totalPoints=r.total_points||0;
+    stats.balance=r.balance; stats.totalPoints=r.total_points||0; if(r.emp) stats.empNo=r.emp;
     stats.pointsDay = r.points_available ? '' : dkey(new Date());
     save(stats); try{ renderStats(); }catch(e){}
   }
