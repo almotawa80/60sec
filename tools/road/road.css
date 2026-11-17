@@ -571,3 +571,25 @@ body:has(#roadPage.active) .toast.show{transform:translate(-50%,0)}
 body:has(#roadPage.active) .toast{top:calc(200px + env(safe-area-inset-top))}
 #r2In{margin-bottom:250px}
 #r2In::after{height:250px}
+/* شاشة نتيجة الطريق بنفس ستايل النوافذ الموحّد */
+.rfx{align-items:center;background:radial-gradient(circle at 50% 35%,rgba(120,20,30,.55),rgba(20,10,5,.82) 70%);padding:20px;box-sizing:border-box;overflow-y:auto}
+.rfx .rays{top:40%;background:repeating-conic-gradient(rgba(255,215,106,.16) 0 10deg,transparent 10deg 20deg)}
+.rfx .in{min-height:0;margin:auto;width:min(360px,92vw);box-sizing:border-box;padding:66px 18px 20px;border-radius:30px;background:linear-gradient(#fffaf0,#fde9c4);border:4px solid #fff;box-shadow:0 0 0 4px #c8102e,inset 0 -6px 0 rgba(160,110,40,.15),0 12px 30px rgba(0,0,0,.45);color:#5a3412;animation:ppIn .32s cubic-bezier(.2,1.4,.4,1)}
+.rfx .k{color:#7a0c12;font-size:14px;font-weight:900}
+.rfx h2{position:absolute;left:-14px;right:-14px;top:-22px;height:74px;margin:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(#ff5a65,#d81f2e 60%,#a50f1c);clip-path:polygon(0 18%,10% 0,50% 22%,90% 0,100% 18%,96% 72%,50% 100%,4% 72%);color:#fff;font-size:26px;text-shadow:0 3px 0 #7a0c12,2px 0 0 #7a0c12,-2px 0 0 #7a0c12,0 -2px 0 #7a0c12;filter:drop-shadow(0 4px 0 rgba(0,0,0,.25));white-space:nowrap}
+.rfx .hint{color:#6b4520;font-weight:700}
+.rfx .s3 span.off{filter:grayscale(1) brightness(1.4) opacity(.45)}
+.rfx .mv,.rfx .grid div{background:#fff;border:3px solid #3fb7c9;color:#5a3412}
+.rfx .mv{border-radius:20px}
+.rfx .grid div{border-width:2px;color:#8a6a45}
+.rfx .grid b{color:#5a3412}
+.rfx .mini{color:#5a3412}
+.rfx .mini i.c{background:#f3e2bf}
+.rfx .arr{background:repeating-linear-gradient(90deg,#d81f2e 0 8px,transparent 8px 14px)}
+.rfx .chest{background:#fff;border:3px solid #f2b51e}
+.rfx .chest b{color:#a50f1c}
+.rfx .chest small{color:#6b4520}
+.rfx .note{border-color:#c8102e;color:#5a3412}
+.rfx .note b{color:#a50f1c!important}
+.rfx .gold{margin-top:16px;border:3px solid #fff;border-radius:22px;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c);box-shadow:0 6px 0 #7a0c12,0 10px 18px rgba(0,0,0,.3);color:#fff;font-size:24px;padding:12px;text-shadow:0 3px 0 #7a0c12,2px 0 0 #7a0c12,-2px 0 0 #7a0c12}
+.rfx .ghost{color:#8a6a45;font-weight:700}

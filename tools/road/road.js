@@ -273,10 +273,12 @@ function mallTap(k){
   if(!rdLoggedIn()){ toast('سجّل دخولك أول'); return; }
   if(st.pos<=m.at){ toast('🔒 تنفتح لك بعد ما تعدّي فرع '+ROUTE[m.at]); return; }
   const keys=st.keys||0;
-  showModal('⚡ محطة '+m.n,
-    '<div style="line-height:1.9">تحدي سرعة ضد الجهاز.<br>الدخول يكلّف <b>🔑 مفتاح واحد</b> (عندك '+keys+').<br>الفوز = <b>🛡️ درع</b> يحمي سلسلتك + <b>100 نقطة</b>.'+(keys?'':'<br><span style="color:var(--accent)">ما عندك مفاتيح. كل 3 تدريبات = مفتاح.</span>')+'</div>',
-    keys ? [{t:'ادخل المحطة',full:true,f:()=>{ closeModal(); try{ playSword(1); }catch(e){} startMall(k); }},{t:'لاحقاً',ghost:true,full:true,f:closeModal}]
-         : [{t:'تدرّب من السيف واجمع مفاتيح',full:true,f:()=>{ closeModal(); RD.back=null; show('home'); }},{t:'إغلاق',ghost:true,full:true,f:closeModal}]);
+  const body='<div class="pp-lbl">تحدي سرعة ضد الجهاز</div><div class="pp-box">'
+    +'<div class="pp-rw"><b>🔑</b><small>الدخول بمفتاح<br>(عندك '+keys+')</small></div>'
+    +'<div class="pp-rw"><b>🛡️</b><small>درع يحمي<br>سلسلتك</small></div>'
+    +'<div class="pp-rw"><b>🏆</b><small>100 نقطة<br>عند الفوز</small></div></div>';
+  if(keys) gamePop('⚡ '+m.n, body, ()=>{ try{ playSword(1); }catch(e){} startMall(k); }, 'ادخل المحطة');
+  else gamePop('⚡ '+m.n, body+'<div class="pp-tip">ما عندك مفاتيح 🔑<br>كل 3 تدريبات = مفتاح</div>', ()=>{ RD.back=null; show('home'); }, 'تدرّب واجمع مفاتيح');
 }
 async function startMall(k){
   if(DEMO){ toast('المحطات تشتغل بعد تسجيل الدخول'); return; }
@@ -358,6 +360,18 @@ window.addEventListener('pageshow',()=>{ try{ if(stats.sound && AC && AC.state!=
 
 /* إعادة فرع خلّصته عشان تحسّن نجومه: ضد الآلي، بدون نقاط وبدون تقدّم */
 function replayAsk(i){ if(!rdLoggedIn()){ toast('سجّل دخولك أول'); return; } stagePop(i,'replay'); }
+/* نافذة موحّدة بستايل الألعاب (الفروع والمحطات) */
+function gamePop(title, body, go, goText, foot){
+  let el=$('rpPop'); if(!el){ el=document.createElement('div'); el.id='rpPop'; document.body.appendChild(el); }
+  el.innerHTML='<div class="pp"><div class="pp-rib"><span>'+title+'</span></div><button class="pp-x" type="button" aria-label="إغلاق">✕</button>'
+    +body+(go?'<button class="pp-go" type="button">'+goText+'</button>':'')+'<div class="pp-done">'+(foot||'')+'</div></div>';
+  el.classList.add('on');
+  const close=()=>el.classList.remove('on');
+  el.onclick=e=>{ if(e.target===el) close(); };
+  el.querySelector('.pp-x').onclick=close;
+  const g=el.querySelector('.pp-go'); if(g) g.onclick=()=>{ close(); go(); };
+  return close;
+}
 /* نافذة الفرع بستايل الألعاب: شريط ذهبي، الجوائز، النجوم، وزر العب */
 function stagePop(i,mode){
   const st=rdSt(), s=(st.stars||[])[i]||0, nm=ROUTE[i];
@@ -402,3 +416,14 @@ function replayDone(R,quit){
     roadLoad();
   });
 }
+
+/* نص زر السيف يذكر فرع اليوم عشان اللاعب يعرف إنه نفس الخريطة */
+function rdGoLbl(){
+  const l=$('goLbl'); if(!l) return; const st=RD.st;
+  const pa=pointsAvailable(), ok=rdLoggedIn() && st && typeof st.pos==='number' && !st.arrived && st.pos<=HQ;
+  let t = pa ? (ok ? 'تحدَّ فرع '+ROUTE[st.pos] : 'اسحب للتحدّي') : 'اسحب للتدريب';
+  l.textContent=t; l.style.fontSize = t.length>18 ? '17px' : '';
+  const d=$('goDone'); if(d && !pa) d.textContent = ok ? 'تحدّيت فرع اليوم ✓' : 'أنهيت نقاط اليوم ✓';
+}
+(function(){ const _rs=renderStats; renderStats=function(){ const r=_rs.apply(this,arguments); try{ rdGoLbl(); }catch(e){} return r; }; })();
+(function(){ const _rc=roadCard; roadCard=function(){ const r=_rc.apply(this,arguments); try{ rdGoLbl(); }catch(e){} return r; }; })();
