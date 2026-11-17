@@ -18,7 +18,7 @@ body{font-family:'Noto Kufi Arabic',system-ui,sans-serif;color:var(--text);backg
 #app{width:100%;max-width:480px;min-height:100dvh;display:flex;flex-direction:column;background:var(--hero)}
 .screen{display:none;flex:1;flex-direction:column;animation:fade .28s ease}
 .screen.active{display:flex}
-#store,#badgesPage{touch-action:pan-y}
+#store,#badgesPage,#lbPage{touch-action:pan-y}
 @keyframes fade{from{transform:translateY(4px)}to{transform:none}}
 
 /* ===== الجزء العلوي (الهيرو) ===== */
@@ -303,6 +303,31 @@ button.bcount:active,.sndbtn:active{transform:scale(.93);background:rgba(255,255
 .bt2.on .ring .bi{background:linear-gradient(160deg,#e8414d,var(--accent));color:#fff}
 .bt2 .nm{font-size:11.5px;font-weight:700;color:var(--muted)}
 .bt2.on .nm{color:var(--text)}
+.lbrow{width:100%;display:flex;align-items:center;gap:8px;font:inherit;border:0;border-radius:14px;padding:10px 14px;margin:4px 0 2px;background:var(--card);color:var(--text);box-shadow:var(--shadow);cursor:pointer;text-align:start}
+.lbrow>svg:first-child{color:#d69a12}.lbrow .bl{flex:1;font-weight:800;font-size:15px}.lbmine{font-weight:800;font-size:13px;color:var(--accent)}
+#lbPage .sheet{padding-bottom:90px}
+.lbmode{width:100%!important;margin:0 0 10px}.lbmode button{flex:1 1 0;justify-content:center}
+.lbper{display:flex;gap:6px;margin-bottom:14px}.lbper button{flex:1;font:inherit;font-size:14px;font-weight:800;border:1.5px solid var(--line);background:var(--card);color:var(--muted);border-radius:12px;padding:8px 4px;cursor:pointer}
+.lbper button.on{border-color:var(--accent);color:var(--accent)}
+.pod{display:grid;grid-template-columns:1fr 1.15fr 1fr;align-items:end;gap:8px;margin:6px 0 14px}
+.pod .pc{text-align:center;min-width:0}
+.pod .pav{width:58px;height:58px;margin:0 auto 6px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:22px;color:#fff;background:#9aa1ab center/cover no-repeat;border:3px solid var(--card);box-shadow:var(--shadow)}
+.pod .p1 .pav{width:72px;height:72px;font-size:26px}
+.pod .pn{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pod .pp{font-size:12.5px;color:var(--muted);font-weight:700}
+.pod .blk{margin-top:6px;border-radius:12px 12px 0 0;color:#fff;font-weight:900;font-size:20px;display:grid;place-items:center}
+.pod .p1 .blk{height:70px;background:linear-gradient(160deg,#ffd76a,#d69a12)}.pod .p2 .blk{height:52px;background:linear-gradient(160deg,#e3e6ea,#9aa1ab)}.pod .p3 .blk{height:40px;background:linear-gradient(160deg,#d9a273,#a0643a)}
+.lbl{background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.lbi{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line);font-weight:700}
+.lbi:last-child{border-bottom:0}.lbi .rk{width:28px;text-align:center;font-weight:900;color:var(--muted)}.lbi .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lbi .pt{font-weight:900}
+.lbi.me{background:color-mix(in srgb,var(--accent) 10%,var(--card))}.lbi.me .nm{color:var(--accent)}
+.lbmore{display:block;width:100%;margin:10px 0 0;font:inherit;font-weight:800;font-size:14px;border:0;background:none;color:var(--accent);padding:8px;cursor:pointer}
+.lbcards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.lbc{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:10px 12px;min-width:0}
+.lbc small{display:block;color:var(--muted);font-weight:700;font-size:12px}.lbc b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lbc span{font-weight:900;color:var(--accent);font-size:15px}
+.lbempty{text-align:center;color:var(--muted);font-weight:700;padding:30px 10px;line-height:1.8}
+.lbme{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:480px;z-index:5;background:var(--accent);color:#fff;padding:12px 18px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;font-weight:800;border-radius:18px 18px 0 0;box-shadow:0 -6px 18px rgba(0,0,0,.15)}
+.lbme .rk{font-size:22px;font-weight:900}.lbme .tx{flex:1;font-size:13.5px;line-height:1.5}.lbme .pt{font-size:18px;font-weight:900}
 .trk{display:flex;flex-direction:column;gap:10px;padding:4px 0 10px}
 .trow{border:0;font:inherit;color:var(--text);text-align:right;background:var(--card);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);cursor:pointer}
 .trow .th{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -585,7 +610,7 @@ html:not([data-theme="dark"]) .onlrow .onl{box-shadow:0 2px 8px rgba(0,0,0,.08)!
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170345">
+<meta name="app-version" content="202611170410">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -611,6 +636,7 @@ html:not([data-theme="dark"]) .onlrow .onl{box-shadow:0 2px 8px rgba(0,0,0,.08)!
         <div class="stat"><b id="stWins">0</b><small>مرات الفوز</small></div>
         <div class="stat"><b id="stStreak">0</b><small>أيام متتالية</small></div>
       </div>
+      <button class="lbrow" id="lbBtn" type="button"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg><span class="bl">المتصدرون</span><span class="lbmine" id="lbMine"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
       <div class="sp"></div>
       
       <div id="goDone" style="display:none;text-align:center;font-weight:800;font-size:17px;color:var(--text);margin-top:14px">أنهيت نقاط اليوم ✓</div>
@@ -672,6 +698,23 @@ html:not([data-theme="dark"]) .onlrow .onl{box-shadow:0 2px 8px rgba(0,0,0,.08)!
       <div class="expl" id="expl"></div>
       <button class="btn" id="quitBtn" style="margin-top:14px;padding:12px;font-size:15px;background:var(--accent);color:#fff;border:0">استسلام / خروج</button>
     </div>
+  </section>
+
+  <!-- المتصدرون -->
+  <section id="lbPage" class="screen">
+    <div class="hero compact">
+      <div class="hero-row">
+        <button class="sndbtn" id="backBtn4" aria-label="رجوع"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+        <div class="ttl"><h1>المتصدرون</h1><span class="greet" id="lbSub"></span></div>
+        <div class="bcount" id="lbCnt"></div>
+      </div>
+    </div>
+    <div class="sheet">
+      <div class="lbmode seg" id="lbMode"><button type="button" data-m="daily" class="on">التحدي اليومي</button><button type="button" data-m="all">كل الجولات</button></div>
+      <div class="lbper" id="lbPer"><button type="button" data-p="day" class="on">اليوم</button><button type="button" data-p="week">الأسبوع</button><button type="button" data-p="month">الشهر</button><button type="button" data-p="all">الكل</button></div>
+      <div id="lbBody"></div>
+    </div>
+    <div class="lbme" id="lbMe" style="display:none"></div>
   </section>
 
   <!-- صفحة الشارات -->
@@ -1759,7 +1802,7 @@ function endGame(){
 })();
 
 $('againBtn').onclick = startMatch;
-$('homeBtn').onclick = ()=>{ renderStats(); show('home'); };
+$('homeBtn').onclick = ()=>{ renderStats(); show('home'); homeRank(); };
 /* ===== مشاركة بطاقة النتيجة ===== */
 function rr(x,px,py,w,h,r,fill){ x.beginPath(); x.moveTo(px+r,py); x.arcTo(px+w,py,px+w,py+h,r); x.arcTo(px+w,py+h,px,py+h,r); x.arcTo(px,py+h,px,py,r); x.arcTo(px,py,px+w,py,r); x.closePath(); x.fillStyle=fill; x.fill(); }
 function fitFont(x,txt,maxW,size,weight){ let z=size; for(;;){ x.font=weight+' '+z+'px "Noto Kufi Arabic", sans-serif'; if(x.measureText(txt).width<=maxW || z<=30) break; z-=4; } }
@@ -1897,7 +1940,7 @@ function openStore(){ renderStore(); show('store'); }
 if(!DEMO) document.getElementById('demoTop').style.display='none';
 document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stats.totalPoints+=5000; save(stats); renderStore(); renderStats(); };
 /* الرجوع بالسحب: الصفحة تتبع الإصبع والخلفية (الرئيسية) ثابتة */
-['store','badgesPage','profilePage'].forEach(function(id){
+['store','badgesPage','profilePage','lbPage'].forEach(function(id){
   var el=document.getElementById(id), home=document.getElementById('home'); if(!el||!home) return;
   const pickBg=()=>{ home=document.getElementById(window._pfBack && id!=='profilePage' ? 'profilePage' : 'home'); };
   var sx=0,sy=0,t0=0,drag=false,lock=false,W=360, LG=null, LGc=null;
@@ -1927,7 +1970,7 @@ document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stat
     function clean(){ el.style.background=''; home.style.transform=''; home.style.top=''; home.style.bottom=''; home.style.left=''; home.style.animation=''; reset(); }
     if(dx>W*0.35 || v>0.6){
       el.style.transform='translateX('+(sg*W)+'px)'; if(LG){ LG.style.transition='transform .22s ease'; LG.style.transform='translateX('+(sg*W)+'px)'; }
-      setTimeout(function(){ var b=document.getElementById({store:'backBtn',badgesPage:'backBtn2',profilePage:'backBtn3'}[id]); if(b) b.click(); clean(); home.style.animation='none'; setTimeout(function(){ home.style.animation=''; },450); },210);
+      setTimeout(function(){ var b=document.getElementById({store:'backBtn',badgesPage:'backBtn2',profilePage:'backBtn3',lbPage:'backBtn4'}[id]); if(b) b.click(); clean(); home.style.animation='none'; setTimeout(function(){ home.style.animation=''; },450); },210);
     } else {
       el.style.transform='translateX(0)'; if(LG){ LG.style.transition='transform .22s ease'; LG.style.transform='translateX(0)'; }
       setTimeout(clean,230);
@@ -1976,6 +2019,50 @@ async function doRedeem(r){
   badgeEvent();
 }
 $('storeBtn').onclick = ()=>{ window._pfBack=0; openStore(); };
+/* ===== المتصدرون ===== */
+const LB = {m:'daily', p:'day', lim:10, tok:0};
+const LBP = {day:'اليوم', week:'هذا الأسبوع', month:'هذا الشهر', all:'منذ البداية'};
+const LBPREV = {day:'بطل الأمس', week:'بطل الأسبوع الماضي', month:'بطل الشهر الماضي'};
+const esc = t => String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function loadLB(){
+  const tok=++LB.tok, body=$('lbBody');
+  $('lbSub').textContent = (LB.m==='daily'?'التحدي اليومي':'كل الجولات')+' · '+LBP[LB.p];
+  body.innerHTML='<div class="lbempty">جارٍ التحميل…</div>'; $('lbMe').style.display='none'; $('lbCnt').textContent='';
+  const r = await rpc('get_leaderboard',{p_id:PID,p_period:LB.p,p_mode:LB.m,p_limit:LB.lim},6000);
+  if(tok!==LB.tok) return;
+  if(!r || !r.ok){ body.innerHTML='<div class="lbempty">تعذّر تحميل الترتيب، حاول مرة أخرى</div>'; return; }
+  $('lbCnt').textContent = fmt(r.count)+' لاعب';
+  const top=r.top||[];
+  if(!top.length){ body.innerHTML='<div class="lbempty">لا أحد في الترتيب بعد '+LBP[LB.p]+'.<br>العب الآن وكن الأول!</div>'; }
+  else {
+    const pod=[top[1],top[0],top[2]].map((x,i)=>{ if(!x) return '<div class="pc"></div>'; const n=x.rank;
+      return '<div class="pc p'+n+'"><div class="pav"'+(x.av?' style="background-image:url(\''+x.av.replace(/'/g,'')+'\')"':'')+'>'+(x.av?'':esc(x.name.trim().charAt(0)))+'</div><div class="pn">'+esc(x.name)+'</div><div class="pp">'+fmt(x.pts)+'</div><div class="blk">'+n+'</div></div>'; }).join('');
+    const rest=top.slice(3).map(x=>'<div class="lbi'+(x.me?' me':'')+'"><span class="rk">'+x.rank+'</span><span class="nm">'+esc(x.name)+'</span><span class="pt">'+fmt(x.pts)+'</span></div>').join('');
+    let h='<div class="pod">'+pod+'</div>'+(rest?'<div class="lbl">'+rest+'</div>':'');
+    if(r.count>LB.lim && LB.lim<100) h+='<button class="lbmore" id="lbMore" type="button">عرض أعلى '+(LB.lim<=10?'١٠٠':'١٠')+'</button>';
+    else if(LB.lim>10) h+='<button class="lbmore" id="lbMore" type="button">عرض أعلى ١٠ فقط</button>';
+    const cards=[];
+    if(r.best) cards.push('<div class="lbc"><small>أعلى جولة '+LBP[LB.p]+'</small><b>'+esc(r.best.name)+'</b><span>'+fmt(r.best.pts)+'</span></div>');
+    if(r.prev && LBPREV[LB.p]) cards.push('<div class="lbc"><small>'+LBPREV[LB.p]+'</small><b>'+esc(r.prev.name)+'</b><span>'+fmt(r.prev.pts)+'</span></div>');
+    if(cards.length) h+='<div class="lbcards">'+cards.join('')+'</div>';
+    body.innerHTML=h;
+    const mb=$('lbMore'); if(mb) mb.onclick=()=>{ LB.lim = LB.lim<=10 ? 100 : 10; loadLB(); };
+  }
+  const me=$('lbMe');
+  if(r.me){ me.innerHTML='<span class="rk">#'+r.me.rank+'</span><span class="tx">ترتيبك '+LBP[LB.p]+(r.me.gap?'<br>تحتاج '+fmt(r.me.gap)+' نقطة لتتقدم مركزاً':(r.me.rank===1?'<br>أنت في الصدارة!':''))+'</span><span class="pt">'+fmt(r.me.pts)+'</span>'; }
+  else me.innerHTML='<span class="tx">لم تدخل الترتيب '+LBP[LB.p]+' بعد. العب '+(LB.m==='daily'?'تحدي اليوم':'جولة')+' لتظهر هنا</span>';
+  me.style.display='flex';
+}
+async function homeRank(){
+  if(DEMO && !stats.empNo) return;
+  const r = await rpc('get_leaderboard',{p_id:PID,p_period:'day',p_mode:'daily',p_limit:3},5000);
+  $('lbMine').textContent = (r && r.me) ? 'ترتيبك اليوم #'+r.me.rank : '';
+}
+$('lbBtn').onclick=()=>{ LB.lim=10; show('lbPage'); loadLB(); };
+$('backBtn4').onclick=()=>{ $('lbMe').style.display='none'; show('home'); homeRank(); };
+$('lbMode').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; LB.m=b.dataset.m; LB.lim=10; $('lbMode').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); loadLB(); };
+$('lbPer').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; LB.p=b.dataset.p; LB.lim=10; $('lbPer').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); loadLB(); };
+setTimeout(homeRank,1500);
 $('badgesBtn').onclick = ()=>{ window._pfBack=1; renderBadges(); show('badgesPage'); };
 $('backBtn2').onclick = ()=>{ renderStats(); if(window._pfBack){ window._pfBack=0; renderProfile(); show('profilePage'); } else show('home'); };
 $('backBtn').onclick = ()=>{ renderStats(); if(window._pfBack){ window._pfBack=0; renderProfile(); show('profilePage'); } else show('home'); };
