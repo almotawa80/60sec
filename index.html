@@ -663,7 +663,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171410">
+<meta name="app-version" content="202611171420">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1737,7 +1737,7 @@ function loopS(){
   }
   if(g.phase==='q'){
     const rem=Math.max(0,g.deadline-now);
-    if(!g.locked || !g.qUsed[g.qi]) g.qUsed[g.qi]=Math.min(QMS,Math.max(0,QMS-rem));
+    g.qUsed[g.qi]=Math.min(QMS,Math.max(0,QMS-rem)); /* العداد يكمل حتى بعد ما تجاوب، لين ينتهي السؤال */
     const used=g.qUsed.reduce((a,b)=>a+(b||0),0), tl=Math.max(0,NQ*QMS-used);
     $('timer').textContent=toAr(Math.ceil(tl/1000));
     $('clock').classList.toggle('low', tl<=10000); $('clock').classList.toggle('mid', tl<=30000);
