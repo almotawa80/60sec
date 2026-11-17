@@ -75,12 +75,12 @@ body{font-family:'Noto Kufi Arabic',system-ui,sans-serif;color:var(--text);backg
 #game .sheet{padding-bottom:calc(84px + env(safe-area-inset-bottom))!important}
 #game:not(.active) #quitBtn{display:none}
 
-.fpts{position:fixed;left:50%;top:34%;z-index:60;pointer-events:none;font-weight:900;transform:translateX(-50%);animation:fpts 1.05s ease-out forwards;white-space:nowrap}
-.fpts.l1{font-size:22px;color:#16a34a}
-.fpts.l2{font-size:30px;color:#0ea5e9;text-shadow:0 2px 14px rgba(14,165,233,.45)}
-.fpts.l3{font-size:40px;color:#f5b301;text-shadow:0 0 22px rgba(245,179,1,.85),0 2px 6px rgba(0,0,0,.25)}
-.fpts small{display:block;font-size:14px;text-align:center;opacity:.9}
-@keyframes fpts{0%{opacity:0;transform:translate(-50%,16px) scale(.7)}25%{opacity:1;transform:translate(-50%,0) scale(1.15)}100%{opacity:0;transform:translate(-50%,-46px) scale(1)}}
+.fpts{position:fixed;left:50%;top:34%;z-index:60;pointer-events:none;font-weight:900;transform:translateX(-50%);animation:fpts 1.9s ease-out forwards;white-space:nowrap;-webkit-text-stroke:1.5px #fff;paint-order:stroke fill}
+.fpts.l1{font-size:40px;color:#15803d;text-shadow:0 4px 14px rgba(21,128,61,.45)}
+.fpts.l2{font-size:48px;color:#0369a1;text-shadow:0 4px 16px rgba(3,105,161,.5)}
+.fpts.l3{font-size:58px;color:#e09b00;text-shadow:0 0 24px rgba(245,179,1,.9),0 3px 8px rgba(0,0,0,.3)}
+.fpts small{display:block;font-size:17px;text-align:center;-webkit-text-stroke:0;color:#fff;background:#c8102e;border-radius:999px;padding:2px 10px;margin:4px auto 0;width:max-content}
+@keyframes fpts{0%{opacity:0;transform:translate(-50%,24px) scale(.5)}14%{opacity:1;transform:translate(-50%,0) scale(1.18)}24%{transform:translate(-50%,0) scale(1)}75%{opacity:1;transform:translate(-50%,-14px) scale(1)}100%{opacity:0;transform:translate(-50%,-50px) scale(.95)}}
 
 .clock{position:relative;width:84px;height:84px}
 .clock svg{width:100%;height:100%;transform:rotate(-90deg)}
@@ -652,6 +652,17 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 @keyframes spGlint{0%{transform:translateX(-70%);opacity:1}100%{transform:translateX(70%);opacity:0}}
 @keyframes spShk{0%,100%{transform:translateY(-7.6px)}25%{transform:translate(4px,-10.6px)}50%{transform:translate(-4px,-4.6px)}75%{transform:translate(2px,-5.6px)}}
 @media (prefers-reduced-motion:reduce){#splash.go .spT,#splash.cut2 .spT,#splash.cut2 .spW,#splash.go .spGl::after{animation:none!important;transition:opacity .4s!important;transform:none!important}}
+/* مؤثرات التشويق */
+.fxflash{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0}.fxflash.go{animation:fxfl .5s ease-out}
+@keyframes fxfl{0%{opacity:.3}100%{opacity:0}}
+.fxshake{animation:fxshk .4s}@keyframes fxshk{20%{transform:translateX(9px)}40%{transform:translateX(-9px)}60%{transform:translateX(6px)}80%{transform:translateX(-4px)}}
+.fxvig{position:fixed;inset:0;pointer-events:none;z-index:41;display:none}.fxvig.on{display:block;animation:fxvg .8s ease-in-out infinite}
+@keyframes fxvg{0%,100%{box-shadow:inset 0 0 40px 6px rgba(200,16,46,.25)}50%{box-shadow:inset 0 0 90px 22px rgba(200,16,46,.55)}}
+.fxban{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));z-index:45;background:#111;color:#fff;border-radius:14px;padding:11px 18px;font-weight:800;font-size:15px;white-space:nowrap;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:fxbn 1.8s forwards}
+.fxban.up{background:#1a8f4c}
+@keyframes fxbn{0%{transform:translate(-50%,90px);opacity:0}15%,80%{transform:translate(-50%,0);opacity:1}100%{transform:translate(-50%,90px);opacity:0}}
+.fxconf{position:fixed;top:-20px;width:9px;height:14px;z-index:300;pointer-events:none;border-radius:2px;animation:fxcf linear forwards}
+@keyframes fxcf{to{transform:translateY(110vh) rotate(720deg)}}
 </style>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20512%20512%22%3E%3Crect%20width=%22512%22%20height=%22512%22%20rx=%22112%22%20fill=%22%23fff%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%280.0%20256%20256%29%22%20stroke=%22%23c4c7cc%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%2815.0%20256%20256%29%22%20stroke=%22%23c4c7cc%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%2830.0%20256%20256%29%22%20stroke=%22%23c3c6cb%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%2845.0%20256%20256%29%22%20stroke=%22%23c3c6cb%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%2860.0%20256%20256%29%22%20stroke=%22%23c2c5ca%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%2875.0%20256%20256%29%22%20stroke=%22%23c2c5ca%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%2890.0%20256%20256%29%22%20stroke=%22%23c1c4ca%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28105.0%20256%20256%29%22%20stroke=%22%23c1c4c9%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28120.0%20256%20256%29%22%20stroke=%22%23c0c3c9%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28135.0%20256%20256%29%22%20stroke=%22%23c0c3c9%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28150.0%20256%20256%29%22%20stroke=%22%23bfc2c8%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28165.0%20256%20256%29%22%20stroke=%22%23c5c1b0%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28180.0%20256%20256%29%22%20stroke=%22%23cfbf8b%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28195.0%20256%20256%29%22%20stroke=%22%23d9bc66%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28210.0%20256%20256%29%22%20stroke=%22%23e2ba41%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28225.0%20256%20256%29%22%20stroke=%22%23ecb81d%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28240.0%20256%20256%29%22%20stroke=%22%23f2b107%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28255.0%20256%20256%29%22%20stroke=%22%23f1a00d%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28270.0%20256%20256%29%22%20stroke=%22%23f19012%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28285.0%20256%20256%29%22%20stroke=%22%23f07f18%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28300.0%20256%20256%29%22%20stroke=%22%23eb6a1e%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28315.0%20256%20256%29%22%20stroke=%22%23e35224%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28330.0%20256%20256%29%22%20stroke=%22%23db3b29%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cline%20x1=%22256%22%20y1=%2240%22%20x2=%22256%22%20y2=%2296%22%20transform=%22rotate%28345.0%20256%20256%29%22%20stroke=%22%23d3232f%22%20stroke-width=%2224%22%20stroke-linecap=%22round%22%20stroke-opacity=%221%22/%3E%3Cpath%20transform=%22translate%28136.0%20218.8%29%20scale%280.09505%29%22%20d=%22M2524.3%20691.8%20L2519.7%20696.8%20L2509.7%20698.5%20L2034.7%20698.4%20L1999.7%20695.3%20L1948.7%20694.8%20L1909.2%20690.8%20L1859.7%20678.5%20L1825.7%20666.4%20L1775.7%20642.0%20L1757.3%20630.8%20L1721.5%20604.8%20L1693.7%20579.8%20L1651.1%20533.8%20L1585.8%20438.8%20L1514.7%20351.8%20L1453.9%20291.8%20L1390.7%20238.9%20L1323.7%20191.3%20L1245.7%20145.3%20L1216.7%20131.0%20L1135.7%2096.1%20L1058.7%2071.0%20L1007.7%2058.9%20L939.7%2045.7%20L860.7%2037.6%20L852.0%2034.8%20L850.2%2030.8%20L854.7%2027.6%20L867.7%2024.4%20L949.7%2012.7%20L1103.7%200.2%20L1247.7%200.4%20L1378.7%2011.2%20L1475.7%2024.2%20L1600.7%2049.6%20L1689.1%2073.8%20L1760.5%2096.8%20L1825.7%20120.7%20L1885.7%20145.6%20L1985.7%20192.5%20L2070.7%20241.0%20L2147.7%20290.1%20L2254.7%20371.4%20L2348.7%20456.1%20L2425.7%20541.8%20L2498.2%20639.8%20L2522.3%20677.8Z%20M0.7%20688.8%20L0.5%20681.8%20L32.9%20614.8%20L56.6%20574.8%20L105.3%20505.8%20L155.8%20445.8%20L193.0%20408.8%20L248.7%20361.6%20L280.7%20337.6%20L339.7%20299.5%20L408.7%20264.0%20L464.7%20239.5%20L543.5%20215.8%20L596.7%20204.0%20L687.7%20192.3%20L785.7%20192.2%20L866.7%20202.5%20L935.7%20216.2%20L968.9%20227.8%20L974.1%20231.8%20L973.1%20234.8%20L966.7%20237.3%20L926.7%20239.5%20L862.7%20250.3%20L817.7%20263.0%20L756.7%20288.3%20L714.7%20312.1%20L679.7%20335.6%20L620.7%20385.1%20L581.7%20428.3%20L537.0%20494.8%20L494.8%20573.8%20L464.0%20612.8%20L429.7%20641.9%20L390.5%20666.8%20L364.7%20678.2%20L331.2%20688.8%20L283.7%20694.7%20L18.7%20694.8%20L6.7%20693.4Z%22%20fill=%22%23d3232f%22/%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -663,7 +674,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171420">
+<meta name="app-version" content="202611171440">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1203,11 +1214,14 @@ function tone(f,t0,d,type,vol,slide){
 }
 const SND = {
   /* إجابة صحيحة: رنّة مزدوجة مشرقة */
-  ok:   ()=>{ tone(988,0,.2,'sine',.2); tone(1319,.09,.34,'sine',.2); tone(2637,.09,.2,'sine',.05); },
+  ok:   (k)=>{ const m=Math.pow(1.122,Math.min(6,Math.max(0,(k||1)-1))); tone(988*m,0,.2,'sine',.2); tone(1319*m,.09,.34,'sine',.2); tone(2637*m,.09,.2,'sine',.05); if(k>=3) tone(1568*m,.18,.35,'triangle',.14); },
   /* إجابة خاطئة: طنين منخفض هابط */
   bad:  ()=>{ tone(220,0,.28,'sawtooth',.13,120); tone(165,.13,.34,'square',.08,85); },
   tick: ()=>tone(1200,0,.04,'square',.04),
   count:()=>tone(520,0,.14,'sine',.16),
+  heart:()=>{ tone(70,0,.16,'sine',.7,45); tone(60,.17,.18,'sine',.55,40); tone(1500,0,.04,'square',.05); },
+  alert:()=>{ tone(880,0,.12,'square',.08,660); tone(660,.12,.18,'square',.08,440); },
+  lead: ()=>{ [659,880,1175].forEach((f,i)=>tone(f,i*.07,.18,'triangle',.15)); },
   go:   ()=>{ tone(784,0,.12,'triangle',.2); tone(1047,.1,.3,'triangle',.2); },
   /* الفوز: مقدمة صاعدة ثم وتر ختامي */
   win:  ()=>{ [523,659,784,1047].forEach((f,i)=>tone(f,i*.13,.22,'triangle',.2));
@@ -1218,6 +1232,13 @@ const SND = {
   badge:()=>{ [1175,1568,1976,2349].forEach((f,i)=>tone(f,i*.07,.25,'sine',.1)); }
 };
 SND.end = SND.lose;
+const FXV={
+  flash(c){ let f=document.getElementById('fxFlash'); if(!f){ f=document.createElement('div'); f.id='fxFlash'; f.className='fxflash'; document.body.appendChild(f); } f.style.background=c; f.classList.remove('go'); void f.offsetWidth; f.classList.add('go'); },
+  shake(el){ if(!el) return; el.classList.remove('fxshake'); void el.offsetWidth; el.classList.add('fxshake'); },
+  vig(on){ let v=document.getElementById('fxVig'); if(!v){ if(!on) return; v=document.createElement('div'); v.id='fxVig'; v.className='fxvig'; document.body.appendChild(v); } v.classList.toggle('on',!!on); },
+  banner(t,up){ document.querySelectorAll('.fxban').forEach(x=>x.remove()); const b=document.createElement('div'); b.className='fxban'+(up?' up':''); b.textContent=t; document.body.appendChild(b); setTimeout(()=>b.remove(),1900); },
+  confetti(){ const cs=['#c8102e','#ffb703','#1a8f4c','#2563eb','#ff7a00']; for(let i=0;i<70;i++){ const c=document.createElement('div'); c.className='fxconf'; c.style.left=Math.random()*100+'vw'; c.style.background=cs[i%5]; c.style.animationDuration=(1.6+Math.random()*1.6)+'s'; c.style.animationDelay=(Math.random()*.4)+'s'; document.body.appendChild(c); setTimeout(()=>c.remove(),3800); } }
+};
 /* طلب خالد: أصوات اللعب = العد ٣٢١ والانطلاق، الصح والخطأ، وتكتكة قرب انتهاء الوقت، والسيف والفوز. الباقي صامت */
 ['lose','draw','badge','end'].forEach(k=>{ SND[k]=()=>{}; });
 function applyTheme(){ document.documentElement.setAttribute('data-theme', stats.theme==='dark'?'dark':'light'); document.querySelectorAll('#segTheme button').forEach(b=>b.classList.toggle('on', b.dataset.v===(stats.theme==='dark'?'dark':'light'))); }
@@ -1644,6 +1665,12 @@ function recompute(){
   if(me!==g.me){ g.me=me; $('myScore').textContent=me; pop('myScore'); }
   if(ob!==g.bot){ g.bot=ob; $('botScore').textContent=ob; pop('botScore'); }
   updateRace();
+  const ld = g.me>g.bot ? 1 : (g.me<g.bot ? -1 : 0);
+  if(g.lead!=null && ld!==g.lead && !g.over && (g.phase==='q'||g.phase==='rev')){
+    if(ld===-1 && (g.lead===1 || g.me>0)){ SND.alert(); FXV.banner('خصمك تقدّم! ⚡'); try{ navigator.vibrate && navigator.vibrate(50); }catch(e){} }
+    else if(ld===1 && g.lead===-1){ SND.lead(); FXV.banner('رجعت قدام! 💪',1); }
+  }
+  g.lead = ld;
   g.combo=st; if(st>g.maxCombo) g.maxCombo=st;
   if(st>=2){ $('combo').innerHTML=svg('flame',15)+' ×'+st; $('combo').classList.add('on'); } else $('combo').classList.remove('on');
   const oa = g.phase==='q' && g.oppA.some(a=>a.qi===g.qi);
@@ -1671,7 +1698,7 @@ function showQS(i, startAt){
 }
 function floatPts(pts,lvl,fast){
   const d=document.createElement('div'); d.className='fpts l'+lvl; d.innerHTML='+'+toAr(pts)+(fast?'<small>سريع!</small>':'');
-  document.body.appendChild(d); setTimeout(()=>d.remove(),1100);
+  document.body.appendChild(d); setTimeout(()=>d.remove(),2000);
 }
 function answerS(btn, ok, box){
   const g=G; if(!g||g.over||g.locked||g.phase!=='q') return;
@@ -1680,10 +1707,10 @@ function answerS(btn, ok, box){
   btn.classList.add(ok?'ok':'bad');
   if(!ok){
     [...box.children].forEach(c=>{ if(c.dataset.ok==='1') c.classList.add('ok'); else if(c!==btn) c.classList.add('dim'); });
-    SND.bad(); showExpl('');
+    SND.bad(); FXV.flash('rgba(200,16,46,.6)'); FXV.shake($('qWrap')); showExpl('');
   } else {
     [...box.children].forEach(c=>{ if(c!==btn) c.classList.add('dim'); });
-    SND.ok(); floatPts(ptsFor(lv,ms),lv,ms<3000); showExpl('');
+    SND.ok((g.combo||0)+1); FXV.flash('rgba(26,143,76,.55)'); floatPts(ptsFor(lv,ms),lv,ms<3000); showExpl('');
   }
   try{ navigator.vibrate && navigator.vibrate(ok?20:[30,40,30]); }catch(e){}
   const rec={qi:g.qi,ok:ok,ms:ms};
@@ -1746,7 +1773,9 @@ function loopS(){
     else if(g.lblDone!==g.qi){ setQTimer(rem/1000); if(g.mineA.some(a=>a.qi===g.qi)) waitLbl(rem); }
     if(!PV) localAdv(now);
     else if(rem<=0 && now-g.deadline>7000) takeover('انقطع الاتصال — أكمل ضد منافس آلي');
-    if(g.deadline-now<=3000 && g.deadline-now>0){ const sec=Math.ceil((g.deadline-now)/1000); if(sec!==g.lastSec){ g.lastSec=sec; SND.tick(); } }
+    const last = g.qi===NQ-1 || tl<=10000, endIn = last ? Math.min(rem, tl) : rem;
+    if(last){ if(endIn>0){ const sec=Math.ceil(endIn/1000); if(sec!==g.lastSec){ g.lastSec=sec; if(sec<=5){ SND.heart(); try{ navigator.vibrate && navigator.vibrate([40,90,40]); }catch(e){} } else SND.tick(); } } FXV.vig(endIn>0 && endIn<=5000 && !g.locked); }
+    else if(g.deadline-now<=3000 && g.deadline-now>0){ const sec=Math.ceil((g.deadline-now)/1000); if(sec!==g.lastSec){ g.lastSec=sec; SND.tick(); } }
   }
 }
 function takeover(msg){
@@ -1791,11 +1820,11 @@ function finishS(){
 let lastMe = 0, lastRes = null;
 function endGame(){
   if(!G || G.over) return;
-  G.over = true; G.timers.forEach(t=>{clearInterval(t);clearTimeout(t)});
+  G.over = true; G.timers.forEach(t=>{clearInterval(t);clearTimeout(t)}); FXV.vig(false);
   const me=G.me, b=G.bot; lastMe = me;
   const R = G.force || (me>b?'win':(me<b?'lose':(G.tie||'draw')));
   let emoji,title;
-  if(R==='win'){ emoji='trophy'; title='فزت!'; stats.wins++; stats.streak++; SND.win(); }
+  if(R==='win'){ emoji='trophy'; title='فزت!'; stats.wins++; stats.streak++; SND.win(); setTimeout(()=>FXV.confetti(),250); try{ navigator.vibrate && navigator.vibrate([40,60,40,60,120]); }catch(e){} }
   else if(R==='lose'){ emoji='refresh'; title=G.force?'استسلمت':'خسرت هذه الجولة'; stats.streak=0; SND.lose(); }
   else { emoji='equal'; title='تعادل'; SND.draw(); }
   const isBest = me>stats.best; if(isBest) stats.best=me;
