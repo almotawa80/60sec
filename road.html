@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261117183814">
+<meta name="app-version" content="road-20261117185015">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1318,6 +1318,26 @@ body:has(#roadPage.active) .toast{top:calc(200px + env(safe-area-inset-top))}
 #found .vs .pname{color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.45)}
 #found .vsb{background:linear-gradient(#ffe27a,#f2b51e 60%,#c98a08);color:#7a0c12;border:3px solid #fff;box-shadow:0 0 0 3px #c8102e,0 6px 12px rgba(0,0,0,.4);font-weight:900}
 #found #foundMsg{background:rgba(0,0,0,.35);border-radius:16px;padding:8px 12px;color:#fff;opacity:1}
+/* شاشة نهاية المباراة بنفس البطاقة الموحّدة فوق الخريطة */
+#result{background:radial-gradient(circle at 50% 40%,rgba(120,20,30,.5),rgba(20,10,5,.82) 75%),url(img/road/map3.jpg) center/cover no-repeat,#2a1408!important;overflow-y:auto}
+#result .hero.res{background:none!important;position:relative;z-index:2;padding-bottom:0!important;overflow:visible}
+#result .hero.res::before,#result .hero.res::after{display:none}
+#result .res-title{width:min(380px,96vw);height:78px;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(#ff5a65,#d81f2e 60%,#a50f1c);clip-path:polygon(0 18%,10% 0,50% 22%,90% 0,100% 18%,96% 72%,50% 100%,4% 72%);color:#fff;font-size:28px;font-weight:900;text-shadow:0 3px 0 #7a0c12,2px 0 0 #7a0c12,-2px 0 0 #7a0c12;padding-bottom:6px;box-sizing:border-box;margin:0 auto -34px}
+#result .res-emoji{display:none}
+#result .sheet{flex:0 0 auto;width:min(350px,90vw);box-sizing:border-box;margin:0 auto 24px;padding:52px 16px 18px!important;border-radius:30px!important;background:linear-gradient(#fffaf0,#fde9c4)!important;border:4px solid #fff;box-shadow:0 0 0 4px #c8102e,inset 0 -6px 0 rgba(160,110,40,.15),0 12px 30px rgba(0,0,0,.45);color:#5a3412}
+#result .sp{flex:0 0 6px}
+#result .score-card{background:#fff;border:3px solid #3fb7c9;border-radius:20px;box-shadow:none}
+#result .score-card .n{color:#8a6a45;font-weight:800}
+#result .score-card.me{border-color:#3fb7c9}
+#result .score-card.bot{border-color:#e6c48a}
+#result .res-extra{color:#6b4520}
+#result .earned{background:#fff;border:3px solid #f2b51e;border-radius:20px;padding:10px;color:#1e9e6a}
+#result .earned small{color:#8a6a45}
+#result .btn{border-radius:22px!important;margin-top:10px}
+#result #againBtn,#result #shareBtn{border:3px solid #fff;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c);box-shadow:0 6px 0 #7a0c12,0 10px 18px rgba(0,0,0,.25);color:#fff;font-size:20px;font-weight:900;text-shadow:0 2px 0 #7a0c12}
+#result #homeBtn{background:none;border:0;box-shadow:none;color:#8a6a45;font-weight:800}
+#result #homeBtn:not(.ghost){border:3px solid #fff;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c);box-shadow:0 6px 0 #7a0c12;color:#fff;font-size:20px;font-weight:900}
+#result #shareBtn.ghost{background:none;border:0;box-shadow:none;color:#8a6a45;font-size:16px;text-shadow:none}
 
 </style>
 </head>
@@ -3681,6 +3701,64 @@ function rdSrBr(){
   else b.textContent='🎯 جولة تدريب · بدون نقاط';
 }
 (function(){ const _sm=startMatch; startMatch=function(){ try{ rdSrBr(); }catch(e){} return _sm.apply(this,arguments); }; })();
+
+/* بطاقة المشاركة بستايل الطريق: خلفية الخريطة + البطاقة الكريمية بالشريط الأحمر + الفرع */
+async function rdAv(x,cx,cy,R,src,ch,robot){
+  const im=await loadImg(src), ring=robot?'#1f7f90':'#c8102e';
+  x.save(); x.beginPath(); x.arc(cx,cy,R+16,0,Math.PI*2); x.fillStyle=ring; x.fill();
+  x.beginPath(); x.arc(cx,cy,R+8,0,Math.PI*2); x.fillStyle='#fff'; x.fill();
+  x.beginPath(); x.arc(cx,cy,R,0,Math.PI*2); x.closePath(); x.clip();
+  if(im){ const m=Math.min(im.width,im.height); x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,cx-R,cy-R,2*R,2*R); }
+  else { const g=x.createRadialGradient(cx-R*.25,cy-R*.4,R*.1,cx,cy,R*1.1);
+    if(robot){ g.addColorStop(0,'#8fe3ef'); g.addColorStop(.55,'#3fb7c9'); g.addColorStop(1,'#1f7f90'); } else { g.addColorStop(0,'#ff6b75'); g.addColorStop(.55,'#d81f2e'); g.addColorStop(1,'#a50f1c'); }
+    x.fillStyle=g; x.fillRect(cx-R,cy-R,2*R,2*R); x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle';
+    if(robot){ x.strokeStyle='#fff'; x.lineWidth=8; x.lineJoin='round'; x.strokeRect(cx-36,cy-22,72,52); x.beginPath(); x.moveTo(cx,cy-22); x.lineTo(cx,cy-40); x.stroke(); x.beginPath(); x.arc(cx,cy-44,7,0,Math.PI*2); x.fill(); x.beginPath(); x.arc(cx-15,cy,8,0,Math.PI*2); x.arc(cx+15,cy,8,0,Math.PI*2); x.fill(); x.fillRect(cx-15,cy+14,30,7); }
+    else { x.font='800 '+(R*0.95)+'px "Noto Kufi Arabic", sans-serif'; x.fillText(ch||'؟',cx,cy+6); } }
+  x.restore();
+}
+drawCard = async function(r,name){
+  try{ await document.fonts.load('800 64px "Noto Kufi Arabic"'); await document.fonts.load('500 34px "Noto Kufi Arabic"'); }catch(e){}
+  const W=1080,H=1350, c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d');
+  x.fillStyle='#2a1408'; x.fillRect(0,0,W,H);
+  const bg=await loadImg('img/road/map3.jpg');
+  if(bg){ const s=Math.max(W/bg.width,H/bg.height), w=bg.width*s, h=bg.height*s; x.drawImage(bg,(W-w)/2,(H-h)/2,w,h); }
+  const ov=x.createRadialGradient(540,620,80,540,620,900); ov.addColorStop(0,'rgba(120,20,30,.45)'); ov.addColorStop(1,'rgba(20,10,5,.85)'); x.fillStyle=ov; x.fillRect(0,0,W,H);
+  try{ const lw=300, sc=lw/2525; x.save(); x.translate(540-lw/2,60); x.scale(sc,sc); x.fillStyle='#fff'; x.fill(new Path2D(BKLOGO_D),'evenodd'); x.restore(); }catch(e){}
+  x.direction='rtl'; x.textAlign='center'; x.textBaseline='alphabetic';
+  x.fillStyle='#fff'; x.font='800 64px "Noto Kufi Arabic", sans-serif'; x.fillText('تحدّي الدقيقة · الطريق',540,240);
+  /* البطاقة */
+  const cx0=70, cy0=330, cw=940, ch=820;
+  rr(x,cx0-14,cy0-14,cw+28,ch+28,66,'#c8102e'); rr(x,cx0-6,cy0-6,cw+12,ch+12,60,'#fff');
+  const cg=x.createLinearGradient(0,cy0,0,cy0+ch); cg.addColorStop(0,'#fffaf0'); cg.addColorStop(1,'#fde9c4'); rr(x,cx0,cy0,cw,ch,54,cg);
+  /* الشريط الأحمر */
+  const rx=40, rw=1000, ry=286, rh=124; x.save(); x.beginPath();
+  [[0,.18],[.10,0],[.5,.22],[.90,0],[1,.18],[.96,.72],[.5,1],[.04,.72]].forEach((p,i)=>{ const px=rx+p[0]*rw, py=ry+p[1]*rh; i?x.lineTo(px,py):x.moveTo(px,py); });
+  x.closePath(); const rg=x.createLinearGradient(0,ry,0,ry+rh); rg.addColorStop(0,'#ff5a65'); rg.addColorStop(.6,'#d81f2e'); rg.addColorStop(1,'#a50f1c'); x.fillStyle=rg; x.fill(); x.restore();
+  const ttl = r.result==='win'?'فاز في التحدّي 🏆':(r.result==='lose'?'خاض التحدّي ⚔️':'تعادل في التحدّي 🤝');
+  x.font='800 54px "Noto Kufi Arabic", sans-serif'; x.lineJoin='round'; x.lineWidth=12; x.strokeStyle='#7a0c12'; x.strokeText(ttl,540,372); x.fillStyle='#fff'; x.fillText(ttl,540,372);
+  /* اللاعبين */
+  const opp=r.opp||'المنافس';
+  await rdAv(x,770,540,84,r.meAv,(name||'أ').trim().charAt(0),false);
+  await rdAv(x,310,540,84,r.oppAv,opp.trim().charAt(0),!r.human);
+  x.direction='rtl'; x.textAlign='center'; x.textBaseline='alphabetic';
+  x.fillStyle='#5a3412'; fitFont(x,name,400,44,'800'); x.fillText(name,770,700);
+  fitFont(x,opp,400,44,'800'); x.fillText(opp,310,700);
+  /* صناديق النتيجة */
+  const bx=(cx,col)=>{ rr(x,cx-185,730,370,190,34,col); rr(x,cx-178,737,356,176,28,'#fff'); };
+  bx(770,'#3fb7c9'); bx(310,'#e6c48a');
+  x.font='800 120px "Noto Kufi Arabic", sans-serif';
+  x.fillStyle=r.result==='lose'?'#8a6a45':'#1e9e6a'; x.fillText(String(r.me),770,870);
+  x.fillStyle=r.result==='win'?'#8a6a45':'#d81f2e'; x.fillText(String(r.bot),310,870);
+  x.fillStyle='#d81f2e'; x.font='900 60px "Noto Kufi Arabic", sans-serif'; x.fillText('VS',540,840);
+  /* الفرع */
+  const st=RD.st; let br='';
+  if(st && typeof st.pos==='number'){ br = st.arrived ? '🏁 وصل الفرع الرئيسي' : '🚩 في فرع '+ROUTE[Math.min(st.pos,HQ)]+' · باقي '+(HQ-Math.min(st.pos,HQ))+' للرئيسي'; }
+  if(br){ x.font='800 40px "Noto Kufi Arabic", sans-serif'; const tw=Math.min(820,x.measureText(br).width+90);
+    rr(x,540-tw/2,975,tw,96,48,'#f2b51e'); rr(x,540-tw/2+6,981,tw-12,84,42,'#fff'); x.fillStyle='#a50f1c'; fitFont(x,br,tw-70,40,'800'); x.fillText(br,540,1037); }
+  /* النص السفلي */
+  x.fillStyle='#fff'; x.font='800 54px "Noto Kufi Arabic", sans-serif'; x.fillText('هل تستطيع التغلب عليّ؟',540,1265);
+  return c;
+};
 
 </script>
 </body>

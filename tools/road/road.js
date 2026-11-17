@@ -439,3 +439,61 @@ function rdSrBr(){
   else b.textContent='🎯 جولة تدريب · بدون نقاط';
 }
 (function(){ const _sm=startMatch; startMatch=function(){ try{ rdSrBr(); }catch(e){} return _sm.apply(this,arguments); }; })();
+
+/* بطاقة المشاركة بستايل الطريق: خلفية الخريطة + البطاقة الكريمية بالشريط الأحمر + الفرع */
+async function rdAv(x,cx,cy,R,src,ch,robot){
+  const im=await loadImg(src), ring=robot?'#1f7f90':'#c8102e';
+  x.save(); x.beginPath(); x.arc(cx,cy,R+16,0,Math.PI*2); x.fillStyle=ring; x.fill();
+  x.beginPath(); x.arc(cx,cy,R+8,0,Math.PI*2); x.fillStyle='#fff'; x.fill();
+  x.beginPath(); x.arc(cx,cy,R,0,Math.PI*2); x.closePath(); x.clip();
+  if(im){ const m=Math.min(im.width,im.height); x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,cx-R,cy-R,2*R,2*R); }
+  else { const g=x.createRadialGradient(cx-R*.25,cy-R*.4,R*.1,cx,cy,R*1.1);
+    if(robot){ g.addColorStop(0,'#8fe3ef'); g.addColorStop(.55,'#3fb7c9'); g.addColorStop(1,'#1f7f90'); } else { g.addColorStop(0,'#ff6b75'); g.addColorStop(.55,'#d81f2e'); g.addColorStop(1,'#a50f1c'); }
+    x.fillStyle=g; x.fillRect(cx-R,cy-R,2*R,2*R); x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle';
+    if(robot){ x.strokeStyle='#fff'; x.lineWidth=8; x.lineJoin='round'; x.strokeRect(cx-36,cy-22,72,52); x.beginPath(); x.moveTo(cx,cy-22); x.lineTo(cx,cy-40); x.stroke(); x.beginPath(); x.arc(cx,cy-44,7,0,Math.PI*2); x.fill(); x.beginPath(); x.arc(cx-15,cy,8,0,Math.PI*2); x.arc(cx+15,cy,8,0,Math.PI*2); x.fill(); x.fillRect(cx-15,cy+14,30,7); }
+    else { x.font='800 '+(R*0.95)+'px "Noto Kufi Arabic", sans-serif'; x.fillText(ch||'؟',cx,cy+6); } }
+  x.restore();
+}
+drawCard = async function(r,name){
+  try{ await document.fonts.load('800 64px "Noto Kufi Arabic"'); await document.fonts.load('500 34px "Noto Kufi Arabic"'); }catch(e){}
+  const W=1080,H=1350, c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d');
+  x.fillStyle='#2a1408'; x.fillRect(0,0,W,H);
+  const bg=await loadImg('img/road/map3.jpg');
+  if(bg){ const s=Math.max(W/bg.width,H/bg.height), w=bg.width*s, h=bg.height*s; x.drawImage(bg,(W-w)/2,(H-h)/2,w,h); }
+  const ov=x.createRadialGradient(540,620,80,540,620,900); ov.addColorStop(0,'rgba(120,20,30,.45)'); ov.addColorStop(1,'rgba(20,10,5,.85)'); x.fillStyle=ov; x.fillRect(0,0,W,H);
+  try{ const lw=300, sc=lw/2525; x.save(); x.translate(540-lw/2,60); x.scale(sc,sc); x.fillStyle='#fff'; x.fill(new Path2D(BKLOGO_D),'evenodd'); x.restore(); }catch(e){}
+  x.direction='rtl'; x.textAlign='center'; x.textBaseline='alphabetic';
+  x.fillStyle='#fff'; x.font='800 64px "Noto Kufi Arabic", sans-serif'; x.fillText('تحدّي الدقيقة · الطريق',540,240);
+  /* البطاقة */
+  const cx0=70, cy0=330, cw=940, ch=820;
+  rr(x,cx0-14,cy0-14,cw+28,ch+28,66,'#c8102e'); rr(x,cx0-6,cy0-6,cw+12,ch+12,60,'#fff');
+  const cg=x.createLinearGradient(0,cy0,0,cy0+ch); cg.addColorStop(0,'#fffaf0'); cg.addColorStop(1,'#fde9c4'); rr(x,cx0,cy0,cw,ch,54,cg);
+  /* الشريط الأحمر */
+  const rx=40, rw=1000, ry=286, rh=124; x.save(); x.beginPath();
+  [[0,.18],[.10,0],[.5,.22],[.90,0],[1,.18],[.96,.72],[.5,1],[.04,.72]].forEach((p,i)=>{ const px=rx+p[0]*rw, py=ry+p[1]*rh; i?x.lineTo(px,py):x.moveTo(px,py); });
+  x.closePath(); const rg=x.createLinearGradient(0,ry,0,ry+rh); rg.addColorStop(0,'#ff5a65'); rg.addColorStop(.6,'#d81f2e'); rg.addColorStop(1,'#a50f1c'); x.fillStyle=rg; x.fill(); x.restore();
+  const ttl = r.result==='win'?'فاز في التحدّي 🏆':(r.result==='lose'?'خاض التحدّي ⚔️':'تعادل في التحدّي 🤝');
+  x.font='800 54px "Noto Kufi Arabic", sans-serif'; x.lineJoin='round'; x.lineWidth=12; x.strokeStyle='#7a0c12'; x.strokeText(ttl,540,372); x.fillStyle='#fff'; x.fillText(ttl,540,372);
+  /* اللاعبين */
+  const opp=r.opp||'المنافس';
+  await rdAv(x,770,540,84,r.meAv,(name||'أ').trim().charAt(0),false);
+  await rdAv(x,310,540,84,r.oppAv,opp.trim().charAt(0),!r.human);
+  x.direction='rtl'; x.textAlign='center'; x.textBaseline='alphabetic';
+  x.fillStyle='#5a3412'; fitFont(x,name,400,44,'800'); x.fillText(name,770,700);
+  fitFont(x,opp,400,44,'800'); x.fillText(opp,310,700);
+  /* صناديق النتيجة */
+  const bx=(cx,col)=>{ rr(x,cx-185,730,370,190,34,col); rr(x,cx-178,737,356,176,28,'#fff'); };
+  bx(770,'#3fb7c9'); bx(310,'#e6c48a');
+  x.font='800 120px "Noto Kufi Arabic", sans-serif';
+  x.fillStyle=r.result==='lose'?'#8a6a45':'#1e9e6a'; x.fillText(String(r.me),770,870);
+  x.fillStyle=r.result==='win'?'#8a6a45':'#d81f2e'; x.fillText(String(r.bot),310,870);
+  x.fillStyle='#d81f2e'; x.font='900 60px "Noto Kufi Arabic", sans-serif'; x.fillText('VS',540,840);
+  /* الفرع */
+  const st=RD.st; let br='';
+  if(st && typeof st.pos==='number'){ br = st.arrived ? '🏁 وصل الفرع الرئيسي' : '🚩 في فرع '+ROUTE[Math.min(st.pos,HQ)]+' · باقي '+(HQ-Math.min(st.pos,HQ))+' للرئيسي'; }
+  if(br){ x.font='800 40px "Noto Kufi Arabic", sans-serif'; const tw=Math.min(820,x.measureText(br).width+90);
+    rr(x,540-tw/2,975,tw,96,48,'#f2b51e'); rr(x,540-tw/2+6,981,tw-12,84,42,'#fff'); x.fillStyle='#a50f1c'; fitFont(x,br,tw-70,40,'800'); x.fillText(br,540,1037); }
+  /* النص السفلي */
+  x.fillStyle='#fff'; x.font='800 54px "Noto Kufi Arabic", sans-serif'; x.fillText('هل تستطيع التغلب عليّ؟',540,1265);
+  return c;
+};
