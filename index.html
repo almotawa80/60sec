@@ -238,10 +238,10 @@ body{font-family:'Noto Kufi Arabic',system-ui,sans-serif;color:var(--text);backg
 .empty{color:var(--muted);text-align:center;font-size:14px;padding:6px}
 /* بوابة الدخول: الزائر ما يشوف شي غير هذي الشاشة */
 #gate{position:fixed;inset:0;z-index:15;display:none;flex-direction:column;overflow-y:auto;background:var(--page);-webkit-overflow-scrolling:touch}
-#gate.on{display:flex}body.gated{overflow:hidden}
+#gate.on{display:flex}#gate .gtop,#gate .gcard{flex:none}body.gated{overflow:hidden}
 #gate .gtop{position:relative;overflow:hidden;background:linear-gradient(160deg,#d93a42,#b8101d);color:#fff;text-align:center;padding:calc(48px + env(safe-area-inset-top)) 24px 70px}
 #gate .gwm{position:absolute;width:230px;height:230px;left:-60px;top:-30px;opacity:.12}
-#gate .gmark{width:62px;height:62px;display:block;margin:0 auto 10px}
+#gate .gmark{width:120px;height:auto;display:block;margin:6px auto 16px}
 #gate h1{margin:0;font-size:32px;font-weight:900}
 #gate .gtop p{margin:8px 0 0;opacity:.9;font-size:14px}
 #gate .gcard{position:relative;margin:-44px 16px 24px;background:var(--card,#fff);border-radius:24px;padding:22px 18px 18px;box-shadow:0 14px 34px rgba(0,0,0,.12);max-width:440px;align-self:center;width:calc(100% - 32px);box-sizing:border-box}
@@ -696,7 +696,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171435">
+<meta name="app-version" content="202611171440">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -911,7 +911,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <div id="gate" aria-hidden="true">
   <div class="gtop">
     <svg class="gwm" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="14"/><path d="M30.500 30.500L43 43"/><path d="M20 12v8l5 3"/></svg>
-    <svg class="gmark" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" aria-hidden="true"><circle cx="24" cy="27" r="16"/><path d="M24 27V17M19 6h10M24 6v5M38 12l-3 3"/></svg>
+    <svg class="gmark" viewBox="0 0 2525 699" aria-label="بنك بوبيان"><path fill="#fff" fill-rule="evenodd" d="M2524.3 691.8 L2519.7 696.8 L2509.7 698.5 L2034.7 698.4 L1999.7 695.3 L1948.7 694.8 L1909.2 690.8 L1859.7 678.5 L1825.7 666.4 L1775.7 642.0 L1757.3 630.8 L1721.5 604.8 L1693.7 579.8 L1651.1 533.8 L1585.8 438.8 L1514.7 351.8 L1453.9 291.8 L1390.7 238.9 L1323.7 191.3 L1245.7 145.3 L1216.7 131.0 L1135.7 96.1 L1058.7 71.0 L1007.7 58.9 L939.7 45.7 L860.7 37.6 L852.0 34.8 L850.2 30.8 L854.7 27.6 L867.7 24.4 L949.7 12.7 L1103.7 0.2 L1247.7 0.4 L1378.7 11.2 L1475.7 24.2 L1600.7 49.6 L1689.1 73.8 L1760.5 96.8 L1825.7 120.7 L1885.7 145.6 L1985.7 192.5 L2070.7 241.0 L2147.7 290.1 L2254.7 371.4 L2348.7 456.1 L2425.7 541.8 L2498.2 639.8 L2522.3 677.8Z M0.7 688.8 L0.5 681.8 L32.9 614.8 L56.6 574.8 L105.3 505.8 L155.8 445.8 L193.0 408.8 L248.7 361.6 L280.7 337.6 L339.7 299.5 L408.7 264.0 L464.7 239.5 L543.5 215.8 L596.7 204.0 L687.7 192.3 L785.7 192.2 L866.7 202.5 L935.7 216.2 L968.9 227.8 L974.1 231.8 L973.1 234.8 L966.7 237.3 L926.7 239.5 L862.7 250.3 L817.7 263.0 L756.7 288.3 L714.7 312.1 L679.7 335.6 L620.7 385.1 L581.7 428.3 L537.0 494.8 L494.8 573.8 L464.0 612.8 L429.7 641.9 L390.5 666.8 L364.7 678.2 L331.2 688.8 L283.7 694.7 L18.7 694.8 L6.7 693.4Z"/></svg>
     <h1>تحدّي الدقيقة</h1>
     <p id="gHi">٦٠ ثانية · أسئلة سريعة · نقاط وجوائز</p>
   </div>
