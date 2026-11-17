@@ -331,7 +331,7 @@ function rfxShow(h){
   $('rfxX').onclick=rfxClose;
 }
 /* شارة "نسخة الطريق" في العنوان */
-try{ const t=document.querySelector('#home .ttl h1'); if(t) t.insertAdjacentHTML('beforeend','<span class="rtag">الطريق</span>'); }catch(e){}
+/* شارة «الطريق» جنب العنوان انشالت بطلب خالد */
 setTimeout(roadLoad, 700);
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) roadLoad(); });
 /* ملفي: أيقونتا الشارات والنقاط تحت الصورة */
@@ -463,7 +463,7 @@ drawCard = async function(r,name){
   const ov=x.createRadialGradient(540,620,80,540,620,900); ov.addColorStop(0,'rgba(120,20,30,.45)'); ov.addColorStop(1,'rgba(20,10,5,.85)'); x.fillStyle=ov; x.fillRect(0,0,W,H);
   try{ const lw=300, sc=lw/2525; x.save(); x.translate(540-lw/2,60); x.scale(sc,sc); x.fillStyle='#fff'; x.fill(new Path2D(BKLOGO_D),'evenodd'); x.restore(); }catch(e){}
   x.direction='rtl'; x.textAlign='center'; x.textBaseline='alphabetic';
-  x.fillStyle='#fff'; x.font='800 64px "Noto Kufi Arabic", sans-serif'; x.fillText('تحدّي الدقيقة · الطريق',540,240);
+  x.fillStyle='#fff'; x.font='800 64px "Noto Kufi Arabic", sans-serif'; x.fillText('تحدّي الدقيقة',540,240);
   /* البطاقة */
   const cx0=70, cy0=330, cw=940, ch=820;
   rr(x,cx0-14,cy0-14,cw+28,ch+28,66,'#c8102e'); rr(x,cx0-6,cy0-6,cw+12,ch+12,60,'#fff');
