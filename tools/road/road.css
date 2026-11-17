@@ -260,3 +260,9 @@ html:not([data-theme="dark"]) .rc-bot{color:#6b5a3a}
 html:not([data-theme="dark"]) .rc-open{color:#c4141d}
 html:not([data-theme="dark"]) .rc-path .d.cur{background:radial-gradient(circle at 35% 30%,#ffd76a,#e09a00);box-shadow:0 0 0 3px #fff,0 0 14px rgba(224,154,0,.7)}
 html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
+.rp-btn:disabled{cursor:default;opacity:.92}
+.m3car{animation:none}
+.m3car .ex{display:none}
+.m3car.driving{animation:carBob .18s ease-in-out infinite alternate}
+.m3car.driving .ex{display:block}
+.r3plane .run{animation:none}

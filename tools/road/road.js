@@ -41,7 +41,16 @@ function roadCard(){
   $('rcLeft').textContent = done ? 'أنهيت الرحلة · ⭐ '+starSum(st) : (left ? 'باقي '+left+' فرع للرئيسي' : 'الفرع الرئيسي قدامك!');
 }
 
-function openRoad(){ renderMap(true); show('roadPage'); setTimeout(()=>renderMap(true),30); }
+function openRoad(){ const dv=RD.drive; RD.drive=null; renderMap(true); show('roadPage'); setTimeout(()=>{ renderMap(true); if(dv) m3Drive(dv.from,dv.to); },30); }
+function m3Drive(from,to){
+  const car=document.querySelector('#r3Plane .m3n.car'); if(!car) return;
+  const put=t=>{ car.style.left=m3x(t-0.45).toFixed(1)+'px'; car.style.top=m3y(t-0.45).toFixed(1)+'px'; m3Cam(t,false); };
+  put(from); const c=car.querySelector('.m3car'); if(c) c.classList.add('driving');
+  const t0=performance.now()+500, dur=1800;
+  const step=n=>{ const k=Math.max(0,Math.min(1,(n-t0)/dur)), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; put(from+(to-from)*e);
+    if(k<1) requestAnimationFrame(step); else if(c) setTimeout(()=>c.classList.remove('driving'),300); };
+  requestAnimationFrame(step);
+}
 $('rCard').onclick=()=>{ openRoad(); roadLoad(); };
 $('rpBack').onclick=()=>{ RD.back=null; show('home'); };
 
@@ -69,13 +78,13 @@ function m3Build(){
    +'<path d="'+d+'" fill="none" stroke="#f5f5f5" stroke-width="122" stroke-linecap="round"/>'
    +'<path d="'+d+'" fill="none" stroke="#34353a" stroke-width="110" stroke-linecap="round"/>'
    +(pos>0?'<path d="'+crPath(cut)+'" fill="none" stroke="rgba(224,38,47,.28)" stroke-width="110" stroke-linecap="round"/>':'')
-   +'<path d="'+d+'" fill="none" stroke="#ffc23d" stroke-width="6" stroke-dasharray="40 34" class="run"/></svg>';
+   +'<path d="'+d+'" fill="none" stroke="#ffc23d" stroke-width="6" stroke-dasharray="40 34"/></svg>';
   const bb=(x,y,inner,cls,attr)=>'<div class="m3n'+(cls?' '+cls:'')+'" data-d="'+((M3.BASE-y)/S).toFixed(2)+'" style="left:'+x.toFixed(0)+'px;top:'+y.toFixed(0)+'px"'+(attr||'')+'><div class="m3b">'+inner+'</div></div>';
   GOV.forEach((g,gi)=>{ const y=m3y(g.a)+S*0.5, x=(m3x(g.a)+m3x(g.a-1))/2, c=GCOL[gi];
     h+=bb(x,y,'<div class="m3gate" style="--c:'+c[0]+';--c2:'+c[1]+'"><span>محافظة '+g.n+'</span></div>','gate'); });
   ROUTE.forEach((nm,i)=>{
     const x=m3x(i), y=m3y(i), done=i<pos, cur=(i===pos && !arrived), hq=i===HQ, cls=done?'done':cur?'cur':'lock', c=GCOL[govOf(i)], side=(i%2?1:-1), s=(st.stars||[])[i]||0;
-    h+=bb(x,y,'<div class="m3pad">'+(done?'✓':cur?'▶':hq?'🏁':'🔒')+'</div>',cls+' pad','data-i="'+i+'"');
+    h+=bb(x,y,'<div class="m3pad">'+(done?'✓':cur?((rdLoggedIn()&&!pointsAvailable())?'⏳':'▶'):hq?'🏁':'🔒')+'</div>',cls+' pad','data-i="'+i+'"');
     if(hq){ h+=bb(x+side*210,y-40,'<div class="m3hq"><div class="nm">🏁 الفرع الرئيسي</div></div>',cls); return; }
     h+=bb(x+side*200,y-30,'<div class="m3bld" style="--c:'+c[0]+';--c2:'+c[1]+'">'+(done&&s?'<div class="st">'+'⭐'.repeat(s)+'</div>':'')+'<div class="bk"><i class="gl3"></i>'+bkLogo('lo2',1)+'<div class="ar"><i class="gl"></i></div><i class="gl2"></i></div><span class="lg">'+nm+'</span></div>',cls);
     h+=bb(x-side*175,y-150,'<div class="m3palm">🌴</div>','');
@@ -127,13 +136,13 @@ function renderMap(scroll){
   $('rpAhead').textContent = !rdLoggedIn() ? '' : ah.length ? '👀 '+ah.map(a=>a.n).slice(0,2).join(' و')+(st.ahead_n>2?' و'+(st.ahead_n-2)+' غيرهم':'')+' قدامك في الطريق'
     : (st.ahead_n ? '👀 '+st.ahead_n+' زميل قدامك في الطريق' : (pos>0 && !arrived ? '👑 أنت في المقدمة!' : ''));
   // CTA
-  const go=$('rpGo'), sub=$('rpSub'); go.classList.remove('gray');
+  const go=$('rpGo'), sub=$('rpSub'); go.classList.remove('gray'); go.disabled=false;
   if(!rdLoggedIn()){ go.innerHTML='سجّل دخولك وابدأ الرحلة<small>من الخيران إلى الفرع الرئيسي</small>'; sub.textContent=''; }
-  else if(arrived){ go.classList.add('gray'); go.innerHTML='تدريب<small>رحلتك خلصت، والتدريب يجمع لك مفاتيح 🔑</small>'; sub.textContent='الموسم الجاي يبدأ الكل من جديد'; }
+  else if(arrived){ go.classList.add('gray'); go.disabled=true; go.innerHTML='🏁 وصلت الرئيسي<small>رحلتك خلصت هالموسم</small>'; sub.textContent='الموسم الجاي يبدأ الكل من جديد'; }
   else if(pointsAvailable()){ go.innerHTML='العب: فرع '+ROUTE[pos]+'<small>فز في تحدي اليوم وتقدّم فرع للأمام 🚗</small>'; sub.textContent=(st.streak? '🔥 العب اليوم عشان ما تنكسر سلسلة '+st.streak+' أيام' : 'التحدي اليومي مرة وحدة باليوم'); }
-  else { go.classList.add('gray'); const need=3-((st.practice||0)%3); go.innerHTML='تدريب 🔑<small>باقي '+need+' '+(need===1?'تدريب':'تدريبات')+' وتاخذ مفتاح مول</small>'; sub.textContent='لعبت تحدي اليوم ✓ ارجع بكرة عشان تتقدم فرع'; }
+  else { go.classList.add('gray'); go.disabled=true; const need=3-((st.practice||0)%3); go.innerHTML='✓ خلصت تحدي اليوم<small>تعال بكرة وكمّل من فرع '+ROUTE[Math.min(pos,HQ)]+'</small>'; sub.textContent='🗡️ التدريب من السيف في الرئيسية، كل 3 تدريبات = مفتاح 🔑'; }
 }
-$('rpGo').onclick=()=>{ RD.back='map'; RD.mall=null; startMatch(); };
+$('rpGo').onclick=()=>{ if($('rpGo').disabled) return; if(rdLoggedIn() && !pointsAvailable()){ renderMap(); return; } RD.back='map'; RD.mall=null; startMatch(); };
 
 function mallTap(k){
   const st=rdSt(), m=MALLS[k];
@@ -144,7 +153,7 @@ function mallTap(k){
   showModal('⚡ محطة '+m.n,
     '<div style="line-height:1.9">تحدي سرعة ضد الجهاز.<br>الدخول يكلّف <b>🔑 مفتاح واحد</b> (عندك '+keys+').<br>الفوز = <b>🛡️ درع</b> يحمي سلسلتك + <b>100 نقطة</b>.'+(keys?'':'<br><span style="color:var(--accent)">ما عندك مفاتيح. كل 3 تدريبات = مفتاح.</span>')+'</div>',
     keys ? [{t:'ادخل المحطة',full:true,f:()=>{ closeModal(); startMall(k); }},{t:'لاحقاً',ghost:true,full:true,f:closeModal}]
-         : [{t:'تدرّب واجمع مفاتيح',full:true,f:()=>{ closeModal(); RD.back='map'; RD.mall=null; startMatch(); }},{t:'إغلاق',ghost:true,full:true,f:closeModal}]);
+         : [{t:'تدرّب من السيف واجمع مفاتيح',full:true,f:()=>{ closeModal(); RD.back=null; show('home'); }},{t:'إغلاق',ghost:true,full:true,f:closeModal}]);
 }
 async function startMall(k){
   if(DEMO){ toast('المحطات تشتغل بعد تسجيل الدخول'); return; }
@@ -168,7 +177,7 @@ function roadResult(r){
       +'<div class="chest"><div class="ic">🛡️</div><div><b>درع + 100 نقطة</b><small>الدرع يحمي سلسلة أيامك لو فاتك يوم</small></div></div>');
     roadLoad(); return; }
   if(!r.advanced){ roadLoad(); return; }
-  const from=r.from, to=r.to, s=r.stars||1;
+  const from=r.from, to=r.to, s=r.stars||1; if(!r.arrived) RD.drive={from:from,to:to};
   let nextEnd=GOV.find(g=>g.b>=to); nextEnd=nextEnd?nextEnd.b:HQ;
   let h='<div class="k">فزت في فرع '+ROUTE[from]+'!</div><h2>'+(r.arrived?'وصلت الرئيسي! 🏁':'تقدّمت فرع! 🚗')+'</h2>'
     +'<div class="s3">'+[1,2,3].map((n,j)=>'<span class="'+(j===1?'mid ':'')+(n<=s?'':'off')+'" style="animation-delay:'+(.25+j*.22)+'s">⭐</span>').join('')+'</div>'
