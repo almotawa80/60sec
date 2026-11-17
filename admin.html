@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611170905">
+<meta name="app-version" content="202611170920">
 <title>لوحة تحكّم تحدّي الدقيقة</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
@@ -87,6 +87,11 @@ button.li:focus-visible{outline:2px solid var(--red)}
 .ps .pg b{display:block;font-size:18px;font-variant-numeric:tabular-nums}.ps .pg span{font-size:11.5px;color:var(--mu)}
 .ps .pl{display:flex;justify-content:space-between;font-size:13px;color:var(--mu);padding:8px 2px;border-top:1px solid var(--ln)}
 .ps .pl b{color:var(--tx);font-weight:600}
+.ps .pl.ed{align-items:center;gap:8px}.ps .pl.ed b{margin-inline-start:auto;font-variant-numeric:tabular-nums}
+.ps .eb{border:0;background:var(--soft);color:var(--tx);border-radius:999px;padding:5px 12px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.ps .eb.sv{background:var(--red);color:#fff}.ps .eb:disabled{opacity:.5}
+.ps .pl.on{flex-wrap:wrap}.ps .pl.on input{flex:1;min-width:0;border:1.5px solid var(--red);border-radius:10px;padding:7px 10px;font:inherit;font-size:15px;background:var(--card,#fff);color:var(--tx);direction:ltr;text-align:left}
+.ps .pl.on small{width:100%;color:var(--red);font-size:12px;min-height:0}
 .ps .rzb{width:100%;margin-top:14px;border:1.5px solid var(--red);background:transparent;color:var(--red);border-radius:999px;padding:11px;font-weight:800;font-size:14px;cursor:pointer}
 .ps .rzb.sure{background:var(--red);color:#fff}
 .ps .rzb:disabled{opacity:.5}
@@ -405,9 +410,22 @@ function drawPlayer(){
   if(!SEL||!D) return; const all=D.players||[], p=all.find(x=>x.emp_no===SEL); if(!p){ closePlayer(); return; }
   $('ps').innerHTML='<div class="ph"><span class="av">'+esc((p.name||'؟').trim().charAt(0))+'</span><div><b>'+(p.online?'<i class="dot"></i>':'')+esc(p.name)+'</b><small>الرقم الوظيفي '+esc(p.emp_no)+' · الترتيب '+(all.indexOf(p)+1)+'</small></div><button class="x" type="button" aria-label="إغلاق"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
    +'<div class="pg"><div><b>'+fmt(p.total_points)+'</b><span>إجمالي النقاط</span></div><div><b>'+fmt(p.balance)+'</b><span>الرصيد</span></div><div><b>'+fmt(p.vouchers)+'</b><span>قسائم</span></div><div><b>'+fmt(p.played)+'</b><span>مباريات</span></div><div><b>'+fmt(p.wins)+'</b><span>فوز</span></div><div><b>'+fmt(p.quits)+'</b><span>انسحاب</span></div></div>'
+   +'<div class="pl ed" id="empRow"><span>الرقم الوظيفي</span><b>'+esc(p.emp_no)+'</b><button class="eb" type="button" id="empEd">تعديل</button></div>'
    +'<div class="pl"><span>آخر لعب</span><b>'+dt(p.last_play)+'</b></div><div class="pl"><span>تاريخ التسجيل</span><b>'+dt(p.created_at)+'</b></div>'
    +'<button class="rzb" type="button" id="rzOne">تصفير نقاط ورصيد اللاعب</button>';
   $('ps').querySelector('.x').onclick=closePlayer;
+  $('empEd').onclick=()=>{ const row=$('empRow'); row.classList.add('on');
+    row.innerHTML='<input id="empNew" inputmode="numeric" maxlength="10" value="'+esc(p.emp_no)+'"><button class="eb sv" type="button" id="empSv">حفظ</button><button class="eb" type="button" id="empCx">إلغاء</button><small id="empMsg"></small>';
+    const inp=$('empNew'); inp.focus(); inp.select();
+    $('empCx').onclick=drawPlayer;
+    $('empSv').onclick=async()=>{ const v=String(inp.value||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,''); const m=$('empMsg');
+      if(!/^[0-9]{3,10}$/.test(v)){ m.textContent='أرقام فقط (٣ إلى ١٠)'; return; }
+      if(v===p.emp_no){ drawPlayer(); return; }
+      $('empSv').disabled=true; m.textContent='جارٍ الحفظ…';
+      let r=null; try{ r=await rpc('admin_set_emp',{p_key:KEY,p_emp:p.emp_no,p_new:v}); }catch(e){}
+      if(!r||!r.ok){ $('empSv').disabled=false; m.textContent=(r&&r.error==='taken')?'هذا الرقم مسجّل للاعب آخر':'تعذّر الحفظ، حاول مرة أخرى'; return; }
+      SEL=v; await load(); };
+  };
   const rb=$('rzOne'); rb.onclick=async()=>{ if(!rb.classList.contains('sure')){ rb.classList.add('sure'); rb.textContent='اضغط مرة ثانية للتأكيد'; setTimeout(()=>{ if(rb.isConnected&&!rb.disabled){ rb.classList.remove('sure'); rb.textContent='تصفير نقاط ورصيد اللاعب'; } },4000); return; } rb.disabled=true; rb.textContent='جارٍ التصفير…'; try{ await rpc('admin_reset_points',{p_key:KEY,p_emp:p.emp_no}); }catch(e){} await load(); };
 }
 $('ov').onclick=e=>{ if(e.target.id==='ov') closePlayer(); };
