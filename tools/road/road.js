@@ -9,7 +9,7 @@ const ROUTE=['الخيران','صباح الأحمد','المنقف','الفحي
 const HQ=ROUTE.length-1;
 const GOV=[{n:'الأحمدي',a:0,b:7},{n:'الجهراء',a:8,b:11},{n:'مبارك الكبير',a:12,b:15},{n:'الفروانية',a:16,b:22},{n:'حولي',a:23,b:28},{n:'العاصمة',a:29,b:HQ}];
 const MALLS=[{n:'ذا ويرهاوس',at:3},{n:'البيرق مول',at:7},{n:'أفنتورا مول',at:11},{n:'الأفنيوز',at:18},{n:'360 مول',at:25}];
-const RD={st:null, mall:null, back:null};
+const RD={st:null, mall:null, back:null, replay:null};
 const RD0={pos:0,stars:[],streak:0,shields:0,keys:1,practice:0,malls:[],today:false,ahead:[],ahead_n:0,arrived:null,rank:null};
 const rdSt=()=>RD.st||RD0;
 const govOf=p=>{ for(let g=0;g<GOV.length;g++) if(p<=GOV[g].b) return g; return GOV.length-1; };
@@ -105,7 +105,7 @@ function m3Build(){
   pl.innerHTML=h;
   pl.querySelectorAll('.m3mall').forEach(b=>b.onclick=e=>{ e.stopPropagation(); mallTap(+b.dataset.k); });
   pl.querySelectorAll('.m3n.pad').forEach(n=>n.onclick=()=>{ const i=+n.dataset.i, s=(rdSt().stars||[])[i]||0;
-    if(i<pos) toast('فرع '+ROUTE[i]+' ✓ '+(s?'⭐'.repeat(s):'')); else if(i===pos && !arrived) $('rpGo').click(); else toast('🔒 فرع '+ROUTE[i]+': باقي '+(i-pos)+' '+((i-pos)===1?'فوز':'فوزات')); });
+    if(i<pos) replayAsk(i); else if(i===pos && !arrived) $('rpGo').click(); else toast('🔒 فرع '+ROUTE[i]+': باقي '+(i-pos)+' '+((i-pos)===1?'فوز':'فوزات')); });
   M3.built=true;
 }
 function m3Cam(c,anim){
@@ -207,7 +207,7 @@ function m2Build(){
   inner.innerHTML=h;
   inner.querySelectorAll('.r2mall').forEach(b=>b.onclick=e=>{ e.stopPropagation(); mallTap(+b.dataset.k); });
   inner.querySelectorAll('.r2n').forEach(n=>n.onclick=()=>{ const i=+n.dataset.i, s=(rdSt().stars||[])[i]||0;
-    if(i<pos) toast('فرع '+ROUTE[i]+' ✓ '+(s?'⭐'.repeat(s):'')); else if(i===pos && !arrived) $('rpGo').click(); else toast('🔒 فرع '+ROUTE[i]+': باقي '+(i-pos)+' '+((i-pos)===1?'تحدي':'تحديات')); });
+    if(i<pos) replayAsk(i); else if(i===pos && !arrived) $('rpGo').click(); else toast('🔒 فرع '+ROUTE[i]+': باقي '+(i-pos)+' '+((i-pos)===1?'تحدي':'تحديات')); });
   M2.built=true;
 }
 function m2Scroll(i,smooth){ const box=$('r2'); if(!box) return; const y=m2y(Math.max(0,Math.min(HQ,i)))-box.clientHeight*0.55; box.scrollTo({top:Math.max(0,y),behavior:smooth?'smooth':'auto'}); }
@@ -258,7 +258,7 @@ function renderMap(scroll){
     sub.appendChild(t);
   }
 }
-$('rpGo').onclick=()=>{ if($('rpGo').disabled) return; if(rdLoggedIn() && !pointsAvailable()){ renderMap(); return; } RD.back='map'; RD.mall=null; try{ playSword(1); }catch(e){}
+$('rpGo').onclick=()=>{ if($('rpGo').disabled) return; if(rdLoggedIn() && !pointsAvailable()){ renderMap(); return; } RD.back='map'; RD.mall=null; RD.replay=null; try{ playSword(1); }catch(e){}
   /* إذا كنت متحرك بعيد في الخريطة: نرجعك لمكانك أول، السيف ينبض، وبعدين يبدأ التحدي */
   const box=$('r2'), pos=Math.min(HQ,(rdSt().pos||0)); let far=false;
   if(box && M2.built && $('roadPage').classList.contains('active')){ const y=Math.max(0,m2y(pos)-box.clientHeight*0.55); far=Math.abs(box.scrollTop-y)>box.clientHeight*0.3;
@@ -283,7 +283,7 @@ async function startMall(k){
   const r=await rpc('mall_start',{p_id:PID,p_mall:k},6000);
   if(!r || !r.ok){ toast(r && r.error==='nokey' ? 'ما عندك مفاتيح 🔑' : r && r.error==='locked' ? 'المحطة لسه مقفلة' : 'تعذّر الدخول، حاول مرة ثانية'); roadLoad(); return; }
   if(RD.st) RD.st.keys=r.keys;
-  RD.mall=MALLS[k]; RD.back='map';
+  RD.mall=MALLS[k]; RD.replay=null; RD.back='map';
   audio(); const tok=++matchTok; PV=null; window._viaInv=false;
   bot={name:'', skill:Math.min(.9, botSkill()+.05)};
   showFound(MALLS[k].n, false, tok);
@@ -355,3 +355,32 @@ window.addEventListener('pageshow',()=>{ try{ if(stats.sound && AC && AC.state!=
 /* الخريطة: نحمّل صورها ونفكّها من أول ما تفتح اللعبة، عشان لما تفتح الخريطة تطلع الرسمة على طول بدون الخلفية الخضرا */
 (()=>{ const pre=[]; const go=()=>{ for(let k=0;k<8;k++){ const im=new Image(); im.decoding='async'; im.src='img/road/map'+k+'.jpg'; pre.push(im); try{ im.decode().catch(()=>{}); }catch(e){} } window._rdPre=pre; };
   if(document.readyState==='complete') setTimeout(go,300); else window.addEventListener('load',()=>setTimeout(go,300)); })();
+
+/* إعادة فرع خلّصته عشان تحسّن نجومه: ضد الآلي، بدون نقاط وبدون تقدّم */
+function replayAsk(i){
+  const s=(rdSt().stars||[])[i]||0, nm=ROUTE[i];
+  const stars='<span style="letter-spacing:2px">'+'⭐'.repeat(s)+'<span style="opacity:.25">'+'⭐'.repeat(3-s)+'</span></span>';
+  if(s>=3){ showModal('فرع '+nm+' ✓','<div style="line-height:2">'+stars+'<br>خذيت كل النجوم في هذا الفرع 👏</div>',[{t:'تمام',full:true,f:closeModal}]); return; }
+  if(!rdLoggedIn()){ toast('سجّل دخولك أول'); return; }
+  showModal('🔁 إعادة فرع '+nm,
+    '<div style="line-height:2">نجومك الحالية: '+stars+'<br>العب ضد المنافس الآلي وحاول تجيب نجوم أكثر.<br><small style="color:var(--muted)">الفوز ⭐⭐⭐ · التعادل ⭐⭐ · الخسارة ⭐<br>بدون نقاط، وما يأثر على تحدي اليوم.</small></div>',
+    [{t:'أعد الفرع ⚔️',full:true,f:()=>{ closeModal(); try{ playSword(1); }catch(e){} startReplay(i); }},{t:'لاحقاً',ghost:true,full:true,f:closeModal}]);
+}
+function startReplay(i){
+  if(DEMO){ toast('الإعادة تشتغل بعد تسجيل الدخول'); return; }
+  RD.replay=i; RD.mall=null; RD.back='map';
+  audio(); const tok=++matchTok; PV=null; window._viaInv=false;
+  show('match'); $('searching').style.display='none'; $('inviteWait').style.display='none';
+  bot={name:'', skill:botSkill()};
+  showFound(nextBotName(), false, tok);
+}
+function replayDone(R,quit){
+  const i=RD.replay; RD.replay=null; if(i==null || DEMO) return;
+  const res=quit?'quit':R;
+  rpc('replay_stars',{p_id:PID,p_idx:i,p_result:res},6000).then(r=>{
+    if(!r || !r.ok){ toast('تعذّر حفظ النجوم'); return; }
+    if(RD.st && Array.isArray(RD.st.stars)){ while(RD.st.stars.length<=i) RD.st.stars.push(0); RD.st.stars[i]=r.stars; }
+    setTimeout(()=>toast(r.improved ? '⭐ فرع '+ROUTE[i]+': صار عندك '+'⭐'.repeat(r.stars) : 'فرع '+ROUTE[i]+': جبت '+(r.got?'⭐'.repeat(r.got):'0 نجوم')+' · تبقى أفضل نتيجة '+'⭐'.repeat(r.old)),700);
+    roadLoad();
+  });
+}

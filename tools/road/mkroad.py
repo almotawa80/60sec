@@ -59,19 +59,19 @@ rep("""  G.scored = pointsAvailable();
   $('myLbl').textContent = G.scored ? 'أنت' : 'أنت (تدريب)';
   $('myScore').textContent=0; $('botScore').textContent=0; $('botLbl').textContent=bot.name;
   updateRace(); $('combo').classList.remove('on');
-  $('qNum')""", """  G.scored = pointsAvailable() && !RD.mall;
+  $('qNum')""", """  G.scored = pointsAvailable() && !RD.mall && RD.replay==null;
   if(G.scored){ stats.pointsDay = dkey(new Date()); save(stats); if(!DEMO) rpc('start_scored',{p_id:PID},4000); }
   if(!DEMO && !GUEST()) rpc('set_playing',{p_id:PID},3000);
-  $('myLbl').textContent = G.scored ? 'أنت' : (RD.mall ? 'أنت (محطة)' : 'أنت (تدريب)');
+  $('myLbl').textContent = G.scored ? 'أنت' : (RD.mall ? 'أنت (محطة)' : (RD.replay!=null ? 'أنت (إعادة)' : 'أنت (تدريب)'));
   $('myScore').textContent=0; $('botScore').textContent=0; $('botLbl').textContent=bot.name;
   updateRace(); $('combo').classList.remove('on');
   $('qNum')""")
 # match screen text for mall games
 rep("""(pointsAvailable() ? '' : '\\nجولة تدريبية بدون نقاط');""",
-    """(pointsAvailable() ? '' : '\\nجولة تدريبية بدون نقاط'); if(RD.mall) $('foundMsg').textContent = '⚡ محطة '+RD.mall.n+'\\nافز على الجهاز واحصل على درع 🛡️ و١٠٠ نقطة';""")
+    """(pointsAvailable() ? '' : '\\nجولة تدريبية بدون نقاط'); if(RD.mall) $('foundMsg').textContent = '⚡ محطة '+RD.mall.n+'\\nافز على الجهاز واحصل على درع 🛡️ و١٠٠ نقطة'; if(RD.replay!=null) $('foundMsg').textContent = '🔁 إعادة فرع '+ROUTE[RD.replay]+'\\nحسّن نجومك (بدون نقاط)';""")
 # road result after the server answers
 rep("""rpc('finish_game2',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus},5000).then(function(c){ if(c && typeof c.balance==='number'){""",
-    """rpc('finish_game3',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus,p_draw:(R==='draw')},5000).then(function(c){ RD.mall=null; if(c && c.road) roadResult(c.road); if(c && typeof c.balance==='number'){""")
+    """rpc('finish_game3',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus,p_draw:(R==='draw')},5000).then(function(c){ RD.mall=null; if(RD.replay!=null){ replayDone(R, G.force==='lose'); } else if(c && c.road) roadResult(c.road); if(c && typeof c.balance==='number'){""")
 rep("""$('homeBtn').onclick = ()=>{ renderStats(); show('home'); homeRank(); };""",
     """$('homeBtn').onclick = ()=>{ renderStats(); if(RD.back==='map'){ RD.back=null; openRoad(); } else show('home'); homeRank(); roadLoad(); };""")
 rep("function renderStats(){\n", "function renderStats(){\n  try{ roadCard(); }catch(e){}\n  setTimeout(function(){ try{ pfTiles(); }catch(e){} },0);\n")

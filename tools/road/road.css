@@ -493,3 +493,8 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
 /* في الخريطة: التنبيه يطلع فوق تحت شريط المحافظة بدال ما يغطي الزر الأحمر */
 body:has(#roadPage.active) .toast{bottom:auto;top:calc(150px + env(safe-area-inset-top));transform:translate(-50%,-12px);background:rgba(10,20,40,.88);color:#fff}
 body:has(#roadPage.active) .toast.show{transform:translate(-50%,0)}
+/* أعلى الخريطة: شريط داكن ثابت خلف الأزرار عشان ما تطلع ضبابية فوق الرسمة */
+#roadPage .rp-hud{z-index:6;isolation:isolate}
+#roadPage .rp-hud::before{content:'';position:absolute;left:0;right:0;top:0;height:calc(100% + 14px);background:linear-gradient(#0d1a2e 0%,rgba(13,26,46,.94) 62%,rgba(13,26,46,0) 100%);z-index:-1;pointer-events:none}
+#roadPage .rp-back,#roadPage .rp-chips i{background:#1b2a44;border-color:rgba(255,255,255,.14);backdrop-filter:none;-webkit-backdrop-filter:none}
+#roadPage .rp-chap{background:#16243b;border-color:rgba(255,255,255,.12);backdrop-filter:none;-webkit-backdrop-filter:none}
