@@ -497,3 +497,6 @@ drawCard = async function(r,name){
   x.fillStyle='#fff'; x.font='800 54px "Noto Kufi Arabic", sans-serif'; x.fillText('هل تستطيع التغلب عليّ؟',540,1265);
   return c;
 };
+
+/* الطريق: بدون وضع داكن، دايماً فاتح */
+(function(){ try{ stats.theme='light'; }catch(e){} applyTheme=function(){ document.documentElement.setAttribute('data-theme','light'); }; applyTheme(); })();
