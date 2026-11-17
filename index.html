@@ -570,7 +570,7 @@ html:not([data-theme="dark"]) .onlrow .onl{box-shadow:0 2px 8px rgba(0,0,0,.08)!
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/minute-challenge/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170048">
+<meta name="app-version" content="202611170635">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1925,7 +1925,7 @@ try{
 }catch(e){}
 
 /* تحديث تلقائي للنسخة (للأيقونة على الشاشة الرئيسية) */
-(function(){ try{
+function checkAppVersion(){ try{
   var cur=(document.querySelector('meta[name="app-version"]')||{}).content;
   fetch(location.pathname+'?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){
     var m=t.match(/name="app-version" content="([^"]+)"/);
@@ -1933,7 +1933,9 @@ try{
       sessionStorage.setItem('mc_reloaded_'+m[1],'1'); location.reload();
     }
   }).catch(function(){});
-}catch(e){} })();
+}catch(e){} }
+checkAppVersion();
+document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible' && !(document.getElementById('game')||{}).classList.contains('active')) checkAppVersion(); });
 
 /* ===== ملفي ===== */
 function avInit(){ return ((stats.playerName||'أ').trim().charAt(0)||'أ'); }
