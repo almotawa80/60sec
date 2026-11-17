@@ -809,4 +809,4 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 #gate .ghelp{color:#8a6a45!important;font-weight:700}
 #gate .gerr{color:#c8102e!important}
 #gate .gsub{display:none!important}
-img.mark.rdmark{background:none!important;padding:0!important;border-radius:12px!important;box-shadow:0 0 0 2px #fff,0 3px 8px rgba(0,0,0,.35)!important;object-fit:cover}
+img.mark.rdmark{background:none!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))}

@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261117194941">
+<meta name="app-version" content="road-20261117195139">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1514,7 +1514,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 #gate .ghelp{color:#8a6a45!important;font-weight:700}
 #gate .gerr{color:#c8102e!important}
 #gate .gsub{display:none!important}
-img.mark.rdmark{background:none!important;padding:0!important;border-radius:12px!important;box-shadow:0 0 0 2px #fff,0 3px 8px rgba(0,0,0,.35)!important;object-fit:cover}
+img.mark.rdmark{background:none!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))}
 
 </style>
 </head>
@@ -3954,7 +3954,7 @@ drawCard = async function(r,name){
 })();
 
 /* أيقونة الساعة الجديدة بدل علامة الساعة البيضاء في الترويسة */
-document.querySelectorAll('svg.mark').forEach(function(s){ var i=document.createElement('img'); i.className='mark rdmark'; i.src='img/road/icon-192.png?v=2'; i.alt=''; s.replaceWith(i); });
+document.querySelectorAll('svg.mark').forEach(function(s){ var i=document.createElement('img'); i.className='mark rdmark'; i.src='img/road/mark.svg'; i.alt=''; s.replaceWith(i); });
 
 </script>
 </body>

@@ -515,4 +515,4 @@ drawCard = async function(r,name){
 })();
 
 /* أيقونة الساعة الجديدة بدل علامة الساعة البيضاء في الترويسة */
-document.querySelectorAll('svg.mark').forEach(function(s){ var i=document.createElement('img'); i.className='mark rdmark'; i.src='img/road/icon-192.png?v=2'; i.alt=''; s.replaceWith(i); });
+document.querySelectorAll('svg.mark').forEach(function(s){ var i=document.createElement('img'); i.className='mark rdmark'; i.src='img/road/mark.svg'; i.alt=''; s.replaceWith(i); });
