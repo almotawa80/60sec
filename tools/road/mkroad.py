@@ -71,7 +71,7 @@ rep("""(pointsAvailable() ? '' : '\\nجولة تدريبية بدون نقاط')
     """(pointsAvailable() ? '' : '\\nجولة تدريبية بدون نقاط'); if(RD.mall) $('foundMsg').textContent = '⚡ محطة '+RD.mall.n+'\\nافز على الجهاز واحصل على درع 🛡️ و١٠٠ نقطة';""")
 # road result after the server answers
 rep("""rpc('finish_game2',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus},5000).then(function(c){ if(c && typeof c.balance==='number'){""",
-    """rpc('finish_game2',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus},5000).then(function(c){ RD.mall=null; if(c && c.road) roadResult(c.road); if(c && typeof c.balance==='number'){""")
+    """rpc('finish_game3',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus,p_draw:(R==='draw')},5000).then(function(c){ RD.mall=null; if(c && c.road) roadResult(c.road); if(c && typeof c.balance==='number'){""")
 rep("""$('homeBtn').onclick = ()=>{ renderStats(); show('home'); homeRank(); };""",
     """$('homeBtn').onclick = ()=>{ renderStats(); if(RD.back==='map'){ RD.back=null; openRoad(); } else show('home'); homeRank(); roadLoad(); };""")
 rep("function renderStats(){\n", "function renderStats(){\n  try{ roadCard(); }catch(e){}\n  setTimeout(function(){ try{ pfTiles(); }catch(e){} },0);\n")
