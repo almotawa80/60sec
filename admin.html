@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611171930">
+<meta name="app-version" content="202611171900">
 <title>لوحة تحكّم تحدّي الدقيقة</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
@@ -196,6 +196,35 @@ html[data-theme="dark"] .tag{background:#4a3d12;color:#ffd96b}
 .enr div{flex:1;min-width:0}.enr b{display:block;font-size:14px}.enr small{color:var(--mu);font-size:12px}
 .enr .sb{padding:8px 14px}
 
+/* ===== التبويبات ===== */
+.pane{display:flex;flex-direction:column;gap:14px}
+.sheet{padding-bottom:calc(96px + env(safe-area-inset-bottom))!important}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:center;gap:4px;background:var(--card);border-top:1px solid var(--ln);padding:6px max(10px,env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));box-shadow:0 -4px 16px rgba(0,0,0,.05)}
+.tabbar button{position:relative;flex:1;max-width:150px;border:0;background:none;color:var(--mu);font-family:inherit;font-size:11.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;border-radius:12px;cursor:pointer}
+.tabbar button svg{width:24px;height:24px}
+.tabbar button.on{color:var(--dr)}
+.tabbar button.on svg{stroke-width:2.3}
+.tb{position:absolute;top:2px;left:calc(50% - 20px);min-width:18px;height:18px;border-radius:9px;background:var(--red);color:#fff;font-style:normal;font-size:11px;font-weight:800;display:grid;place-items:center;padding:0 5px}
+.tb:empty{display:none}
+.ptl{font-size:17px;font-weight:800;margin:2px 4px -4px}.ptl span{color:var(--mu);font-size:14px;font-weight:600}
+.pch{display:flex;gap:6px;flex-wrap:wrap;margin-top:-4px}
+.pch button,.tg button{border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:999px;padding:6px 14px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.pch button.on,.tg button.on{background:var(--tx);color:var(--page);border-color:var(--tx)}
+.pch b,.tg b{font-variant-numeric:tabular-nums}
+.tg{display:inline-flex;background:var(--soft);border-radius:999px;padding:3px;gap:2px}
+.tg button{border:0;background:none;padding:5px 12px;font-size:12.5px}
+.tg button.on{background:var(--tx);color:var(--page);box-shadow:none}
+.tg.wide{display:flex;margin-bottom:10px}.tg.wide button{flex:1}
+.ch .chh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.ch .chh h3{margin:0}
+#segM{margin-bottom:6px}
+.list.flat{max-height:none}
+.it.fixed>.row{cursor:default}.it.fixed>.row:hover{background:none}
+.it.fixed>.body{display:block}
+.subs{padding:6px!important}
+.row.sub{min-height:52px;border-radius:12px;background:var(--card);margin-bottom:6px}
+.row.sub:last-child{margin-bottom:0}
+.todo-r .lb b{font-size:14.5px}
+@media print{.pane{display:flex!important}.pane:not([data-p="home"]),.tabbar,#todoW,.chh .tg,#segM{display:none!important}}
 @media(max-width:760px){
 .tiles{grid-template-columns:1fr 1fr}
 .cv.pie{height:118px}.cv.bar{height:140px}.ch{padding:10px 12px}.ch h3{margin-bottom:4px}
@@ -258,26 +287,31 @@ html,body{background:#fff!important;color:#1f2125!important}
 
 <div class="wrap hide" id="app">
   <div class="enr np hide" id="enr"><span class="fico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M9 9v1M15 9v1M12 9v4h-1M9 16c1.6 1.2 4.4 1.2 6 0"/></svg></span><div><b>فعّل الدخول بـ Face ID</b><small>تفتح اللوحة ببصمة الوجه بدل كلمة السر</small></div><button class="sb red" id="enrGo" type="button">تفعيل</button><button class="sb ghost" id="enrNo" type="button">لاحقاً</button></div>
+<section class="pane" data-p="home">
   <div class="live">
     <div class="lv"><i class="pulse"></i><div><b id="lOn">0</b> <span>متصلون الآن</span></div></div>
     <div class="lv"><i class="pulse"></i><div><b id="lPlay">0</b> <span>يلعبون الآن</span></div></div>
     <div class="lv"><i class="pulse"></i><div><b id="lSrch">0</b> <span>يبحثون عن منافس</span></div></div>
   </div>
   <div class="tiles" id="tiles"></div>
+  <div class="np hide" id="todoW"><h2 class="sh">يحتاج إجراء</h2><div class="grp" id="todo"></div></div>
   <div class="charts">
     <div class="ch"><h3>نوع المنافس</h3><div class="cv pie"><canvas id="cHum"></canvas></div></div>
     <div class="ch"><h3>حالة القسائم</h3><div class="cv pie"><canvas id="cVou"></canvas></div></div>
-    <div class="ch wide"><h3>المباريات آخر ٧ أيام</h3><div class="cv bar"><canvas id="cWk"></canvas></div></div>
+    <div class="ch wide"><div class="chh"><h3 id="trT">المباريات</h3><div class="tg" id="segR"><button type="button" data-v="7" class="on">٧ أيام</button><button type="button" data-v="30">٣٠ يوم</button></div></div><div class="tg" id="segM"><button type="button" data-v="plays" class="on">مباريات</button><button type="button" data-v="visitors">زوّار</button><button type="button" data-v="points">نقاط</button></div><div class="cv bar"><canvas id="cTr"></canvas></div></div>
   </div>
   <div class="ponly"><h2 class="sh" style="margin:6px 0">كل الأرقام</h2><div class="kg" id="kgP"></div></div>
+</section>
 
-  <h2 class="sh np">المتصلون واللاعبون</h2>
-  <div class="grp np">
-    <div class="it" data-k="onl"><button class="row" type="button"><span class="ic" style="background:#22a35a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M6.3 6.3a8 8 0 0 0 0 11.4M17.7 6.3a8 8 0 0 1 0 11.4"/></svg></span><span class="lb"><b>المتصلون الآن</b><small>من فتح اللعبة خلال آخر دقيقة</small></span><span class="val" id="vOn">0</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <div class="body"><div class="list" id="onl"></div></div></div>
-    <div class="it" data-k="pl"><button class="row" type="button"><span class="ic" style="background:#3b6fd8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M17 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/></svg></span><span class="lb"><b>كل اللاعبين</b><small>بحث، نقاط، تصفير لاعب</small></span><span class="val" id="vPl">0</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <div class="body"><input class="srch" id="q" placeholder="بحث بالاسم أو الرقم الوظيفي" autocomplete="off"><div class="list" id="pl"></div></div></div>
-    <div class="it" data-k="emp"><button class="row" type="button"><span class="ic" style="background:#0f8a8a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span class="lb"><b>قائمة الموظفين والرموز</b><small id="empSub">ارفع القائمة ليصير الدخول بالرمز</small></span><span class="val" id="vEmp">0</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+<section class="pane hide" data-p="players">
+  <h2 class="ptl">اللاعبون <span id="vPl">0</span></h2>
+  <input class="srch" id="q" placeholder="بحث بالاسم أو الرقم الوظيفي" autocomplete="off">
+  <div class="pch" id="plF"><button type="button" data-v="all" class="on">الكل</button><button type="button" data-v="on">متصلون الآن <b id="vOn">0</b></button><button type="button" data-v="top">الأعلى نقاطاً</button></div>
+  <div class="list flat" id="pl"></div>
+</section>
+
+<section class="pane hide" data-p="emp">
+  <div class="grp"><div class="it open fixed"><div class="row"><span class="ic" style="background:#0f8a8a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span class="lb"><b>قائمة الموظفين والرموز</b><small id="empSub">ارفع القائمة ليصير الدخول بالرمز</small></span><span class="val" id="vEmp">0</span></div>
       <div class="body"><div class="empst" id="empSt"></div>
         <input type="file" id="empFile" accept=".xlsx,.xls,.csv" hidden>
         <div class="eup"><button class="sb wide" type="button" id="empUp">رفع ملف Excel</button><button class="sb wide addb" type="button" id="empAdd"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>إضافة موظف</button></div>
@@ -291,51 +325,48 @@ html,body{background:#fff!important;color:#1f2125!important}
         <div class="empnote">الأعمدة: الرقم الوظيفي، الاسم، الهاتف، اللقب، الإدارة (الهاتف واللقب والإدارة اختياري). الجدد ياخذون رموز تطلع هنا وتنزل في ملف، والموجودون يتحدث اسمهم بس.</div>
         <div class="empmsg" id="empMsg"></div><div id="empRev"></div>
         <input class="srch" id="empQ" placeholder="ابحث برقم وظيفي أو اسم" autocomplete="off"><div class="efb" id="empF"></div><div class="list" id="empL"></div></div></div>
-    <div class="it" data-k="top"><button class="row" type="button"><span class="ic" style="background:#e0a100"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg></span><span class="lb"><b>أعلى ١٠ لاعبين</b><small>حسب إجمالي النقاط</small></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <div class="body"><div class="cv" style="height:280px"><canvas id="cTop"></canvas></div></div></div>
   </div>
+</section>
 
-  <h2 class="sh np">القسائم</h2>
-  <div class="grp np">
-    <div class="it" data-k="pend"><button class="row" type="button"><span class="ic" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a3 3 0 0 0 0 6v3h18v-3a3 3 0 0 1 0-6V6H3zM13 6v12"/></svg></span><span class="lb"><b>بانتظار الصرف</b><small>اضغط «تم الصرف» بعد تسليم القسيمة</small></span><span id="vPend"></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <div class="body"><div class="list" id="pend"></div></div></div>
-    <div class="it" data-k="done"><button class="row" type="button"><span class="ic" style="background:var(--ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span class="lb"><b>تم صرفها</b><small>سجل القسائم المسلّمة</small></span><span class="val" id="vDone">0</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <div class="body"><div class="list" id="done"></div></div></div>
+<section class="pane hide" data-p="more">
+  <h2 class="sh">القسائم</h2>
+  <div class="grp">
+    <div class="it" data-k="vou"><button class="row" type="button"><span class="ic" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a3 3 0 0 0 0 6v3h18v-3a3 3 0 0 1 0-6V6H3zM13 6v12"/></svg></span><span class="lb"><b>القسائم</b><small>اضغط «تم الصرف» بعد تسليم القسيمة</small></span><span id="vPend"></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="body"><div class="tg wide" id="segV"><button type="button" data-v="pend" class="on">بانتظار الصرف</button><button type="button" data-v="done">تم صرفها <b id="vDone">0</b></button></div><div class="list" id="pend"></div><div class="list hide" id="done"></div></div></div>
   </div>
-
-  <h2 class="sh np">الإحصاءات</h2>
-  <div class="grp np">
-    <div class="it" data-k="days"><button class="row" type="button"><span class="ic" style="background:#7a52c7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="lb"><b>الزوّار والمباريات يومياً</b><small>آخر ٣٠ يوماً</small></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <div class="body"><div class="cv" style="height:250px"><canvas id="cDays"></canvas></div></div></div>
-    <div class="it" data-k="pts"><button class="row" type="button"><span class="ic" style="background:#c8102e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></span><span class="lb"><b>النقاط الموزّعة يومياً</b><small>آخر ٣٠ يوماً</small></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <div class="body"><div class="cv" style="height:230px"><canvas id="cPts"></canvas></div></div></div>
-    <div class="it" data-k="all"><button class="row" type="button"><span class="ic" style="background:#5b6270"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><span class="lb"><b>كل الأرقام</b><small>ملخص الزوار واللعب والنقاط والقسائم</small></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <div class="body"><div class="kg" id="kg"></div></div></div>
-  </div>
-
-  <h2 class="sh np">المراقبة</h2>
-  <div class="grp np">
+  <h2 class="sh">المراقبة</h2>
+  <div class="grp">
     <div class="it" data-k="pairs"><button class="row" type="button"><span class="ic" style="background:#e07a00"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4M3 7h18M7 21l-4-4 4-4M21 17H3"/></svg></span><span class="lb"><b>أزواج لعبوا معاً ٣ مرات أو أكثر</b><small>للتأكد من عدم تبادل النقاط</small></span><span class="val" id="vPr">0</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
       <div class="body"><div class="list" id="pairs"></div></div></div>
     <div class="it" data-k="ev"><button class="row" type="button"><span class="ic" style="background:#b4232f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3zM12 10v4M12 17h.01"/></svg></span><span class="lb"><b>محاولات تسجيل مشبوهة</b><small>رقم وظيفي على أكثر من جهاز</small></span><span class="val" id="vEv">0</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
       <div class="body"><div class="list" id="ev"></div></div></div>
   </div>
-
-  <h2 class="sh np">التقارير والتصدير</h2>
-  <div class="grp np">
-    <div class="it"><button class="row" type="button" id="xAll"><span class="ic" style="background:#1d7a46"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7zM14 3v4h4M9 12l4 5M13 12l-4 5"/></svg></span><span class="lb"><b>تقرير كامل (Excel)</b><small>الملخص، يومياً، اللاعبون، القسائم</small></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button></div>
-    <div class="it"><button class="row" type="button" id="xPl"><span class="ic" style="background:#3b6fd8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span><span class="lb"><b>قائمة اللاعبين فقط</b><small>الأسماء والأرقام والنقاط</small></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button></div>
-    <div class="it"><button class="row" type="button" id="xVo"><span class="ic" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span><span class="lb"><b>سجل القسائم فقط</b><small>للتسليم والمطابقة مع المحلات</small></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button></div>
-    <div class="it"><button class="row" type="button" id="prn"><span class="ic" style="background:#5b6270"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/></svg></span><span class="lb"><b>طباعة / PDF</b><small>صفحة ملخص مع الرسوم للإدارة</small></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+  <h2 class="sh">التقارير</h2>
+  <div class="grp">
+    <div class="it" data-k="exp"><button class="row" type="button"><span class="ic" style="background:#1d7a46"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span><span class="lb"><b>تصدير وطباعة</b><small>Excel كامل، اللاعبون، القسائم، PDF</small></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="body subs">
+        <button class="row sub" type="button" id="xAll"><span class="ic" style="background:#1d7a46"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7zM14 3v4h4M9 12l4 5M13 12l-4 5"/></svg></span><span class="lb"><b>تقرير كامل (Excel)</b><small>الملخص، يومياً، اللاعبون، القسائم</small></span></button>
+        <button class="row sub" type="button" id="xPl"><span class="ic" style="background:#3b6fd8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span><span class="lb"><b>قائمة اللاعبين فقط</b><small>الأسماء والأرقام والنقاط</small></span></button>
+        <button class="row sub" type="button" id="xVo"><span class="ic" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span><span class="lb"><b>سجل القسائم فقط</b><small>للتسليم والمطابقة مع المحلات</small></span></button>
+        <button class="row sub" type="button" id="prn"><span class="ic" style="background:#5b6270"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/></svg></span><span class="lb"><b>طباعة / PDF</b><small>صفحة ملخص مع الرسوم للإدارة</small></span></button>
+      </div></div>
+    <div class="it" data-k="all"><button class="row" type="button"><span class="ic" style="background:#5b6270"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><span class="lb"><b>كل الأرقام</b><small>ملخص الزوار واللعب والنقاط والقسائم</small></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="body"><div class="kg" id="kg"></div></div></div>
   </div>
-
-  <h2 class="sh np">إجراءات حساسة</h2>
-  <div class="grp np">
+  <h2 class="sh">الحساب</h2>
+  <div class="grp">
     <div class="it hide" id="fidIt"><button class="row" type="button" id="fidRow"><span class="ic" style="background:#3b6fd8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M9 9v1M15 9v1M12 9v4h-1M9 16c1.6 1.2 4.4 1.2 6 0"/></svg></span><span class="lb"><b>الدخول بـ Face ID</b><small id="fidSub">يطلب بصمة الوجه كل ما تفتح اللوحة</small></span><span class="val" id="fidVal">—</span></button></div>
     <div class="it"><button class="row danger" type="button" id="resetAll"><span class="ic" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg></span><span class="lb"><b>تصفير نقاط جميع اللاعبين</b><small>لا يمكن التراجع عنه</small></span></button></div>
     <div class="it"><button class="row" type="button" id="out"><span class="ic" style="background:#5b6270"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></svg></span><span class="lb"><b>تسجيل الخروج</b></span></button></div>
   </div>
+</section>
 </div>
+<nav class="tabbar np hide" id="tabbar">
+  <button type="button" data-p="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span>الرئيسية</span><i class="tb" id="tbHome"></i></button>
+  <button type="button" data-p="players"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M17 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/></svg><span>اللاعبون</span></button>
+  <button type="button" data-p="emp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="15" rx="2"/><circle cx="9" cy="11" r="2.5"/><path d="M5.5 17a3.5 3.5 0 0 1 7 0M15 10h3M15 14h3"/></svg><span>الموظفون</span></button>
+  <button type="button" data-p="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span>المزيد</span><i class="tb" id="tbMore"></i></button>
+</nav>
 </div>
 
 <div class="ov hide" id="ov"><div class="ps" id="ps" role="dialog" aria-modal="true"></div></div>
@@ -365,9 +396,10 @@ async function load(){
     D=r; showApp(true); render(); loadEmp(); return true;
   }catch(e){ $('err').textContent='تعذّر الاتصال بالخادم'; return false; }
 }
-function showApp(on){ $('app').classList.toggle('hide',!on); $('login').classList.toggle('hide',on); $('lock').classList.add('hide'); $('ref').classList.toggle('hide',!on); if(on) fidUI(); }
+function showApp(on){ $('app').classList.toggle('hide',!on); $('tabbar').classList.toggle('hide',!on); $('login').classList.toggle('hide',on); $('lock').classList.add('hide'); $('ref').classList.toggle('hide',!on); if(on) fidUI(); }
 
 /* ===== الرسوم ===== */
+let TR={m:'plays',r:'7'}; try{ Object.assign(TR,JSON.parse(localStorage.getItem('mc_admin_tr')||'{}')); }catch(e){}
 function fitCharts(){ try{ Object.values(charts).forEach(c=>c.resize()); }catch(e){} }
 ['resize','orientationchange','pageshow'].forEach(ev=>window.addEventListener(ev,()=>setTimeout(fitCharts,120)));
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') setTimeout(fitCharts,120); });
@@ -394,11 +426,9 @@ function drawCharts(){
   mk('cHum',{type:'doughnut',data:ring([t.vs_human,t.vs_bot],[red,grey],['لاعب حقيقي','منافس آلي']),options:pie(pct(t.vs_human,t.vs_bot),'ضد لاعب حقيقي')});
   mk('cVou',{type:'doughnut',data:ring([t.vouchers_delivered,pend],[d?'#4fbf7f':'#1a8f4c',warn],['تم الصرف','بانتظار الصرف']),options:pie(t.vouchers_requested?fmt(t.vouchers_delivered)+'/'+fmt(t.vouchers_requested):'0','تم صرفها')});
   const days=D.days||[], lb=days.map(x=>{const p=String(x.dy).split('-');return (+p[2])+'/'+(+p[1]);}), wk=days.slice(-7);
-  mk('cWk',{type:'bar',data:{labels:lb.slice(-7),datasets:[{label:'مباريات',data:wk.map(x=>x.plays),backgroundColor:red,borderRadius:6}]},options:noLeg});
-  mk('cDays',{type:'bar',data:{labels:lb,datasets:[{label:'زائرون',data:days.map(x=>x.visitors),backgroundColor:grey},{label:'مباريات',data:days.map(x=>x.plays),backgroundColor:red},{label:'انسحابات',data:days.map(x=>x.quits),backgroundColor:warn}]},options:base});
-  mk('cPts',{type:'line',data:{labels:lb,datasets:[{label:'نقاط',data:days.map(x=>x.points),borderColor:red,backgroundColor:d?'rgba(242,119,123,.14)':'rgba(200,16,46,.12)',fill:true,tension:.3,pointRadius:0}]},options:noLeg});
-  const top=(D.players||[]).slice(0,10);
-  mk('cTop',{type:'bar',data:{labels:top.map(p=>p.name),datasets:[{data:top.map(p=>p.total_points),backgroundColor:red,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid},y:{grid:{display:false}}}}});
+  const N=TR.r==='30'?30:7, sl=days.slice(-N), M={plays:['المباريات','مباريات'],visitors:['الزوّار','زوّار'],points:['النقاط الموزّعة','نقاط']}[TR.m];
+  $('trT').textContent=M[0];
+  mk('cTr',{type:'bar',data:{labels:lb.slice(-N),datasets:[{label:M[1],data:sl.map(x=>x[TR.m]),backgroundColor:red,borderRadius:N>7?3:6}]},options:noLeg});
   if(first){ first=false; Chart.defaults.animation=false; }
   requestAnimationFrame(fitCharts);
 }
@@ -413,23 +443,20 @@ function render(){
   $('tiles').innerHTML=[['مباريات اليوم',t.plays_today,'الإجمالي '+fmt(t.plays),delta(t.plays_today,Y&&Y.plays)],['زوّار اليوم',t.visitors_today,'المسجّلون '+fmt(t.registered),delta(t.visitors_today,Y&&Y.visitors)],['نقاط اليوم',t.points_today,'الإجمالي '+fmt(t.points_given),delta(t.points_today,Y&&Y.points)]]
     .map(x=>'<div class="t"><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b><em>'+x[2]+'</em>'+(x[3]?'<br>'+x[3]:'')+'</div>').join('')
     +'<button class="t'+(pend>0?' alert':'')+'" type="button" id="tPend"><span>قسائم بانتظار الصرف</span><b>'+fmt(pend)+'</b><em>من '+fmt(t.vouchers_requested)+' طلباً</em><span class="go">'+(pend>0?'اصرفها الآن ←':'عرض القسائم ←')+'</span></button>';
-  $('tPend').onclick=()=>{ const it=document.querySelector('.it[data-k="'+(pend>0?'pend':'done')+'"]'); setOpen(it,true); it.scrollIntoView({behavior:'smooth',block:'start'}); };
+  $('tPend').onclick=()=>goVou(pend>0?'pend':'done');
   const K=[['الزائرون',t.visitors],['المسجّلون',t.registered],['المباريات',t.plays],['الفائزون',t.winners],['مرات الفوز',t.wins],['المنسحبون',t.quits],['النقاط الموزّعة',t.points_given],['الأرصدة الحالية',t.balance],['النقاط المستبدلة',t.points_redeemed],['فائزون بقسائم',t.voucher_winners],['قسائم مطلوبة',t.vouchers_requested],['قسائم مصروفة',t.vouchers_delivered]]
     .map(x=>'<div><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b></div>').join('');
   $('kg').innerHTML=K; $('kgP').innerHTML=K;
-  renderOnline(); renderPl(); renderRed(); renderPairs(); renderEv();
+  renderPl(); renderRed(); renderPairs(); renderEv(); renderTodo(pend);
   if(SEL){ const rb=$('rzOne'); if(!(rb&&rb.classList.contains('sure'))) drawPlayer(); }
   drawCharts();
 }
-function renderOnline(){
-  const rows=(D.players||[]).filter(p=>p.online);
-  $('vOn').textContent=fmt(D.live.online);
-  $('onl').innerHTML=rows.length?rows.map(p=>'<button class="li pp" type="button" data-e="'+esc(p.emp_no)+'"><span class="av">'+esc((p.name||'؟').trim().charAt(0))+'</span><span class="n"><i class="dot"></i>'+esc(p.name)+'<small>'+esc(p.emp_no)+'</small></span><span class="m"><b>'+fmt(p.total_points)+'</b><br>نقطة</span>'+'<svg class="cv2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>'+'</button>').join(''):empty('لا يوجد أحد متصل الآن');
-}
 function renderPl(){
-  const all=D.players||[], q=($('q').value||'').trim(), rows=all.filter(p=>!q||(p.name||'').includes(q)||(p.emp_no||'').includes(q));
-  $('vPl').textContent=fmt(all.length);
-  $('pl').innerHTML=rows.length?rows.map(p=>'<button class="li pp" type="button" data-e="'+esc(p.emp_no)+'"><span class="av">'+(all.indexOf(p)+1)+'</span><span class="n">'+(p.online?'<i class="dot"></i>':'')+esc(p.name)+'<small>'+esc(p.emp_no)+'</small></span><span class="m"><b>'+fmt(p.total_points)+'</b><br>نقطة</span>'+'<svg class="cv2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>'+'</button>').join(''):empty(q?'لا نتائج للبحث':'لا يوجد لاعبون');
+  const all=D.players||[], q=($('q').value||'').trim();
+  let rows=all.filter(p=>!q||(p.name||'').includes(q)||(p.emp_no||'').includes(q));
+  if(PLF==='on') rows=rows.filter(p=>p.online); else if(PLF==='top') rows=rows.slice().sort((a,b)=>(b.total_points||0)-(a.total_points||0)).slice(0,10);
+  $('vPl').textContent=fmt(all.length); $('vOn').textContent=fmt(all.filter(p=>p.online).length);
+  $('pl').innerHTML=rows.length?rows.map(p=>'<button class="li pp" type="button" data-e="'+esc(p.emp_no)+'"><span class="av">'+(all.indexOf(p)+1)+'</span><span class="n">'+(p.online?'<i class="dot"></i>':'')+esc(p.name)+'<small>'+esc(p.emp_no)+'</small></span><span class="m"><b>'+fmt(p.total_points)+'</b><br>نقطة</span>'+'<svg class="cv2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>'+'</button>').join(''):empty(q?'لا نتائج للبحث':PLF==='on'?'لا يوجد أحد متصل الآن':'لا يوجد لاعبون');
 
 }
 function vItem(r){
@@ -454,6 +481,40 @@ function renderEv(){
   $('vEv').textContent=fmt(rows.length);
   $('ev').innerHTML=rows.length?rows.map(e=>'<div class="li"><span class="n">'+esc(e.name)+'<small>المسجّل '+esc(e.bound_emp)+' · المُدخل '+esc(e.tried_emp)+'</small><small>'+esc(kind[e.kind]||e.kind)+'</small></span><span class="m">'+dt(e.created_at)+'</span></div>').join(''):empty('لا توجد محاولات');
 }
+
+/* ===== يحتاج إجراء ===== */
+function renderTodo(pend){
+  const wk=Date.now()-7*864e5, ev=(D.events||[]).filter(e=>new Date(e.created_at).getTime()>wk).length, pr=(PR||[]).filter(x=>new Date(x.last_at).getTime()>wk).length;
+  const ch='<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>';
+  const it=[];
+  if(pend>0) it.push(['vou','var(--red)','<path d="M3 9a3 3 0 0 0 0 6v3h18v-3a3 3 0 0 1 0-6V6H3zM13 6v12"/>','قسائم بانتظار الصرف','سلّمها واضغط «تم الصرف»',pend]);
+  if(ev>0) it.push(['ev','#b4232f','<path d="M12 3l9 16H3zM12 10v4M12 17h.01"/>','محاولات تسجيل مشبوهة','خلال آخر ٧ أيام',ev]);
+  if(pr>0) it.push(['pairs','#e07a00','<path d="M17 3l4 4-4 4M3 7h18M7 21l-4-4 4-4M21 17H3"/>','أزواج يلعبون مع بعض كثير','خلال آخر ٧ أيام',pr]);
+  $('todoW').classList.toggle('hide',!it.length);
+  $('todo').innerHTML=it.map(x=>'<div class="it"><button class="row todo-r" type="button" data-go="'+x[0]+'"><span class="ic" style="background:'+x[1]+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+x[2]+'</svg></span><span class="lb"><b>'+x[3]+'</b><small>'+x[4]+'</small></span><span class="bdg">'+fmt(x[5])+'</span>'+ch+'</button></div>').join('');
+  $('todo').querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{ const k=b.dataset.go; if(k==='vou') goVou('pend'); else goOpen(k); });
+  $('tbMore').textContent=pend>0?fmt(pend):'';
+}
+
+/* ===== التبويبات ===== */
+let TAB='home'; try{ TAB=localStorage.getItem('mc_admin_tab')||'home'; }catch(e){}
+let PLF='all';
+function goTab(t,noScroll){
+  TAB=t; try{ localStorage.setItem('mc_admin_tab',t); }catch(e){}
+  document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('hide',p.dataset.p!==t));
+  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('on',b.dataset.p===t));
+  if(!noScroll) window.scrollTo(0,0);
+  drawCharts();
+}
+function goOpen(k){ goTab('more',true); const it=document.querySelector('.it[data-k="'+k+'"]'); if(it){ setOpen(it,true); setTimeout(()=>it.scrollIntoView({behavior:'smooth',block:'start'}),30); } }
+function goVou(which){ setVou(which); goOpen('vou'); }
+function setVou(which){ document.querySelectorAll('#segV button').forEach(b=>b.classList.toggle('on',b.dataset.v===which)); $('pend').classList.toggle('hide',which!=='pend'); $('done').classList.toggle('hide',which!=='done'); }
+document.querySelectorAll('#tabbar button').forEach(b=>b.onclick=()=>goTab(b.dataset.p));
+document.querySelectorAll('#segV button').forEach(b=>b.onclick=()=>setVou(b.dataset.v));
+document.querySelectorAll('#plF button').forEach(b=>b.onclick=()=>{ PLF=b.dataset.v; document.querySelectorAll('#plF button').forEach(x=>x.classList.toggle('on',x===b)); if(D) renderPl(); });
+function tgInit(id,key){ const el=$(id); el.querySelectorAll('button').forEach(b=>{ b.classList.toggle('on',b.dataset.v===TR[key]); b.onclick=()=>{ TR[key]=b.dataset.v; try{ localStorage.setItem('mc_admin_tr',JSON.stringify(TR)); }catch(e){} el.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); drawCharts(); }; }); }
+tgInit('segM','m'); tgInit('segR','r');
+goTab(TAB,true);
 
 /* ===== بطاقة اللاعب ===== */
 let SEL=null;
@@ -723,7 +784,7 @@ function toastMsg(t){ let el=$('tst'); if(!el){ el=document.createElement('div')
 
 function lockNow(){
   LOCKED=true; clearInterval(timer); if(typeof closePlayer==='function'&&SEL) closePlayer();
-  $('app').classList.add('hide'); $('login').classList.add('hide'); $('ref').classList.add('hide'); $('lock').classList.remove('hide'); $('lerr').textContent='';
+  $('app').classList.add('hide'); $('tabbar').classList.add('hide'); $('login').classList.add('hide'); $('ref').classList.add('hide'); $('lock').classList.remove('hide'); $('lerr').textContent='';
   tryUnlock(true);
 }
 let busy=false;
