@@ -173,3 +173,13 @@ function rfxShow(h){
 try{ const t=document.querySelector('#home .ttl h1'); if(t) t.insertAdjacentHTML('beforeend','<span class="rtag">الطريق</span>'); }catch(e){}
 setTimeout(roadLoad, 700);
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) roadLoad(); });
+/* ملفي: أيقونتا الشارات والنقاط تحت الصورة */
+(function(){
+  const card=document.querySelector('#profilePage .pfcard'); if(!card) return;
+  card.insertAdjacentHTML('afterend','<div class="pftiles">'
+   +'<button type="button" class="pftile b" id="pfTB"><span class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M15.5 12.9L17 22l-5-3-5 3 1.5-9.1"/></svg></span><b>شاراتي</b><small id="pfTBn">0 من 25</small></button>'
+   +'<button type="button" class="pftile p" id="pfTP"><span class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9M12 8S10 3 7.5 4.5 9 8 12 8zM12 8s2-5 4.5-3.5S15 8 12 8z"/></svg></span><b>استبدل نقاطك</b><small id="pfTPn">0 نقطة</small></button></div>');
+  $('pfTB').onclick=()=>$('badgesBtn').click();
+  $('pfTP').onclick=()=>$('pfStore').click();
+})();
+function pfTiles(){ try{ $('pfTBn').textContent=$('bcHead').textContent+' من '+$('bcTotal').textContent; $('pfTPn').textContent=fmt(stats.balance)+' نقطة'; }catch(e){} }

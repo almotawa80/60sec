@@ -813,6 +813,17 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 @keyframes rdSpin{to{transform:rotate(360deg)}}
 @keyframes rdShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
 .rtag{display:inline-block;margin-inline-start:6px;font-size:10px;font-weight:800;background:rgba(255,255,255,.18);border-radius:8px;padding:1px 7px;vertical-align:middle}
+/* الرئيسية بدون محفظة، والمحفظة والشارات في ملفي */
+#home .wallet{display:none}
+#badgesBtn,#pfStore{display:none!important}
+.pftiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:2px 0 14px}
+.pftile{font:inherit;border:0;cursor:pointer;background:var(--card);color:var(--text);border-radius:18px;padding:14px 10px 12px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.pftile .ic{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff}
+.pftile.b .ic{background:linear-gradient(135deg,#ffc23d,#e09a00)}
+.pftile.p .ic{background:linear-gradient(135deg,var(--accent),#a81a24)}
+.pftile b{font-size:14px;font-weight:800}
+.pftile small{font-size:12px;color:var(--muted);font-weight:700}
+html[data-theme="dark"] .pftile{border:1px solid var(--line)}
 
 </style>
 </head>
@@ -1451,6 +1462,7 @@ const pointsAvailable = () => !GUEST() && stats.pointsDay !== dkey(new Date());
 function renderGuest(){ const gst=GUEST(); document.body.classList.toggle('guest',gst); const gt=$('gate'); if(gt){ if(gst&&!gt.classList.contains('on')) gateFill(); gt.classList.toggle('on',gst); gt.setAttribute('aria-hidden',gst?'false':'true'); document.body.classList.toggle('gated',gst); } const gb=$('guestBox'); if(gb) gb.style.display=gst?'block':'none'; }
 function renderStats(){
   try{ roadCard(); }catch(e){}
+  setTimeout(function(){ try{ pfTiles(); }catch(e){} },0);
   try{ renderGuest(); }catch(e){}
   $('stBest').textContent=stats.best; $('stWins').textContent=stats.wins; $('stStreak').textContent=shownDays();
   const pa = pointsAvailable();
@@ -2904,6 +2916,16 @@ function rfxShow(h){
 try{ const t=document.querySelector('#home .ttl h1'); if(t) t.insertAdjacentHTML('beforeend','<span class="rtag">الطريق</span>'); }catch(e){}
 setTimeout(roadLoad, 700);
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) roadLoad(); });
+/* ملفي: أيقونتا الشارات والنقاط تحت الصورة */
+(function(){
+  const card=document.querySelector('#profilePage .pfcard'); if(!card) return;
+  card.insertAdjacentHTML('afterend','<div class="pftiles">'
+   +'<button type="button" class="pftile b" id="pfTB"><span class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M15.5 12.9L17 22l-5-3-5 3 1.5-9.1"/></svg></span><b>شاراتي</b><small id="pfTBn">0 من 25</small></button>'
+   +'<button type="button" class="pftile p" id="pfTP"><span class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9M12 8S10 3 7.5 4.5 9 8 12 8zM12 8s2-5 4.5-3.5S15 8 12 8z"/></svg></span><b>استبدل نقاطك</b><small id="pfTPn">0 نقطة</small></button></div>');
+  $('pfTB').onclick=()=>$('badgesBtn').click();
+  $('pfTP').onclick=()=>$('pfStore').click();
+})();
+function pfTiles(){ try{ $('pfTBn').textContent=$('bcHead').textContent+' من '+$('bcTotal').textContent; $('pfTPn').textContent=fmt(stats.balance)+' نقطة'; }catch(e){} }
 
 </script>
 </body>
