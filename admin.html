@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611172001">
+<meta name="app-version" content="202611171449">
 <title>لوحة تحكّم تحدّي الدقيقة</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
@@ -123,6 +123,7 @@ h2.sh{font-size:13px;font-weight:800;color:var(--mu);margin:8px 6px -6px}
 .li .n{flex:1;min-width:0;font-weight:600}.li .n small{display:block;color:var(--mu);font-weight:400;font-size:12px}
 .li .m{font-size:12px;color:var(--mu);font-variant-numeric:tabular-nums;text-align:end;white-space:nowrap}
 .li .m b{color:var(--tx);font-size:14px}
+.pav{flex:none;width:32px;height:32px;border-radius:50%;background:var(--chip) center/cover no-repeat;box-shadow:0 0 0 2px var(--card,#fff)}.ps .ph .av.img{background:var(--chip) center/cover no-repeat;color:transparent}
 .av{flex:none;width:32px;height:32px;border-radius:50%;background:var(--chip);color:var(--dr);display:grid;place-items:center;font-weight:800;font-size:12.5px}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;margin-inline-end:6px;vertical-align:middle}
 .empst{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px}.empst div{background:var(--soft);border-radius:12px;padding:8px;text-align:center}.empst b{display:block;font-size:18px;font-variant-numeric:tabular-nums}.empst span{font-size:11.5px;color:var(--mu)}
@@ -401,7 +402,7 @@ async function load(){
     const r=await rpc('admin_report',{p_key:KEY});
     try{ const pr=await rpc('admin_pairs',{p_key:KEY}); PR=(pr&&pr.ok)?pr.pairs:[]; }catch(e){ PR=[]; }
     if(!r||!r.ok){ KEY=''; try{localStorage.removeItem('mc_admin');sessionStorage.removeItem('mc_admin');}catch(e){} showApp(false); $('err').textContent='كلمة السر غير صحيحة'; return false; }
-    D=r; showApp(true); render(); loadEmp(); return true;
+    D=r; showApp(true); render(); loadEmp(); loadAV(); return true;
   }catch(e){ $('err').textContent='تعذّر الاتصال بالخادم'; return false; }
 }
 function showApp(on){ $('app').classList.toggle('hide',!on); $('tabbar').classList.toggle('hide',!on); $('mini').classList.toggle('hide',!on); $('login').classList.toggle('hide',on); $('lock').classList.add('hide'); $('ref').classList.toggle('hide',!on); if(on) fidUI(); }
@@ -459,12 +460,16 @@ function render(){
   if(SEL){ const rb=$('rzOne'); if(!(rb&&rb.classList.contains('sure'))) drawPlayer(); }
   drawCharts();
 }
+/* صور اللاعبين: نجيبها بعد التقرير، فقط اللي رافعين صورة */
+let AV={};
+async function loadAV(){ const em=(D.players||[]).map(p=>p.emp_no).filter(Boolean); if(!em.length) return; let r=null; try{ r=await rpc('admin_avatars',{p_key:KEY,p_emps:em}); }catch(e){} if(!r||!r.ok) return; AV=r.av||{}; renderPl(); if(SEL){ const rb=$('rzOne'); if(!(rb&&rb.classList.contains('sure'))) drawPlayer(); } }
+const avCss=u=>"background-image:url('"+String(u).replace(/['"\\()\s]/g,'')+"')";
 function renderPl(){
   const all=D.players||[], q=($('q').value||'').trim();
   let rows=all.filter(p=>!q||(p.name||'').includes(q)||(p.emp_no||'').includes(q));
   if(PLF==='on') rows=rows.filter(p=>p.online); else if(PLF==='top') rows=rows.slice().sort((a,b)=>(b.total_points||0)-(a.total_points||0)).slice(0,10);
   $('vPl').textContent=fmt(all.length); $('vOn').textContent=fmt(all.filter(p=>p.online).length);
-  $('pl').innerHTML=rows.length?rows.map(p=>'<button class="li pp" type="button" data-e="'+esc(p.emp_no)+'"><span class="av">'+(all.indexOf(p)+1)+'</span><span class="n">'+(p.online?'<i class="dot"></i>':'')+esc(p.name)+'<small>'+esc(p.emp_no)+'</small></span><span class="m"><b>'+fmt(p.total_points)+'</b><br>نقطة</span>'+'<svg class="cv2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>'+'</button>').join(''):empty(q?'لا نتائج للبحث':PLF==='on'?'لا يوجد أحد متصل الآن':'لا يوجد لاعبون');
+  $('pl').innerHTML=rows.length?rows.map(p=>'<button class="li pp" type="button" data-e="'+esc(p.emp_no)+'"><span class="av">'+(all.indexOf(p)+1)+'</span>'+(AV[p.emp_no]?'<span class="pav" style="'+avCss(AV[p.emp_no])+'"></span>':'')+'<span class="n">'+(p.online?'<i class="dot"></i>':'')+esc(p.name)+'<small>'+esc(p.emp_no)+'</small></span><span class="m"><b>'+fmt(p.total_points)+'</b><br>نقطة</span>'+'<svg class="cv2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>'+'</button>').join(''):empty(q?'لا نتائج للبحث':PLF==='on'?'لا يوجد أحد متصل الآن':'لا يوجد لاعبون');
 
 }
 function vItem(r){
@@ -545,7 +550,7 @@ function openPlayer(emp){ SEL=emp; drawPlayer(); $('ov').classList.remove('hide'
 function closePlayer(){ SEL=null; $('ov').classList.add('hide'); document.body.style.overflow=''; }
 function drawPlayer(){
   if(!SEL||!D) return; const all=D.players||[], p=all.find(x=>x.emp_no===SEL); if(!p){ closePlayer(); return; }
-  $('ps').innerHTML='<div class="ph"><span class="av">'+esc((p.name||'؟').trim().charAt(0))+'</span><div><b>'+(p.online?'<i class="dot"></i>':'')+esc(p.name)+'</b><small>الرقم الوظيفي '+esc(p.emp_no)+' · الترتيب '+(all.indexOf(p)+1)+'</small></div><button class="x" type="button" aria-label="إغلاق"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
+  $('ps').innerHTML='<div class="ph">'+(AV[p.emp_no]?'<span class="av img" style="'+avCss(AV[p.emp_no])+'"></span>':'<span class="av">'+esc((p.name||'؟').trim().charAt(0))+'</span>')+'<div><b>'+(p.online?'<i class="dot"></i>':'')+esc(p.name)+'</b><small>الرقم الوظيفي '+esc(p.emp_no)+' · الترتيب '+(all.indexOf(p)+1)+'</small></div><button class="x" type="button" aria-label="إغلاق"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
    +'<div class="pg"><div><b>'+fmt(p.total_points)+'</b><span>إجمالي النقاط</span></div><div><b>'+fmt(p.balance)+'</b><span>الرصيد</span></div><div><b>'+fmt(p.vouchers)+'</b><span>قسائم</span></div><div><b>'+fmt(p.played)+'</b><span>مباريات</span></div><div><b>'+fmt(p.wins)+'</b><span>فوز</span></div><div><b>'+fmt(p.quits)+'</b><span>انسحاب</span></div></div>'
    +'<div class="pl ed" id="empRow"><span>الرقم الوظيفي</span><b>'+esc(p.emp_no)+'</b><button class="eb" type="button" id="empEd">تعديل</button></div>'
    +'<div class="pl"><span>آخر لعب</span><b>'+dt(p.last_play)+'</b></div><div class="pl"><span>تاريخ التسجيل</span><b>'+dt(p.created_at)+'</b></div>'
