@@ -772,3 +772,10 @@ html #inviteWait #invCancel{background:none!important;border:0!important;box-sha
 #splash .spT svg{filter:drop-shadow(0 8px 14px rgba(0,0,0,.45)) drop-shadow(0 0 10px rgba(255,215,106,.35))}
 #splash .spNm{bottom:calc(16% + 84px + env(safe-area-inset-bottom))!important;text-shadow:0 2px 0 #7a0c12,0 3px 10px rgba(0,0,0,.4)}
 #splash .spNm{top:calc(20% + env(safe-area-inset-top))!important;bottom:auto!important;font-size:32px}
+/* خلفية موحدة ثابتة لكل الشاشات + الشعار ثابت ما يتحرك مع الانتقال */
+html,body{background:#2a1408!important}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(circle at 50% 30%,rgba(120,20,30,.35),rgba(20,10,5,.82) 78%),url(img/road/map0.jpg) center/cover no-repeat,#2a1408}
+#app{position:relative;z-index:1;background:transparent!important}
+#home,#match,#result,#game,#lbPage,#profilePage,#badgesPage,#store{background:transparent!important}
+#app>.screen[style*="z-index: 2"]{background:radial-gradient(circle at 50% 30%,rgba(120,20,30,.35),rgba(20,10,5,.82) 78%),url(img/road/map0.jpg) center/cover no-repeat,#2a1408!important}
+#app>.bklogo{position:fixed!important;transform:none!important;transition:none!important}
