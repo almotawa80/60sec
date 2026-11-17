@@ -368,6 +368,7 @@ html,body{background:#fff!important;color:#1f2125!important}
   <div class="grp">
     <div class="it hide" id="fidIt"><button class="row" type="button" id="fidRow"><span class="ic" style="background:#3b6fd8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M9 9v1M15 9v1M12 9v4h-1M9 16c1.6 1.2 4.4 1.2 6 0"/></svg></span><span class="lb"><b>الدخول بـ Face ID</b><small id="fidSub">يطلب بصمة الوجه كل ما تفتح اللوحة</small></span><span class="val" id="fidVal">—</span></button></div>
     <div class="it"><button class="row danger" type="button" id="resetAll"><span class="ic" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg></span><span class="lb"><b>تصفير نقاط جميع اللاعبين</b><small>لا يمكن التراجع عنه</small></span></button></div>
+    <div class="it"><button class="row danger" type="button" id="fullReset"><span class="ic" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg></span><span class="lb"><b>تصفير كامل (بداية جديدة)</b><small>يحذف المباريات والنقاط وتقدّم الخريطة والقسائم والداشبورد. يبقى الموظفون ورموزهم</small></span></button></div>
     <div class="it"><button class="row" type="button" id="out"><span class="ic" style="background:#5b6270"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></svg></span><span class="lb"><b>تسجيل الخروج</b></span></button></div>
   </div>
 </section>
@@ -822,6 +823,9 @@ window.addEventListener('beforeprint',prepPrint);
 window.addEventListener('afterprint',()=>{ try{ Object.values(charts).forEach(c=>c.resize()); }catch(e){} });
 
 /* ===== الأزرار ===== */
+$('fullReset').onclick=async()=>{ const v=prompt('تصفير كامل لنسخة الطريق: كل المباريات والنقاط وتقدّم الخريطة والقسائم بتنحذف ولا ترجع.\nاكتب كلمة: تصفير'); if(v==null) return; if(v.trim()!=='تصفير'){ alert('ما تم التصفير: الكلمة غلط'); return; }
+  let r=null; try{ r=await rpc('admin_full_reset',{p_key:KEY,p_confirm:'تصفير'}); }catch(e){}
+  if(r && r.ok){ alert('تم التصفير الكامل ✓'); } else { alert('ما تم التصفير. '+(r&&r.error==='auth'?'سجّل دخولك للوحة من جديد.':'تأكد إن ملف SQL الخاص بالزر تم تشغيله في Supabase.')); } load(); };
 $('resetAll').onclick=async()=>{ if(!confirm('تصفير رصيد ونقاط جميع اللاعبين؟ لا يمكن التراجع.')) return; if(!confirm('تأكيد أخير: تصفير الجميع؟')) return; try{ await rpc('admin_reset_points',{p_key:KEY}); }catch(e){} load(); };
 $('out').onclick=()=>{ try{localStorage.removeItem('mc_admin');sessionStorage.removeItem('mc_admin');localStorage.removeItem('mc_admin_fid');sessionStorage.removeItem('mc_admin_ok');localStorage.removeItem('mc_issued_road');}catch(e){} KEY=''; clearInterval(timer); location.reload(); };
 $('ref').onclick=()=>{ const b=$('ref'); b.classList.remove('spin'); void b.offsetWidth; b.classList.add('spin'); load(); };
