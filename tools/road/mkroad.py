@@ -132,9 +132,9 @@ _clk = ('<div class="spT p0"><svg viewBox="0 0 200 200" width="190" height="190"
 if _i > 0: s = s[:_i] + _clk + s[_j:]
 # أيقونة الطريق (ساعة الشعار) — خاصة بصفحة الطريق
 import re as _re
-s = _re.sub(r'<link rel="icon" type="image/svg\+xml" href="[^"]*">', '<link rel="icon" type="image/svg+xml" href="img/road/favicon.svg">', s, count=1)
-s = s.replace('<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">', '<link rel="icon" type="image/png" sizes="32x32" href="img/road/fav-32.png">')
-s = s.replace('<link rel="apple-touch-icon" href="apple-touch-icon.png">', '<link rel="apple-touch-icon" href="img/road/apple-touch-icon.png">')
+s = _re.sub(r'<link rel="icon" type="image/svg\+xml" href="[^"]*">', '<link rel="icon" type="image/svg+xml" href="img/road/favicon.svg?v=2">', s, count=1)
+s = s.replace('<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">', '<link rel="icon" type="image/png" sizes="32x32" href="img/road/fav-32.png?v=2">')
+s = s.replace('<link rel="apple-touch-icon" href="apple-touch-icon.png">', '<link rel="apple-touch-icon" href="img/road/apple-touch-icon.png?v=2">')
 s = s.replace('content="https://almotawa80.github.io/60sec/icon-512.png"', 'content="https://almotawa80.github.io/60sec/img/road/icon-512.png"')
 open(dst, 'w', encoding='utf-8').write(s)
 print('ok', len(s))
