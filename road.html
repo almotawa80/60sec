@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261117190038">
+<meta name="app-version" content="road-20261117190258">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1441,6 +1441,28 @@ body:has(#roadPage.active) .toast{top:calc(200px + env(safe-area-inset-top))}
 #badgesPage .md.on.t3{background:radial-gradient(circle at 40% 30%,#ffe27a,#f2b51e 60%,#c98a08)!important;color:#fff!important}
 #badgesPage .trow .pbar{background:#fff!important;border:1.5px solid #e6d3ae;height:12px!important;border-radius:8px!important}
 #badgesPage .trow .pbar i{background:linear-gradient(90deg,#ff5a65,#d81f2e)!important}
+/* ===== الشاشة الرئيسية بستايل الطريق ===== */
+#home{background:radial-gradient(circle at 50% 30%,rgba(120,20,30,.35),rgba(20,10,5,.82) 78%),url(img/road/map0.jpg) center/cover no-repeat,#2a1408!important}
+#home .hero{background:none!important}
+#home .hero::before,#home .hero::after,#home .hero .wm{display:none!important}
+#home .sheet{background:none!important;box-shadow:none!important}
+#home .pfav{border:4px solid #fff!important;box-shadow:0 0 0 4px #c8102e,0 6px 14px rgba(0,0,0,.45)!important}
+#home .rcard{border:4px solid #fff!important;box-shadow:0 0 0 4px #c8102e,0 10px 22px rgba(0,0,0,.45)!important;border-radius:26px!important}
+#home #lbBtn,#home .lbrow{background:linear-gradient(#fffaf0,#fde9c4)!important;border:3px solid #fff!important;box-shadow:0 0 0 3px #c8102e,0 6px 14px rgba(0,0,0,.35)!important;border-radius:22px!important;color:#5a3412!important}
+#home #goDone{color:#fff!important;text-shadow:0 2px 3px rgba(0,0,0,.6)}
+#home #goBtn{background:linear-gradient(#fffaf0,#fde9c4)!important;border:3px solid #fff!important;box-shadow:0 0 0 3px #c8102e,inset 0 -4px 0 rgba(160,110,40,.15),0 8px 16px rgba(0,0,0,.4)!important}
+#home #goBtn .slbl{color:#a50f1c!important;font-weight:900}
+#home .sknob{border:3px solid #fff;background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c)!important;box-shadow:0 0 0 3px #c8102e,0 4px 8px rgba(0,0,0,.35)!important}
+#home .onl{background:#fff!important;border:2px solid #3fb7c9;color:#1f7f90!important}
+#home #inviteBtn{background:linear-gradient(#fffaf0,#fde9c4)!important;border:3px solid #fff!important;box-shadow:0 0 0 3px #c8102e,0 8px 16px rgba(0,0,0,.4)!important;border-radius:26px!important;color:#5a3412!important}
+#home #inviteBtn .mav{border:3px solid #fff;background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c);box-shadow:0 0 0 3px #c8102e}
+#home #inviteBtn .mvs{color:#d81f2e}
+#home .pts50{color:#ffe27a!important;text-shadow:0 2px 0 #7a0c12,0 2px 6px rgba(0,0,0,.6)}
+#home .hint div{color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+#home .wallet{background:linear-gradient(#fffaf0,#fde9c4)!important;border:3px solid #fff;box-shadow:0 0 0 3px #c8102e!important;color:#5a3412}
+#home .pfav:not(.hasimg){background-image:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c)!important;color:#fff!important}
+#home .pts50{color:#ffe27a!important}
+.setrow:has(#segTheme){display:none!important}
 
 </style>
 </head>
@@ -3862,6 +3884,9 @@ drawCard = async function(r,name){
   x.fillStyle='#fff'; x.font='800 54px "Noto Kufi Arabic", sans-serif'; x.fillText('هل تستطيع التغلب عليّ؟',540,1265);
   return c;
 };
+
+/* الطريق: بدون وضع داكن، دايماً فاتح */
+(function(){ try{ stats.theme='light'; }catch(e){} applyTheme=function(){ document.documentElement.setAttribute('data-theme','light'); }; applyTheme(); })();
 
 </script>
 </body>
