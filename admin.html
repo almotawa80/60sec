@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611171449">
+<meta name="app-version" content="202611171450">
 <title>لوحة تحكّم تحدّي الدقيقة</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
@@ -140,7 +140,10 @@ h2.sh{font-size:13px;font-weight:800;color:var(--mu);margin:8px 6px -6px}
 .ps .rzb.del{border-color:var(--red);background:var(--red);color:#fff;margin-top:8px}.ps .rzb.del.sure{background:#7a0716;border-color:#7a0716}
 .rvb{display:flex;flex-direction:column;gap:0;margin-bottom:12px}.sb.wide2{display:block;width:100%;padding:10px;font-size:14px}
 .sw{position:relative;border-radius:12px;overflow:hidden;flex:none}.lth{flex:none}
-.sw:not(.drag):not(.open) .swdel{visibility:hidden}
+.sw:not(.drag):not(.open) .swdel,.sw.open.ed .swdel{visibility:hidden}.sw:not(.drag):not(.ed) .swed,.sw.open:not(.ed) .swed{visibility:hidden}
+.swed{position:absolute;top:0;bottom:0;left:0;width:88px;border:0;background:#2f6fde;color:#fff;font-family:inherit;font-weight:800;font-size:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:0}
+.sw>.li{-webkit-touch-callout:none}.li.lp{background:color-mix(in srgb,var(--red) 6%,var(--card))}
+.edf h3{margin:0 0 12px;font-size:18px}.edf .addb2{margin-top:12px}
 .sw>.li{position:relative;z-index:1;transition:transform .22s ease;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .sw.drag>.li{transition:none}
 .swdel{position:absolute;top:0;bottom:0;right:0;width:88px;border:0;background:var(--red);color:#fff;font-family:inherit;font-weight:800;font-size:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:0}
@@ -604,12 +607,13 @@ function renderEmp(){ const r=EMP; if(!r||!r.rows) return;
   const gk=x=>EG==='d'?(x.dept||'بدون إدارة'):empLetter(x.name);
   const rows=r.rows.filter((FL[EF]||FL.all)[1]).sort((p,q2)=>{ if(EG==='d'){ const a=gk(p),b=gk(q2); if(a!==b) return a==='بدون إدارة'?1:b==='بدون إدارة'?-1:a.localeCompare(b,'ar'); } return String(p.name||'').localeCompare(String(q2.name||''),'ar'); }); let L='';
   const gc={}; rows.forEach(x=>{ const k=gk(x); gc[k]=(gc[k]||0)+1; });
-  $('empL').innerHTML=(rows.length?rows.map(x=>{ const c=gk(x); const hd=c!==L?'<div class="lth">'+esc(c)+' <small>'+fmt(gc[c])+'</small></div>':''; L=c; return hd+'<div class="sw"><button class="swdel" type="button" data-d="'+esc(x.emp_no)+'"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/></svg>حذف</button><div class="li'+(ESEL.has(String(x.emp_no))?' sel':'')+'" data-s="'+esc(x.emp_no)+'"><span class="ck"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="n">'+esc(x.name)+'<small>'+esc(x.emp_no)+' · '+(x.joined?'دخل':'ما دخل بعد')+'</small></span><span class="acts">'+(ISSUED[x.emp_no]?sentHtml(x.emp_no):'')+'<button class="icb" type="button" data-e="'+esc(x.emp_no)+'"><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="3.5"/><path d="M10 13 18 5M15 8l2.2 2.2M18 5l2 2"/></svg></i><span>رمز جديد</span></button></span></div></div>'; }).join(''):empty(q||EF!=='all'?'لا نتائج':'ما في أسماء بالقائمة'));
+  $('empL').innerHTML=(rows.length?rows.map(x=>{ const c=gk(x); const hd=c!==L?'<div class="lth">'+esc(c)+' <small>'+fmt(gc[c])+'</small></div>':''; L=c; return hd+'<div class="sw"><button class="swed" type="button" data-ed="'+esc(x.emp_no)+'"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4"/></svg>تعديل</button><button class="swdel" type="button" data-d="'+esc(x.emp_no)+'"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/></svg>حذف</button><div class="li'+(ESEL.has(String(x.emp_no))?' sel':'')+'" data-s="'+esc(x.emp_no)+'"><span class="ck"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="n">'+esc(x.name)+'<small>'+esc(x.emp_no)+' · '+(x.joined?'دخل':'ما دخل بعد')+'</small></span><span class="acts">'+(ISSUED[x.emp_no]?sentHtml(x.emp_no):'')+'<button class="icb" type="button" data-e="'+esc(x.emp_no)+'"><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="3.5"/><path d="M10 13 18 5M15 8l2.2 2.2M18 5l2 2"/></svg></i><span>رمز جديد</span></button></span></div></div>'; }).join(''):empty(q||EF!=='all'?'لا نتائج':'ما في أسماء بالقائمة'));
   $('empL').querySelectorAll('button[data-e]').forEach(b=>b.onclick=()=>newCode(b.dataset.e,b));
   $('empL').querySelectorAll('button[data-d]').forEach(b=>b.onclick=()=>delEmp(b.dataset.d,b));
-  if(r.rows.length) $('empL').insertAdjacentHTML('afterbegin','<div class="swhint">اضغط على اسم للتحديد ومرّر صبعك لتحديد أكثر، أو اسحب الاسم للشمال للحذف</div>');
+  $('empL').querySelectorAll('button[data-ed]').forEach(b=>b.onclick=()=>{ swClose(); openEdit(b.dataset.ed); });
+  $('empL').querySelectorAll('.li[data-s]').forEach(li=>li.addEventListener('click',e=>{ if(e.defaultPrevented||e.target.closest('button,a')||$('empL').classList.contains('selm')||li.closest('.sw.open')) return; openEmpCard(li.dataset.s); }));
+  if(r.rows.length) $('empL').insertAdjacentHTML('afterbegin','<div class="swhint">اضغط مطوّلاً على اسم للتحديد ومرّر صبعك لتحديد أكثر · اسحب الاسم لليمين للتعديل ولليسار للحذف</div>');
   $('empL').querySelectorAll('.sw').forEach(swInit);
-  $('empL').querySelectorAll('.li[data-s]').forEach(li=>li.addEventListener('click',e=>{ if(e.defaultPrevented||e.target.closest('button,a')||$('empL').classList.contains('selm')) return; setSel(li,true); selBar(); }));
   [...ESEL].forEach(k=>{ if(!r.rows.some(x=>String(x.emp_no)===k)) ESEL.delete(k); }); selBar();
 }
 const ESEL=new Set();
@@ -619,8 +623,17 @@ function setSel(li,on){ const k=li.dataset.s; if(on) ESEL.add(k); else ESEL.dele
   const rowAt=(x,y)=>{ const el=document.elementFromPoint(x,y); return el&&el.closest?el.closest('#empL .li[data-s]'):null; };
   const scrollTick=()=>{ raf=0; if(!paint) return; const r=L.getBoundingClientRect(), sb=$('selBar'), bot=Math.min(r.bottom, sb?sb.getBoundingClientRect().top:1e9, innerHeight); let v=0; if(lastY<r.top+50) v=-Math.ceil((r.top+50-lastY)/4); else if(lastY>bot-50) v=Math.ceil((lastY-(bot-50))/4);
     if(v){ L.scrollTop+=v; const li=rowAt(paint.x,lastY); if(li&&li.classList.contains('sel')!==paint.on){ setSel(li,paint.on); selBar(); } raf=requestAnimationFrame(scrollTick); } };
-  L.addEventListener('pointerdown',e=>{ if(!L.classList.contains('selm')||e.button>0||e.target.closest('button,a')) return; const li=e.target.closest('.li[data-s]'); if(!li) return;
-    e.preventDefault(); document.body.classList.add('painting'); paint={on:!li.classList.contains('sel'),x:e.clientX}; lastY=e.clientY; setSel(li,paint.on); selBar(); try{ L.setPointerCapture(e.pointerId); }catch(_){} });
+  const start=(li,e,on)=>{ document.body.classList.add('painting'); paint={on:on,x:e.clientX}; lastY=e.clientY; setSel(li,on); selBar(); try{ L.setPointerCapture(e.pointerId); }catch(_){} };
+  /* ضغطة مطوّلة (نص ثانية) تبدأ التحديد، وبعدها تمرير الصبع يحدد أكثر */
+  let lp=null; const lpOff=()=>{ if(lp){ clearTimeout(lp.t); if(lp.li) lp.li.classList.remove('lp'); lp=null; } };
+  L.addEventListener('pointerdown',e=>{ if(e.button>0||e.target.closest('button,a')) return; const li=e.target.closest('.li[data-s]'); if(!li) return;
+    if(L.classList.contains('selm')){ e.preventDefault(); start(li,e,!li.classList.contains('sel')); return; }
+    if(li.closest('.sw.open')) return; lpOff(); li.classList.add('lp');
+    lp={li:li,x:e.clientX,y:e.clientY,t:setTimeout(()=>{ const c=lp; lp=null; li.classList.remove('lp'); if(!c||li.closest('.sw.drag,.sw.open')) return; try{ navigator.vibrate&&navigator.vibrate(15); }catch(_){} li.dataset.sw=Date.now(); start(li,e,true); },450)}; });
+  L.addEventListener('pointermove',e=>{ if(lp&&(Math.abs(e.clientX-lp.x)>8||Math.abs(e.clientY-lp.y)>8)) lpOff(); },true);
+  ['pointerup','pointercancel'].forEach(t=>L.addEventListener(t,lpOff,true));
+  L.addEventListener('touchmove',e=>{ if(paint&&e.cancelable) e.preventDefault(); },{passive:false});
+  L.addEventListener('contextmenu',e=>{ if(e.target.closest('.li[data-s]')) e.preventDefault(); });
   L.addEventListener('pointermove',e=>{ if(!paint) return; lastY=e.clientY; paint.x=e.clientX; const li=rowAt(e.clientX,e.clientY); if(li&&li.classList.contains('sel')!==paint.on){ setSel(li,paint.on); selBar(); } if(!raf) raf=requestAnimationFrame(scrollTick); });
   const end=()=>{ paint=null; document.body.classList.remove('painting'); if(raf){ cancelAnimationFrame(raf); raf=0; } };
   L.addEventListener('pointerup',end); L.addEventListener('pointercancel',end); })();
@@ -637,19 +650,56 @@ async function selDel(d){
   for(const k of ks){ d.textContent='… '+(ok+1)+'/'+ks.length; let r=null; try{ r=await rpc('admin_delete_player',{p_key:KEY,p_emp:k}); }catch(e){} if(r&&r.ok){ ok++; delete ISSUED[k]; ESEL.delete(k); } }
   saveIssued(); d.disabled=false; toastMsg(ok===ks.length?('انحذف '+ok):('انحذف '+ok+' من '+ks.length)); loadEmp(); try{ load(); }catch(e){} }
 const SWW=88;
-function swClose(except){ document.querySelectorAll('.sw.open').forEach(s=>{ if(s!==except){ s.classList.remove('open'); s.querySelector('.li').style.transform=''; } }); }
+function swClose(except){ document.querySelectorAll('.sw.open').forEach(s=>{ if(s!==except){ s.classList.remove('open','ed'); s.querySelector('.li').style.transform=''; } }); }
 function swInit(s){
   const li=s.querySelector('.li'); let x0=0,y0=0,dx=0,on=false,dir=0,base=0;
-  li.addEventListener('pointerdown',e=>{ if(e.button>0||$('empL').classList.contains('selm')) return; x0=e.clientX; y0=e.clientY; dx=0; dir=0; on=true; base=s.classList.contains('open')?-SWW:0; });
+  li.addEventListener('pointerdown',e=>{ if(e.button>0||$('empL').classList.contains('selm')) return; x0=e.clientX; y0=e.clientY; dx=0; dir=0; on=true; base=s.classList.contains('open')?(s.classList.contains('ed')?SWW:-SWW):0; });
   li.addEventListener('pointermove',e=>{ if(!on) return; const ddx=e.clientX-x0, ddy=e.clientY-y0;
     if(!dir){ if(Math.abs(ddx)<8&&Math.abs(ddy)<8) return; dir=Math.abs(ddx)>Math.abs(ddy)?1:2; if(dir===1){ s.classList.add('drag'); swClose(s); try{ li.setPointerCapture(e.pointerId); }catch(_){} } }
-    if(dir!==1) return; dx=Math.max(-SWW-24,Math.min(0,base+ddx)); li.style.transform='translateX('+dx+'px)'; });
+    if(dir!==1) return; dx=Math.max(-SWW-24,Math.min(SWW+24,base+ddx)); s.classList.toggle('ed',dx>0); li.style.transform='translateX('+dx+'px)'; });
   const end=()=>{ if(!on) return; on=false; if(dir!==1) return; s.classList.remove('drag');
-    const open=dx< -SWW/2; s.classList.toggle('open',open); li.style.transform=open?'translateX(-'+SWW+'px)':''; li.dataset.sw=Date.now(); };
+    const del=dx< -SWW/2, ed=dx>SWW/2; s.classList.toggle('open',del||ed); s.classList.toggle('ed',ed); li.style.transform=del?'translateX(-'+SWW+'px)':ed?'translateX('+SWW+'px)':''; li.dataset.sw=Date.now(); };
   li.addEventListener('pointerup',end); li.addEventListener('pointercancel',end);
   li.addEventListener('click',e=>{ if(Date.now()-(+li.dataset.sw||0)<350){ e.stopPropagation(); e.preventDefault(); } },true);
 }
 document.addEventListener('pointerdown',e=>{ if(!e.target.closest('.sw.open')) swClose(); });
+/* بطاقة الموظف: بياناته وصورته وأزرار التعديل والحذف */
+function openEmpCard(emp){ const x=(EMP&&EMP.rows||[]).find(r=>String(r.emp_no)===String(emp)); if(!x) return; SEL=null;
+  const p=(D&&D.players||[]).find(y=>String(y.emp_no)===String(emp)), av=AV[x.emp_no], X='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  const row=(k,v)=>'<div class="pl"><span>'+k+'</span><b>'+v+'</b></div>';
+  $('ps').innerHTML='<div class="ph">'+(av?'<span class="av img" style="'+avCss(av)+'"></span>':'<span class="av">'+esc((x.name||'؟').trim().charAt(0))+'</span>')+'<div><b>'+(p&&p.online?'<i class="dot"></i>':'')+esc(x.name)+'</b><small>'+(x.joined?'دخل اللعبة':'ما دخل بعد')+'</small></div><button class="x" type="button" aria-label="إغلاق">'+X+'</button></div>'
+   +(p?'<div class="pg"><div><b>'+fmt(p.total_points)+'</b><span>إجمالي النقاط</span></div><div><b>'+fmt(p.balance)+'</b><span>الرصيد</span></div><div><b>'+fmt(p.played)+'</b><span>مباريات</span></div></div>':'')
+   +row('الرقم الوظيفي',esc(x.emp_no))+row('الإدارة',x.dept?esc(x.dept):'<i style="color:var(--mu);font-style:normal">—</i>')
+   +row('الهاتف',x.phone?'<a dir="ltr" style="color:inherit;text-decoration:none" href="tel:'+esc(x.phone)+'">'+esc(x.phone)+'</a>':'<i style="color:var(--mu);font-style:normal">—</i>')
+   +(p?row('آخر لعب',dt(p.last_play)):'')
+   +'<div class="pl ed"><span>رمز الدخول</span>'+(ISSUED[x.emp_no]?sentHtml(x.emp_no):'')+'<button class="eb" type="button" id="ecNew">رمز جديد</button></div>'
+   +'<button class="rzb" type="button" id="ecEd">تعديل البيانات</button>'
+   +(p?'<button class="rzb" type="button" id="ecPl">عرض كلاعب (النقاط والتصفير)</button>':'')
+   +'<button class="rzb del" type="button" id="ecDel">حذف من القائمة</button>';
+  $('ov').classList.remove('hide'); document.body.style.overflow='hidden';
+  $('ps').querySelector('.x').onclick=closePlayer;
+  $('ecEd').onclick=()=>openEdit(x.emp_no);
+  if($('ecPl')) $('ecPl').onclick=()=>openPlayer(p.emp_no);
+  $('ecNew').onclick=()=>{ const b=$('ecNew'); if(!b.querySelector('span')) b.innerHTML='<span>رمز جديد</span>'; newCode(x.emp_no,b); };
+  const db=$('ecDel'); db.onclick=async()=>{ if(!db.classList.contains('sure')){ db.classList.add('sure'); db.textContent='متأكد؟ اضغط مرة ثانية للحذف'; setTimeout(()=>{ if(db.isConnected&&!db.disabled&&db.classList.contains('sure')){ db.classList.remove('sure'); db.textContent='حذف من القائمة'; } },4000); return; }
+    db.disabled=true; db.textContent='جارٍ الحذف…'; let r=null; try{ r=await rpc('admin_delete_player',{p_key:KEY,p_emp:x.emp_no}); }catch(_){}
+    if(!r||!r.ok){ db.disabled=false; db.classList.remove('sure'); db.textContent='تعذّر الحذف'; return; }
+    delete ISSUED[x.emp_no]; saveIssued(); closePlayer(); toastMsg('انحذف من القائمة'); loadEmp(); try{ load(); }catch(_){} }; }
+/* تعديل بيانات موظف */
+function openEdit(emp){ const x=(EMP&&EMP.rows||[]).find(r=>String(r.emp_no)===String(emp)); if(!x) return; SEL=null;
+  const nm=String(x.name||''), i=nm.indexOf('، '), t=i>0&&i<=20?nm.slice(0,i):'', n=i>0&&i<=20?nm.slice(i+2):nm;
+  $('ps').innerHTML='<form class="edf" id="edF" autocomplete="off"><h3>تعديل بيانات '+esc(n)+'</h3><div class="addg"><label>الرقم الوظيفي *<input id="eEmp" inputmode="numeric" maxlength="10" required value="'+esc(x.emp_no)+'"></label><label>الاسم *<input id="eName" maxlength="50" required value="'+esc(n)+'"></label><label>اللقب<input id="eTitle" maxlength="20" placeholder="مثل: بوعلي" value="'+esc(t)+'"></label><label>الهاتف<input id="ePh" inputmode="tel" maxlength="16" dir="ltr" value="'+esc(x.phone||'')+'"></label><label class="full">الإدارة<input id="eDept" maxlength="60" list="deptL" value="'+esc(x.dept||'')+'"></label></div><div class="adderr" id="eErr"></div><div class="addb2"><button class="sb wide" type="submit" id="eOk">حفظ التعديل</button><button class="sb ghost wide2" type="button" id="eNo">إلغاء</button></div></form>';
+  $('ov').classList.remove('hide'); document.body.style.overflow='hidden';
+  $('eNo').onclick=()=>openEmpCard(x.emp_no);
+  $('edF').onsubmit=async ev=>{ ev.preventDefault(); const dg=v=>String(v||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,'');
+    const ne=dg($('eEmp').value), nn=$('eName').value.trim(), tt=$('eTitle').value.trim(), ph=dg($('ePh').value), dp=$('eDept').value.trim(), er=$('eErr'); er.textContent='';
+    if(!/^[0-9]{1,10}$/.test(ne)){ er.textContent='الرقم الوظيفي أرقام فقط'; return; } if(!nn){ er.textContent='اكتب الاسم'; return; }
+    const ok=$('eOk'); ok.disabled=true; ok.textContent='جارٍ الحفظ…'; let r=null;
+    try{ r=await rpc('admin_edit_employee',{p_key:KEY,p_emp:String(x.emp_no),p_new_emp:ne,p_name:tt?tt+'، '+nn:nn,p_dept:dp,p_phone:ph}); }catch(_){}
+    ok.disabled=false; ok.textContent='حفظ التعديل';
+    if(!r||!r.ok){ er.textContent=r&&r.error==='taken'?'الرقم الوظيفي '+ne+' مستخدم لموظف ثاني':r&&r.error==='notfound'?'الموظف مو موجود في القائمة':'تعذّر الحفظ، حاول مرة ثانية'; return; }
+    if(ne!==String(x.emp_no)&&ISSUED[x.emp_no]){ ISSUED[ne]=ISSUED[x.emp_no]; delete ISSUED[x.emp_no]; saveIssued(); }
+    closePlayer(); toastMsg('انحفظ التعديل'); loadEmp(); try{ load(); }catch(_){} }; }
 async function delEmp(emp,btn){
   btn.disabled=true; btn.textContent='…'; let r=null; try{ r=await rpc('admin_delete_player',{p_key:KEY,p_emp:emp}); }catch(e){}
   if(!r||!r.ok){ btn.disabled=false; btn.textContent='حذف'; swClose(); toastMsg('تعذّر الحذف'); return; }
