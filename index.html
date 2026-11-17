@@ -661,7 +661,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171240">
+<meta name="app-version" content="202611171320">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1947,7 +1947,7 @@ async function syncProgress(){
 }
 function askLogin(next,pre){
   let g = stats.gender || '';
-  showModal(pre&&pre.n?'أهلاً '+esc(String(pre.n).split(' ')[0]):'تسجيل الدخول','<div style="font-size:13px;color:var(--muted);margin:-4px 0 12px">'+(pre?'بياناتك جاهزة، اضغط دخول':'الرمز وصلك من إدارة المسابقة')+'</div><input id="lgEmp" class="nameIn" inputmode="numeric" maxlength="10" placeholder="الرقم الوظيفي" autocomplete="off"><input id="lgCode" class="nameIn lgcode" style="margin-top:10px" inputmode="numeric" maxlength="6" placeholder="الرمز (٦ أرقام)" autocomplete="one-time-code">'+(g?'':'<div class="gpick"><button type="button" id="gM">ذكر</button><button type="button" id="gF">أنثى</button></div>')+'<div style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center">نسيت الرمز؟ تواصل مع إدارة المسابقة</div>',
+  showModal(pre&&pre.n?'أهلاً '+pre.n:'تسجيل الدخول','<div style="font-size:13px;color:var(--muted);margin:-4px 0 12px">'+(pre?'بياناتك جاهزة، اضغط دخول':'الرمز وصلك من إدارة المسابقة')+'</div><input id="lgEmp" class="nameIn" inputmode="numeric" maxlength="10" placeholder="الرقم الوظيفي" autocomplete="off"><input id="lgCode" class="nameIn lgcode" style="margin-top:10px" inputmode="numeric" maxlength="6" placeholder="الرمز (٦ أرقام)" autocomplete="one-time-code">'+(g?'':'<div class="gpick"><button type="button" id="gM">ذكر</button><button type="button" id="gF">أنثى</button></div>')+'<div style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center">نسيت الرمز؟ تواصل مع إدارة المسابقة</div>',
     [{t:'دخول',full:true,f:async()=>{
         const emp=normEmp($('lgEmp').value), code=normEmp($('lgCode').value);
         if(!/^[0-9]{1,10}$/.test(emp)){ toast('اكتب رقمك الوظيفي'); return; }
@@ -2391,11 +2391,11 @@ beat(); setInterval(beat,30000); document.addEventListener('visibilitychange',()
 if(!DEMO) rpc('log_visit',{p_id:PID},4000);
 syncPlayer();
 function loginFromUrl(){
-  let m=null; try{ m=(location.hash||'').match(/^#k=([0-9]{1,10})-([0-9]{6})(?:&n=(.*))?$/); }catch(e){}
+  let m=null; try{ m=(location.hash||'').match(/^#k=([0-9]{1,10})-([0-9]{6})(?:-([A-Za-z0-9_-]+))?$/); }catch(e){}
   if(!m) return false;
   try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
   if(DEMO || String(stats.empNo||'')===m[1]) return false;
-  let n=''; try{ n=decodeURIComponent(m[3]||''); }catch(e){}
+  let n=''; try{ if(m[3]){ const s=atob(m[3].replace(/-/g,'+').replace(/_/g,'/')); n=new TextDecoder().decode(Uint8Array.from(s,c=>c.charCodeAt(0))).trim().slice(0,40); } }catch(e){ n=''; }
   askLogin(null,{e:m[1],c:m[2],n:n}); return true;
 }
 loadRemoteQuestions().then(()=>{ if(!loginFromUrl()) acceptInviteFromUrl(); });
