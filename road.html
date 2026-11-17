@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261117164917">
+<meta name="app-version" content="road-20261117165241">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1150,6 +1150,11 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
 #goBtn.ready .sknob{animation:sknobShake2 .14s linear infinite!important}
 @keyframes sknobShake2{0%{rotate:0deg}25%{rotate:-7deg}50%{rotate:0deg}75%{rotate:7deg}100%{rotate:0deg}}
 #goBtn.charging:not(.ready) .sknob{animation:none!important}
+/* شاشة البداية: اضغط على الساعة */
+#splash .spTap{position:absolute;left:0;right:0;bottom:calc(16% + env(safe-area-inset-bottom));text-align:center;color:#fff;font-weight:900;font-size:19px;text-shadow:0 2px 8px rgba(0,0,0,.35);animation:spTapP 1.4s ease-in-out infinite;pointer-events:none}
+#splash.tapped .spTap{opacity:0;transition:opacity .2s;animation:none}
+@keyframes spTapP{0%,100%{opacity:.65;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+#splash{cursor:pointer}
 
 </style>
 </head>
@@ -1188,7 +1193,7 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
       <div class="sp"></div>
       
       <div id="goDone" style="display:none;text-align:center;font-weight:800;font-size:17px;color:var(--text);margin-top:14px">أنهيت نقاط اليوم ✓</div>
-      <div class="btn slide" id="goBtn" role="button" tabindex="0" aria-label="ثبّت على السيف لبدء التحدّي"><div class="slbl" id="goLbl">ثبّت على السيف للتحدّي</div><div class="sknob" id="goKnob"><svg class="kemo" viewBox="-1 -1 34 34" width="36" height="36" fill="#fff" aria-hidden="true"><g transform="rotate(40 16 16) translate(0 .5)"><path d="M16 -1 L18.3 3 V19.6 H13.7 V3 Z"/><path d="M16 2 V18.6" stroke="#c8102e" stroke-opacity=".35" stroke-width=".8"/><rect x="9.4" y="19.2" width="13.2" height="3" rx="1.5"/><rect x="14.8" y="21.8" width="2.4" height="5.6" rx=".7"/><circle cx="16" cy="29.2" r="2.1"/></g></svg></div></div>
+      <div class="btn slide" id="goBtn" role="button" tabindex="0" aria-label="اسحب لبدء التحدّي"><div class="slbl" id="goLbl">اسحب لبدء التحدّي</div><div class="sknob" id="goKnob"><svg class="kemo" viewBox="-1 -1 34 34" width="36" height="36" fill="#fff" aria-hidden="true"><g transform="rotate(40 16 16) translate(0 .5)"><path d="M16 -1 L18.3 3 V19.6 H13.7 V3 Z"/><path d="M16 2 V18.6" stroke="#c8102e" stroke-opacity=".35" stroke-width=".8"/><rect x="9.4" y="19.2" width="13.2" height="3" rx="1.5"/><rect x="14.8" y="21.8" width="2.4" height="5.6" rx=".7"/><circle cx="16" cy="29.2" r="2.1"/></g></svg></div></div>
       <div class="onlrow"><span class="onl" id="onl" style="display:none"><i></i><span id="onlTxt"></span></span></div>
       <button class="btn" id="inviteBtn" type="button" aria-label="تحدَّ زميلاً الآن"><span class="mrow"><span class="mav" id="invAv">أ</span><span class="mvs vs">VS</span><span class="mem">+</span></span><span class="mlb">تحدَّ زميلاً الآن</span><span class="mbd">+٥٠ نقطة</span></button>
       <div class="hint" style="margin-top:12px;text-align:center;line-height:1.5"><div class="pts50">اكسب ٥٠ نقطة إضافية</div><div style="font-weight:700;font-size:15px;color:var(--text)">عند فوزك على لاعب حقيقي</div></div>
@@ -1793,7 +1798,7 @@ function renderStats(){
   $('stBest').textContent=stats.best; $('stWins').textContent=stats.wins; $('stStreak').textContent=shownDays();
   const pa = pointsAvailable();
   try{ setAv($('invAv'), stats.avatar, avInit()); setAv($('pfAv'), stats.avatar, avInit()); }catch(e){}
-  $('goLbl').textContent = pa ? 'ثبّت على السيف للتحدّي' : 'ثبّت على السيف للتدريب'; $('goDone').style.display = pa ? 'none' : 'block';
+  $('goLbl').textContent = pa ? 'اسحب للتحدّي' : 'اسحب للتدريب'; $('goDone').style.display = pa ? 'none' : 'block';
   $('goNote').style.display = 'none';
   $('wBal').textContent=fmt(stats.balance); $('sBal').textContent=fmt(stats.balance);
   renderBadges();
@@ -2425,35 +2430,39 @@ function endGame(){
 
 /* ===== الأزرار ===== */
 
-/* زر السيف: اضغط وثبّت إصبعك لين يتشحن، واترك عشان تنطلق (الآيفون يحسبها ضغطة فيشتغل الصوت أكيد) */
-function unlockNow(){ try{ if(!stats.sound) return; audio(); if(!AC) return; const b=AC.createBuffer(1,1,22050), z=AC.createBufferSource(); z.buffer=b; z.connect(AC.destination); z.start(0); if(AC.state!=='running') AC.resume(); }catch(e){} }
+/* زر السحب لبدء التحدّي */
 (function(){
   var btn=$('goBtn'), knob=$('goKnob'), lbl=$('goLbl'); if(!btn||!knob) return;
-  var HOLD=450, t0=0, raf=0, holding=false, ready=false, done=false, lbl0='', tip=0;
-  btn.insertAdjacentHTML('afterbegin','<div class="schg" id="goChg"></div>'); var chg=$('goChg');
-  function paint(){ if(!holding) return; var p=Math.min(1,(performance.now()-t0)/HOLD);
-    chg.style.transform='scaleX('+p+')'; knob.style.transform='scale('+(1+p*.16).toFixed(3)+')';
-    if(p>=1 && !ready){ ready=true; btn.classList.add('ready'); lbl.textContent='اترك وانطلق ⚔️'; try{ navigator.vibrate&&navigator.vibrate(15); }catch(e){} }
-    raf=requestAnimationFrame(paint); }
-  function reset(){ holding=false; ready=false; cancelAnimationFrame(raf); btn.classList.remove('ready','charging'); chg.style.transform='scaleX(0)'; knob.classList.add('back'); knob.style.transform=''; knob.style.animation=''; if(lbl0) lbl.textContent=lbl0; }
-  function fire(){ if(done) return; done=true; holding=false; cancelAnimationFrame(raf); btn.classList.remove('ready','charging'); chg.style.transform='scaleX(0)';
-    var max=btn.clientWidth-72; knob.classList.add('back'); knob.style.transform='translate3d('+(-max)+'px,0,0)'; lbl.style.opacity=.05; if(lbl0) lbl.textContent=lbl0;
-    try{ playSword(); }catch(e){}
-    setTimeout(function(){ startMatch(); setTimeout(function(){ done=false; lbl.style.opacity=1; knob.style.transform=''; knob.style.animation=''; },600); },160); }
-  btn.addEventListener('pointerdown',function(e){ if(done) return;
-    clearTimeout(tip); if(lbl.textContent!=='ثبّت إصبعك شوي ⏳' && lbl.textContent!=='اترك وانطلق ⚔️') lbl0=lbl.textContent; if(lbl0) lbl.textContent=lbl0; holding=true; ready=false; t0=performance.now();
-    knob.classList.remove('back'); knob.classList.remove('hint'); btn.classList.add('charging');
-    try{ if(stats.sound){ audio(); loadSword(); } }catch(_){} raf=requestAnimationFrame(paint); });
-  function release(){ if(!holding) return; if(ready){ unlockNow(); fire(); return; }
-    reset(); lbl.textContent='ثبّت إصبعك شوي ⏳'; tip=setTimeout(function(){ if(!holding && lbl0) lbl.textContent=lbl0; },1300); }
-  /* اللمس: نطلق عند رفع الإصبع (touchend) لأنه الحدث اللي الآيفون يسمح فيه بالصوت */
-  btn.addEventListener('touchend',function(){ release(); },{passive:true});
-  btn.addEventListener('pointerup',function(e){ if(e.pointerType!=='touch') release(); });
-  btn.addEventListener('pointercancel',reset);
-  btn.addEventListener('contextmenu',function(e){ e.preventDefault(); });
-  btn.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); fire(); } });
+  var startX=0, x=0, max=0, drag=false, done=false, raf=0, t0=0, lastX=0, lastT=0, vel=0, buzzed=false;
+  function paint(){ raf=0; knob.style.transform='translate3d('+(-x)+'px,0,0)'; lbl.style.opacity=String(Math.max(.05,1-1.4*x/max)); }
+  function sched(){ if(!raf) raf=requestAnimationFrame(paint); }
+  function reset(){ knob.classList.add('back'); x=0; knob.style.transform='translate3d(0,0,0)'; lbl.style.opacity=1; done=false; buzzed=false; }
+  function fire(){ if(done) return; done=true; knob.classList.add('back'); knob.style.transform='translate3d('+(-max)+'px,0,0)'; lbl.style.opacity=.05; try{ navigator.vibrate&&navigator.vibrate(25); }catch(e){} try{ playSword(); }catch(e){}
+    setTimeout(function(){ startMatch(); setTimeout(reset,600); },120); }
+  btn.addEventListener('pointerdown',function(e){
+    if(done) return; try{ if(stats.sound){ audio(); loadSword(); } }catch(_){} drag=true; knob.classList.remove('back'); knob.classList.remove('hint'); knob.style.animation='none';
+    max=btn.clientWidth-60-12; startX=e.clientX+x; lastX=e.clientX; lastT=performance.now(); vel=0; buzzed=false;
+    try{ btn.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); });
+  btn.addEventListener('pointermove',function(e){
+    if(!drag) return;
+    var n=performance.now(), dt=n-lastT; if(dt>0){ vel=(lastX-e.clientX)/dt; } lastX=e.clientX; lastT=n;
+    x=Math.max(0,Math.min(max,startX-e.clientX)); sched();
+    if(!buzzed && x>=max*0.6){ buzzed=true; try{ navigator.vibrate&&navigator.vibrate(8); }catch(_){} } });
+  function up(){ if(!drag) return; drag=false; if(raf){ cancelAnimationFrame(raf); paint(); }
+    if(x>=max*0.6 || (vel>0.6 && x>=max*0.25)) fire(); else reset(); }
+  btn.addEventListener('pointerup',up); btn.addEventListener('pointercancel',up);
+  btn.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); max=btn.clientWidth-72; fire(); } });
+  var lastTouch=0;
+  function nudge(){
+    if(drag||done||document.hidden) return;
+    if(!$('home').classList.contains('active') || $('modal').classList.contains('on')) return;
+    if(Date.now()-lastTouch<4000) return;
+    knob.style.animation=''; knob.classList.remove('hint'); void knob.offsetWidth; knob.classList.add('hint');
+    setTimeout(function(){ knob.classList.remove('hint'); },1200);
+  }
+  btn.addEventListener('pointerdown',function(){ lastTouch=Date.now(); });
+  setTimeout(nudge,1200); setInterval(nudge,6000);
 })();
-
 
 $('againBtn').onclick = startMatch;
 $('homeBtn').onclick = ()=>{ renderStats(); if(RD.back==='map'){ RD.back=null; openRoad(); } else show('home'); homeRank(); roadLoad(); };
@@ -2844,9 +2853,11 @@ function skip(){ if(done) return; timers.forEach(clearTimeout); timers=[]; cance
 if(stats.sound) loadSword();
 sp.classList.add('go');
 if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){ timers.push(setTimeout(()=>sp.classList.add('cut1','cut2'),500), setTimeout(close,2200)); }
-else timers.push(setTimeout(()=>{ playSword(); swing(C2,C7,()=>sp.classList.add('cut1'),()=>{ fadeLoop();
-  timers.push(setTimeout(()=>{ cancelAnimationFrame(fadeRaf); playSword(.9); swing(C9,C3,()=>sp.classList.add('cut2'),()=>{ fadeLoop(); timers.push(setTimeout(close,1500)); },60); },380)); }); },650));
-sp.addEventListener('click',skip);
+else window._spGo=(()=>{ playSword(); swing(C2,C7,()=>sp.classList.add('cut1'),()=>{ fadeLoop();
+  timers.push(setTimeout(()=>{ cancelAnimationFrame(fadeRaf); playSword(.9); swing(C9,C3,()=>sp.classList.add('cut2'),()=>{ fadeLoop(); timers.push(setTimeout(close,1500)); },60); },380)); }); });
+if(window._spGo){ sp.insertAdjacentHTML('beforeend','<div class="spTap">اضغط على الساعة واكسرها ⚔️</div>');
+  sp.addEventListener('click',()=>{ const f=window._spGo; if(f){ window._spGo=null; sp.classList.add('tapped'); try{ unlockAudio(); }catch(e){} f(); } else skip(); }); }
+else sp.addEventListener('click',skip);
 })();
 $('badgesBtn').onclick = ()=>{ window._pfBack=1; renderBadges(); show('badgesPage'); };
 $('backBtn2').onclick = ()=>{ renderStats(); if(window._pfBack){ window._pfBack=0; renderProfile(); show('profilePage'); } else show('home'); };
