@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611171510">
+<meta name="app-version" content="202611171600">
 <title>لوحة تحكّم تحدّي الدقيقة</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
@@ -138,7 +138,29 @@ h2.sh{font-size:13px;font-weight:800;color:var(--mu);margin:8px 6px -6px}
 .rvt td.new{color:var(--ok);font-weight:600}.rvt td.upd{color:#d48a00;font-weight:600}.rvt td.same{color:var(--mu)}.rvt tr.dn td{background:rgba(242,169,0,.12)}.rvt .tg{font-style:normal;font-size:10.5px;background:#f2a900;color:#fff;border-radius:6px;padding:1px 5px;margin-inline-start:4px}
 .ps .rzb.del{border-color:var(--red);background:var(--red);color:#fff;margin-top:8px}.ps .rzb.del.sure{background:#7a0716;border-color:#7a0716}
 .rvb{display:flex;flex-direction:column;gap:0;margin-bottom:12px}.sb.wide2{display:block;width:100%;padding:10px;font-size:14px}
-.edel{flex:none;width:30px;height:30px;border-radius:50%;border:0;background:var(--soft);color:var(--mu);display:grid;place-items:center;cursor:pointer;font-family:inherit;padding:0}.edel.sure{width:auto;border-radius:999px;padding:0 9px;background:var(--red);color:#fff;font-size:12px;font-weight:700;white-space:nowrap}
+.sw{position:relative;border-radius:12px;overflow:hidden;flex:none}.lth{flex:none}
+.sw:not(.drag):not(.open) .swdel{visibility:hidden}
+.sw>.li{position:relative;z-index:1;transition:transform .22s ease;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.sw.drag>.li{transition:none}
+.swdel{position:absolute;top:0;bottom:0;right:0;width:88px;border:0;background:var(--red);color:#fff;font-family:inherit;font-weight:800;font-size:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:0}
+.lth{position:sticky;top:0;z-index:2;background:var(--page);color:var(--mu);font-weight:800;font-size:13px;padding:6px 4px 2px}
+.li .ck{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--mu);display:grid;place-items:center;color:transparent}
+.li.sel{background:color-mix(in srgb,var(--red) 10%,var(--card))}.li.sel .ck{background:var(--red);border-color:var(--red);color:#fff}
+.selbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));z-index:55;display:flex;align-items:center;gap:10px;background:var(--card);border-radius:999px;padding:7px 8px;box-shadow:0 10px 30px rgba(0,0,0,.22);white-space:nowrap}
+.selbar button{border:0;border-radius:999px;font-family:inherit;font-weight:700;font-size:14px;padding:9px 16px;cursor:pointer}
+.selbar .sbx{background:var(--soft);color:var(--tx)}.selbar .sbd{background:var(--red);color:#fff}.selbar .sbd.sure{background:#8f0b20}.selbar .sbn{font-weight:700;font-size:13px}
+.efb{margin:2px 0 8px}.efb .chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}.efb .chips::-webkit-scrollbar{display:none}
+.chp{flex:none;border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:999px;padding:6px 12px;font-family:inherit;font-size:13px;cursor:pointer;white-space:nowrap}.chp b{color:var(--mu);font-weight:700;margin-inline-start:2px}
+.chp.on{background:var(--tx);color:var(--page);border-color:var(--tx)}.chp.on b{color:inherit;opacity:.75}
+.efb .seg{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mu)}.efb .seg button{border:0;background:var(--soft);color:var(--tx);border-radius:8px;padding:5px 12px;font-family:inherit;font-size:13px;cursor:pointer}.efb .seg button.on{background:var(--red);color:#fff;font-weight:700}.efb .seg button:disabled{opacity:.45}
+.lth small{font-weight:600;opacity:.7}
+.eup{display:flex;gap:8px}.eup .sb.wide{flex:1}.sb.addb{background:var(--tx);color:var(--page);display:flex;align-items:center;justify-content:center;gap:6px}
+.addf{background:var(--card);border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.addg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.addg label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--mu);font-weight:600}.addg label.full{grid-column:1/-1}
+.addg input{font-family:inherit;font-size:16px;border:1px solid var(--ln);background:var(--page);color:var(--tx);border-radius:10px;padding:8px 10px;outline:none;width:100%;min-width:0}.addg input:focus{border-color:var(--red)}
+.adderr{color:var(--red);font-size:13px;font-weight:700;min-height:0;margin:8px 0 0}.adderr:empty{display:none}.addb2{margin-top:10px}.addb2 .sb.wide{margin-bottom:6px}
+@media(max-width:440px){.sw .codeb.cm .dt{display:none}.sw .acts{gap:6px}}
+.swhint{color:var(--mu);font-size:12px;text-align:center;margin:2px 0 6px}
 .acts{display:flex;align-items:center;gap:10px;flex:none}.acts .codeb{font-size:16px;letter-spacing:2px}.codeb.cm{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:4px 2px;cursor:pointer;font-family:ui-monospace,Menlo,monospace}.codeb.cm .ey{color:var(--mu);flex:none}.codeb.cm .rv{display:none}.codeb.cm .dt{color:var(--mu);letter-spacing:1px}.codeb.cm.show .rv{display:inline}.codeb.cm.show .dt{display:none}.codeb.cm.show .ey{color:var(--red)}@media (hover:hover){.codeb.cm:hover .rv{display:inline}.codeb.cm:hover .dt{display:none}.codeb.cm:hover .ey{color:var(--red)}}.icb{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:0;font-family:inherit;cursor:pointer;text-decoration:none;color:var(--tx);flex:none;min-width:50px}.icb i{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#f08a24;color:#fff;box-shadow:0 2px 6px rgba(240,138,36,.35);transition:background .15s}.icb span{font-size:11px;font-weight:700;white-space:nowrap}.icb.sure i{background:var(--red);box-shadow:0 2px 6px rgba(200,16,46,.35)}.icb.sure span{color:var(--red)}.icb:disabled{opacity:.6}.icb.wa i{background:#25d366;box-shadow:0 2px 6px rgba(37,211,102,.35)}
 .sb{font-size:12.5px;font-weight:700;border:0;border-radius:999px;padding:6px 14px;cursor:pointer;background:var(--ok);color:#fff;white-space:nowrap;flex:none}
 .sb.ghost{background:transparent;color:var(--mu);border:1px solid var(--ln)}
@@ -255,10 +277,17 @@ html,body{background:#fff!important;color:#1f2125!important}
     <div class="it" data-k="emp"><button class="row" type="button"><span class="ic" style="background:#0f8a8a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span class="lb"><b>قائمة الموظفين والرموز</b><small id="empSub">ارفع القائمة ليصير الدخول بالرمز</small></span><span class="val" id="vEmp">0</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
       <div class="body"><div class="empst" id="empSt"></div>
         <input type="file" id="empFile" accept=".xlsx,.xls,.csv" hidden>
-        <button class="sb wide" type="button" id="empUp">رفع ملف Excel</button>
-        <div class="empnote">الأعمدة: الرقم الوظيفي، الاسم، الهاتف، اللقب (الهاتف واللقب اختياري). الجدد ياخذون رموز تطلع هنا وتنزل في ملف، والموجودون يتحدث اسمهم بس.</div>
+        <div class="eup"><button class="sb wide" type="button" id="empUp">رفع ملف Excel</button><button class="sb wide addb" type="button" id="empAdd"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>إضافة موظف</button></div>
+        <form class="addf" id="addF" hidden autocomplete="off">
+          <div class="addg"><label>الرقم الوظيفي *<input id="aEmp" inputmode="numeric" maxlength="10" required></label><label>الاسم *<input id="aName" maxlength="50" required></label>
+          <label>اللقب<input id="aTitle" maxlength="20" placeholder="مثل: بوعلي"></label><label>الهاتف<input id="aPh" inputmode="tel" maxlength="16" dir="ltr" placeholder="99887766"></label>
+          <label class="full">الإدارة<input id="aDept" maxlength="60" list="deptL"></label><datalist id="deptL"></datalist></div>
+          <div class="adderr" id="aErr"></div>
+          <div class="addb2"><button class="sb wide" type="submit" id="aOk">إضافة وإعطاء رمز</button><button class="sb ghost wide2" type="button" id="aNo">إلغاء</button></div>
+        </form>
+        <div class="empnote">الأعمدة: الرقم الوظيفي، الاسم، الهاتف، اللقب، الإدارة (الهاتف واللقب والإدارة اختياري). الجدد ياخذون رموز تطلع هنا وتنزل في ملف، والموجودون يتحدث اسمهم بس.</div>
         <div class="empmsg" id="empMsg"></div><div id="empRev"></div>
-        <input class="srch" id="empQ" placeholder="ابحث برقم وظيفي أو اسم" autocomplete="off"><div class="list" id="empL"></div></div></div>
+        <input class="srch" id="empQ" placeholder="ابحث برقم وظيفي أو اسم" autocomplete="off"><div class="efb" id="empF"></div><div class="list" id="empL"></div></div></div>
     <div class="it" data-k="top"><button class="row" type="button"><span class="ic" style="background:#e0a100"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg></span><span class="lb"><b>أعلى ١٠ لاعبين</b><small>حسب إجمالي النقاط</small></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
       <div class="body"><div class="cv" style="height:280px"><canvas id="cTop"></canvas></div></div></div>
   </div>
@@ -468,21 +497,62 @@ const nPh=v=>{ let d=String(v==null?'':v).replace(/[٠-٩]/g,x=>'٠١٢٣٤٥٦�
 const nEmp=v=>String(v==null?'':v).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,'');
 async function loadEmp(){
   let r=null; try{ r=await rpc('admin_employees',{p_key:KEY,p_q:($('empQ').value||'').trim()}); }catch(e){}
-  if(!r||!r.ok) return; EMP=r;
+  if(!r||!r.ok) return; EMP=r; renderEmp();
+}
+let EF='all', EG='a';
+function renderEmp(){ const r=EMP; if(!r||!r.rows) return;
   $('vEmp').textContent=fmt(r.total); $('empSub').textContent=r.total?'الدخول بالرقم الوظيفي والرمز مفعّل':'ارفع القائمة ليصير الدخول بالرمز';
   $('empSt').innerHTML='<div><b>'+fmt(r.total)+'</b><span>في القائمة</span></div><div><b style="color:var(--ok)">'+fmt(r.joined)+'</b><span>دخلوا</span></div><div><b>'+fmt(r.total-r.joined)+'</b><span>ما دخلوا</span></div>';
   const q=($('empQ').value||'').trim();
   let chg=false; r.rows.forEach(x=>{ PH[x.emp_no]=x.phone||''; if(x.code && (!ISSUED[x.emp_no] || ISSUED[x.emp_no].code!==x.code || ISSUED[x.emp_no].name!==x.name || (ISSUED[x.emp_no].phone||'')!==(x.phone||''))){ ISSUED[x.emp_no]={code:x.code,name:x.name||'',phone:x.phone||'',at:Date.now()}; chg=true; } }); if(chg) saveIssued();
-  $('empL').innerHTML=(r.rows.length?r.rows.map(x=>'<div class="li"><button class="edel" type="button" aria-label="حذف" data-d="'+esc(x.emp_no)+'"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/></svg></button><span class="n">'+esc(x.name)+'<small>'+esc(x.emp_no)+' · '+(x.joined?'دخل':'ما دخل بعد')+'</small></span><span class="acts">'+(ISSUED[x.emp_no]?sentHtml(x.emp_no):'')+'<button class="icb" type="button" data-e="'+esc(x.emp_no)+'"><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="3.5"/><path d="M10 13 18 5M15 8l2.2 2.2M18 5l2 2"/></svg></i><span>رمز جديد</span></button></span></div>').join(''):empty(q?'لا نتائج':'ما في أسماء بالقائمة'));
+  const hasD=r.rows.some(x=>x.dept); if(EG==='d'&&!hasD) EG='a';
+  const FL={all:['الكل',()=>1],in:['دخلوا',x=>x.joined],out:['ما دخلوا',x=>!x.joined],nc:['بدون رمز',x=>!ISSUED[x.emp_no]],np:['بدون هاتف',x=>!x.phone]};
+  $('empF').innerHTML=r.rows.length?'<div class="chips">'+Object.keys(FL).map(k=>{ const n=r.rows.filter(FL[k][1]).length; return (k==='all'||n)?'<button type="button" class="chp'+(EF===k?' on':'')+'" data-f="'+k+'">'+FL[k][0]+' <b>'+fmt(n)+'</b></button>':''; }).join('')+'</div><div class="seg"><span>ترتيب حسب</span><button type="button" class="'+(EG==='a'?'on':'')+'" data-g="a">الحرف</button><button type="button" class="'+(EG==='d'?'on':'')+'" data-g="d"'+(hasD?'':' disabled title="أضف عمود الإدارة في الإكسل"')+'>الإدارة</button></div>':'';
+  $('empF').querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{ EF=b.dataset.f; renderEmp(); });
+  $('empF').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{ EG=b.dataset.g; renderEmp(); });
+  const gk=x=>EG==='d'?(x.dept||'بدون إدارة'):empLetter(x.name);
+  const rows=r.rows.filter((FL[EF]||FL.all)[1]).sort((p,q2)=>{ if(EG==='d'){ const a=gk(p),b=gk(q2); if(a!==b) return a==='بدون إدارة'?1:b==='بدون إدارة'?-1:a.localeCompare(b,'ar'); } return String(p.name||'').localeCompare(String(q2.name||''),'ar'); }); let L='';
+  const gc={}; rows.forEach(x=>{ const k=gk(x); gc[k]=(gc[k]||0)+1; });
+  $('empL').innerHTML=(rows.length?rows.map(x=>{ const c=gk(x); const hd=c!==L?'<div class="lth">'+esc(c)+' <small>'+fmt(gc[c])+'</small></div>':''; L=c; return hd+'<div class="sw"><button class="swdel" type="button" data-d="'+esc(x.emp_no)+'"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/></svg>حذف</button><div class="li'+(ESEL.has(String(x.emp_no))?' sel':'')+'" data-s="'+esc(x.emp_no)+'"><span class="ck"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="n">'+esc(x.name)+'<small>'+esc(x.emp_no)+' · '+(x.joined?'دخل':'ما دخل بعد')+'</small></span><span class="acts">'+(ISSUED[x.emp_no]?sentHtml(x.emp_no):'')+'<button class="icb" type="button" data-e="'+esc(x.emp_no)+'"><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="3.5"/><path d="M10 13 18 5M15 8l2.2 2.2M18 5l2 2"/></svg></i><span>رمز جديد</span></button></span></div></div>'; }).join(''):empty(q||EF!=='all'?'لا نتائج':'ما في أسماء بالقائمة'));
   $('empL').querySelectorAll('button[data-e]').forEach(b=>b.onclick=()=>newCode(b.dataset.e,b));
   $('empL').querySelectorAll('button[data-d]').forEach(b=>b.onclick=()=>delEmp(b.dataset.d,b));
+  if(r.rows.length) $('empL').insertAdjacentHTML('afterbegin','<div class="swhint">اضغط على الاسم لتحديده، أو اسحبه للشمال للحذف</div>');
+  $('empL').querySelectorAll('.sw').forEach(swInit);
+  $('empL').querySelectorAll('.li[data-s]').forEach(li=>li.addEventListener('click',e=>{ if(e.defaultPrevented||e.target.closest('button,a')) return; const k=li.dataset.s; if(ESEL.has(k)) ESEL.delete(k); else ESEL.add(k); li.classList.toggle('sel',ESEL.has(k)); selBar(); }));
+  [...ESEL].forEach(k=>{ if(!r.rows.some(x=>String(x.emp_no)===k)) ESEL.delete(k); }); selBar();
 }
+const ESEL=new Set();
+function empLetter(n){ const s=String(n||'').trim().replace(/^[\s\u0640«"']+/,''); let c=s.charAt(0)||'#'; c=c.replace(/[أإآٱ]/,'ا').replace('ة','ه').replace('ى','ي'); return /[\u0600-\u06FF]/.test(c)?c:(/[a-z]/i.test(c)?c.toUpperCase():'#'); }
+function selBar(){ let b=$('selBar'); const n=ESEL.size;
+  if(!n){ if(b) b.remove(); return; }
+  if(!b){ b=document.createElement('div'); b.id='selBar'; b.className='selbar'; b.innerHTML='<button type="button" class="sbx">إلغاء</button><span class="sbn"></span><button type="button" class="sbd"></button>'; document.body.appendChild(b);
+    b.querySelector('.sbx').onclick=()=>{ ESEL.clear(); document.querySelectorAll('.li.sel').forEach(x=>x.classList.remove('sel')); selBar(); };
+    b.querySelector('.sbd').onclick=()=>selDel(b.querySelector('.sbd')); }
+  b.querySelector('.sbn').textContent='محدد '+n; const d=b.querySelector('.sbd'); if(!d.disabled){ d.classList.remove('sure'); d.textContent='حذف المحددين'; } }
+async function selDel(d){
+  if(!d.classList.contains('sure')){ d.classList.add('sure'); d.textContent='متأكد؟ حذف '+ESEL.size; setTimeout(()=>{ if(d.isConnected&&!d.disabled&&d.classList.contains('sure')){ d.classList.remove('sure'); d.textContent='حذف المحددين'; } },4000); return; }
+  d.disabled=true; const ks=[...ESEL]; let ok=0;
+  for(const k of ks){ d.textContent='… '+(ok+1)+'/'+ks.length; let r=null; try{ r=await rpc('admin_delete_player',{p_key:KEY,p_emp:k}); }catch(e){} if(r&&r.ok){ ok++; delete ISSUED[k]; ESEL.delete(k); } }
+  saveIssued(); d.disabled=false; toastMsg(ok===ks.length?('انحذف '+ok):('انحذف '+ok+' من '+ks.length)); loadEmp(); try{ load(); }catch(e){} }
+const SWW=88;
+function swClose(except){ document.querySelectorAll('.sw.open').forEach(s=>{ if(s!==except){ s.classList.remove('open'); s.querySelector('.li').style.transform=''; } }); }
+function swInit(s){
+  const li=s.querySelector('.li'); let x0=0,y0=0,dx=0,on=false,dir=0,base=0;
+  li.addEventListener('pointerdown',e=>{ if(e.button>0) return; x0=e.clientX; y0=e.clientY; dx=0; dir=0; on=true; base=s.classList.contains('open')?-SWW:0; });
+  li.addEventListener('pointermove',e=>{ if(!on) return; const ddx=e.clientX-x0, ddy=e.clientY-y0;
+    if(!dir){ if(Math.abs(ddx)<8&&Math.abs(ddy)<8) return; dir=Math.abs(ddx)>Math.abs(ddy)?1:2; if(dir===1){ s.classList.add('drag'); swClose(s); try{ li.setPointerCapture(e.pointerId); }catch(_){} } }
+    if(dir!==1) return; dx=Math.max(-SWW-24,Math.min(0,base+ddx)); li.style.transform='translateX('+dx+'px)'; });
+  const end=()=>{ if(!on) return; on=false; if(dir!==1) return; s.classList.remove('drag');
+    const open=dx< -SWW/2; s.classList.toggle('open',open); li.style.transform=open?'translateX(-'+SWW+'px)':''; li.dataset.sw=Date.now(); };
+  li.addEventListener('pointerup',end); li.addEventListener('pointercancel',end);
+  li.addEventListener('click',e=>{ if(Date.now()-(+li.dataset.sw||0)<350){ e.stopPropagation(); e.preventDefault(); } },true);
+}
+document.addEventListener('pointerdown',e=>{ if(!e.target.closest('.sw.open')) swClose(); });
 async function delEmp(emp,btn){
-  if(!btn.classList.contains('sure')){ document.querySelectorAll('.edel.sure').forEach(x=>{ x.classList.remove('sure'); x.innerHTML=x.dataset.ic; });
-    btn.dataset.ic=btn.innerHTML; btn.classList.add('sure'); btn.textContent='حذف؟'; setTimeout(()=>{ if(btn.isConnected&&btn.classList.contains('sure')&&!btn.disabled){ btn.classList.remove('sure'); btn.innerHTML=btn.dataset.ic; } },4000); return; }
   btn.disabled=true; btn.textContent='…'; let r=null; try{ r=await rpc('admin_delete_player',{p_key:KEY,p_emp:emp}); }catch(e){}
-  if(!r||!r.ok){ btn.disabled=false; btn.classList.remove('sure'); btn.innerHTML=btn.dataset.ic; toastMsg('تعذّر الحذف'); return; }
-  delete ISSUED[emp]; saveIssued(); toastMsg('انحذف من القائمة'); loadEmp(); try{ load(); }catch(e){}
+  if(!r||!r.ok){ btn.disabled=false; btn.textContent='حذف'; swClose(); toastMsg('تعذّر الحذف'); return; }
+  const s=btn.closest('.sw'); if(s){ s.style.transition='opacity .25s'; s.style.opacity='0'; }
+  delete ISSUED[emp]; saveIssued(); toastMsg('انحذف من القائمة'); setTimeout(()=>{ loadEmp(); try{ load(); }catch(e){} },260);
 }
 async function newCode(emp,btn){
   const lb=btn.querySelector('span');
@@ -510,13 +580,13 @@ $('empFile').onchange=async e=>{
   const f=e.target.files[0]; e.target.value=''; if(!f) return; const m=$('empMsg'); m.className='empmsg'; m.textContent='جارٍ قراءة الملف…'; $('empRev').innerHTML='';
   let rows=[], bad=[], seen={};
   try{ const wb=XLSX.read(new Uint8Array(await f.arrayBuffer()),{type:'array'}); const sh=wb.Sheets[wb.SheetNames[0]];
-    const AOA=XLSX.utils.sheet_to_json(sh,{header:1,raw:false,blankrows:false}); const tCol=(AOA[0]||[]).findIndex(c=>/لقب|كني/.test(String(c||'')));
-    AOA.forEach((r,i)=>{ let emp='',name='',num='',phone='',title='';
-      if(tCol>=0){ if(i===0) return; title=String((r||[])[tCol]==null?'':r[tCol]).replace(/\s+/g,' ').trim(); r=(r||[]).filter((_,k)=>k!==tCol); }
+    const AOA=XLSX.utils.sheet_to_json(sh,{header:1,raw:false,blankrows:false}); const H0=(AOA[0]||[]).map(c=>String(c||'')); const tCol=H0.findIndex(c=>/لقب|كني/.test(c)), dCol=H0.findIndex(c=>/إدار|ادار|قسم/.test(c));
+    AOA.forEach((r,i)=>{ let emp='',name='',num='',phone='',title='',dept='';
+      if(tCol>=0||dCol>=0){ if(i===0) return; const cv=k=>k<0?'':String((r||[])[k]==null?'':r[k]).replace(/\s+/g,' ').trim(); title=cv(tCol); dept=cv(dCol).slice(0,60); r=(r||[]).filter((_,k)=>k!==tCol&&k!==dCol); }
       (r||[]).forEach(c=>{ const s=String(c==null?'':c).trim(), d=nEmp(s); if(!s) return; if(emp && !phone && /^[+0-9٠-٩\s\-()]+$/.test(s) && nPh(s)){ phone=nPh(s); return; } if(/^[0-9]+$/.test(d)){ if(!num) num=d; if(!emp && /^[0-9]{1,10}$/.test(d)) emp=d; } else if(!name && s.length>=2) name=s; });
       if(title && name && !/[،,]/.test(name)) name=title+'، '+name;
       const line=i+1;
-      if(emp && name){ if(seen[emp]){ bad.push({line,emp,name,why:'مكرر في الملف (السطر '+seen[emp]+')'}); } else { seen[emp]=line; rows.push({emp,name,phone,line}); } }
+      if(emp && name){ if(seen[emp]){ bad.push({line,emp,name,why:'مكرر في الملف (السطر '+seen[emp]+')'}); } else { seen[emp]=line; rows.push({emp,name,phone,dept,line}); } }
       else if(i>0 || num) bad.push({line,emp:emp||num,name,why:!(emp||num)?'بدون رقم وظيفي':(!emp?'الرقم أطول من ١٠ أرقام':'بدون اسم')}); });
   }catch(err){ m.className='empmsg err'; m.textContent='تعذّر قراءة الملف'; return; }
   m.textContent=rows.length?'جارٍ التحقق من الموجودين…':'';
@@ -535,9 +605,25 @@ $('empFile').onchange=async e=>{
     +(rows.length?'<div class="rvt"><table><thead><tr><th>السطر</th><th>الرقم الوظيفي</th><th>الاسم</th><th>الهاتف</th><th>الحالة</th></tr></thead><tbody>'+rows.map(x=>'<tr'+(x.dupName?' class="dn"':'')+'><td>'+x.line+'</td><td>'+esc(x.emp)+'</td><td>'+esc(x.name)+(x.dupName?' <i class="tg">اسم مكرر</i>':'')+'</td><td dir="ltr">'+(x.phone?esc('+'+x.phone):'—')+'</td><td class="'+x.c+'">'+esc(x.st)+'</td></tr>').join('')+'</tbody></table></div>':'')
     +'<div class="rvb">'+(rows.length?'<button class="sb wide" type="button" id="rvOk">تأكيد ورفع '+fmt(rows.length)+' موظف</button>':'')+'<button class="sb ghost wide2" type="button" id="rvNo">إلغاء</button></div>';
   $('rvNo').onclick=()=>{ $('empRev').innerHTML=''; };
-  if(rows.length) $('rvOk').onclick=()=>{ $('empRev').innerHTML=''; uploadEmp(rows.map(x=>({emp:x.emp,name:x.name,phone:x.phone||''}))); };
+  if(rows.length) $('rvOk').onclick=()=>{ $('empRev').innerHTML=''; uploadEmp(rows.map(x=>({emp:x.emp,name:x.name,phone:x.phone||'',dept:x.dept||''}))); };
   $('empRev').scrollIntoView({behavior:'smooth',block:'start'});
 };
+$('empAdd').onclick=()=>{ const f=$('addF'); f.hidden=!f.hidden; $('aErr').textContent=''; if(!f.hidden){ const ds=[...new Set(((EMP&&EMP.rows)||[]).map(x=>x.dept).filter(Boolean))]; $('deptL').innerHTML=ds.map(d=>'<option value="'+esc(d)+'">').join(''); $('aEmp').focus(); } };
+$('addF').addEventListener('input',()=>{ $('aErr').textContent=''; });
+$('aNo').onclick=()=>{ $('addF').reset(); $('addF').hidden=true; };
+$('addF').onsubmit=async e=>{ e.preventDefault(); const er=$('aErr'); er.textContent='';
+  const emp=nEmp($('aEmp').value.trim()), nm=$('aName').value.replace(/\s+/g,' ').trim(), t=$('aTitle').value.replace(/[،,]/g,'').trim(), phR=$('aPh').value.trim(), ph=phR?nPh(phR):'', dp=$('aDept').value.replace(/\s+/g,' ').trim();
+  if(!/^[0-9]{1,10}$/.test(emp)) return er.textContent='الرقم الوظيفي أرقام بس (لين ١٠)';
+  if(nm.length<2) return er.textContent='اكتب الاسم';
+  if(phR && !ph) return er.textContent='رقم الهاتف مو صحيح';
+  const ok=$('aOk'); ok.disabled=true; ok.textContent='…';
+  let c=null; try{ c=await rpc('admin_check_employees',{p_key:KEY,p_emps:[emp]}); }catch(_){}
+  if(c&&c.ok&&c.existing&&c.existing[emp]!=null){ ok.disabled=false; ok.textContent='إضافة وإعطاء رمز'; return er.textContent='الرقم '+emp+' موجود باسم: '+c.existing[emp]; }
+  let r=null; try{ r=await rpc('admin_upload_employees',{p_key:KEY,p_rows:[{emp,name:t?t+'، '+nm:nm,phone:ph,dept:dp}]}); }catch(_){}
+  ok.disabled=false; ok.textContent='إضافة وإعطاء رمز';
+  if(!r||!r.ok) return er.textContent='تعذّرت الإضافة';
+  (r.codes||[]).forEach(x=>{ ISSUED[x.emp]={code:x.code,name:x.name||'',phone:x.phone||'',at:Date.now()}; }); saveIssued();
+  $('addF').reset(); $('addF').hidden=true; toastMsg('انضاف، ورمزه جاهز للإرسال'); $('empQ').value=emp; await loadEmp(); };
 async function uploadEmp(rows){
   const m=$('empMsg'); m.className='empmsg';
   let added=0,updated=0,skipped=0,codes=[];
@@ -619,7 +705,7 @@ async function doEnroll(){ try{ await fidEnroll(); fidUI(); toastMsg('تم تف�
 $('enrGo').onclick=doEnroll;
 $('enrNo').onclick=()=>{ try{ localStorage.setItem('mc_admin_fid_skip','1'); }catch(e){} fidUI(); };
 $('fidRow').onclick=()=>{ if(FID){ if(!confirm('إيقاف الدخول بـ Face ID؟')) return; FID=''; try{ localStorage.removeItem('mc_admin_fid'); }catch(e){} fidUI(); } else doEnroll(); };
-function toastMsg(t){ let el=$('tst'); if(!el){ el=document.createElement('div'); el.id='tst'; el.style.cssText='position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--tx);color:var(--page);padding:9px 18px;border-radius:999px;font-size:13px;z-index:60;transition:opacity .2s'; document.body.appendChild(el); } el.textContent=t; el.style.opacity='1'; clearTimeout(el._t); el._t=setTimeout(()=>el.style.opacity='0',2200); }
+function toastMsg(t){ let el=$('tst'); if(!el){ el=document.createElement('div'); el.id='tst'; el.style.cssText='position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--tx);color:var(--page);padding:9px 18px;border-radius:999px;font-size:13px;z-index:60;transition:opacity .2s'; document.body.appendChild(el); } el.style.pointerEvents='none'; el.style.bottom=$('selBar')?'calc(84px + env(safe-area-inset-bottom))':'calc(24px + env(safe-area-inset-bottom))'; el.textContent=t; el.style.opacity='1'; clearTimeout(el._t); el._t=setTimeout(()=>el.style.opacity='0',2200); }
 
 function lockNow(){
   LOCKED=true; clearInterval(timer); if(typeof closePlayer==='function'&&SEL) closePlayer();
