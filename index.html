@@ -696,7 +696,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171440">
+<meta name="app-version" content="202611171500">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1996,15 +1996,9 @@ async function drawCard(r,name){
   x.beginPath(); x.arc(150,150,260,0,Math.PI*2); x.fill();
   x.beginPath(); x.arc(980,1250,320,0,Math.PI*2); x.fill();
   /* شعار البنك */
-  try{ const lw=300, sc=lw/2525; x.save(); x.translate(540-lw/2,70); x.scale(sc,sc); x.fillStyle='#fff'; x.fill(new Path2D(BKLOGO_D),'evenodd'); x.restore(); }catch(e){}
-  /* شعار المؤقت */
-  x.strokeStyle='#fff'; x.fillStyle='#fff'; x.lineWidth=11; x.lineCap='round';
-  x.beginPath(); x.arc(540,290,62,0,Math.PI*2); x.stroke();
-  rr(x,516,196,48,16,6,'#fff');
-  x.beginPath(); x.moveTo(540,290); x.lineTo(540,252); x.stroke();
-  x.beginPath(); x.moveTo(540,212); x.lineTo(540,228); x.stroke();
+  try{ const lw=380, sc=lw/2525; x.save(); x.translate(540-lw/2,110); x.scale(sc,sc); x.fillStyle='#fff'; x.fill(new Path2D(BKLOGO_D),'evenodd'); x.restore(); }catch(e){}
   x.direction='rtl'; x.textAlign='center'; x.textBaseline='alphabetic';
-  x.fillStyle='#fff'; x.font='800 84px "Noto Kufi Arabic", sans-serif'; x.fillText('تحدّي الدقيقة',540,440);
+  x.fillStyle='#fff'; x.font='800 84px "Noto Kufi Arabic", sans-serif'; x.fillText('تحدّي الدقيقة',540,390);
   /* اللوحة البيضاء */
   rr(x,90,500,900,680,56,'#ffffff');
   x.fillStyle='#d3232f'; x.font='800 50px "Noto Kufi Arabic", sans-serif';
