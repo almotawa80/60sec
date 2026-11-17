@@ -654,7 +654,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170920">
+<meta name="app-version" content="202611170930">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1176,12 +1176,8 @@ function audio(){
     if(!AC) AC = new (window.AudioContext||window.webkitAudioContext)();
     if(AC.state==='suspended') AC.resume();
   }catch(e){}
-  /* يجعل الصوت يعمل حتى لو كان الجوال على الوضع الصامت */
-  try{ if(navigator.audioSession) navigator.audioSession.type='playback'; }catch(e){}
-  try{
-    if(!SIL){ SIL = new Audio(silentWav()); SIL.loop=true; SIL.volume=.01; }
-    if(stats.sound){ const p=SIL.play(); if(p&&p.catch) p.catch(()=>{}); } else SIL.pause();
-  }catch(e){}
+  /* مؤثرات خفيفة: لا تظهر كمشغّل وسائط في شاشة القفل أو CarPlay، ولا توقف موسيقى المستخدم */
+  try{ if(navigator.audioSession) navigator.audioSession.type='ambient'; }catch(e){}
   return AC;
 }
 function tone(f,t0,d,type,vol,slide){
