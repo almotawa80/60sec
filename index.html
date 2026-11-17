@@ -696,7 +696,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611172250">
+<meta name="app-version" content="202611172310">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -2150,13 +2150,17 @@ document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stat
 ['store','badgesPage','profilePage','lbPage'].forEach(function(id){
   var el=document.getElementById(id), home=document.getElementById('home'); if(!el||!home) return;
   const pickBg=()=>{ home=document.getElementById(window._pfBack && id!=='profilePage' ? 'profilePage' : 'home'); };
-  var sx=0,sy=0,t0=0,drag=false,lock=false,W=360, LG=null, LGc=null;
+  var sx=0,sy=0,t0=0,drag=false,lock=false,W=360, LG=null, LGc=null, DIM=null;
+  const PAR=0.28, DK=0.32; /* حركة الخلفية وتغميقها مثل الآيفون */
+  function bgAt(dx,anim){ const p=Math.min(1,Math.abs(dx)/W), sg=dx<0?-1:1, off=-sg*W*PAR*(1-p); const tr=anim?'transform .22s ease, opacity .22s ease':'none';
+    home.style.transition=tr; home.style.transform='translateX(calc(-50% + '+off+'px))'; if(DIM){ DIM.style.transition=tr; DIM.style.opacity=String(DK*(1-p)); }
+    el.style.boxShadow=(sg>0?'-':'')+'12px 0 32px rgba(0,0,0,'+(0.32*(1-p*0.6)).toFixed(3)+')'; }
   function logoStart(){ LG=document.querySelector('#app > .bklogo, .bklogo'); if(!LG) return; const r=LG.getBoundingClientRect(), y0=r.top+(window.scrollY||0);
     LGc=LG.cloneNode(true); LGc.style.position='fixed'; LGc.style.margin='0'; LGc.style.left=r.left+'px'; LGc.style.width=r.width+'px'; LGc.style.right='auto';
     LGc.style.top=(y0-(SCR[home.id]||0))+'px'; LGc.style.zIndex='1'; LGc.style.pointerEvents='none'; document.body.appendChild(LGc); LG.style.transition='none'; }
   function logoMove(dx){ if(LG) LG.style.transform='translateX('+dx+'px)'; }
   function logoEnd(){ if(LG){ LG.style.transform=''; LG.style.transition=''; } if(LGc){ LGc.remove(); LGc=null; } }
-  function reset(){ logoEnd(); el.style.transition=''; el.style.transform=''; el.style.boxShadow=''; el.style.position=''; el.style.zIndex=''; el.style.animation=''; home.style.position=''; home.style.inset=''; home.style.zIndex=''; home.style.display=''; home.style.width=''; home.style.maxWidth=''; home.style.margin=''; }
+  function reset(){ logoEnd(); if(DIM){ DIM.remove(); DIM=null; } home.style.transition=''; el.style.transition=''; el.style.transform=''; el.style.boxShadow=''; el.style.position=''; el.style.zIndex=''; el.style.animation=''; home.style.position=''; home.style.inset=''; home.style.zIndex=''; home.style.display=''; home.style.width=''; home.style.maxWidth=''; home.style.margin=''; }
   el.addEventListener('touchstart',function(e){ pickBg(); var t=e.touches[0]; sx=t.clientX; sy=t.clientY; t0=Date.now(); drag=false; lock=false; W=el.offsetWidth||360; },{passive:true});
   el.addEventListener('touchmove',function(e){
     var t=e.touches[0], dx=t.clientX-sx, dy=t.clientY-sy;
@@ -2165,10 +2169,10 @@ document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stat
       if(Math.abs(dx)>10 && Math.abs(dx)>Math.abs(dy)*1.2){
         drag=true; lock=true;
         el.style.animation='none'; el.style.position='relative'; el.style.zIndex='2'; el.style.boxShadow='-6px 0 24px rgba(0,0,0,.18)'; el.style.background='var(--hero)';
-        home.style.display='flex'; home.style.position='fixed'; home.style.top=(-(SCR[home.id]||0))+'px'; home.style.bottom='auto'; home.style.minHeight='100vh'; /* بدون ما ينضغط المحتوى */ home.style.left='50%'; home.style.width='100%'; home.style.maxWidth='480px'; home.style.transform='translateX(-50%)'; home.style.zIndex='1'; home.style.animation='none'; logoStart();
+        home.style.display='flex'; home.style.position='fixed'; home.style.top=(-(SCR[home.id]||0))+'px'; home.style.bottom='auto'; home.style.minHeight='100vh'; /* بدون ما ينضغط المحتوى */ home.style.left='50%'; home.style.width='100%'; home.style.maxWidth='480px'; home.style.transform='translateX(-50%)'; home.style.zIndex='1'; home.style.animation='none'; DIM=document.createElement('div'); DIM.style.cssText='position:fixed;inset:0;z-index:1;background:#000;pointer-events:none;opacity:'+DK; document.body.appendChild(DIM); logoStart();
       } else return;
     }
-    if(drag){ if(e.cancelable) e.preventDefault(); el.style.transition='none'; el.style.transform='translateX('+dx+'px)'; logoMove(dx); }
+    if(drag){ if(e.cancelable) e.preventDefault(); el.style.transition='none'; el.style.transform='translateX('+dx+'px)'; logoMove(dx); bgAt(dx,false); }
   },{passive:false});
   function end(e){
     if(!drag) return; drag=false;
@@ -2176,10 +2180,10 @@ document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stat
     el.style.transition='transform .22s ease';
     function clean(){ el.style.background=''; home.style.transform=''; home.style.top=''; home.style.bottom=''; home.style.minHeight=''; home.style.left=''; home.style.animation=''; reset(); }
     if(dx>W*0.35 || v>0.6){
-      el.style.transform='translateX('+(sg*W)+'px)'; if(LG){ LG.style.transition='transform .22s ease'; LG.style.transform='translateX('+(sg*W)+'px)'; }
+      el.style.transform='translateX('+(sg*W)+'px)'; bgAt(sg*W,true); if(LG){ LG.style.transition='transform .22s ease'; LG.style.transform='translateX('+(sg*W)+'px)'; }
       setTimeout(function(){ var b=document.getElementById({store:'backBtn',badgesPage:'backBtn2',profilePage:'backBtn3',lbPage:'backBtn4'}[id]); if(b) b.click(); clean(); home.style.animation='none'; },210);
     } else {
-      el.style.transform='translateX(0)'; if(LG){ LG.style.transition='transform .22s ease'; LG.style.transform='translateX(0)'; }
+      el.style.transform='translateX(0)'; bgAt(sg*0.001,true); if(LG){ LG.style.transition='transform .22s ease'; LG.style.transform='translateX(0)'; }
       setTimeout(clean,230);
     }
   }
