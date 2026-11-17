@@ -493,8 +493,74 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
 /* في الخريطة: التنبيه يطلع فوق تحت شريط المحافظة بدال ما يغطي الزر الأحمر */
 body:has(#roadPage.active) .toast{bottom:auto;top:calc(150px + env(safe-area-inset-top));transform:translate(-50%,-12px);background:rgba(10,20,40,.88);color:#fff}
 body:has(#roadPage.active) .toast.show{transform:translate(-50%,0)}
-/* أعلى الخريطة: شريط داكن ثابت خلف الأزرار عشان ما تطلع ضبابية فوق الرسمة */
-#roadPage .rp-hud{z-index:6;isolation:isolate}
-#roadPage .rp-hud::before{content:'';position:absolute;left:0;right:0;top:0;height:calc(100% + 14px);background:linear-gradient(#0d1a2e 0%,rgba(13,26,46,.94) 62%,rgba(13,26,46,0) 100%);z-index:-1;pointer-events:none}
-#roadPage .rp-back,#roadPage .rp-chips i{background:#1b2a44;border-color:rgba(255,255,255,.14);backdrop-filter:none;-webkit-backdrop-filter:none}
-#roadPage .rp-chap{background:#16243b;border-color:rgba(255,255,255,.12);backdrop-filter:none;-webkit-backdrop-filter:none}
+/* أعلى الخريطة: أيقونات دائرية على الجنب مثل الألعاب (بدون شريط) */
+#roadPage .rp-hud{z-index:6}
+#roadPage .rp-row{height:44px;margin-bottom:0}
+#roadPage .rp-back{width:44px;height:44px;background:radial-gradient(circle at 35% 30%,#33507e,#16243b 70%);border:2px solid rgba(255,255,255,.85);box-shadow:0 3px 0 rgba(0,0,0,.35),0 4px 10px rgba(0,0,0,.3);backdrop-filter:none;-webkit-backdrop-filter:none}
+#roadPage .rp-chips{position:absolute;left:10px;top:calc(8px + env(safe-area-inset-top));flex-direction:column;gap:12px}
+#roadPage .rp-chips i{position:relative;width:46px;height:46px;padding:0;justify-content:center;border-radius:50%;font-size:22px;line-height:1;gap:0;border:2px solid rgba(255,255,255,.9);box-shadow:0 3px 0 rgba(0,0,0,.35),0 4px 10px rgba(0,0,0,.3);backdrop-filter:none;-webkit-backdrop-filter:none}
+#roadPage .rp-chips i:nth-child(1){background:radial-gradient(circle at 35% 30%,#ffb35c,#e0461f 70%)}
+#roadPage .rp-chips i:nth-child(2){background:radial-gradient(circle at 35% 30%,#7fd0ff,#1f6fd0 70%)}
+#roadPage .rp-chips i:nth-child(3){background:radial-gradient(circle at 35% 30%,#ffe27a,#d39a12 70%)}
+#roadPage .rp-chips i span{position:absolute;right:-6px;bottom:-4px;min-width:20px;height:20px;padding:0 5px;box-sizing:border-box;border-radius:10px;background:#c8102e;border:2px solid #fff;color:#fff;font-size:11px;font-weight:900;line-height:16px;text-align:center}
+#roadPage .rp-chap{position:absolute;top:calc(10px + env(safe-area-inset-top));left:68px;right:64px;height:40px;box-sizing:border-box;background:#16243b;border:2px solid rgba(255,255,255,.85);box-shadow:0 3px 0 rgba(0,0,0,.35),0 4px 10px rgba(0,0,0,.3);backdrop-filter:none;-webkit-backdrop-filter:none}
+/* شريط المحافظة بعرض ثابت عشان النجوم ما تطلع برّاه على الآيفون */
+#roadPage .rp-chap{width:auto;max-width:none;margin:0;justify-content:space-between}
+#roadPage .rp-chap .rp-bar{flex:1 1 auto;min-width:40px;max-width:120px}
+#roadPage .rp-km{flex:0 0 auto}
+/* أيقونات أكبر بإطار ذهبي سميك واسم تحت كل وحدة، مثل الألعاب */
+#roadPage .rp-chips{gap:22px;left:8px}
+#roadPage .rp-chips i{width:58px;height:58px;font-size:28px;border:3px solid #ffd76a;box-shadow:0 0 0 3px #6b3fa0,inset 0 -5px 0 rgba(0,0,0,.22),inset 0 4px 0 rgba(255,255,255,.35),0 5px 10px rgba(0,0,0,.45)}
+#roadPage .rp-chips i:nth-child(1){background:radial-gradient(circle at 40% 30%,#ffcf7a,#f0702a 55%,#b8321a)}
+#roadPage .rp-chips i:nth-child(2){background:radial-gradient(circle at 40% 30%,#a8e2ff,#3a8ee8 55%,#1d4fa6)}
+#roadPage .rp-chips i:nth-child(3){background:radial-gradient(circle at 40% 30%,#c9b3ff,#7b4fd8 55%,#4a2a9a)}
+#roadPage .rp-chips i span{right:auto;left:50%;bottom:-13px;transform:translateX(-50%);height:20px;min-width:0;padding:0 8px;border-radius:8px;background:linear-gradient(#5b39a8,#3d2378);border:2px solid #ffd76a;font-size:11px;line-height:16px;white-space:nowrap;box-shadow:0 2px 4px rgba(0,0,0,.4)}
+#roadPage .rp-chips i:nth-child(1) span::after{content:' أيام'}
+#roadPage .rp-chips i:nth-child(2) span::after{content:' درع'}
+#roadPage .rp-chips i:nth-child(3) span::after{content:' مفتاح'}
+#roadPage .rp-back{width:48px;height:48px;border:3px solid #ffd76a;box-shadow:0 0 0 3px #6b3fa0,inset 0 -4px 0 rgba(0,0,0,.25),0 5px 10px rgba(0,0,0,.45);background:radial-gradient(circle at 40% 30%,#c9b3ff,#7b4fd8 55%,#4a2a9a)}
+#roadPage .rp-chap{left:80px;right:70px;height:44px;border:3px solid #ffd76a;box-shadow:0 0 0 3px #6b3fa0,0 5px 10px rgba(0,0,0,.45);background:linear-gradient(#4a2a9a,#2d1a66)}
+#roadPage .rp-chap{gap:8px;padding:0 12px;min-width:0}
+#roadPage .rp-chap .rp-bar{min-width:24px;max-width:70px;flex:1 1 30px}
+#roadPage .rp-chap>div:first-child{min-width:0;flex:0 1 auto}
+/* نافذة الفرع بستايل الألعاب */
+#rpPop{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:rgba(10,6,30,.6);padding:20px}
+#rpPop.on{display:flex}
+#rpPop .pp{position:relative;width:min(340px,88vw);box-sizing:border-box;padding:62px 18px 22px;border-radius:30px;background:linear-gradient(#8a5ce6,#5b34b8);border:4px solid #c9b3ff;box-shadow:inset 0 0 0 3px #4a2a9a,0 12px 30px rgba(0,0,0,.5);text-align:center;color:#fff;animation:ppIn .32s cubic-bezier(.2,1.4,.4,1)}
+@keyframes ppIn{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+#rpPop .pp-rib{position:absolute;left:-14px;right:-14px;top:-22px;height:74px;background:linear-gradient(#ffe68a,#f2b51e 60%,#c98a08);clip-path:polygon(0 18%,10% 0,50% 22%,90% 0,100% 18%,96% 72%,50% 100%,4% 72%);display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 4px 0 rgba(0,0,0,.25))}
+#rpPop .pp-rib span{font-size:27px;font-weight:900;color:#fff;margin-top:-4px;text-shadow:0 3px 0 #4a2a9a,2px 0 0 #4a2a9a,-2px 0 0 #4a2a9a,0 -2px 0 #4a2a9a,0 2px 0 #4a2a9a;white-space:nowrap}
+#rpPop .pp-x{position:absolute;top:-30px;right:-16px;width:50px;height:50px;border-radius:50%;border:3px solid #fff;background:radial-gradient(circle at 40% 30%,#ff7a7a,#e0222a 60%,#a50f16);color:#fff;font-size:24px;font-weight:900;box-shadow:0 4px 0 rgba(0,0,0,.3);cursor:pointer;z-index:2}
+#rpPop .pp-lbl{font-size:18px;font-weight:900;margin:6px 0 8px;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+#rpPop .pp-box{display:flex;justify-content:space-around;gap:6px;background:linear-gradient(#f4eeff,#ddd0ff);border:3px solid #b9a2ff;border-radius:20px;padding:12px 6px;color:#3d2378;box-shadow:inset 0 -3px 0 rgba(0,0,0,.08)}
+#rpPop .pp-rw{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+#rpPop .pp-rw b{font-size:30px;line-height:1}
+#rpPop .pp-rw small{font-size:11.5px;font-weight:800;line-height:1.3}
+#rpPop .pp-tip{font-size:13px;font-weight:700;opacity:.92;line-height:1.7;margin:4px 0 2px}
+#rpPop .pp-stars{display:flex;justify-content:center;align-items:flex-end;gap:6px;margin:4px 0 6px}
+#rpPop .pp-stars i{font-style:normal;font-size:54px;line-height:1;color:#3d2378;text-shadow:0 3px 0 rgba(0,0,0,.25)}
+#rpPop .pp-stars i.mid{font-size:68px;margin-bottom:8px}
+#rpPop .pp-stars i.on{color:#ffd23f;text-shadow:0 0 0 #c98a08,0 3px 0 #b87a06,0 0 14px rgba(255,210,63,.6)}
+#rpPop .pp-go{display:block;width:100%;margin-top:16px;padding:14px 0 16px;border-radius:22px;border:3px solid #fff;background:linear-gradient(#a6f56a,#3fc61f 55%,#2a9d12);box-shadow:0 6px 0 #1d6a12,0 10px 18px rgba(0,0,0,.35);color:#fff;font:inherit;font-size:30px;font-weight:900;text-shadow:0 3px 0 #1d6a12,2px 0 0 #1d6a12,-2px 0 0 #1d6a12;cursor:pointer}
+#rpPop .pp-go:active{transform:translateY(4px);box-shadow:0 2px 0 #1d6a12}
+#rpPop .pp-done{margin-top:14px;font-weight:900;font-size:14px;background:rgba(0,0,0,.2);border-radius:14px;padding:10px}
+#rpPop .pp-done:empty{display:none}
+/* ألوان لعبتنا (أحمر بوبيان + أبيض + ألوان الخريطة) بدل البنفسجي */
+#roadPage .rp-chips i{border-color:#fff;box-shadow:0 0 0 3px #c8102e,inset 0 -5px 0 rgba(0,0,0,.2),inset 0 4px 0 rgba(255,255,255,.35),0 5px 10px rgba(0,0,0,.4)}
+#roadPage .rp-chips i:nth-child(3){background:radial-gradient(circle at 40% 30%,#fff1a8,#f2b51e 55%,#c98a08)}
+#roadPage .rp-chips i span{background:linear-gradient(#e8323f,#b20d1c);border-color:#fff}
+#roadPage .rp-back{border-color:#fff;box-shadow:0 0 0 3px #c8102e,inset 0 -4px 0 rgba(0,0,0,.25),0 5px 10px rgba(0,0,0,.4);background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c)}
+#roadPage .rp-chap{border-color:#fff;box-shadow:0 0 0 3px #c8102e,0 5px 10px rgba(0,0,0,.4);background:linear-gradient(#e8323f,#b20d1c)}
+#roadPage .rp-chap .rp-bar{background:rgba(0,0,0,.25)}
+#rpPop{background:rgba(20,10,5,.55)}
+#rpPop .pp{background:linear-gradient(#fffaf0,#fde9c4);border-color:#fff;box-shadow:0 0 0 4px #c8102e,inset 0 -6px 0 rgba(160,110,40,.15),0 12px 30px rgba(0,0,0,.45);color:#5a3412}
+#rpPop .pp-rib{background:linear-gradient(#ff5a65,#d81f2e 60%,#a50f1c)}
+#rpPop .pp-rib span{text-shadow:0 3px 0 #7a0c12,2px 0 0 #7a0c12,-2px 0 0 #7a0c12,0 -2px 0 #7a0c12,0 2px 0 #7a0c12}
+#rpPop .pp-lbl{color:#7a0c12;text-shadow:none}
+#rpPop .pp-box{background:#fff;border-color:#3fb7c9;color:#5a3412}
+#rpPop .pp-tip{color:#6b4520}
+#rpPop .pp-stars i{color:#e6d3ae;text-shadow:0 3px 0 rgba(120,80,30,.25)}
+#rpPop .pp-go{border-color:#fff;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c);box-shadow:0 6px 0 #7a0c12,0 10px 18px rgba(0,0,0,.3);text-shadow:0 3px 0 #7a0c12,2px 0 0 #7a0c12,-2px 0 0 #7a0c12}
+#rpPop .pp-go:active{box-shadow:0 2px 0 #7a0c12}
+#rpPop .pp-x{background:radial-gradient(circle at 40% 30%,#ff7a7a,#e0222a 60%,#a50f16)}
+#rpPop .pp-done{background:#f3e2bf;color:#5a3412}

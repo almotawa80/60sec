@@ -105,7 +105,7 @@ function m3Build(){
   pl.innerHTML=h;
   pl.querySelectorAll('.m3mall').forEach(b=>b.onclick=e=>{ e.stopPropagation(); mallTap(+b.dataset.k); });
   pl.querySelectorAll('.m3n.pad').forEach(n=>n.onclick=()=>{ const i=+n.dataset.i, s=(rdSt().stars||[])[i]||0;
-    if(i<pos) replayAsk(i); else if(i===pos && !arrived) $('rpGo').click(); else toast('🔒 فرع '+ROUTE[i]+': باقي '+(i-pos)+' '+((i-pos)===1?'فوز':'فوزات')); });
+    if(i<pos) replayAsk(i); else if(i===pos && !arrived) stagePop(i,'today'); else toast('🔒 فرع '+ROUTE[i]+': باقي '+(i-pos)+' '+((i-pos)===1?'فوز':'فوزات')); });
   M3.built=true;
 }
 function m3Cam(c,anim){
@@ -207,7 +207,7 @@ function m2Build(){
   inner.innerHTML=h;
   inner.querySelectorAll('.r2mall').forEach(b=>b.onclick=e=>{ e.stopPropagation(); mallTap(+b.dataset.k); });
   inner.querySelectorAll('.r2n').forEach(n=>n.onclick=()=>{ const i=+n.dataset.i, s=(rdSt().stars||[])[i]||0;
-    if(i<pos) replayAsk(i); else if(i===pos && !arrived) $('rpGo').click(); else toast('🔒 فرع '+ROUTE[i]+': باقي '+(i-pos)+' '+((i-pos)===1?'تحدي':'تحديات')); });
+    if(i<pos) replayAsk(i); else if(i===pos && !arrived) stagePop(i,'today'); else toast('🔒 فرع '+ROUTE[i]+': باقي '+(i-pos)+' '+((i-pos)===1?'تحدي':'تحديات')); });
   M2.built=true;
 }
 function m2Scroll(i,smooth){ const box=$('r2'); if(!box) return; const y=m2y(Math.max(0,Math.min(HQ,i)))-box.clientHeight*0.55; box.scrollTo({top:Math.max(0,y),behavior:smooth?'smooth':'auto'}); }
@@ -357,14 +357,32 @@ window.addEventListener('pageshow',()=>{ try{ if(stats.sound && AC && AC.state!=
   if(document.readyState==='complete') setTimeout(go,300); else window.addEventListener('load',()=>setTimeout(go,300)); })();
 
 /* إعادة فرع خلّصته عشان تحسّن نجومه: ضد الآلي، بدون نقاط وبدون تقدّم */
-function replayAsk(i){
-  const s=(rdSt().stars||[])[i]||0, nm=ROUTE[i];
-  const stars='<span style="letter-spacing:2px">'+'⭐'.repeat(s)+'<span style="opacity:.25">'+'⭐'.repeat(3-s)+'</span></span>';
-  if(s>=3){ showModal('فرع '+nm+' ✓','<div style="line-height:2">'+stars+'<br>خذيت كل النجوم في هذا الفرع 👏</div>',[{t:'تمام',full:true,f:closeModal}]); return; }
-  if(!rdLoggedIn()){ toast('سجّل دخولك أول'); return; }
-  showModal('🔁 إعادة فرع '+nm,
-    '<div style="line-height:2">نجومك الحالية: '+stars+'<br>العب ضد المنافس الآلي وحاول تجيب نجوم أكثر.<br><small style="color:var(--muted)">الفوز ⭐⭐⭐ · التعادل ⭐⭐ · الخسارة ⭐<br>بدون نقاط، وما يأثر على تحدي اليوم.</small></div>',
-    [{t:'أعد الفرع ⚔️',full:true,f:()=>{ closeModal(); try{ playSword(1); }catch(e){} startReplay(i); }},{t:'لاحقاً',ghost:true,full:true,f:closeModal}]);
+function replayAsk(i){ if(!rdLoggedIn()){ toast('سجّل دخولك أول'); return; } stagePop(i,'replay'); }
+/* نافذة الفرع بستايل الألعاب: شريط ذهبي، الجوائز، النجوم، وزر العب */
+function stagePop(i,mode){
+  const st=rdSt(), s=(st.stars||[])[i]||0, nm=ROUTE[i];
+  let el=$('rpPop'); if(!el){ el=document.createElement('div'); el.id='rpPop'; document.body.appendChild(el); }
+  const big=k=>'<div class="pp-stars">'+[0,1,2].map(n=>'<i class="'+(n<k?'on':'')+(n===1?' mid':'')+'">★</i>').join('')+'</div>';
+  const done=mode==='today' && !pointsAvailable();
+  let body='';
+  if(mode==='today'){
+    body='<div class="pp-lbl">الجوائز</div><div class="pp-box">'
+      +'<div class="pp-rw"><b>⭐</b><small>حتى 3 نجوم</small></div>'
+      +'<div class="pp-rw"><b>🏆</b><small>نقاطك + 10 لكل نجمة</small></div>'
+      +'<div class="pp-rw"><b>🚗</b><small>تتقدّم فرع</small></div></div>'
+      +'<div class="pp-lbl">النجوم</div><div class="pp-tip">الفوز ⭐⭐⭐ · التعادل ⭐⭐ · الخسارة ⭐</div>';
+  } else {
+    body='<div class="pp-lbl">نجومك في هذا الفرع</div>'+big(s)
+      +(s>=3?'<div class="pp-tip">خذيت كل النجوم 👏</div>':'<div class="pp-tip">أعد الفرع ضد المنافس الآلي وحسّن نجومك<br>بدون نقاط، وما يأثر على تحدي اليوم</div>');
+  }
+  const canPlay = mode==='today' ? !done : s<3;
+  el.innerHTML='<div class="pp"><div class="pp-rib"><span>فرع '+nm+'</span></div><button class="pp-x" type="button" aria-label="إغلاق">✕</button>'
+    +body+(canPlay?'<button class="pp-go" type="button">'+(mode==='today'?'العب':'أعد الفرع')+'</button>':'<div class="pp-done">'+(done?'✓ خلصت تحدي اليوم · تعال بكرة':'')+'</div>')+'</div>';
+  el.classList.add('on');
+  const close=()=>el.classList.remove('on');
+  el.onclick=e=>{ if(e.target===el) close(); };
+  el.querySelector('.pp-x').onclick=close;
+  const g=el.querySelector('.pp-go'); if(g) g.onclick=()=>{ close(); if(mode==='today'){ $('rpGo').click(); } else { try{ playSword(1); }catch(e){} startReplay(i); } };
 }
 function startReplay(i){
   if(DEMO){ toast('الإعادة تشتغل بعد تسجيل الدخول'); return; }
