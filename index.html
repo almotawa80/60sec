@@ -674,7 +674,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171600">
+<meta name="app-version" content="202611171610">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1354,6 +1354,7 @@ function showFound(name, human, tok){
   $('searching').style.display='none'; $('inviteWait').style.display='none'; $('found').style.display='block';
   $('foundMsg').textContent = (human ? 'تحدٍّ مباشر مع لاعب حقيقي — مكافأة الفوز ٥٠ نقطة' : 'لا يوجد لاعب متاح الآن — ستلعب ضد الجهاز') + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط');
   $('botName').textContent = bot.name; $('botAv').classList.remove('hasimg'); $('botAv').style.backgroundImage=''; if(human){ $('botAv').textContent = bot.name.charAt(0); } else { $('botAv').innerHTML = svg('robot',54); } $('botTag').innerHTML = human ? svg('bolt',13)+' متصل الآن' : svg('robot',14)+' منافس آلي'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت'; if(stats.avatar) setAv($('meAv'), stats.avatar); else { $('meAv').classList.remove('hasimg'); $('meAv').style.backgroundImage=''; $('meAv').innerHTML=svg('user',44); }
+  prefetchQs();
   if(human && PV){ const pv=PV; rpc('opp_avatar',{p_id:PID,p_match:pv.id},4000).then(a=>{ if(a && typeof a==='string' && PV===pv){ setAv($('botAv'), a); window._oppAv=a; } }); }
   let n = 3; $('cd').textContent = n; SND.count();
   const t = setInterval(()=>{ if(tok!==matchTok){ clearInterval(t); return; } n--; if(n<=0){ clearInterval(t); startGame(); } else { $('cd').textContent=n; SND.count(); } }, 800);
@@ -1619,11 +1620,39 @@ function onTimeout(){
 /* ===== الجولة المتزامنة: ٦ أسئلة × ١٠ ثوانٍ ===== */
 const SYNC_MODE = true, NQ = 6, QMS = 10000, LVS = [1,1,2,2,3,3], PTS = {1:10,2:20,3:30}, REVEAL = 1300;
 function ptsFor(lvl,ms){ const b=PTS[lvl]; const rem=Math.max(0,Math.min(QMS,QMS-(ms||0))); return b+Math.round(b*0.5*rem/QMS); }
-function startGame(){ return SYNC_MODE ? startGameSync() : startGameOld(); }
+/* أسئلة من السيرفر: لا يتكرر السؤال على اللاعب (أو على الطرفين في المباراة) خلال ٣٠ يوماً */
+let QPRE = null;
+function prefetchQs(){
+  QPRE = null;
+  if(!SYNC_MODE || DEMO || GUEST()) return;
+  const pre = { v: undefined };
+  pre.p = (PV ? rpc('match_questions',{p_id:PID,p_match:PV.id},5000) : rpc('solo_questions',{p_id:PID},5000))
+    .then(r=>{ pre.v = r; return r; }, ()=>{ pre.v = null; });
+  QPRE = pre;
+}
+function takeSrvQs(){
+  const pre = QPRE; QPRE = null;
+  const r = pre && pre.v;
+  if(!Array.isArray(r) || r.length!==NQ) return null;
+  if(r.some(x=>!Array.isArray(x) || !x[1] || !x[2])) return null;
+  return r.map(x=>({q:x[1],right:x[2],w:[x[3],x[4],x[5]],lvl:+x[6],ex:x[7]||'',cat:x[0],id:x[8]}));
+}
+async function startGame(){
+  if(SYNC_MODE && QPRE && QPRE.v===undefined){ try{ await Promise.race([QPRE.p, sleep(PV?4000:1500)]); }catch(e){} }
+  return SYNC_MODE ? startGameSync() : startGameOld();
+}
 function buildQs(seed){
   const used = new Set(), out = []; let prev = null;
+  const srv = takeSrvQs();
   for(let i=0;i<NQ;i++){
     const rng = mkRng(seed*131 + i + 1);
+    if(srv){
+      const it = srv[i];
+      const opts = [{t:it.right,ok:true}, ...it.w.map(t=>({t,ok:false}))];
+      const orng = mkRng(seed*131 + i + 1 + (PV ? PV.me*7919 : 0));
+      for(let k=opts.length-1;k>0;k--){ const j=Math.floor(orng()*(k+1)); [opts[k],opts[j]]=[opts[j],opts[k]]; }
+      out.push({it,opts}); continue;
+    }
     let pool = ALL.filter(x=>x.lvl===LVS[i] && !used.has(x));
     if(!pool.length) pool = ALL.filter(x=>!used.has(x));
     if(!pool.length) pool = ALL.slice();
