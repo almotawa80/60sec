@@ -239,7 +239,7 @@ function renderMap(scroll){
   $('rpBar').style.width=Math.round((arrived?1:inG/nG)*100)+'%';
   const left=HQ-Math.min(pos,HQ);
   $('rpLeft').textContent= arrived ? '🏁 ترتيبك #'+(st.rank||1)+' بين الواصلين' : '🏁 باقي '+left+' فرع للرئيسي';
-  $('rpStars').textContent='⭐ '+starSum(st)+' / '+(HQ+1)*3;
+  $('rpStars').textContent='⭐ '+starSum(st);
   // ahead
   const ah=st.ahead||[];
   $('rpAhead').textContent = !rdLoggedIn() ? '' : ah.length ? '👀 '+ah.map(a=>a.n).slice(0,2).join(' و')+(st.ahead_n>2?' و'+(st.ahead_n-2)+' غيرهم':'')+' قدامك في الطريق'
@@ -251,7 +251,7 @@ function renderMap(scroll){
   else if(pointsAvailable()){ go.innerHTML='العب: فرع '+ROUTE[pos]+'<small>العب تحدي اليوم وتقدّم للفرع اللي بعده ⚔️</small>'; sub.textContent=(st.streak? '🔥 العب اليوم عشان ما تنكسر سلسلة '+st.streak+' أيام' : 'التحدي اليومي مرة وحدة باليوم'); }
   else { go.classList.add('gray'); go.disabled=true; const need=3-((st.practice||0)%3); go.innerHTML='✓ خلصت تحدي اليوم · تعال بكرة'; sub.textContent=''; }
   go.classList.toggle('slim', go.disabled);
-  if(rdLoggedIn() && !arrived && String(stats.empNo)==='302' && !DEMO){
+  if(rdLoggedIn() && !arrived && go.disabled && String(stats.empNo)==='302' && !DEMO){
     const t=document.createElement('button'); t.type='button'; t.className='rp-test'; t.textContent='⏭️ تجربة: انتقل لليوم التالي';
     t.onclick=async()=>{ t.disabled=true; const r=await rpc('test_next_day',{p_id:PID},6000);
       if(r && r.ok){ stats.pointsDay=''; save(stats); toast('صار يوم جديد، العب التحدي ⚔️'); await roadLoad(); renderMap(); } else { t.disabled=false; toast('ما زبط، حاول مرة ثانية'); } };
