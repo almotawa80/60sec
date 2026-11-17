@@ -595,6 +595,7 @@ html:not([data-theme="dark"]) .onlrow .onl{box-shadow:0 2px 8px rgba(0,0,0,.08)!
 #home #inviteBtn .mem{font-size:30px!important}
 #home #inviteBtn .mvs{font-size:34px!important}
 #inviteBtn .mav,#inviteBtn .mem{flex:none}
+#goKnob .kemo{font-size:30px;line-height:1;filter:saturate(1.3) contrast(1.15) drop-shadow(0 1px 1px rgba(0,0,0,.25))}
 #inviteBtn .mvs.vs,#home #inviteBtn .mvs.vs{font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;text-transform:uppercase;font-size:28px!important;font-weight:900;font-style:italic;color:#c8102e;letter-spacing:-1px;filter:none;animation:vsP 2.4s ease-in-out infinite}
 html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 @keyframes vsP{0%,70%,100%{transform:scale(1)}80%{transform:scale(1.22)}90%{transform:scale(.96)}}
@@ -682,7 +683,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
       <div class="sp"></div>
       
       <div id="goDone" style="display:none;text-align:center;font-weight:800;font-size:17px;color:var(--text);margin-top:14px">أنهيت نقاط اليوم ✓</div>
-      <div class="btn slide" id="goBtn" role="button" tabindex="0" aria-label="اسحب لبدء التحدّي"><div class="slbl" id="goLbl">اسحب لبدء التحدّي</div><div class="sknob" id="goKnob"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.8 12L4.6 9.8H14.2V14.2H4.6Z" fill="currentColor" fill-opacity=".3"/><path d="M5.5 12H13.4" stroke-width="1.1" opacity=".7"/><path d="M14.6 7.4V16.6" stroke-width="2.6"/><path d="M15.3 12H20" stroke-width="2.6"/><circle cx="21.4" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg></div></div>
+      <div class="btn slide" id="goBtn" role="button" tabindex="0" aria-label="اسحب لبدء التحدّي"><div class="slbl" id="goLbl">اسحب لبدء التحدّي</div><div class="sknob" id="goKnob"><span class="kemo" aria-hidden="true">⚔️</span></div></div>
       <div class="onlrow"><span class="onl" id="onl" style="display:none"><i></i><span id="onlTxt"></span></span></div>
       <button class="btn" id="inviteBtn" type="button" aria-label="تحدَّ زميلاً الآن"><span class="mrow"><span class="mav" id="invAv">أ</span><span class="mvs vs">VS</span><span class="mem">+</span></span><span class="mlb">تحدَّ زميلاً الآن</span><span class="mbd">+٥٠ نقطة</span></button>
       <div class="hint" style="margin-top:12px;text-align:center;line-height:1.5"><div class="pts50">اكسب ٥٠ نقطة إضافية</div><div style="font-weight:700;font-size:15px;color:var(--text)">عند فوزك على لاعب حقيقي</div></div>
