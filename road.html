@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261117165241">
+<meta name="app-version" content="road-20261117170047">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1155,6 +1155,20 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
 #splash.tapped .spTap{opacity:0;transition:opacity .2s;animation:none}
 @keyframes spTapP{0%,100%{opacity:.65;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
 #splash{cursor:pointer}
+/* شاشة البداية: السيف مغروس في الساعة + اسم اللاعب */
+#splash .spNm{position:absolute;left:0;right:0;top:calc(18% + env(safe-area-inset-top));text-align:center;color:#fff;font-weight:900;font-size:30px;text-shadow:0 3px 10px rgba(0,0,0,.3);animation:spNmIn .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes spNmIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+#splash .spSw{position:absolute;left:50%;top:-66px;width:46px;height:auto;margin-left:-23px;transform:rotate(16deg);transform-origin:50% 92%;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35)) drop-shadow(0 0 12px rgba(255,235,170,.55));z-index:3;animation:spSwB 2.2s ease-in-out infinite;pointer-events:none}
+@keyframes spSwB{0%,100%{transform:rotate(16deg)}50%{transform:rotate(13deg)}}
+#splash .spSw .spGl{animation:spGlint 2.2s ease-in-out infinite}
+@keyframes spGlint{0%,70%,100%{opacity:0;transform:translateY(0)}80%{opacity:.85}95%{opacity:0;transform:translateY(90px)}}
+#splash.pull .spSw{animation:none;transition:transform .32s cubic-bezier(.3,.0,.2,1),opacity .32s;transform:translate(30px,-320px) rotate(40deg);opacity:0}
+#splash.tapped .spNm{opacity:0;transition:opacity .25s;animation:none}
+.r2sw.go .sw{animation:r2swGo .45s ease-out 1}
+@keyframes r2swGo{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-12deg)}100%{transform:scale(1)}}
+#splash.tick .spT.p0 svg{animation:spTick .35s ease-out 1}
+@keyframes spTick{0%{transform:scale(1.035)}100%{transform:scale(1)}}
+#splash .spNm{top:auto;bottom:calc(16% + 34px + env(safe-area-inset-bottom));font-size:28px}
 
 </style>
 </head>
@@ -2855,8 +2869,11 @@ sp.classList.add('go');
 if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){ timers.push(setTimeout(()=>sp.classList.add('cut1','cut2'),500), setTimeout(close,2200)); }
 else window._spGo=(()=>{ playSword(); swing(C2,C7,()=>sp.classList.add('cut1'),()=>{ fadeLoop();
   timers.push(setTimeout(()=>{ cancelAnimationFrame(fadeRaf); playSword(.9); swing(C9,C3,()=>sp.classList.add('cut2'),()=>{ fadeLoop(); timers.push(setTimeout(close,1500)); },60); },380)); }); });
-if(window._spGo){ sp.insertAdjacentHTML('beforeend','<div class="spTap">اضغط على الساعة واكسرها ⚔️</div>');
-  sp.addEventListener('click',()=>{ const f=window._spGo; if(f){ window._spGo=null; sp.classList.add('tapped'); try{ unlockAudio(); }catch(e){} f(); } else skip(); }); }
+if(window._spGo){ const nm=(()=>{ const v=String(stats.playerName||'').replace(/\s+/g,' ').trim(); if(!v) return 'يا بطل'; const m=v.match(/^([^،,]+)[،,]/); if(m) return 'يا '+m[1].trim(); const w=v.split(' '); return 'يا '+(/^بو\S{2,}$/.test(w[0])?w[0]:w[0]); })();
+  sp.insertAdjacentHTML('beforeend','<div class="spNm">'+nm.replace(/[<>&]/g,'')+'</div><div class="spTap">جاهز؟ اكسر الدقيقة ⚔️</div>');
+  const W=sp.querySelector('.spW'); if(W) W.insertAdjacentHTML('beforeend','<svg class="spSw" viewBox="0 0 40 170" aria-hidden="true"><defs><linearGradient id="spBl" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#e9eef5"/><stop offset=".51" stop-color="#b9c4d2"/><stop offset="1" stop-color="#dfe6ee"/></linearGradient><linearGradient id="spGd" x1="0" x2="1"><stop offset="0" stop-color="#ffe28a"/><stop offset="1" stop-color="#c8901e"/></linearGradient></defs><circle cx="20" cy="9" r="7" fill="url(#spGd)" stroke="#7a4a0c" stroke-width="1.5"/><rect x="15.5" y="15" width="9" height="26" rx="3" fill="#5b2a12" stroke="#2e1408" stroke-width="1.2"/><path d="M16 19 L24 23 M16 26 L24 30 M16 33 L24 37" stroke="#8a4a22" stroke-width="1.6"/><rect x="2" y="40" width="36" height="8" rx="4" fill="url(#spGd)" stroke="#7a4a0c" stroke-width="1.5"/><path d="M13 48 H27 L26 150 L20 168 L14 150 Z" fill="url(#spBl)" stroke="#8d99a8" stroke-width="1.2"/><path d="M20 50 V158" stroke="#9aa6b5" stroke-width="1"/><rect class="spGl" x="13" y="48" width="14" height="22" fill="#fff" opacity="0"/></svg>');
+  const NUMS=[...sp.querySelectorAll('text')].filter(t=>t.textContent.trim()==='60'); let sec=60; const tk=setInterval(()=>{ if(!window._spGo){ clearInterval(tk); return; } sec=sec<=1?60:sec-1; NUMS.forEach(t=>t.textContent=String(sec)); sp.classList.remove('tick'); void sp.offsetWidth; sp.classList.add('tick'); },1000);
+  sp.addEventListener('click',()=>{ const f=window._spGo; if(f){ window._spGo=null; clearInterval(tk); sp.classList.add('tapped','pull'); try{ unlockAudio(); }catch(e){} setTimeout(f,260); } else skip(); }); }
 else sp.addEventListener('click',skip);
 })();
 $('badgesBtn').onclick = ()=>{ window._pfBack=1; renderBadges(); show('badgesPage'); };
@@ -3264,7 +3281,7 @@ function m2Build(){
   let tp='<svg class="r2top" width="'+M2.W+'" height="'+(M2.PT+40)+'">'; let rr=5; const rn=()=>{ rr=(rr*9301+49297)%233280; return rr/233280; };
   for(let k=0;k<9;k++){ const x=16+rn()*(M2.W-32), y=30+rn()*(M2.PT-30); tp+=(k%3===0?m2Pine(x,y,1):k%3===1?m2Cone(x,y,1,k):m2Tree(x,y,1.1,k)); }
   tp+='</svg>';
-  let h=tp+'<div class="r2art" style="top:'+M2.PT+'px">'+[0,1,2,3,4,5,6,7].map(k=>'<img src="img/road/map'+k+'.jpg" alt="" decoding="async"'+'>').join('')+'</div>';
+  let h=tp+'<div class="r2art" style="top:'+M2.PT+'px">'+[0,1,2,3,4,5,6,7].map(k=>'<img src="img/road/map'+k+'.jpg" alt="" decoding="sync"'+'>').join('')+'</div>';
   GOV.forEach((gv,gi)=>{ if(gv.a===0) return; const y=(m2y(gv.a)+m2y(gv.a-1))/2, x=(m2x(gv.a)+m2x(gv.a-1))/2, c=GCOL[gi];
     h+='<div class="r2gov" style="left:'+x.toFixed(0)+'px;top:'+y.toFixed(0)+'px;--c:'+c[0]+';--c2:'+c[1]+'"><span>محافظة '+gv.n+'</span></div>'; });
   h+='<div class="r2gov first" style="left:'+m2x(0).toFixed(0)+'px;top:'+(m2y(0)+70).toFixed(0)+'px;--c:'+GCOL[0][0]+';--c2:'+GCOL[0][1]+'"><span>محافظة '+GOV[0].n+'</span></div>';
@@ -3334,7 +3351,14 @@ function renderMap(scroll){
     sub.appendChild(t);
   }
 }
-$('rpGo').onclick=()=>{ if($('rpGo').disabled) return; if(rdLoggedIn() && !pointsAvailable()){ renderMap(); return; } RD.back='map'; RD.mall=null; try{ playSword(1); }catch(e){} startMatch(); };
+$('rpGo').onclick=()=>{ if($('rpGo').disabled) return; if(rdLoggedIn() && !pointsAvailable()){ renderMap(); return; } RD.back='map'; RD.mall=null; try{ playSword(1); }catch(e){}
+  /* إذا كنت متحرك بعيد في الخريطة: نرجعك لمكانك أول، السيف ينبض، وبعدين يبدأ التحدي */
+  const box=$('r2'), pos=Math.min(HQ,(rdSt().pos||0)); let far=false;
+  if(box && M2.built && $('roadPage').classList.contains('active')){ const y=Math.max(0,m2y(pos)-box.clientHeight*0.55); far=Math.abs(box.scrollTop-y)>box.clientHeight*0.3;
+    if(far){ const y0=box.scrollTop, t0=performance.now(), D=Math.min(900,350+Math.abs(y-y0)*0.25); $('rpGo').disabled=true;
+      (function st(n){ const k=Math.min(1,(n-t0)/D), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; box.scrollTop=y0+(y-y0)*e; if(k<1) requestAnimationFrame(st);
+        else { const sw=$('r2Sw'); if(sw){ sw.classList.remove('go'); void sw.offsetWidth; sw.classList.add('go'); } setTimeout(()=>{ $('rpGo').disabled=false; startMatch(); },450); } })(t0); } }
+  if(!far) startMatch(); };
 
 function mallTap(k){
   const st=rdSt(), m=MALLS[k];
@@ -3421,6 +3445,9 @@ try{ const _ps=playSword; playSword=function(rate){ if(!stats.sound) return; try
 /* الآيفون يوقّف الصوت لما تطلع من الصفحة أو تقفل الشاشة: نحاول نصحّيه أول ما ترجع */
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ try{ if(stats.sound && AC && AC.state!=='running') AC.resume(); }catch(e){} } });
 window.addEventListener('pageshow',()=>{ try{ if(stats.sound && AC && AC.state!=='running') AC.resume(); }catch(e){} });
+/* الخريطة: نحمّل صورها ونفكّها من أول ما تفتح اللعبة، عشان لما تفتح الخريطة تطلع الرسمة على طول بدون الخلفية الخضرا */
+(()=>{ const pre=[]; const go=()=>{ for(let k=0;k<8;k++){ const im=new Image(); im.decoding='async'; im.src='img/road/map'+k+'.jpg'; pre.push(im); try{ im.decode().catch(()=>{}); }catch(e){} } window._rdPre=pre; };
+  if(document.readyState==='complete') setTimeout(go,300); else window.addEventListener('load',()=>setTimeout(go,300)); })();
 
 </script>
 </body>
