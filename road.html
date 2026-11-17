@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261117195139">
+<meta name="app-version" content="road-20261117203500">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1369,6 +1369,10 @@ body:has(#roadPage.active) .toast{top:calc(200px + env(safe-area-inset-top))}
 #game .opt{min-height:50px!important;padding-top:4px!important;padding-bottom:4px!important;box-shadow:0 4px 0 #d9c19a,0 6px 10px rgba(0,0,0,.2)!important}
 #game .opt .lt{width:36px!important;height:36px!important;font-size:17px!important}
 #game .opt.dim{opacity:1;filter:saturate(.4) brightness(.85)}
+#game .opts.grid{display:grid!important;grid-template-columns:1fr 1fr;gap:10px}
+#game .opts.grid .opt{position:relative;margin:0!important;min-height:66px!important;padding:6px 8px!important;gap:8px;font-size:15.5px;line-height:1.45}
+#game .opts.grid .opt .lt{width:30px!important;height:30px!important;font-size:15px!important}
+#game .opts.grid .opt .st{display:none!important}
 #game .qcard{min-height:90px!important}
 /* ===== النوافذ الصغيرة (showModal) بنفس البطاقة ===== */
 .modal{background:rgba(20,10,5,.6)}
@@ -2468,6 +2472,7 @@ function nextQuestion(){
   G.qMax = Q_BY_LEVEL[it.lvl] || Q_SECONDS; buildRing(); setQTimer(G.qMax);
   const ex = $('expl'); ex.textContent=''; ex.classList.remove('on');
   const box = $('opts'); box.innerHTML=''; box.classList.remove('lock');
+  box.classList.toggle('grid', opts.every(o=>String(o.t).length<=26));
   G.locked = false;
   const LET = ['أ','ب','ج','د'];
   opts.forEach((o,idx)=>{
@@ -2614,6 +2619,7 @@ function showQS(i, startAt){
   buildRing(); setQTimer(g.qMax);
   const ex=$('expl'); ex.textContent=''; ex.classList.remove('on');
   const box=$('opts'); box.innerHTML=''; box.classList.remove('lock');
+  box.classList.toggle('grid', q.opts.every(o=>String(o.t).length<=26));
   const LET=['أ','ب','ج','د'];
   q.opts.forEach((o,idx)=>{
     const b=document.createElement('button'); b.className='opt'; b.dataset.ok=o.ok?'1':'0';
