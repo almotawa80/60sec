@@ -441,3 +441,7 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
 @keyframes sknobShake{0%{translate:0 0}25%{translate:-1.5px 1px}50%{translate:1.5px -1px}75%{translate:-1px -1px}100%{translate:0 0}}
 #goBtn:not(.charging):not(.ready) .sknob{animation:sknobPulse 1.6s ease-in-out infinite}
 @keyframes sknobPulse{0%,100%{box-shadow:0 2px 8px rgba(0,0,0,.35),0 0 0 0 rgba(200,16,46,.45)}50%{box-shadow:0 2px 8px rgba(0,0,0,.35),0 0 0 10px rgba(200,16,46,0)}}
+#goBtn,#goBtn *{-webkit-touch-callout:none}
+#goBtn.ready .sknob{animation:sknobShake2 .14s linear infinite!important}
+@keyframes sknobShake2{0%{rotate:0deg}25%{rotate:-7deg}50%{rotate:0deg}75%{rotate:7deg}100%{rotate:0deg}}
+#goBtn.charging:not(.ready) .sknob{animation:none!important}

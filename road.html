@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261117164558">
+<meta name="app-version" content="road-20261117164917">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1146,6 +1146,10 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
 @keyframes sknobShake{0%{translate:0 0}25%{translate:-1.5px 1px}50%{translate:1.5px -1px}75%{translate:-1px -1px}100%{translate:0 0}}
 #goBtn:not(.charging):not(.ready) .sknob{animation:sknobPulse 1.6s ease-in-out infinite}
 @keyframes sknobPulse{0%,100%{box-shadow:0 2px 8px rgba(0,0,0,.35),0 0 0 0 rgba(200,16,46,.45)}50%{box-shadow:0 2px 8px rgba(0,0,0,.35),0 0 0 10px rgba(200,16,46,0)}}
+#goBtn,#goBtn *{-webkit-touch-callout:none}
+#goBtn.ready .sknob{animation:sknobShake2 .14s linear infinite!important}
+@keyframes sknobShake2{0%{rotate:0deg}25%{rotate:-7deg}50%{rotate:0deg}75%{rotate:7deg}100%{rotate:0deg}}
+#goBtn.charging:not(.ready) .sknob{animation:none!important}
 
 </style>
 </head>
@@ -2422,9 +2426,10 @@ function endGame(){
 /* ===== الأزرار ===== */
 
 /* زر السيف: اضغط وثبّت إصبعك لين يتشحن، واترك عشان تنطلق (الآيفون يحسبها ضغطة فيشتغل الصوت أكيد) */
+function unlockNow(){ try{ if(!stats.sound) return; audio(); if(!AC) return; const b=AC.createBuffer(1,1,22050), z=AC.createBufferSource(); z.buffer=b; z.connect(AC.destination); z.start(0); if(AC.state!=='running') AC.resume(); }catch(e){} }
 (function(){
   var btn=$('goBtn'), knob=$('goKnob'), lbl=$('goLbl'); if(!btn||!knob) return;
-  var HOLD=650, t0=0, raf=0, holding=false, ready=false, done=false, lbl0='', tip=0;
+  var HOLD=450, t0=0, raf=0, holding=false, ready=false, done=false, lbl0='', tip=0;
   btn.insertAdjacentHTML('afterbegin','<div class="schg" id="goChg"></div>'); var chg=$('goChg');
   function paint(){ if(!holding) return; var p=Math.min(1,(performance.now()-t0)/HOLD);
     chg.style.transform='scaleX('+p+')'; knob.style.transform='scale('+(1+p*.16).toFixed(3)+')';
@@ -2435,12 +2440,15 @@ function endGame(){
     var max=btn.clientWidth-72; knob.classList.add('back'); knob.style.transform='translate3d('+(-max)+'px,0,0)'; lbl.style.opacity=.05; if(lbl0) lbl.textContent=lbl0;
     try{ playSword(); }catch(e){}
     setTimeout(function(){ startMatch(); setTimeout(function(){ done=false; lbl.style.opacity=1; knob.style.transform=''; knob.style.animation=''; },600); },160); }
-  btn.addEventListener('pointerdown',function(e){ if(done) return; e.preventDefault(); try{ btn.setPointerCapture(e.pointerId); }catch(_){}
+  btn.addEventListener('pointerdown',function(e){ if(done) return;
     clearTimeout(tip); if(lbl.textContent!=='ثبّت إصبعك شوي ⏳' && lbl.textContent!=='اترك وانطلق ⚔️') lbl0=lbl.textContent; if(lbl0) lbl.textContent=lbl0; holding=true; ready=false; t0=performance.now();
-    knob.classList.remove('back'); knob.classList.remove('hint'); knob.style.animation='none'; btn.classList.add('charging');
+    knob.classList.remove('back'); knob.classList.remove('hint'); btn.classList.add('charging');
     try{ if(stats.sound){ audio(); loadSword(); } }catch(_){} raf=requestAnimationFrame(paint); });
-  btn.addEventListener('pointerup',function(){ if(!holding) return; if(ready){ fire(); return; }
-    reset(); lbl.textContent='ثبّت إصبعك شوي ⏳'; tip=setTimeout(function(){ if(!holding && lbl0) lbl.textContent=lbl0; },1300); });
+  function release(){ if(!holding) return; if(ready){ unlockNow(); fire(); return; }
+    reset(); lbl.textContent='ثبّت إصبعك شوي ⏳'; tip=setTimeout(function(){ if(!holding && lbl0) lbl.textContent=lbl0; },1300); }
+  /* اللمس: نطلق عند رفع الإصبع (touchend) لأنه الحدث اللي الآيفون يسمح فيه بالصوت */
+  btn.addEventListener('touchend',function(){ release(); },{passive:true});
+  btn.addEventListener('pointerup',function(e){ if(e.pointerType!=='touch') release(); });
   btn.addEventListener('pointercancel',reset);
   btn.addEventListener('contextmenu',function(e){ e.preventDefault(); });
   btn.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); fire(); } });
