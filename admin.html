@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
+<meta name="app-version" content="202611170635">
 <title>لوحة تحكّم تحدّي الدقيقة</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
@@ -419,6 +420,23 @@ $('q').oninput=()=>D&&renderPl();
 async function enter(){ KEY=$('key').value.trim()||KEY; if(!KEY) return; $('err').textContent=''; if(await load()){ try{localStorage.setItem('mc_admin',KEY);}catch(e){} clearInterval(timer); timer=setInterval(load,15000); } }
 $('lf').onsubmit=e=>{ e.preventDefault(); enter(); };
 if(KEY) enter();
+
+/* منع التكبير على الآيفون (يتجاهل user-scalable) */
+try{
+  ['gesturestart','gesturechange','gestureend'].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
+  let lastT=0; document.addEventListener('touchend',e=>{ const n=Date.now(); if(n-lastT<350) e.preventDefault(); lastT=n; },{passive:false});
+}catch(e){}
+
+/* تحديث تلقائي للنسخة (للأيقونة على الشاشة الرئيسية) */
+function checkVersion(){ try{
+  const cur=(document.querySelector('meta[name="app-version"]')||{}).content;
+  fetch(location.pathname+'?_='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(t=>{
+    const m=t.match(/name="app-version" content="([^"]+)"/);
+    if(m&&cur&&m[1]!==cur&&!sessionStorage.getItem('mc_admin_rl_'+m[1])){ sessionStorage.setItem('mc_admin_rl_'+m[1],'1'); location.replace(location.pathname+'?v='+m[1]); }
+  }).catch(()=>{});
+}catch(e){} }
+checkVersion();
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') checkVersion(); });
 </script>
 </body>
 </html>
