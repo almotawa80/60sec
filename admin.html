@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611170635">
+<meta name="app-version" content="202611170640">
 <title>لوحة تحكّم تحدّي الدقيقة</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
@@ -92,7 +92,8 @@ button.li:focus-visible{outline:2px solid var(--red)}
 .charts{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:10px}
 .ch{background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:12px 14px;min-width:0}
 .ch h3{font-size:13px;font-weight:800;margin:0 0 8px}
-.cv{position:relative;height:190px}
+.cv{position:relative;height:190px;width:100%;overflow:hidden}
+.cv canvas{position:absolute;left:0;top:0;width:100%!important;height:100%!important;display:block}
 h2.sh{font-size:13px;font-weight:800;color:var(--mu);margin:8px 6px -6px}
 .grp{background:var(--card);border:1px solid var(--ln);border-radius:20px;overflow:hidden}
 .it+.it{border-top:1px solid var(--ln)}
@@ -283,6 +284,10 @@ async function load(){
 function showApp(on){ $('app').classList.toggle('hide',!on); $('login').classList.toggle('hide',on); $('ref').classList.toggle('hide',!on); }
 
 /* ===== الرسوم ===== */
+function fitCharts(){ try{ Object.values(charts).forEach(c=>c.resize()); }catch(e){} }
+['resize','orientationchange','pageshow'].forEach(ev=>window.addEventListener(ev,()=>setTimeout(fitCharts,120)));
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') setTimeout(fitCharts,120); });
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>setTimeout(fitCharts,50));
 const centerPlugin={id:'center',afterDraw(c,a,o){ if(!o||!o.txt) return; const m=c.getDatasetMeta(0).data[0]; if(!m) return; const x=m.x,y=m.y,r=m.innerRadius,g=c.ctx; g.save(); g.textAlign='center'; g.textBaseline='middle'; g.fillStyle=css('--tx'); g.font='800 '+Math.max(14,Math.round(r*.42))+"px 'Noto Kufi Arabic',system-ui,sans-serif"; g.fillText(o.txt,x,y-r*.16); g.fillStyle=css('--mu'); g.font='600 '+Math.max(9,Math.round(r*.19))+"px 'Noto Kufi Arabic',system-ui,sans-serif"; g.fillText(o.sub||'',x,y+r*.32); g.restore(); }};
 if(typeof Chart!=='undefined') Chart.register(centerPlugin);
 function mk(id,cfg){
@@ -301,8 +306,9 @@ function drawCharts(){
   const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10}}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid}}};
   const noLeg=Object.assign({},base,{plugins:{legend:{display:false}}});
   const pend=Math.max(0,(t.vouchers_requested||0)-(t.vouchers_delivered||0));
-  mk('cHum',{type:'doughnut',data:{labels:['لاعب حقيقي','منافس آلي'],datasets:[{data:[t.vs_human,t.vs_bot],backgroundColor:[red,grey],borderWidth:0}]},options:pie(pct(t.vs_human,t.vs_bot),'ضد لاعب حقيقي')});
-  mk('cVou',{type:'doughnut',data:{labels:['تم الصرف','بانتظار الصرف'],datasets:[{data:[t.vouchers_delivered,pend],backgroundColor:['#1a8f4c','#f2a900'],borderWidth:0}]},options:pie(fmt(t.vouchers_delivered)+'/'+fmt(t.vouchers_requested),'تم صرفها')});
+  const ring=(vals,cols,labels)=>{ const s=vals.reduce((a,b)=>a+(+b||0),0); return s?{labels,datasets:[{data:vals,backgroundColor:cols,borderWidth:0}]}:{labels:['لا يوجد'],datasets:[{data:[1],backgroundColor:[grey],borderWidth:0}]}; };
+  mk('cHum',{type:'doughnut',data:ring([t.vs_human,t.vs_bot],[red,grey],['لاعب حقيقي','منافس آلي']),options:pie(pct(t.vs_human,t.vs_bot),'ضد لاعب حقيقي')});
+  mk('cVou',{type:'doughnut',data:ring([t.vouchers_delivered,pend],['#1a8f4c','#f2a900'],['تم الصرف','بانتظار الصرف']),options:pie(t.vouchers_requested?fmt(t.vouchers_delivered)+'/'+fmt(t.vouchers_requested):'0','تم صرفها')});
   const days=D.days||[], lb=days.map(x=>{const p=String(x.dy).split('-');return (+p[2])+'/'+(+p[1]);}), wk=days.slice(-7);
   mk('cWk',{type:'bar',data:{labels:lb.slice(-7),datasets:[{label:'مباريات',data:wk.map(x=>x.plays),backgroundColor:red,borderRadius:6}]},options:noLeg});
   mk('cDays',{type:'bar',data:{labels:lb,datasets:[{label:'زائرون',data:days.map(x=>x.visitors),backgroundColor:grey},{label:'مباريات',data:days.map(x=>x.plays),backgroundColor:red},{label:'انسحابات',data:days.map(x=>x.quits),backgroundColor:'#f2a900'}]},options:base});
@@ -310,6 +316,7 @@ function drawCharts(){
   const top=(D.players||[]).slice(0,10);
   mk('cTop',{type:'bar',data:{labels:top.map(p=>p.name),datasets:[{data:top.map(p=>p.total_points),backgroundColor:red,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid},y:{grid:{display:false}}}}});
   if(first){ first=false; Chart.defaults.animation=false; }
+  requestAnimationFrame(fitCharts);
 }
 
 /* ===== العرض ===== */
