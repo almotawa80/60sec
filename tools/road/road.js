@@ -51,15 +51,17 @@ function crPath(pts){ let d='M'+pts[0][0]+' '+pts[0][1];
   return d; }
 
 /* الخريطة 3D: الطريق قدامك وهو رايح للأفق */
+function bkLogo(cls,txt){ const pth=document.querySelector('svg.bklogo path'), d=pth?pth.getAttribute('d'):'';
+  return '<span class="'+cls+'"><svg viewBox="0 0 2525 699"><path fill="#e0262f" fill-rule="evenodd" d="'+d+'"/></svg>'+(txt?'<i class="tx"><b>بنك بوبيان</b><em>Boubyan Bank</em></i>':'')+'</span>'; }
 const M3={STEP:280, TILT:72, PW:900, cam:0, built:false, H:0, BASE:0};
 const GCOL=[['#ff8a3d','#d9480f'],['#22b8cf','#0b7285'],['#40c057','#2b8a3e'],['#b15ce8','#7b2fa8'],['#3d9bff','#1864ab'],['#ff5c6c','#c4141d']];
 const m3x=i=>M3.PW/2+Math.sin(i*0.9+0.6)*110;
 const m3y=i=>M3.BASE-i*M3.STEP;
 function m3Build(){
   const st=rdSt(), pos=Math.min(st.pos,HQ+1), arrived=!!st.arrived, S=M3.STEP;
-  M3.H=(HQ+4)*S+700; M3.BASE=M3.H-560;
+  M3.H=(HQ+30)*S+700; M3.BASE=M3.H-560;
   const pl=$('r3Plane'); pl.style.height=M3.H+'px';
-  const pts=[[m3x(-2),m3y(-2)]]; for(let i=-1;i<=HQ+1;i++) pts.push([m3x(i),m3y(i)]);
+  const pts=[[m3x(-2),m3y(-2)]]; for(let i=-1;i<=HQ;i++) pts.push([m3x(i),m3y(i)]); for(let i=HQ+1;i<=HQ+28;i++){ const k=Math.max(0,1-(i-HQ)/3); pts.push([M3.PW/2+(m3x(i)-M3.PW/2)*k, m3y(i)]); }
   const d=crPath(pts);
   const cut=[[m3x(-2),m3y(-2)]]; for(let i=-1;i<=Math.min(pos,HQ);i++) cut.push([m3x(i),m3y(i)]);
   let h='<svg width="'+M3.PW+'" height="'+M3.H+'" viewBox="0 0 '+M3.PW+' '+M3.H+'">'
@@ -67,22 +69,22 @@ function m3Build(){
    +'<path d="'+d+'" fill="none" stroke="#f5f5f5" stroke-width="122" stroke-linecap="round"/>'
    +'<path d="'+d+'" fill="none" stroke="#34353a" stroke-width="110" stroke-linecap="round"/>'
    +(pos>0?'<path d="'+crPath(cut)+'" fill="none" stroke="rgba(224,38,47,.28)" stroke-width="110" stroke-linecap="round"/>':'')
-   +'<path d="'+d+'" fill="none" stroke="#ffc23d" stroke-width="6" stroke-dasharray="40 34"/></svg>';
+   +'<path d="'+d+'" fill="none" stroke="#ffc23d" stroke-width="6" stroke-dasharray="40 34" class="run"/></svg>';
   const bb=(x,y,inner,cls,attr)=>'<div class="m3n'+(cls?' '+cls:'')+'" data-d="'+((M3.BASE-y)/S).toFixed(2)+'" style="left:'+x.toFixed(0)+'px;top:'+y.toFixed(0)+'px"'+(attr||'')+'><div class="m3b">'+inner+'</div></div>';
   GOV.forEach((g,gi)=>{ const y=m3y(g.a)+S*0.5, x=(m3x(g.a)+m3x(g.a-1))/2, c=GCOL[gi];
     h+=bb(x,y,'<div class="m3gate" style="--c:'+c[0]+';--c2:'+c[1]+'"><span>محافظة '+g.n+'</span></div>','gate'); });
   ROUTE.forEach((nm,i)=>{
     const x=m3x(i), y=m3y(i), done=i<pos, cur=(i===pos && !arrived), hq=i===HQ, cls=done?'done':cur?'cur':'lock', c=GCOL[govOf(i)], side=(i%2?1:-1), s=(st.stars||[])[i]||0;
     h+=bb(x,y,'<div class="m3pad">'+(done?'✓':cur?'▶':hq?'🏁':'🔒')+'</div>',cls+' pad','data-i="'+i+'"');
-    if(hq){ h+=bb(x+side*210,y-40,'<div class="m3hq"><div class="fl">🏁</div><div class="tw"><span>الفرع الرئيسي</span></div></div>',cls); return; }
-    h+=bb(x+side*200,y-30,'<div class="m3bld" style="--c:'+c[0]+';--c2:'+c[1]+'">'+(done&&s?'<div class="st">'+'⭐'.repeat(s)+'</div>':'')+'<div class="rf"></div><div class="bd"><span class="lg">'+nm+'</span><i class="w" style="right:12px"></i><i class="w" style="left:12px"></i><i class="dr"></i></div></div>',cls);
+    if(hq){ h+=bb(x+side*210,y-40,'<div class="m3hq"><div class="nm">🏁 الفرع الرئيسي</div></div>',cls); return; }
+    h+=bb(x+side*200,y-30,'<div class="m3bld" style="--c:'+c[0]+';--c2:'+c[1]+'">'+(done&&s?'<div class="st">'+'⭐'.repeat(s)+'</div>':'')+'<div class="bk"><i class="gl3"></i>'+bkLogo('lo2',1)+'<div class="ar"><i class="gl"></i></div><i class="gl2"></i></div><span class="lg">'+nm+'</span></div>',cls);
     h+=bb(x-side*175,y-150,'<div class="m3palm">🌴</div>','');
     if(isGovEnd(i)) h+=bb(x-side*150,y+40,'<div class="m3chest">'+(done?'📭':'🎁')+'</div>',cls);
   });
   MALLS.forEach((m,k)=>{ const won=(st.malls||[]).indexOf(k)>=0, open=!won && pos>m.at, i=m.at, side=(i%2?1:-1);
     h+=bb(m3x(i)-side*230,m3y(i)-S*0.45,'<button type="button" class="m3mall '+(won?'won':open?'open':'off')+'" data-k="'+k+'"><span class="b">'+(won?'✓':'🛍️')+'</span><span class="l">'+m.n+(open?' ⚡':'')+'</span></button>','');
   });
-  if(!arrived) h+=bb(m3x(pos-0.45),m3y(pos-0.45),'<div class="m3car">🚗</div>','car');
+  if(!arrived) h+=bb(m3x(pos-0.45),m3y(pos-0.45),'<div class="m3car"><i class="sh"></i><i class="ex"></i><i class="wl"></i><i class="wr"></i><i class="cb"></i><i class="bo"></i><i class="tl"></i><i class="tr"></i><i class="pl">بوبيان</i></div>','car');
   pl.innerHTML=h;
   pl.querySelectorAll('.m3mall').forEach(b=>b.onclick=e=>{ e.stopPropagation(); mallTap(+b.dataset.k); });
   pl.querySelectorAll('.m3n.pad').forEach(n=>n.onclick=()=>{ const i=+n.dataset.i, s=(rdSt().stars||[])[i]||0;
@@ -93,7 +95,7 @@ function m3Cam(c,anim){
   M3.cam=Math.max(-0.6,Math.min(HQ,c));
   const pl=$('r3Plane'); pl.style.transition=anim?'transform .6s cubic-bezier(.2,.8,.2,1)':'none';
   pl.style.transform='rotateX('+M3.TILT+'deg) translateY('+(M3.cam*M3.STEP).toFixed(1)+'px)';
-  $('r3Sky').classList.toggle('near', M3.cam>HQ-6);
+  const hf=document.querySelector('#r3Sky .hqfar'); if(hf && !hf.dataset.lg){ hf.dataset.lg=1; const t=hf.querySelector('.t'); if(t) t.innerHTML=bkLogo('lo2',0); const pp=hf.querySelector('.p'); if(pp) pp.innerHTML=bkLogo('lo3',1); } if(hf) hf.style.transform='translateX(-50%) scale('+(1+Math.max(0,M3.cam-(HQ-9))*0.06).toFixed(3)+')';
   pl.querySelectorAll('.m3n').forEach(n=>{ const k=+n.dataset.d-M3.cam; const vis=k>-1.8 && k<7.2;
     n.style.display=vis?'':'none'; if(vis) n.style.opacity=k>5.6?String(Math.max(0,(7.2-k)/1.6).toFixed(2)):''; });
 }
