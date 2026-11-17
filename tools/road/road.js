@@ -500,3 +500,4 @@ drawCard = async function(r,name){
 
 /* الطريق: بدون وضع داكن، دايماً فاتح */
 (function(){ try{ stats.theme='light'; }catch(e){} applyTheme=function(){ document.documentElement.setAttribute('data-theme','light'); }; applyTheme(); })();
+
