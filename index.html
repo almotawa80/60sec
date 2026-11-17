@@ -661,7 +661,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171230">
+<meta name="app-version" content="202611171240">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1945,9 +1945,9 @@ async function syncProgress(){
   if(k && typeof k==='object') stats.rk = {d10:!!(k.d10||(stats.rk||{}).d10), d1:!!(k.d1||(stats.rk||{}).d1), w10:!!(k.w10||(stats.rk||{}).w10), m1:!!(k.m1||(stats.rk||{}).m1)};
   save(stats); try{ renderBadges(); }catch(e){}
 }
-function askLogin(next){
+function askLogin(next,pre){
   let g = stats.gender || '';
-  showModal('تسجيل الدخول','<div style="font-size:13px;color:var(--muted);margin:-4px 0 12px">الرمز وصلك من إدارة المسابقة</div><input id="lgEmp" class="nameIn" inputmode="numeric" maxlength="10" placeholder="الرقم الوظيفي" autocomplete="off"><input id="lgCode" class="nameIn lgcode" style="margin-top:10px" inputmode="numeric" maxlength="6" placeholder="الرمز (٦ أرقام)" autocomplete="one-time-code">'+(g?'':'<div class="gpick"><button type="button" id="gM">ذكر</button><button type="button" id="gF">أنثى</button></div>')+'<div style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center">نسيت الرمز؟ تواصل مع إدارة المسابقة</div>',
+  showModal(pre&&pre.n?'أهلاً '+esc(String(pre.n).split(' ')[0]):'تسجيل الدخول','<div style="font-size:13px;color:var(--muted);margin:-4px 0 12px">'+(pre?'بياناتك جاهزة، اضغط دخول':'الرمز وصلك من إدارة المسابقة')+'</div><input id="lgEmp" class="nameIn" inputmode="numeric" maxlength="10" placeholder="الرقم الوظيفي" autocomplete="off"><input id="lgCode" class="nameIn lgcode" style="margin-top:10px" inputmode="numeric" maxlength="6" placeholder="الرمز (٦ أرقام)" autocomplete="one-time-code">'+(g?'':'<div class="gpick"><button type="button" id="gM">ذكر</button><button type="button" id="gF">أنثى</button></div>')+'<div style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center">نسيت الرمز؟ تواصل مع إدارة المسابقة</div>',
     [{t:'دخول',full:true,f:async()=>{
         const emp=normEmp($('lgEmp').value), code=normEmp($('lgCode').value);
         if(!/^[0-9]{1,10}$/.test(emp)){ toast('اكتب رقمك الوظيفي'); return; }
@@ -1962,6 +1962,7 @@ function askLogin(next){
         save(stats); setTimeout(syncProgress,300); try{ syncProfile(); }catch(e){} closeModal(); renderGreet(); try{ renderStats(); renderGuest(); }catch(e){}
         toast('أهلاً '+String(stats.playerName||'').split(' ')[0]); if(next) next(); }},
      {t:'إلغاء',ghost:true,full:true,f:closeModal}]);
+  if(pre){ $('lgEmp').value=pre.e||''; $('lgCode').value=pre.c||''; }
   if(!stats.gender){ const mark=()=>{ $('gM').classList.toggle('on',g==='m'); $('gF').classList.toggle('on',g==='f'); };
     $('gM').onclick=()=>{g='m';mark();}; $('gF').onclick=()=>{g='f';mark();}; mark(); }
 }
@@ -2389,7 +2390,15 @@ async function beat(){
 beat(); setInterval(beat,30000); document.addEventListener('visibilitychange',()=>{ if(!document.hidden) beat(); });
 if(!DEMO) rpc('log_visit',{p_id:PID},4000);
 syncPlayer();
-loadRemoteQuestions().then(acceptInviteFromUrl);
+function loginFromUrl(){
+  let m=null; try{ m=(location.hash||'').match(/^#k=([0-9]{1,10})-([0-9]{6})(?:&n=(.*))?$/); }catch(e){}
+  if(!m) return false;
+  try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+  if(DEMO || String(stats.empNo||'')===m[1]) return false;
+  let n=''; try{ n=decodeURIComponent(m[3]||''); }catch(e){}
+  askLogin(null,{e:m[1],c:m[2],n:n}); return true;
+}
+loadRemoteQuestions().then(()=>{ if(!loginFromUrl()) acceptInviteFromUrl(); });
 $('guestLogin').onclick=()=>askLogin();
 if(!DEMO) rpc('auth_mode',{},5000).then(m=>{ if(m && typeof m.list==='boolean'){ LIST_ON=m.list; try{ localStorage.setItem('mc_list',m.list?'1':'0'); }catch(e){} try{ renderStats(); }catch(e){} } });
 
