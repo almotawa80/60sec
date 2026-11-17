@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611171250">
+<meta name="app-version" content="202611171300">
 <title>لوحة تحكّم تحدّي الدقيقة</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
@@ -561,7 +561,7 @@ window.addEventListener('afterprint',()=>{ try{ Object.values(charts).forEach(c=
 
 /* ===== الأزرار ===== */
 $('resetAll').onclick=async()=>{ if(!confirm('تصفير رصيد ونقاط جميع اللاعبين؟ لا يمكن التراجع.')) return; if(!confirm('تأكيد أخير: تصفير الجميع؟')) return; try{ await rpc('admin_reset_points',{p_key:KEY}); }catch(e){} load(); };
-$('out').onclick=()=>{ try{localStorage.removeItem('mc_admin');sessionStorage.removeItem('mc_admin');localStorage.removeItem('mc_admin_fid');}catch(e){} KEY=''; clearInterval(timer); location.reload(); };
+$('out').onclick=()=>{ try{localStorage.removeItem('mc_admin');sessionStorage.removeItem('mc_admin');localStorage.removeItem('mc_admin_fid');sessionStorage.removeItem('mc_admin_ok');}catch(e){} KEY=''; clearInterval(timer); location.reload(); };
 $('ref').onclick=()=>{ const b=$('ref'); b.classList.remove('spin'); void b.offsetWidth; b.classList.add('spin'); load(); };
 $('thm').onclick=()=>{ const d=!isDark(); if(d) document.documentElement.setAttribute('data-theme','dark'); else document.documentElement.removeAttribute('data-theme'); try{localStorage.setItem('mc_admin_dark',d?'1':'0');}catch(e){} const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=d?'#202124':'#d3232f'; drawCharts(); };
 if(isDark()){ const m=document.querySelector('meta[name=theme-color]'); if(m) m.content='#202124'; }
@@ -605,18 +605,23 @@ function lockNow(){
 let busy=false;
 async function tryUnlock(auto){
   if(busy) return; busy=true; $('lerr').textContent='';
-  try{ if(await fidVerify()){ LOCKED=false; await enter(); } else if(!auto) $('lerr').textContent='ما تم التحقق، حاول مرة ثانية'; }
+  try{ if(await fidVerify()){ LOCKED=false; touchOk(); await enter(); } else if(!auto) $('lerr').textContent='ما تم التحقق، حاول مرة ثانية'; }
   catch(e){ if(!auto) $('lerr').textContent='ما تم التحقق، حاول مرة ثانية'; }
   busy=false;
 }
 $('unl').onclick=()=>tryUnlock(false);
 $('usePw').onclick=()=>{ LOCKED=false; KEY=''; try{ localStorage.removeItem('mc_admin'); }catch(e){} $('lock').classList.add('hide'); $('login').classList.remove('hide'); $('key').focus(); };
+/* جلسة Face ID: تبقى مفتوحة ١٥ دقيقة من آخر استخدام، وتنتهي بإغلاق التبويب */
+const IDLE=15*60000;
+function touchOk(){ try{ sessionStorage.setItem('mc_admin_ok',String(Date.now())); }catch(e){} }
+function okFresh(){ try{ const t=+sessionStorage.getItem('mc_admin_ok')||0; return t && Date.now()-t<IDLE; }catch(e){ return false; } }
+['pointerdown','keydown','scroll'].forEach(ev=>document.addEventListener(ev,()=>{ if(!LOCKED&&KEY) touchOk(); },{passive:true,capture:true}));
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='hidden'){ HID=Date.now(); return; }
-  if(FID&&KEY&&!LOCKED&&HID&&Date.now()-HID>60000) lockNow();
+  if(document.visibilityState==='hidden') return;
+  if(FID&&KEY&&!LOCKED&&!okFresh()) lockNow(); else if(!LOCKED&&KEY) touchOk();
 });
 
-(async()=>{ await fidCheck(); if(KEY&&FID&&FID_OK) lockNow(); else if(KEY) enter(); })();
+(async()=>{ await fidCheck(); if(KEY&&FID&&FID_OK&&!okFresh()) lockNow(); else if(KEY){ touchOk(); enter(); } })();
 
 /* منع التكبير على الآيفون (يتجاهل user-scalable) */
 try{
