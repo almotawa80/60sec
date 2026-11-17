@@ -779,3 +779,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 #home,#match,#result,#game,#lbPage,#profilePage,#badgesPage,#store{background:transparent!important}
 #app>.screen[style*="z-index: 2"]{background:radial-gradient(circle at 50% 30%,rgba(120,20,30,.35),rgba(20,10,5,.82) 78%),url(img/road/map0.jpg) center/cover no-repeat,#2a1408!important}
 #app>.bklogo{position:fixed!important;transform:none!important;transition:none!important}
+/* زر السيف: مسافة بسيطة عن حواف الخانة */
+#home #goBtn.slide{height:70px!important}
+#home #goBtn .sknob{width:52px!important;height:52px!important;margin-top:-26px!important;right:9px!important}
+/* المتصدرون: نقاط التحدي فقط (التدريب بدون نقاط) — نشيل تبويب كل الجولات */
+#lbMode{display:none!important}
