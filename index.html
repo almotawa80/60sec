@@ -558,6 +558,8 @@ button.bcount{padding:6px 9px}
 .bigrow{width:100%;display:flex;align-items:center;gap:10px;font:inherit;border:0;border-radius:18px;padding:16px;margin-bottom:10px;background:var(--card);color:var(--text);cursor:pointer;text-align:start}
 .bigrow .bl{flex:1;font-size:16px;font-weight:800}
 .bigrow .bc{font-weight:800;font-size:15px;opacity:.9}
+.pfrow[hidden],.pfout[hidden]{display:none!important}
+.pfout{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:700;font-size:15px;border:0;border-radius:18px;padding:14px;margin:6px 0 24px;background:transparent;color:var(--accent);cursor:pointer}.pfout:active{background:var(--card)}
 .bigrow.red{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(211,35,47,.25)}
 #app .hero.compact .hero-row{min-height:58px}
 
@@ -674,7 +676,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171700">
+<meta name="app-version" content="202611171800">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -830,6 +832,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
       </div>
       <button class="bigrow red" id="badgesBtn" type="button"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M15.5 12.9L17 22l-5-3-5 3 1.5-9.1"/></svg><span class="bl">شاراتي</span><span class="bc"><span id="bcHead">0</span>/<span id="bcTotal">25</span></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
       <button class="bigrow" id="pfStore" type="button"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9M12 8S10 3 7.5 4.5 9 8 12 8zM12 8s2-5 4.5-3.5S15 8 12 8z"/></svg><span class="bl">قسائمي ومتجر النقاط</span><span class="bc"></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="pfout" id="pfOut" type="button" hidden><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l-5-5 5-5M5 12h11"/></svg>تسجيل خروج</button>
     </div>
   </section>
 
@@ -1069,7 +1072,7 @@ const dkey = d => d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
 (function(){ try{ var E='2026-11-17-reset'; if(localStorage.getItem('mc_epoch')!==E){ ['minute_stats','mc_pid','mc_avsrc','mc_q'].forEach(function(k){ localStorage.removeItem(k); }); localStorage.setItem('mc_epoch',E); } }catch(e){} })();
 /* حفظ بسيط في المتصفح */
 function load(){ try{ return JSON.parse(localStorage.getItem('minute_stats')||'{}'); }catch(e){ return {}; } }
-function save(s){ try{ localStorage.setItem('minute_stats', JSON.stringify(s)); }catch(e){} }
+function save(s){ if(window._loggedOut) return; try{ localStorage.setItem('minute_stats', JSON.stringify(s)); }catch(e){} }
 let stats = Object.assign({best:0,wins:0,streak:0,played:0,correctTotal:0,dayStreak:0,lastDay:'',sound:true,balance:0,totalPoints:0,pointsDay:'',empNo:''}, load());
 stats.badges = stats.badges || {}; stats.redeemed = stats.redeemed || [];
 /* رصيد تجريبي للعرض */
@@ -2329,7 +2332,7 @@ function renderProfile(){
   try{ setAv($('invAv'), stats.avatar, avInit()); }catch(e){}
   if(document.activeElement!==$('pfNameIn')) $('pfNameIn').value = stats.playerName||''; $('pfEmp').textContent = stats.empNo||'—';
   if(document.activeElement!==$('pfEmail')) $('pfEmail').value = stats.email||'';
-  $('pfDept').textContent=stats.dept||''; $('pfDeptR').hidden=!stats.dept;
+  $('pfOut').hidden=!stats.empNo||DEMO; $('pfDept').textContent=stats.dept||''; $('pfDeptR').hidden=!stats.dept;
   $('pfTot').textContent=fmt(stats.totalPoints); $('pfBal').textContent=fmt(stats.balance);
   $('pfWins').textContent=fmt(stats.wins)+'/'+fmt(stats.played); $('pfBest').textContent=fmt(stats.best);
   const pl=$('pfPlus'); pl.textContent = stats.avatar ? '✎' : '+'; pl.classList.toggle('ed', !!stats.avatar);
@@ -2373,6 +2376,12 @@ $('pfBtn').onclick=()=>{ SCR.profilePage=0; window._pfBack=0; renderProfile(); i
 $('backBtn3').onclick=()=>{ window._pfBack=0; renderStats(); const pg=$('profilePage'); const swiped=!!pg.style.transform; const br=$('pfBig').getBoundingClientRect(), lk=avLook($('pfBig'));
   show('home'); if(!swiped && br.bottom>0) flyAv({getBoundingClientRect:()=>br}, $('pfBtn'), lk); };
 
+$('pfOut').onclick=()=>{ showModal('تسجيل خروج؟','<p style="margin:0;line-height:1.9">تقدر ترجع تدخل بنفس الرقم الوظيفي والرمز، ونقاطك وشاراتك محفوظة.</p>',[
+  {t:'خروج',f:async()=>{ const b=$('mBtns').querySelector('button'); if(b){ b.disabled=true; b.textContent='…'; }
+    try{ await Promise.race([syncProgress(),new Promise(r=>setTimeout(r,2500))]); }catch(e){}
+    window._loggedOut=1; try{ ['minute_stats','mc_pid','mc_avsrc','mc_q'].forEach(k=>localStorage.removeItem(k)); sessionStorage.clear(); }catch(e){}
+    location.replace(location.pathname); }},
+  {t:'إلغاء',ghost:true,f:closeModal}]); };
 $('pfStore').onclick=()=>{ window._pfBack=1; openStore(); };
 const CR={img:null,src:'',x:0,y:0,base:1,z:1,R:140,ptrs:{},pinch:null};
 function crApply(){ const i=$('crImg'), sc=CR.base*CR.z; i.style.transform='translate('+(CR.x)+'px,'+(CR.y)+'px) scale('+sc+')'; }
