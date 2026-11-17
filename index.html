@@ -661,7 +661,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171100">
+<meta name="app-version" content="202611171230">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1950,7 +1950,7 @@ function askLogin(next){
   showModal('تسجيل الدخول','<div style="font-size:13px;color:var(--muted);margin:-4px 0 12px">الرمز وصلك من إدارة المسابقة</div><input id="lgEmp" class="nameIn" inputmode="numeric" maxlength="10" placeholder="الرقم الوظيفي" autocomplete="off"><input id="lgCode" class="nameIn lgcode" style="margin-top:10px" inputmode="numeric" maxlength="6" placeholder="الرمز (٦ أرقام)" autocomplete="one-time-code">'+(g?'':'<div class="gpick"><button type="button" id="gM">ذكر</button><button type="button" id="gF">أنثى</button></div>')+'<div style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center">نسيت الرمز؟ تواصل مع إدارة المسابقة</div>',
     [{t:'دخول',full:true,f:async()=>{
         const emp=normEmp($('lgEmp').value), code=normEmp($('lgCode').value);
-        if(!/^[0-9]{3,10}$/.test(emp)){ toast('اكتب رقمك الوظيفي'); return; }
+        if(!/^[0-9]{1,10}$/.test(emp)){ toast('اكتب رقمك الوظيفي'); return; }
         if(!/^[0-9]{6}$/.test(code)){ toast('الرمز ٦ أرقام'); return; }
         if(!g){ toast('اختر ذكر أو أنثى'); return; }
         const r = await rpc('login_player',{p_id:PID,p_emp:emp,p_code:code,p_gender:g},6000);
@@ -1972,7 +1972,7 @@ function askName(next){
     [{t:'متابعة',full:true,f:async()=>{
         const v=$('nameIn').value.trim(), emp=normEmp($('empIn').value);
         if(v.length<2){ toast('اكتب اسمك الكامل'); return; }
-        if(!DEMO && !/^[0-9]{3,10}$/.test(emp)){ toast('اكتب رقمك الوظيفي (أرقام فقط)'); return; }
+        if(!DEMO && !/^[0-9]{1,10}$/.test(emp)){ toast('اكتب رقمك الوظيفي (أرقام فقط)'); return; }
         if(!g){ toast('اختر ذكر أو أنثى'); return; }
         if(!DEMO){
           const r = await rpc('register_player',{p_id:PID,p_name:v,p_emp:emp,p_gender:g,p_balance:stats.empNo?0:(stats.balance||0)},6000);

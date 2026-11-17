@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611171220">
+<meta name="app-version" content="202611171230">
 <title>لوحة تحكّم تحدّي الدقيقة</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
@@ -447,7 +447,7 @@ function drawPlayer(){
     const inp=$('empNew'); inp.focus(); inp.select();
     $('empCx').onclick=drawPlayer;
     $('empSv').onclick=async()=>{ const v=String(inp.value||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,''); const m=$('empMsg');
-      if(!/^[0-9]{3,10}$/.test(v)){ m.textContent='أرقام فقط (٣ إلى ١٠)'; return; }
+      if(!/^[0-9]{1,10}$/.test(v)){ m.textContent='أرقام فقط (حتى ١٠)'; return; }
       if(v===p.emp_no){ drawPlayer(); return; }
       $('empSv').disabled=true; m.textContent='جارٍ الحفظ…';
       let r=null; try{ r=await rpc('admin_set_emp',{p_key:KEY,p_emp:p.emp_no,p_new:v}); }catch(e){}
@@ -484,7 +484,7 @@ $('empFile').onchange=async e=>{
   let rows=[], bad=[], seen={};
   try{ const wb=XLSX.read(new Uint8Array(await f.arrayBuffer()),{type:'array'}); const sh=wb.Sheets[wb.SheetNames[0]];
     XLSX.utils.sheet_to_json(sh,{header:1,raw:false,blankrows:false}).forEach((r,i)=>{ let emp='',name='',num='';
-      (r||[]).forEach(c=>{ const s=String(c==null?'':c).trim(), d=nEmp(s); if(!s) return; if(/^[0-9]+$/.test(d)){ if(!num) num=d; if(!emp && /^[0-9]{3,10}$/.test(d)) emp=d; } else if(!name && s.length>=2) name=s; });
+      (r||[]).forEach(c=>{ const s=String(c==null?'':c).trim(), d=nEmp(s); if(!s) return; if(/^[0-9]+$/.test(d)){ if(!num) num=d; if(!emp && /^[0-9]{1,10}$/.test(d)) emp=d; } else if(!name && s.length>=2) name=s; });
       const line=i+1;
       if(emp && name){ if(seen[emp]){ bad.push({line,emp,name,why:'مكرر في الملف (السطر '+seen[emp]+')'}); } else { seen[emp]=line; rows.push({emp,name,line}); } }
       else if(i>0 || num) bad.push({line,emp:emp||num,name,why:!(emp||num)?'بدون رقم وظيفي':(!emp?'الرقم لازم ٣ إلى ١٠ أرقام':'بدون اسم')}); });
