@@ -696,7 +696,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171510">
+<meta name="app-version" content="202611171512">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -2285,7 +2285,13 @@ function playSword(rate){ if(!stats.sound) return; if(!AC) audio(); if(!AC) retu
   if(AC.state==='running'){ swNow(rate); return; }
   SWPEND={rate:rate,t:Date.now()}; try{ AC.resume().then(swFlush,()=>{}); }catch(e){} }
 function swFlush(){ if(!SWORD) return; const p=SWPEND; SWPEND=null; if(p && AC && AC.state==='running' && Date.now()-p.t<1500 && stats.sound) swNow(p.rate); }
-['touchend','pointerup','click','keydown'].forEach(ev=>document.addEventListener(ev,()=>{ try{ if(stats.sound){ audio(); if(!SWORD) loadSword(); } if(AC&&AC.state!=='running') AC.resume().then(swFlush,()=>{}); }catch(e){} },{capture:true,passive:true}));
+/* فتح الصوت في الآيفون: لازم نشغّل صوت فعلي داخل لحظة اللمس نفسها (مو بس resume)، ونطلق السيف المنتظر مباشرة */
+let UNL=false;
+function unlockAudio(){ try{ if(!stats.sound) return; audio(); if(!SWORD) loadSword(); if(!AC) return;
+  if(!UNL){ try{ const b=AC.createBuffer(1,1,22050), z=AC.createBufferSource(); z.buffer=b; z.connect(AC.destination); z.start(0); }catch(e){} }
+  const p=SWPEND; if(p && SWORD && Date.now()-p.t<1500){ SWPEND=null; swNow(p.rate); }
+  if(AC.state!=='running') AC.resume().then(()=>{ UNL=true; swFlush(); },()=>{}); else UNL=true; }catch(e){} }
+['touchstart','touchend','pointerup','click','keydown'].forEach(ev=>document.addEventListener(ev,unlockAudio,{capture:true,passive:true}));
 /* نجهّز الصوت من أول ما تفتح الصفحة (يكون متوقف لين أول لمسة)، عشان أول سحبة بعد فتح التطبيق يكون الصوت جاهز */
 try{ if(stats.sound) loadSword(); }catch(e){}
 /* ===== شاشة البداية: سيف يقص عداد الدقيقة ===== */
