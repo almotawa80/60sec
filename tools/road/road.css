@@ -408,3 +408,4 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
 .r2n.hq .twr{width:150px;margin-left:-75px;bottom:0}
 .r2n.hq .twr svg{width:150px}
 .r2n.hq .nm{margin-top:40px}
+.rp-test{margin-top:8px;padding:7px 14px;border-radius:999px;border:1.5px dashed #ffc23d;background:rgba(255,194,61,.12);color:#ffc23d;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
