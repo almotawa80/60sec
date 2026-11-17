@@ -255,7 +255,7 @@ body{font-family:'Noto Kufi Arabic',system-ui,sans-serif;color:var(--text);backg
 #gate .gerr{color:var(--accent);font-size:13px;font-weight:700;text-align:center;min-height:0}#gate .gerr:empty{display:none}
 #gate .btn{margin-top:12px}
 #gate .ghelp{font-size:12px;color:var(--muted);text-align:center;margin-top:12px}
-#lbBody,#lbMe,#lbCnt{transition:opacity .18s}#lbBody.ld,#lbMe.ld{opacity:.45;pointer-events:none}#lbCnt.ld{opacity:.6}
+#lbBody,#lbMe,#lbCnt{transition:opacity .18s}#lbBody.ld{opacity:.45;pointer-events:none}#lbCnt.ld{opacity:.6}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:24px;z-index:20}
 .modal.on{display:flex}
 .mbox{background:var(--card);border-radius:22px;padding:20px 18px;width:100%;max-width:360px;text-align:center}
@@ -696,7 +696,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171430">
+<meta name="app-version" content="202611171435">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -2239,11 +2239,12 @@ async function loadLB(){
   const tok=++LB.tok, body=$('lbBody');
   $('lbSub').textContent = (LB.m==='daily'?'التحدي اليومي':'كل الجولات')+' · '+LBP[LB.p];
   /* نخلي القديم ظاهر (باهت) لين يوصل الجديد، بدل ما يختفي ويرجع */
-  if(body.querySelector(':scope > :not(.lbempty)')){ body.classList.add('ld'); $('lbMe').classList.add('ld'); } else { body.innerHTML='<div class="lbempty">جارٍ التحميل…</div>'; $('lbMe').style.display='none'; }
-  $('lbCnt').classList.add('ld');
+  /* التعتيم بس إذا تأخر التحميل أكثر من 300ms، والشريط السفلي ما يتعتم أبد */
+  clearTimeout(LB.ldT);
+  if(body.querySelector(':scope > :not(.lbempty)')){ LB.ldT=setTimeout(function(){ if(tok===LB.tok){ body.classList.add('ld'); $('lbCnt').classList.add('ld'); } },300); } else { body.innerHTML='<div class="lbempty">جارٍ التحميل…</div>'; $('lbMe').style.display='none'; }
   const r = await rpc('get_leaderboard',{p_id:PID,p_period:LB.p,p_mode:LB.m,p_limit:LB.lim},6000);
   if(tok!==LB.tok) return;
-  body.classList.remove('ld'); $('lbMe').classList.remove('ld'); $('lbCnt').classList.remove('ld');
+  clearTimeout(LB.ldT); body.classList.remove('ld'); $('lbCnt').classList.remove('ld');
   if(!r || !r.ok){ body.innerHTML='<div class="lbempty">تعذّر تحميل الترتيب، حاول مرة أخرى</div>'; return; }
   $('lbCnt').textContent = fmt(r.count)+' لاعب';
   const top=r.top||[];
