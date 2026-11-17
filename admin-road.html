@@ -461,12 +461,12 @@ function render(){
     .map(x=>'<div><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b></div>').join('');
   $('kg').innerHTML=K; $('kgP').innerHTML=K;
   renderPl(); renderRed(); renderPairs(); renderEv(); renderTodo(pend);
-  if(SEL){ const rb=$('rzOne'); if(!(rb&&rb.classList.contains('sure'))) drawPlayer(); }
+  if(SEL){ const rb=$('rzOne'), rb2=$('rdOne'); if(!(rb&&rb.classList.contains('sure'))&&!(rb2&&rb2.classList.contains('sure'))) drawPlayer(); }
   drawCharts();
 }
 /* صور اللاعبين: نجيبها بعد التقرير، فقط اللي رافعين صورة */
 let AV={};
-async function loadAV(){ const em=(D.players||[]).map(p=>p.emp_no).filter(Boolean); if(!em.length) return; let r=null; try{ r=await rpc('admin_avatars',{p_key:KEY,p_emps:em}); }catch(e){} if(!r||!r.ok) return; AV=r.av||{}; renderPl(); if(SEL){ const rb=$('rzOne'); if(!(rb&&rb.classList.contains('sure'))) drawPlayer(); } }
+async function loadAV(){ const em=(D.players||[]).map(p=>p.emp_no).filter(Boolean); if(!em.length) return; let r=null; try{ r=await rpc('admin_avatars',{p_key:KEY,p_emps:em}); }catch(e){} if(!r||!r.ok) return; AV=r.av||{}; renderPl(); if(SEL){ const rb=$('rzOne'), rb2=$('rdOne'); if(!(rb&&rb.classList.contains('sure'))&&!(rb2&&rb2.classList.contains('sure'))) drawPlayer(); } }
 const avCss=u=>"background-image:url('"+String(u).replace(/['"\\()\s]/g,'')+"')";
 function renderPl(){
   const all=D.players||[], q=($('q').value||'').trim();
@@ -560,6 +560,7 @@ function drawPlayer(){
    +'<div class="pl"><span>آخر لعب</span><b>'+dt(p.last_play)+'</b></div><div class="pl"><span>تاريخ التسجيل</span><b>'+dt(p.created_at)+'</b></div>'
    +(EMP.total?'<div class="pl ed"><span>رمز الدخول</span><button class="eb" type="button" id="pcNew">رمز جديد</button></div>':'')
    +'<button class="rzb" type="button" id="rzOne">تصفير نقاط ورصيد اللاعب</button>'
+   +'<button class="rzb" type="button" id="rdOne">رجّع اللاعب لأول فرع (الخيران)</button>'
    +'<button class="rzb del" type="button" id="delOne">حذف اللاعب من التحدي</button>';
   $('ps').querySelector('.x').onclick=closePlayer;
   const db=$('delOne'); db.onclick=async()=>{ if(!db.classList.contains('sure')){ db.classList.add('sure'); db.textContent='متأكد؟ تنحذف نقاطه ونتائجه ويطلع من القائمة'; setTimeout(()=>{ if(db.isConnected&&!db.disabled){ db.classList.remove('sure'); db.textContent='حذف اللاعب من التحدي'; } },5000); return; }
@@ -579,6 +580,7 @@ function drawPlayer(){
       if(!r||!r.ok){ $('empSv').disabled=false; m.textContent=(r&&r.error==='taken')?'هذا الرقم مسجّل للاعب آخر':'تعذّر الحفظ، حاول مرة أخرى'; return; }
       SEL=v; await load(); };
   };
+  const rd=$('rdOne'), RDL='رجّع اللاعب لأول فرع (الخيران)'; rd.onclick=async()=>{ if(!rd.classList.contains('sure')){ rd.classList.add('sure'); rd.textContent='متأكد؟ يرجع للخيران وتتصفّر نقاطه'; setTimeout(()=>{ if(rd.isConnected&&!rd.disabled){ rd.classList.remove('sure'); rd.textContent=RDL; } },4000); return; } rd.disabled=true; rd.textContent='جارٍ الإرجاع…'; let r=null; try{ r=await rpc('admin_reset_road',{p_key:KEY,p_emp:p.emp_no}); }catch(e){} try{ await load(); }catch(e){} if(SEL){ try{ drawPlayer(); }catch(e){} } const nb=$('rdOne'); if(nb){ nb.disabled=false; nb.classList.remove('sure'); nb.textContent=(r&&r.ok)?'✓ رجع لأول فرع':'تعذّر، تأكد إنك شغّلت ملف SQL'; setTimeout(()=>{ if(nb.isConnected) nb.textContent=RDL; },3000); } };
   const rb=$('rzOne'); rb.onclick=async()=>{ if(!rb.classList.contains('sure')){ rb.classList.add('sure'); rb.textContent='اضغط مرة ثانية للتأكيد'; setTimeout(()=>{ if(rb.isConnected&&!rb.disabled){ rb.classList.remove('sure'); rb.textContent='تصفير نقاط ورصيد اللاعب'; } },4000); return; } rb.disabled=true; rb.textContent='جارٍ التصفير…'; let ok=false; try{ const r=await rpc('admin_reset_points',{p_key:KEY,p_emp:p.emp_no}); ok=!!(r&&r.ok); }catch(e){} try{ await load(); }catch(e){} if(SEL){ try{ drawPlayer(); }catch(e){} } const nb=$('rzOne'); if(nb){ nb.disabled=false; nb.classList.remove('sure'); nb.textContent=ok?'✓ تم التصفير':'تعذّر التصفير، حاول مرة ثانية'; setTimeout(()=>{ if(nb.isConnected) nb.textContent='تصفير نقاط ورصيد اللاعب'; },2500); } };
 }
 
