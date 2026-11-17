@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>تجربة المؤثرات</title>
+<style>
+:root{--red:#c8102e;--ok:#1a8f4c;--bg:#f3f4f6;--card:#fff;--tx:#1d1d1f;--mu:#6b7280}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,"SF Arabic","Segoe UI",Tahoma,sans-serif}
+header{background:var(--red);color:#fff;padding:calc(18px + env(safe-area-inset-top)) 16px 18px;text-align:center}
+header h1{margin:0;font-size:21px}header p{margin:6px 0 0;font-size:13px;opacity:.9}
+.stage{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 16px 10px;overflow:hidden}
+.mock{position:relative;background:var(--card);border-radius:20px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.06);overflow:hidden}
+.top{display:flex;align-items:center;justify-content:space-between}
+.ring{position:relative;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:22px;background:conic-gradient(var(--red) var(--p,100%),#e5e7eb 0);transition:transform .15s}
+.ring::before{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--card)}.ring span{position:relative}
+.ring.warn{animation:rp .5s ease-in-out infinite alternate}.ring.warn span{color:var(--red)}
+@keyframes rp{to{transform:scale(1.12)}}
+.score{font-weight:800;font-size:15px}.score b{font-size:22px;color:var(--red)}
+.q{margin:14px 0 10px;font-weight:700;font-size:16px;text-align:center}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ans div{background:#f3f4f6;border-radius:12px;padding:12px;text-align:center;font-weight:700;transition:background .2s,color .2s}
+.ans .g{background:var(--ok);color:#fff;animation:pop .35s}.ans .r{background:var(--red);color:#fff}
+@keyframes pop{40%{transform:scale(1.08)}}
+.shake{animation:shk .4s}@keyframes shk{20%{transform:translateX(9px)}40%{transform:translateX(-9px)}60%{transform:translateX(6px)}80%{transform:translateX(-4px)}}
+.flash{position:absolute;inset:0;pointer-events:none;opacity:0;border-radius:20px}
+.flash.go{animation:fl .5s}@keyframes fl{0%{opacity:.55}100%{opacity:0}}
+.plus{position:absolute;left:50%;top:40%;font-weight:900;font-size:30px;color:var(--ok);pointer-events:none;animation:up .9s forwards}
+@keyframes up{0%{opacity:0;transform:translate(-50%,10px) scale(.6)}25%{opacity:1;transform:translate(-50%,0) scale(1.2)}100%{opacity:0;transform:translate(-50%,-60px) scale(1)}}
+.combo{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:#ff7a00;color:#fff;font-weight:900;border-radius:999px;padding:4px 12px;font-size:15px;animation:cb .6s}
+@keyframes cb{0%{transform:translateX(-50%) scale(.3)}60%{transform:translateX(-50%) scale(1.25)}100%{transform:translateX(-50%) scale(1)}}
+.vig{position:fixed;inset:0;pointer-events:none;z-index:50;box-shadow:inset 0 0 0 0 rgba(200,16,46,0);transition:box-shadow .2s}
+.vig.on{animation:vg .8s ease-in-out infinite}@keyframes vg{0%,100%{box-shadow:inset 0 0 40px 6px rgba(200,16,46,.25)}50%{box-shadow:inset 0 0 90px 22px rgba(200,16,46,.55)}}
+.big{position:fixed;inset:0;display:grid;place-items:center;z-index:60;pointer-events:none}
+.big span{font-size:140px;font-weight:900;color:var(--red);text-shadow:0 6px 30px rgba(200,16,46,.35);animation:zm .8s forwards}
+.big span.goT{font-size:84px}
+@keyframes zm{0%{transform:scale(2.4);opacity:0}25%{transform:scale(1);opacity:1}80%{opacity:1}100%{transform:scale(.7);opacity:0}}
+.banner{position:absolute;inset:auto 12px 12px;background:#111;color:#fff;border-radius:12px;padding:10px;text-align:center;font-weight:800;animation:bn 1.8s forwards}
+@keyframes bn{0%{transform:translateY(80px)}15%,80%{transform:none}100%{transform:translateY(80px);opacity:0}}
+.conf{position:fixed;top:-20px;width:9px;height:14px;z-index:70;pointer-events:none;border-radius:2px;animation:cf linear forwards}
+@keyframes cf{to{transform:translateY(110vh) rotate(720deg)}}
+.list{padding:6px 16px calc(30px + env(safe-area-inset-bottom));display:grid;gap:10px}
+.it{background:var(--card);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px}
+.n{width:30px;height:30px;border-radius:50%;background:#fde8eb;color:var(--red);font-weight:900;display:grid;place-items:center;flex:none}
+.tx{flex:1;min-width:0}.tx b{display:block;font-size:15.5px}.tx small{display:block;color:var(--mu);font-size:12.5px;margin-top:3px;line-height:1.5}
+button{font-family:inherit;border:0;border-radius:999px;background:var(--red);color:#fff;font-weight:800;padding:10px 16px;font-size:14px;flex:none;cursor:pointer}
+.note{margin:0 16px 4px;font-size:12.5px;color:var(--mu);text-align:center}
+</style>
+</head>
+<body>
+<header><h1>تجربة الأصوات والمؤثرات</h1><p>اضغط «جرّب» وشوف وتسمع. شيل الجوال من الصامت 🔈</p></header>
+<div class="stage"><div class="mock" id="mock">
+  <div class="top"><div class="score">نقاطك <b id="sc">40</b></div><div class="ring" id="ring"><span id="sec">60</span></div></div>
+  <div class="q">كم عدد أيام الأسبوع؟</div>
+  <div class="ans" id="ans"><div>٥</div><div>٧</div><div>٦</div><div>٨</div></div>
+  <div class="flash" id="flash"></div>
+</div></div>
+<p class="note">كل رقم تقدر تقول لي «نعم» أو «لا» عليه، أو تعديل</p>
+<div class="list" id="list"></div>
+<div class="vig" id="vig"></div>
+<script>
+let AC=null;
+function ac(){ try{ if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume(); }catch(e){} try{ if(navigator.audioSession) navigator.audioSession.type='ambient'; }catch(e){} return AC; }
+function tone(f,t0,d,type,vol,slide){ const a=ac(); if(!a) return; const t=a.currentTime+t0,o=a.createOscillator(),g=a.createGain();
+  o.type=type||'sine'; o.frequency.setValueAtTime(f,t); if(slide) o.frequency.exponentialRampToValueAtTime(slide,t+d);
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol||.15,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+d+.03); }
+function noise(t0,d,vol,hp){ const a=ac(); if(!a) return; const n=Math.floor(a.sampleRate*d), b=a.createBuffer(1,n,a.sampleRate), x=b.getChannelData(0);
+  for(let i=0;i<n;i++) x[i]=(Math.random()*2-1)*(1-i/n); const s=a.createBufferSource(); s.buffer=b; const f=a.createBiquadFilter(); f.type='highpass'; f.frequency.value=hp||1500;
+  const g=a.createGain(); g.gain.value=vol||.2; s.connect(f); f.connect(g); g.connect(a.destination); s.start(a.currentTime+t0); }
+const drum=(t0,v)=>{ tone(150,t0,.35,'sine',v||.5,45); noise(t0,.06,.12,2500); };
+const $=id=>document.getElementById(id);
+function flash(c){ const f=$('flash'); f.style.background=c; f.classList.remove('go'); void f.offsetWidth; f.classList.add('go'); }
+function vib(p){ try{ navigator.vibrate&&navigator.vibrate(p); }catch(e){} }
+function bigTxt(t,go){ const b=document.createElement('div'); b.className='big'; b.innerHTML='<span'+(go?' class="goT"':'')+'>'+t+'</span>'; document.body.appendChild(b); setTimeout(()=>b.remove(),850); }
+function resetAns(){ document.querySelectorAll('#ans div').forEach(d=>d.className=''); }
+let timers=[]; function clearT(){ timers.forEach(clearTimeout); timers=[]; $('ring').classList.remove('warn'); $('vig').classList.remove('on'); }
+function setSec(s){ $('sec').textContent=s; $('ring').style.setProperty('--p',(s/60*100)+'%'); }
+let streak=0;
+const FX=[
+ ['العد التنازلي بطبول','أرقام كبيرة تكبر وتصغر مع ضربة طبل، وبعدها «انطلق!» مع صوت اندفاع',()=>{ clearT(); [3,2,1].forEach((n,i)=>timers.push(setTimeout(()=>{ bigTxt(n); drum(0,.55); vib(40); },i*800)));
+   timers.push(setTimeout(()=>{ bigTxt('انطلق!',1); noise(0,.45,.18,600); tone(300,0,.45,'sawtooth',.08,1400); tone(784,.05,.15,'triangle',.18); tone(1175,.15,.35,'triangle',.18); vib([30,40,60]); },2400)); }],
+ ['إجابة صحيحة','رنّة مشرقة + الخيار يخضر وينط + «+10» تطلع فوق',()=>{ resetAns(); const d=$('ans').children[1]; d.className='g'; flash('rgba(26,143,76,.35)');
+   tone(988,0,.18,'sine',.2); tone(1319,.08,.32,'sine',.2); tone(2637,.08,.2,'sine',.05); const p=document.createElement('div'); p.className='plus'; p.textContent='+10'; $('mock').appendChild(p); setTimeout(()=>p.remove(),950);
+   const s=$('sc'); s.textContent=+s.textContent+10; vib(20); }],
+ ['سلسلة إجابات صح 🔥','كل إجابة صح ورا بعض النغمة ترتفع، وبعد ٣ يطلع «🔥 ×3»',()=>{ streak=streak>=5?1:streak+1; resetAns(); $('ans').children[1].className='g'; flash('rgba(26,143,76,.3)');
+   const k=Math.pow(1.122,streak-1); tone(988*k,0,.16,'sine',.2); tone(1319*k,.07,.3,'sine',.2);
+   if(streak>=3){ tone(1568*k,.18,.35,'triangle',.14); const c=document.createElement('div'); c.className='combo'; c.textContent='🔥 ×'+streak; $('mock').appendChild(c); setTimeout(()=>c.remove(),1200); } }],
+ ['إجابة خاطئة','طنين قصير + الخيار يحمر + اهتزاز البطاقة (والجوال يهتز في الأندرويد)',()=>{ streak=0; resetAns(); $('ans').children[3].className='r'; $('ans').children[1].className='g'; flash('rgba(200,16,46,.35)');
+   const m=$('mock'); m.classList.remove('shake'); void m.offsetWidth; m.classList.add('shake'); tone(220,0,.25,'sawtooth',.13,120); tone(165,.12,.3,'square',.08,85); vib([60,40,60]); }],
+ ['آخر ١٠ ثواني: تك تك','تكتكة كل ثانية، والعداد يحمر وينبض',()=>{ clearT(); $('ring').classList.add('warn'); for(let i=0;i<10;i++) timers.push(setTimeout(()=>{ setSec(10-i); tone(1500,0,.05,'square',.06); tone(900,.0,.04,'sine',.05); },i*1000));
+   timers.push(setTimeout(()=>{ clearT(); setSec(60); },10200)); }],
+ ['آخر ٥ ثواني: نبض قلب','دقات قلب تتسارع + حواف الشاشة تنبض أحمر',()=>{ clearT(); $('ring').classList.add('warn'); $('vig').classList.add('on'); let t=0;
+   for(let i=0;i<5;i++){ const gap=1000-i*120; timers.push(setTimeout(()=>{ setSec(5-i); tone(70,0,.16,'sine',.7,45); tone(60,.17,.18,'sine',.55,40); tone(1500,0,.04,'square',.05); vib([40,90,40]); },t)); t+=gap; }
+   timers.push(setTimeout(()=>{ clearT(); setSec(0); tone(523,0,.5,'square',.12); tone(392,0,.7,'sawtooth',.08); bigTxt('انتهى!',1); timers.push(setTimeout(()=>setSec(60),1200)); },t)); }],
+ ['خصمك تقدّم عليك','تنبيه قصير + شريط تحت «خصمك تقدّم! ⚡» (في التحدي ضد لاعب حقيقي)',()=>{ tone(880,0,.12,'square',.08,660); tone(660,.12,.18,'square',.08,440); const b=document.createElement('div'); b.className='banner'; b.textContent='خصمك تقدّم! ⚡'; $('mock').appendChild(b); setTimeout(()=>b.remove(),1900); vib(50); }],
+ ['رجعت للصدارة','صوت صاعد + شريط «رجعت قدام! 💪»',()=>{ [659,880,1175].forEach((f,i)=>tone(f,i*.07,.18,'triangle',.15)); const b=document.createElement('div'); b.className='banner'; b.style.background='var(--ok)'; b.textContent='رجعت قدام! 💪'; $('mock').appendChild(b); setTimeout(()=>b.remove(),1900); }],
+ ['الفوز','موسيقى فوز + قصاصات ملوّنة تنزل',()=>{ [523,659,784,1047].forEach((f,i)=>tone(f,i*.13,.22,'triangle',.2)); [1047,784,659].forEach(f=>tone(f,.55,.7,'sine',.12)); drum(.55,.4);
+   const cs=['#c8102e','#ffb703','#1a8f4c','#2563eb','#ff7a00']; for(let i=0;i<70;i++){ const c=document.createElement('div'); c.className='conf'; c.style.left=Math.random()*100+'vw'; c.style.background=cs[i%5]; c.style.animationDuration=(1.6+Math.random()*1.6)+'s'; c.style.animationDelay=(Math.random()*.4)+'s'; document.body.appendChild(c); setTimeout(()=>c.remove(),3800); } vib([40,60,40,60,120]); }],
+];
+$('list').innerHTML=FX.map((f,i)=>'<div class="it"><span class="n">'+(i+1)+'</span><div class="tx"><b>'+f[0]+'</b><small>'+f[1]+'</small></div><button type="button" data-i="'+i+'">جرّب</button></div>').join('');
+$('list').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; ac(); window.scrollTo({top:0,behavior:'smooth'}); FX[+b.dataset.i][2](); });
+</script>
+</body>
+</html>
