@@ -676,7 +676,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171900">
+<meta name="app-version" content="202611172100">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -2114,7 +2114,7 @@ document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stat
       if(Math.abs(dx)>10 && Math.abs(dx)>Math.abs(dy)*1.2){
         drag=true; lock=true;
         el.style.animation='none'; el.style.position='relative'; el.style.zIndex='2'; el.style.boxShadow='-6px 0 24px rgba(0,0,0,.18)'; el.style.background='var(--hero)';
-        home.style.display='flex'; home.style.position='fixed'; home.style.top=(-(SCR[home.id]||0))+'px'; home.style.bottom=(SCR[home.id]?'auto':'0'); home.style.left='50%'; home.style.width='100%'; home.style.maxWidth='480px'; home.style.transform='translateX(-50%)'; home.style.zIndex='1'; home.style.animation='none'; logoStart();
+        home.style.display='flex'; home.style.position='fixed'; home.style.top=(-(SCR[home.id]||0))+'px'; home.style.bottom='auto'; home.style.minHeight='100vh'; /* بدون ما ينضغط المحتوى */ home.style.left='50%'; home.style.width='100%'; home.style.maxWidth='480px'; home.style.transform='translateX(-50%)'; home.style.zIndex='1'; home.style.animation='none'; logoStart();
       } else return;
     }
     if(drag){ if(e.cancelable) e.preventDefault(); el.style.transition='none'; el.style.transform='translateX('+dx+'px)'; logoMove(dx); }
@@ -2123,7 +2123,7 @@ document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stat
     if(!drag) return; drag=false;
     var t=e.changedTouches[0], rdx=t.clientX-sx, sg=rdx<0?-1:1, dx=Math.abs(rdx), v=dx/Math.max(1,Date.now()-t0);
     el.style.transition='transform .22s ease';
-    function clean(){ el.style.background=''; home.style.transform=''; home.style.top=''; home.style.bottom=''; home.style.left=''; home.style.animation=''; reset(); }
+    function clean(){ el.style.background=''; home.style.transform=''; home.style.top=''; home.style.bottom=''; home.style.minHeight=''; home.style.left=''; home.style.animation=''; reset(); }
     if(dx>W*0.35 || v>0.6){
       el.style.transform='translateX('+(sg*W)+'px)'; if(LG){ LG.style.transition='transform .22s ease'; LG.style.transform='translateX('+(sg*W)+'px)'; }
       setTimeout(function(){ var b=document.getElementById({store:'backBtn',badgesPage:'backBtn2',profilePage:'backBtn3',lbPage:'backBtn4'}[id]); if(b) b.click(); clean(); home.style.animation='none'; },210);
