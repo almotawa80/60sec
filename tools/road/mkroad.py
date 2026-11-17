@@ -84,5 +84,23 @@ js = open(sys.argv[5], encoding='utf-8').read()
 i = s.rindex('</script>')
 s = s[:i] + '\n' + js + '\n' + s[i:]
 
+
+# ---------- timer: the big clock is the question clock (10 s per question, resets each question) ----------
+rep("g.deadline = Math.min((startAt||performance.now()) + QMS, g.t0 + NQ*QMS);", "g.deadline = (startAt||performance.now()) + QMS;")
+rep("""const TOT=NQ*QMS, tl = g.t0 ? Math.max(0, TOT-(now-g.t0)) : TOT;
+  if(g.t0){ $('timer').textContent=toAr(Math.ceil(tl/1000));
+    $('clock').classList.toggle('low', tl<=10000); $('clock').classList.toggle('mid', tl<=30000);
+    $('ringFg').style.strokeDashoffset=RING*(1-tl/TOT); }""",
+"""const TOT=NQ*QMS, tl = 1e9; const qr = g.phase==='q' ? Math.max(0, g.deadline-now) : (g.lastQr!=null ? g.lastQr : QMS); if(g.phase==='q') g.lastQr=qr;
+  if(g.t0){ $('timer').textContent=toAr(Math.ceil(qr/1000));
+    $('clock').classList.toggle('low', qr<=3000); $('clock').classList.toggle('mid', qr<=5000);
+    $('ringFg').style.strokeDashoffset=RING*(1-qr/QMS); }""")
+rep("if(g.phase==='q' && g.t0) g.deadline=Math.min(g.deadline, g.t0+TOT);", "")
+
+rep("$('qNum').textContent='السؤال ١ من ٦'; $('timer').textContent='٦٠';", "$('qNum').textContent='السؤال ١ من ٦'; $('timer').textContent='١٠';")
+rep('<div class="num" id="timer">60</div>', '<div class="num" id="timer">10</div>')
+# swipe-back only right-to-left (finger moves left)
+rep("var t=e.touches[0], dx=t.clientX-sx, dy=t.clientY-sy;", "var t=e.touches[0], dx=Math.min(0,t.clientX-sx), dy=t.clientY-sy;")
+rep("var t=e.changedTouches[0], rdx=t.clientX-sx,", "var t=e.changedTouches[0], rdx=Math.min(0,t.clientX-sx),")
 open(dst, 'w', encoding='utf-8').write(s)
 print('ok', len(s))

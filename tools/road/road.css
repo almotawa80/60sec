@@ -431,3 +431,4 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
 #roadPage .rp-sub:empty{display:none}
 #roadPage .rp-test{margin-top:0;padding:4px 12px;font-size:11px}
 #roadPage .rp-chap,#roadPage .rp-chap *{white-space:nowrap}
+#game #qSec{display:none}
