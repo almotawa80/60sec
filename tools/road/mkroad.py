@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Build road.html (the 'road to head office' trial version) from index.html."""
-import re, sys
+import re, sys, os
 src, dst = sys.argv[1], sys.argv[2]
 s = open(src, encoding='utf-8').read()
 
@@ -102,5 +102,10 @@ rep('<div class="num" id="timer">60</div>', '<div class="num" id="timer">10</div
 # swipe-back only right-to-left (finger moves left)
 rep("var t=e.touches[0], dx=t.clientX-sx, dy=t.clientY-sy;", "var t=e.touches[0], dx=Math.min(0,t.clientX-sx), dy=t.clientY-sy;")
 rep("var t=e.changedTouches[0], rdx=t.clientX-sx,", "var t=e.changedTouches[0], rdx=Math.min(0,t.clientX-sx),")
+# sword knob: press-and-hold instead of swipe (iOS only unlocks audio on a tap, not a drag)
+_a=s.index('/* زر السحب لبدء التحدّي */'); _b=s.index('\n})();', _a)+len('\n})();')
+s=s[:_a]+open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'hold.js'),encoding='utf-8').read()+s[_b:]
+rep("$('goLbl').textContent = pa ? 'اسحب للتحدّي' : 'اسحب للتدريب';", "$('goLbl').textContent = pa ? 'ثبّت على السيف للتحدّي' : 'ثبّت على السيف للتدريب';")
+s=s.replace('aria-label="اسحب لبدء التحدّي"><div class="slbl" id="goLbl">اسحب لبدء التحدّي</div>','aria-label="ثبّت على السيف لبدء التحدّي"><div class="slbl" id="goLbl">ثبّت على السيف للتحدّي</div>')
 open(dst, 'w', encoding='utf-8').write(s)
 print('ok', len(s))

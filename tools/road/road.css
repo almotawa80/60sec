@@ -432,3 +432,12 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
 #roadPage .rp-test{margin-top:0;padding:4px 12px;font-size:11px}
 #roadPage .rp-chap,#roadPage .rp-chap *{white-space:nowrap}
 #game #qSec{display:none}
+/* زر السيف: شحن بالضغط المطوّل */
+#goBtn .schg{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(270deg,rgba(255,196,61,.55),rgba(255,120,40,.25));transform:scaleX(0);transform-origin:right center;pointer-events:none}
+#goBtn .slbl{position:relative;z-index:1}
+#goBtn .sknob{z-index:2;transition:box-shadow .2s}
+#goBtn.charging .sknob{box-shadow:0 0 18px 4px rgba(255,190,60,.65)}
+#goBtn.ready .sknob{animation:sknobShake .12s linear infinite;box-shadow:0 0 26px 8px rgba(255,200,70,.9)}
+@keyframes sknobShake{0%{translate:0 0}25%{translate:-1.5px 1px}50%{translate:1.5px -1px}75%{translate:-1px -1px}100%{translate:0 0}}
+#goBtn:not(.charging):not(.ready) .sknob{animation:sknobPulse 1.6s ease-in-out infinite}
+@keyframes sknobPulse{0%,100%{box-shadow:0 2px 8px rgba(0,0,0,.35),0 0 0 0 rgba(200,16,46,.45)}50%{box-shadow:0 2px 8px rgba(0,0,0,.35),0 0 0 10px rgba(200,16,46,0)}}
