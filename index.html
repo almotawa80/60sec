@@ -236,6 +236,25 @@ body{font-family:'Noto Kufi Arabic',system-ui,sans-serif;color:var(--text);backg
 .hist span{color:var(--muted);font-size:12px}
 .hist code{background:var(--tile);border-radius:8px;padding:4px 8px;font-size:13px;font-weight:800;letter-spacing:1px}
 .empty{color:var(--muted);text-align:center;font-size:14px;padding:6px}
+/* بوابة الدخول: الزائر ما يشوف شي غير هذي الشاشة */
+#gate{position:fixed;inset:0;z-index:15;display:none;flex-direction:column;overflow-y:auto;background:var(--page);-webkit-overflow-scrolling:touch}
+#gate.on{display:flex}body.gated{overflow:hidden}
+#gate .gtop{position:relative;overflow:hidden;background:linear-gradient(160deg,#d93a42,#b8101d);color:#fff;text-align:center;padding:calc(48px + env(safe-area-inset-top)) 24px 70px}
+#gate .gwm{position:absolute;width:230px;height:230px;left:-60px;top:-30px;opacity:.12}
+#gate .gmark{width:62px;height:62px;display:block;margin:0 auto 10px}
+#gate h1{margin:0;font-size:32px;font-weight:900}
+#gate .gtop p{margin:8px 0 0;opacity:.9;font-size:14px}
+#gate .gcard{position:relative;margin:-44px 16px 24px;background:var(--card,#fff);border-radius:24px;padding:22px 18px 18px;box-shadow:0 14px 34px rgba(0,0,0,.12);max-width:440px;align-self:center;width:calc(100% - 32px);box-sizing:border-box}
+#gate h2{margin:0 0 4px;font-size:21px;font-weight:900;color:var(--text)}
+#gate .gsub{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:14px}
+#gate .gfld{display:block;margin-bottom:12px}#gate .gfld span{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px}
+#gate .gfld input{width:100%;box-sizing:border-box;font:inherit;font-size:20px;font-weight:700;padding:13px 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--page);color:var(--text);outline:none;text-align:center;letter-spacing:1px}
+#gate .gfld input:focus{border-color:var(--accent)}
+#gate #gCode{letter-spacing:8px}#gate #gCode:placeholder-shown{letter-spacing:0}#gate .btn:focus{outline:none}#gate .btn:focus-visible{outline:3px solid rgba(211,35,47,.35);outline-offset:2px}
+#gate .ggp{margin:4px 0 6px}
+#gate .gerr{color:var(--accent);font-size:13px;font-weight:700;text-align:center;min-height:0}#gate .gerr:empty{display:none}
+#gate .btn{margin-top:12px}
+#gate .ghelp{font-size:12px;color:var(--muted);text-align:center;margin-top:12px}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:24px;z-index:20}
 .modal.on{display:flex}
 .mbox{background:var(--card);border-radius:22px;padding:20px 18px;width:100%;max-width:360px;text-align:center}
@@ -676,7 +695,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611172100">
+<meta name="app-version" content="202611172200">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -887,6 +906,24 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
     </div>
   </section>
 
+</div>
+<div id="gate" aria-hidden="true">
+  <div class="gtop">
+    <svg class="gwm" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="14"/><path d="M30.500 30.500L43 43"/><path d="M20 12v8l5 3"/></svg>
+    <svg class="gmark" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" aria-hidden="true"><circle cx="24" cy="27" r="16"/><path d="M24 27V17M19 6h10M24 6v5M38 12l-3 3"/></svg>
+    <h1>تحدّي الدقيقة</h1>
+    <p id="gHi">٦٠ ثانية · أسئلة سريعة · نقاط وجوائز</p>
+  </div>
+  <form class="gcard" id="gForm" autocomplete="off" novalidate>
+    <h2>تسجيل الدخول</h2>
+    <div class="gsub">اللعبة خاصة بالموظفين المسجّلين. الرقم والرمز يوصلونك من إدارة المسابقة.</div>
+    <label class="gfld"><span>الرقم الوظيفي</span><input id="gEmp" inputmode="numeric" maxlength="10" placeholder="مثال: 48213"></label>
+    <label class="gfld"><span>الرمز</span><input id="gCode" inputmode="numeric" maxlength="6" placeholder="٦ أرقام" autocomplete="one-time-code" dir="ltr"></label>
+    <div class="gpick ggp" id="gGen"><button type="button" data-g="m">ذكر</button><button type="button" data-g="f">أنثى</button></div>
+    <div class="gerr" id="gErr"></div>
+    <button class="btn" type="submit" id="gGo">دخول</button>
+    <div class="ghelp">نسيت الرمز؟ تواصل مع إدارة المسابقة</div>
+  </form>
 </div>
 <div class="modal" id="modal"><div class="mbox"><h3 id="mTitle"></h3><div id="mBody"></div><div class="mbtns" id="mBtns"></div></div></div>
 <div class="toast" id="toast"></div>
@@ -1256,10 +1293,10 @@ function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('sho
 function shownDays(){ const t=dkey(new Date()), y=dkey(new Date(Date.now()-864e5)); return (stats.lastDay===t||stats.lastDay===y) ? (stats.dayStreak||0) : 0; }
 const fmt = n => Number(n||0).toLocaleString('en-US');
 /* قائمة الموظفين: إذا رفعها المدير صار الدخول بالرقم الوظيفي + الرمز، واللي ما دخل يتدرّب بس */
-let LIST_ON = false; try{ LIST_ON = localStorage.getItem('mc_list')==='1'; }catch(e){}
+let LIST_ON = true; try{ LIST_ON = localStorage.getItem('mc_list')!=='0'; }catch(e){} /* افتراضياً مقفلة لين يأكد السيرفر */
 const GUEST = () => LIST_ON && !DEMO && !stats.empNo;
 const pointsAvailable = () => !GUEST() && stats.pointsDay !== dkey(new Date());
-function renderGuest(){ const gst=GUEST(); document.body.classList.toggle('guest',gst); const gb=$('guestBox'); if(gb) gb.style.display=gst?'block':'none'; }
+function renderGuest(){ const gst=GUEST(); document.body.classList.toggle('guest',gst); const gt=$('gate'); if(gt){ if(gst&&!gt.classList.contains('on')) gateFill(); gt.classList.toggle('on',gst); gt.setAttribute('aria-hidden',gst?'false':'true'); document.body.classList.toggle('gated',gst); } const gb=$('guestBox'); if(gb) gb.style.display=gst?'block':'none'; }
 function renderStats(){
   try{ renderGuest(); }catch(e){}
   $('stBest').textContent=stats.best; $('stWins').textContent=stats.wins; $('stStreak').textContent=shownDays();
@@ -2012,22 +2049,35 @@ async function syncProgress(){
   if(k && typeof k==='object') stats.rk = {d10:!!(k.d10||(stats.rk||{}).d10), d1:!!(k.d1||(stats.rk||{}).d1), w10:!!(k.w10||(stats.rk||{}).w10), m1:!!(k.m1||(stats.rk||{}).m1)};
   save(stats); try{ renderBadges(); }catch(e){}
 }
+async function doLogin(empV,codeV,g,err){
+  const emp=normEmp(empV), code=normEmp(codeV);
+  if(!/^[0-9]{1,10}$/.test(emp)){ err('اكتب رقمك الوظيفي'); return false; }
+  if(!/^[0-9]{6}$/.test(code)){ err('الرمز ٦ أرقام'); return false; }
+  if(!g){ err('اختر ذكر أو أنثى'); return false; }
+  const r = await rpc('login_player',{p_id:PID,p_emp:emp,p_code:code,p_gender:g},6000);
+  if(!r){ err('تعذّر الاتصال، حاول مرة أخرى'); return false; }
+  if(!r.ok){ err(r.error==='wait'?'محاولات كثيرة، حاول بعد ١٥ دقيقة':(r.error==='locked'?'هذا الجهاز مسجّل برقم وظيفي آخر':'الرقم الوظيفي أو الرمز غير صحيح')); return false; }
+  if(r.id && r.id!==PID){ PID=r.id; try{ localStorage.setItem('mc_pid',PID); }catch(e){} }
+  stats.empNo=r.emp||emp; stats.playerName=r.name||stats.playerName; stats.gender=r.gender||g;
+  stats.balance=r.balance; stats.totalPoints=r.total_points||0; stats.pointsDay = r.points_available ? '' : dkey(new Date());
+  save(stats); setTimeout(syncProgress,300); try{ syncProfile(); }catch(e){} renderGreet(); try{ renderStats(); renderGuest(); }catch(e){}
+  toast('أهلاً '+splitName(stats.playerName).t); return true;
+}
+/* بوابة الدخول */
+let GG = '';
+function gateFill(pre){ if(pre){ $('gEmp').value=pre.e||''; $('gCode').value=pre.c||''; const sp=splitName(pre.n||''); $('gHi').textContent = sp.t ? 'أهلاً '+sp.t+' 👋 بياناتك جاهزة، اضغط دخول' : '٦٠ ثانية · أسئلة سريعة · نقاط وجوائز'; }
+  $('gGen').style.display = stats.gender ? 'none' : ''; }
+(function(){ const mark=()=>$('gGen').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.g===GG));
+  $('gGen').querySelectorAll('button').forEach(b=>b.onclick=()=>{ GG=b.dataset.g; mark(); $('gErr').textContent=''; });
+  $('gForm').addEventListener('input',()=>{ $('gErr').textContent=''; });
+  $('gForm').onsubmit=async e=>{ e.preventDefault(); const b=$('gGo'); if(b.disabled) return; b.disabled=true; b.textContent='…';
+    const ok=await doLogin($('gEmp').value,$('gCode').value,stats.gender||GG,m=>{ $('gErr').textContent=m; });
+    b.disabled=false; b.textContent='دخول'; if(ok){ $('gForm').reset(); show('home'); } }; })();
 function askLogin(next,pre){
+  if(GUEST()){ renderGuest(); gateFill(pre); setTimeout(()=>{ try{ $(pre&&pre.c?'gGo':'gEmp').focus(); }catch(e){} },50); return; }
   let g = stats.gender || '';
   showModal(pre&&pre.n?'أهلاً '+splitName(pre.n).t:'تسجيل الدخول','<div style="font-size:13px;color:var(--muted);margin:-4px 0 12px">'+(pre?'بياناتك جاهزة، اضغط دخول':'الرمز وصلك من إدارة المسابقة')+'</div><input id="lgEmp" class="nameIn" inputmode="numeric" maxlength="10" placeholder="الرقم الوظيفي" autocomplete="off"><input id="lgCode" class="nameIn lgcode" style="margin-top:10px" inputmode="numeric" maxlength="6" placeholder="الرمز (٦ أرقام)" autocomplete="one-time-code">'+(g?'':'<div class="gpick"><button type="button" id="gM">ذكر</button><button type="button" id="gF">أنثى</button></div>')+'<div style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center">نسيت الرمز؟ تواصل مع إدارة المسابقة</div>',
-    [{t:'دخول',full:true,f:async()=>{
-        const emp=normEmp($('lgEmp').value), code=normEmp($('lgCode').value);
-        if(!/^[0-9]{1,10}$/.test(emp)){ toast('اكتب رقمك الوظيفي'); return; }
-        if(!/^[0-9]{6}$/.test(code)){ toast('الرمز ٦ أرقام'); return; }
-        if(!g){ toast('اختر ذكر أو أنثى'); return; }
-        const r = await rpc('login_player',{p_id:PID,p_emp:emp,p_code:code,p_gender:g},6000);
-        if(!r){ toast('تعذّر الاتصال، حاول مرة أخرى'); return; }
-        if(!r.ok){ toast(r.error==='wait'?'محاولات كثيرة، حاول بعد ١٥ دقيقة':(r.error==='locked'?'هذا الجهاز مسجّل برقم وظيفي آخر':'الرقم الوظيفي أو الرمز غير صحيح')); return; }
-        if(r.id && r.id!==PID){ PID=r.id; try{ localStorage.setItem('mc_pid',PID); }catch(e){} }
-        stats.empNo=r.emp||emp; stats.playerName=r.name||stats.playerName; stats.gender=r.gender||g;
-        stats.balance=r.balance; stats.totalPoints=r.total_points||0; stats.pointsDay = r.points_available ? '' : dkey(new Date());
-        save(stats); setTimeout(syncProgress,300); try{ syncProfile(); }catch(e){} closeModal(); renderGreet(); try{ renderStats(); renderGuest(); }catch(e){}
-        toast('أهلاً '+splitName(stats.playerName).t); if(next) next(); }},
+    [{t:'دخول',full:true,f:async()=>{ if(await doLogin($('lgEmp').value,$('lgCode').value,g,toast)){ closeModal(); if(next) next(); } }},
      {t:'إلغاء',ghost:true,full:true,f:closeModal}]);
   if(pre){ $('lgEmp').value=pre.e||''; $('lgCode').value=pre.c||''; const sp=splitName(pre.n); if(sp.n){ const t=$('mTitle'); t.innerHTML=''; const a=document.createElement('span'); a.className='mt1'; a.textContent='أهلاً '+sp.t; const b=document.createElement('span'); b.className='mt2'; b.textContent=sp.n; t.append(a,b); } }
   if(!stats.gender){ const mark=()=>{ $('gM').classList.toggle('on',g==='m'); $('gF').classList.toggle('on',g==='f'); };
@@ -2480,7 +2530,7 @@ function loginFromUrl(){
 }
 loadRemoteQuestions().then(()=>{ if(!loginFromUrl()) acceptInviteFromUrl(); });
 $('guestLogin').onclick=()=>askLogin();
-if(!DEMO) rpc('auth_mode',{},5000).then(m=>{ if(m && typeof m.list==='boolean'){ LIST_ON=m.list; try{ localStorage.setItem('mc_list',m.list?'1':'0'); }catch(e){} try{ renderStats(); }catch(e){} } });
+if(!DEMO) rpc('auth_mode',{},5000).then(m=>{ if(m && typeof m.list==='boolean'){ LIST_ON=m.list; try{ localStorage.setItem('mc_list',m.list?'1':'0'); }catch(e){} try{ renderStats(); renderGuest(); }catch(e){} } });
 
 /* تنبيه تثبيت التطبيق على الشاشة الرئيسية (سفاري iPhone/iPad) */
 (function(){ try{
