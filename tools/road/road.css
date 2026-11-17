@@ -119,3 +119,59 @@
 .pftile b{font-size:14px;font-weight:800}
 .pftile small{font-size:12px;color:var(--muted);font-weight:700}
 html[data-theme="dark"] .pftile{border:1px solid var(--line)}
+/* ===== الخريطة 3D ===== */
+#roadPage .rp{height:100dvh;min-height:0;overflow:hidden;background:#d9a75a}
+#roadPage .rp-hud{position:absolute;left:0;right:0;top:0;background:none}
+#roadPage .rp-back,#roadPage .rp-chips i{background:rgba(10,20,40,.45);border-color:rgba(255,255,255,.2);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#roadPage .rp-chap{background:rgba(15,25,45,.55);border-color:rgba(255,255,255,.16);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#roadPage .rp-km{color:#e8eef8}
+#roadPage .rp-cta{background:linear-gradient(rgba(40,25,10,0),rgba(40,25,10,.82) 45%)}
+#roadPage .rp-ahead{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+#roadPage .rp-sub{color:#f1e4cf}
+.r3{position:absolute;inset:0;overflow:hidden;touch-action:none;background:linear-gradient(#2f8cff 0%,#69b7ff 22%,#bfe3ff 36%,#ffe7b0 38%,#f3d08a 39%,#e9bd6f 55%,#d9a75a 100%)}
+.r3sky{position:absolute;left:0;right:0;top:0;height:38%;pointer-events:none}
+.r3sky .sun{position:absolute;left:10%;top:62%;width:120px;height:120px;margin:-60px 0 0 -10px;border-radius:50%;background:radial-gradient(circle,#fff3c4 0%,#ffd06b 40%,rgba(255,170,80,0) 70%)}
+.r3sky .city{position:absolute;left:0;right:0;bottom:0;height:52px;display:flex;align-items:flex-end;justify-content:center;gap:3px;opacity:.85}
+.r3sky .city i{display:block;background:#7a8db3;border-radius:2px 2px 0 0}
+.r3sky .hqfar{position:absolute;left:50%;bottom:0;transform:translateX(-50%);text-align:center;transition:opacity .4s}
+.r3sky.near .hqfar{opacity:0}
+.r3sky .fl{font-size:20px;line-height:1}
+.r3sky .tw{width:44px;height:80px;border-radius:6px 6px 0 0;background:repeating-linear-gradient(0deg,#c4141d 0 8px,#e0262f 8px 12px);box-shadow:inset -10px 0 0 rgba(0,0,0,.15);position:relative;margin:0 auto}
+.r3sky .tw span{position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:900;background:#fff;color:#c4141d;padding:0 3px;border-radius:3px;white-space:nowrap}
+.r3cam{position:absolute;left:0;right:0;top:38%;bottom:0;overflow:hidden;perspective:420px;perspective-origin:50% 0%}
+.r3plane{position:absolute;left:50%;bottom:-40px;width:900px;margin-left:-450px;transform-origin:50% 100%;transform-style:preserve-3d;will-change:transform;
+  background:repeating-linear-gradient(0deg,rgba(120,80,40,.10) 0 2px,transparent 2px 60px),repeating-linear-gradient(90deg,rgba(120,80,40,.08) 0 2px,transparent 2px 60px)}
+.r3plane svg{position:absolute;left:0;top:0}
+.m3n{position:absolute;transform-style:preserve-3d}
+.m3b{position:absolute;left:0;bottom:0;transform-origin:50% 100%;transform:translateX(-50%) rotateX(-72deg);display:flex;flex-direction:column;align-items:center}
+.m3pad{width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:46px;font-weight:900;color:#fff;cursor:pointer}
+.done .m3pad{background:radial-gradient(circle at 35% 30%,#ff6b72,#c4141d);box-shadow:0 14px 0 #7a0c12}
+.cur .m3pad{background:radial-gradient(circle at 35% 30%,#ffe27a,#f0a400);box-shadow:0 14px 0 #8a5d00,0 0 0 16px rgba(255,220,90,.45);animation:m3pulse 1.6s ease-in-out infinite}
+.lock .m3pad{background:radial-gradient(circle at 35% 30%,#a3a8b1,#5e636c);box-shadow:0 14px 0 #3a3d43;font-size:38px}
+@keyframes m3pulse{50%{box-shadow:0 14px 0 #8a5d00,0 0 0 30px rgba(255,220,90,.15)}}
+.m3bld{display:flex;flex-direction:column;align-items:center}
+.m3bld .st{font-size:28px;margin-bottom:4px;white-space:nowrap}
+.m3bld .rf{width:0;height:0;border-left:80px solid transparent;border-right:80px solid transparent;border-bottom:46px solid var(--c2)}
+.m3bld .bd{width:144px;height:98px;background:var(--c);border-radius:4px;position:relative;box-shadow:inset -18px 0 0 rgba(0,0,0,.12)}
+.m3bld .lg{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#fff;color:#c4141d;font-size:17px;font-weight:900;padding:0 10px;border-radius:8px;white-space:nowrap}
+.m3bld .dr{position:absolute;bottom:0;left:50%;width:34px;height:44px;margin-left:-17px;background:rgba(0,0,0,.35);border-radius:6px 6px 0 0}
+.m3bld .w{position:absolute;bottom:14px;width:26px;height:22px;background:#d9efff;border-radius:3px}
+.lock .m3bld{filter:saturate(.7) brightness(.93)}
+.m3hq .fl{font-size:48px;line-height:1;text-align:center}
+.m3hq .tw{width:120px;height:260px;border-radius:10px 10px 0 0;background:repeating-linear-gradient(0deg,#c4141d 0 18px,#e0262f 18px 26px);box-shadow:inset -26px 0 0 rgba(0,0,0,.15);position:relative}
+.m3hq .tw span{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:18px;font-weight:900;background:#fff;color:#c4141d;padding:0 8px;border-radius:6px;white-space:nowrap}
+.m3palm{font-size:64px;line-height:1}
+.m3chest{font-size:58px;filter:drop-shadow(0 6px 6px rgba(0,0,0,.35))}
+.m3car{font-size:66px;filter:drop-shadow(0 10px 8px rgba(0,0,0,.4))}
+.m3gate{display:flex;flex-direction:column;align-items:center;width:220px;height:170px;border:14px solid var(--c);border-bottom:0;border-radius:110px 110px 0 0;position:relative}
+.m3gate span{position:absolute;top:-34px;background:var(--c2);color:#fff;font-size:24px;font-weight:900;padding:2px 16px;border-radius:12px;white-space:nowrap;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.m3mall{font:inherit;border:0;background:none;color:#fff;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:0}
+.m3mall .b{width:70px;height:70px;border-radius:20px;background:linear-gradient(135deg,#7b4dff,#c03cff);display:flex;align-items:center;justify-content:center;font-size:34px;box-shadow:0 6px 0 #4a23a8,0 0 30px rgba(170,90,255,.8)}
+.m3mall .l{background:#7b4dff;font-size:20px;font-weight:900;padding:1px 12px;border-radius:10px;white-space:nowrap}
+.m3mall.off .b{filter:grayscale(1) brightness(.75);box-shadow:0 6px 0 #555}
+.m3mall.off .l{background:#6b6f78}
+.m3mall.won .b{background:linear-gradient(135deg,#1fbf7e,#138a5a);box-shadow:0 6px 0 #0c5a3b}
+.m3mall.won .l{background:#138a5a}
+.m3mall.open .b{animation:rdWig 2.4s ease-in-out infinite}
+
+body:has(#roadPage.active) .bklogo{display:none}

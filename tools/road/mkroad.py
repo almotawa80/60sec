@@ -23,6 +23,9 @@ var LS=(function(){ var P='rd_'; try{ var L=window.localStorage; return {getItem
 i = s.index('<script')
 s = s[:i] + ls_shim + s[i:]
 
+# own app-version so the home-screen icon reloads when road.html changes
+import time
+s = re.sub(r'<meta name="app-version" content="[^"]*">', '<meta name="app-version" content="road-'+time.strftime('%Y%m%d%H%M%S')+'">', s, count=1)
 # ---------- titles ----------
 s = re.sub(r'<title>[^<]*</title>', '<title>تحدّي الدقيقة · الطريق إلى الرئيسي</title>', s, count=1)
 s = s.replace('content="https://almotawa80.github.io/60sec/"', 'content="https://almotawa80.github.io/60sec/road.html"')
