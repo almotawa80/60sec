@@ -188,7 +188,7 @@ function m2Build(){
   let tp='<svg class="r2top" width="'+M2.W+'" height="'+(M2.PT+40)+'">'; let rr=5; const rn=()=>{ rr=(rr*9301+49297)%233280; return rr/233280; };
   for(let k=0;k<9;k++){ const x=16+rn()*(M2.W-32), y=30+rn()*(M2.PT-30); tp+=(k%3===0?m2Pine(x,y,1):k%3===1?m2Cone(x,y,1,k):m2Tree(x,y,1.1,k)); }
   tp+='</svg>';
-  let h=tp+'<div class="r2art" style="top:'+M2.PT+'px">'+[0,1,2,3,4,5,6,7].map(k=>'<img src="img/road/map'+k+'.jpg" alt="" decoding="async"'+'>').join('')+'</div>';
+  let h=tp+'<div class="r2art" style="top:'+M2.PT+'px">'+[0,1,2,3,4,5,6,7].map(k=>'<img src="img/road/map'+k+'.jpg" alt="" decoding="sync"'+'>').join('')+'</div>';
   GOV.forEach((gv,gi)=>{ if(gv.a===0) return; const y=(m2y(gv.a)+m2y(gv.a-1))/2, x=(m2x(gv.a)+m2x(gv.a-1))/2, c=GCOL[gi];
     h+='<div class="r2gov" style="left:'+x.toFixed(0)+'px;top:'+y.toFixed(0)+'px;--c:'+c[0]+';--c2:'+c[1]+'"><span>محافظة '+gv.n+'</span></div>'; });
   h+='<div class="r2gov first" style="left:'+m2x(0).toFixed(0)+'px;top:'+(m2y(0)+70).toFixed(0)+'px;--c:'+GCOL[0][0]+';--c2:'+GCOL[0][1]+'"><span>محافظة '+GOV[0].n+'</span></div>';
@@ -258,7 +258,14 @@ function renderMap(scroll){
     sub.appendChild(t);
   }
 }
-$('rpGo').onclick=()=>{ if($('rpGo').disabled) return; if(rdLoggedIn() && !pointsAvailable()){ renderMap(); return; } RD.back='map'; RD.mall=null; try{ playSword(1); }catch(e){} startMatch(); };
+$('rpGo').onclick=()=>{ if($('rpGo').disabled) return; if(rdLoggedIn() && !pointsAvailable()){ renderMap(); return; } RD.back='map'; RD.mall=null; try{ playSword(1); }catch(e){}
+  /* إذا كنت متحرك بعيد في الخريطة: نرجعك لمكانك أول، السيف ينبض، وبعدين يبدأ التحدي */
+  const box=$('r2'), pos=Math.min(HQ,(rdSt().pos||0)); let far=false;
+  if(box && M2.built && $('roadPage').classList.contains('active')){ const y=Math.max(0,m2y(pos)-box.clientHeight*0.55); far=Math.abs(box.scrollTop-y)>box.clientHeight*0.3;
+    if(far){ const y0=box.scrollTop, t0=performance.now(), D=Math.min(900,350+Math.abs(y-y0)*0.25); $('rpGo').disabled=true;
+      (function st(n){ const k=Math.min(1,(n-t0)/D), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; box.scrollTop=y0+(y-y0)*e; if(k<1) requestAnimationFrame(st);
+        else { const sw=$('r2Sw'); if(sw){ sw.classList.remove('go'); void sw.offsetWidth; sw.classList.add('go'); } setTimeout(()=>{ $('rpGo').disabled=false; startMatch(); },450); } })(t0); } }
+  if(!far) startMatch(); };
 
 function mallTap(k){
   const st=rdSt(), m=MALLS[k];
@@ -345,3 +352,6 @@ try{ const _ps=playSword; playSword=function(rate){ if(!stats.sound) return; try
 /* الآيفون يوقّف الصوت لما تطلع من الصفحة أو تقفل الشاشة: نحاول نصحّيه أول ما ترجع */
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ try{ if(stats.sound && AC && AC.state!=='running') AC.resume(); }catch(e){} } });
 window.addEventListener('pageshow',()=>{ try{ if(stats.sound && AC && AC.state!=='running') AC.resume(); }catch(e){} });
+/* الخريطة: نحمّل صورها ونفكّها من أول ما تفتح اللعبة، عشان لما تفتح الخريطة تطلع الرسمة على طول بدون الخلفية الخضرا */
+(()=>{ const pre=[]; const go=()=>{ for(let k=0;k<8;k++){ const im=new Image(); im.decoding='async'; im.src='img/road/map'+k+'.jpg'; pre.push(im); try{ im.decode().catch(()=>{}); }catch(e){} } window._rdPre=pre; };
+  if(document.readyState==='complete') setTimeout(go,300); else window.addEventListener('load',()=>setTimeout(go,300)); })();

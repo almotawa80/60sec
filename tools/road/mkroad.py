@@ -106,8 +106,11 @@ rep("var t=e.changedTouches[0], rdx=t.clientX-sx,", "var t=e.changedTouches[0], 
 rep("else timers.push(setTimeout(()=>{ playSword(); swing(C2,C7,", "else window._spGo=(()=>{ playSword(); swing(C2,C7,")
 rep("""},380)); }); },650));
 sp.addEventListener('click',skip);""", """},380)); }); });
-if(window._spGo){ sp.insertAdjacentHTML('beforeend','<div class="spTap">اضغط على الساعة واكسرها ⚔️</div>');
-  sp.addEventListener('click',()=>{ const f=window._spGo; if(f){ window._spGo=null; sp.classList.add('tapped'); try{ unlockAudio(); }catch(e){} f(); } else skip(); }); }
+if(window._spGo){ const nm=(()=>{ const v=String(stats.playerName||'').replace(/\s+/g,' ').trim(); if(!v) return ''; const m=v.match(/^([^،,]+)[،,]/); if(m) return m[1].trim(); return v.split(' ')[0]; })();
+  sp.insertAdjacentHTML('beforeend','<div class="spNm">'+nm.replace(/[<>&]/g,'')+'</div><div class="spTap">جاهز؟ اكسر الدقيقة ⚔️</div>');
+  const W=sp.querySelector('.spW'); if(W) W.insertAdjacentHTML('beforeend','<svg class="spSw" viewBox="0 0 40 170" aria-hidden="true"><defs><linearGradient id="spBl" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#e9eef5"/><stop offset=".51" stop-color="#b9c4d2"/><stop offset="1" stop-color="#dfe6ee"/></linearGradient><linearGradient id="spGd" x1="0" x2="1"><stop offset="0" stop-color="#ffe28a"/><stop offset="1" stop-color="#c8901e"/></linearGradient></defs><circle cx="20" cy="9" r="7" fill="url(#spGd)" stroke="#7a4a0c" stroke-width="1.5"/><rect x="15.5" y="15" width="9" height="26" rx="3" fill="#5b2a12" stroke="#2e1408" stroke-width="1.2"/><path d="M16 19 L24 23 M16 26 L24 30 M16 33 L24 37" stroke="#8a4a22" stroke-width="1.6"/><rect x="2" y="40" width="36" height="8" rx="4" fill="url(#spGd)" stroke="#7a4a0c" stroke-width="1.5"/><path d="M13 48 H27 L26 150 L20 168 L14 150 Z" fill="url(#spBl)" stroke="#8d99a8" stroke-width="1.2"/><path d="M20 50 V158" stroke="#9aa6b5" stroke-width="1"/><rect class="spGl" x="13" y="48" width="14" height="22" fill="#fff" opacity="0"/></svg>');
+  const NUMS=[...sp.querySelectorAll('text')].filter(t=>t.textContent.trim()==='60'); let sec=60; const tk=setInterval(()=>{ if(!window._spGo){ clearInterval(tk); return; } sec=sec<=1?60:sec-1; NUMS.forEach(t=>t.textContent=String(sec)); sp.classList.remove('tick'); void sp.offsetWidth; sp.classList.add('tick'); },1000);
+  sp.addEventListener('click',()=>{ const f=window._spGo; if(f){ window._spGo=null; clearInterval(tk); sp.classList.add('tapped','pull'); try{ unlockAudio(); }catch(e){} setTimeout(f,260); } else skip(); }); }
 else sp.addEventListener('click',skip);""")
 open(dst, 'w', encoding='utf-8').write(s)
 print('ok', len(s))

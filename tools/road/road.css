@@ -450,3 +450,18 @@ html:not([data-theme="dark"]) .rc-path .d.chest{background:none;box-shadow:none}
 #splash.tapped .spTap{opacity:0;transition:opacity .2s;animation:none}
 @keyframes spTapP{0%,100%{opacity:.65;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
 #splash{cursor:pointer}
+/* شاشة البداية: السيف مغروس في الساعة + اسم اللاعب */
+#splash .spNm{position:absolute;left:0;right:0;top:calc(18% + env(safe-area-inset-top));text-align:center;color:#fff;font-weight:900;font-size:30px;text-shadow:0 3px 10px rgba(0,0,0,.3);animation:spNmIn .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes spNmIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+#splash .spSw{position:absolute;left:50%;top:-66px;width:46px;height:auto;margin-left:-23px;transform:rotate(16deg);transform-origin:50% 92%;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35)) drop-shadow(0 0 12px rgba(255,235,170,.55));z-index:3;animation:spSwB 2.2s ease-in-out infinite;pointer-events:none}
+@keyframes spSwB{0%,100%{transform:rotate(16deg)}50%{transform:rotate(13deg)}}
+#splash .spSw .spGl{animation:spGlint 2.2s ease-in-out infinite}
+@keyframes spGlint{0%,70%,100%{opacity:0;transform:translateY(0)}80%{opacity:.85}95%{opacity:0;transform:translateY(90px)}}
+#splash.pull .spSw{animation:none;transition:transform .32s cubic-bezier(.3,.0,.2,1),opacity .32s;transform:translate(30px,-320px) rotate(40deg);opacity:0}
+#splash.tapped .spNm{opacity:0;transition:opacity .25s;animation:none}
+.r2sw.go .sw{animation:r2swGo .45s ease-out 1}
+@keyframes r2swGo{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-12deg)}100%{transform:scale(1)}}
+#splash.tick .spT.p0 svg{animation:spTick .35s ease-out 1}
+@keyframes spTick{0%{transform:scale(1.035)}100%{transform:scale(1)}}
+#splash .spNm{top:auto;bottom:calc(16% + 34px + env(safe-area-inset-bottom));font-size:28px}
+#splash .spNm:empty{display:none}
