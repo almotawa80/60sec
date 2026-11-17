@@ -513,3 +513,6 @@ drawCard = async function(r,name){
   if(iw){ iw.insertAdjacentHTML('afterbegin','<button type="button" class="rdX" id="invX" aria-label="إلغاء">'+X+'</button>');
     document.getElementById('invX').onclick=function(){ const c=document.getElementById('invCancel'); if(c) c.click(); }; }
 })();
+
+/* أيقونة الساعة الجديدة بدل علامة الساعة البيضاء في الترويسة */
+document.querySelectorAll('svg.mark').forEach(function(s){ var i=document.createElement('img'); i.className='mark rdmark'; i.src='img/road/icon-192.png?v=2'; i.alt=''; s.replaceWith(i); });
