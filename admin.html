@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611171900">
+<meta name="app-version" content="202611172000">
 <title>لوحة تحكّم تحدّي الدقيقة</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
@@ -16,8 +16,8 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>try{var s=localStorage.getItem('mc_admin_dark');if(s==='1'||(s===null&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
 <style>
-:root{--hero:#d3232f;--page:#f4f4f5;--card:#fff;--tx:#1f2125;--mu:#6b7078;--ln:#e7e8eb;--soft:#f1f2f4;--red:#c8102e;--ok:#1a8f4c;--chip:#fbe7ea;--warn:#f2a900;--dr:#c8102e;--track:#d5d8de;--up:#1a8f4c;--dlbg-up:rgba(26,143,76,.12);--dlbg-dn:rgba(200,16,46,.1)}
-html[data-theme="dark"]{--hero:#202124;--page:#111312;--card:#2a2b2e;--tx:#f3f3f4;--mu:#9da1a8;--ln:#34353a;--soft:#232427;--red:#d93a42;--chip:#36292b;--warn:#e3a92b;--dr:#f2777b;--track:#3b3e44;--up:#5fd38d;--dlbg-up:#30343a;--dlbg-dn:#30343a;color-scheme:dark}
+:root{--hero:#d3232f;--page:#f4f4f5;--card:#fff;--tx:#1f2125;--mu:#6b7078;--ln:#e7e8eb;--soft:#f1f2f4;--red:#c8102e;--ok:#1a8f4c;--chip:#fbe7ea;--warn:#f2a900;--dr:#c8102e;--track:#d5d8de;--glass:rgba(255,255,255,.72);--glassln:rgba(255,255,255,.6);--pill:rgba(0,0,0,.07);--hglass:rgba(211,35,47,.82);--up:#1a8f4c;--dlbg-up:rgba(26,143,76,.12);--dlbg-dn:rgba(200,16,46,.1)}
+html[data-theme="dark"]{--hero:#202124;--page:#111312;--card:#2a2b2e;--tx:#f3f3f4;--mu:#9da1a8;--ln:#34353a;--soft:#232427;--red:#d93a42;--chip:#36292b;--warn:#e3a92b;--dr:#f2777b;--track:#3b3e44;--glass:rgba(38,39,42,.72);--glassln:rgba(255,255,255,.1);--pill:rgba(0,0,0,.45);--hglass:rgba(32,33,36,.78);--up:#5fd38d;--dlbg-up:#30343a;--dlbg-dn:#30343a;color-scheme:dark}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
 html{touch-action:manipulation;-webkit-text-size-adjust:100%}
@@ -198,11 +198,18 @@ html[data-theme="dark"] .tag{background:#4a3d12;color:#ffd96b}
 
 /* ===== التبويبات ===== */
 .pane{display:flex;flex-direction:column;gap:14px}
-.sheet{padding-bottom:calc(96px + env(safe-area-inset-bottom))!important}
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:center;gap:4px;background:var(--card);border-top:1px solid var(--ln);padding:6px max(10px,env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));box-shadow:0 -4px 16px rgba(0,0,0,.05)}
-.tabbar button{position:relative;flex:1;max-width:150px;border:0;background:none;color:var(--mu);font-family:inherit;font-size:11.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;border-radius:12px;cursor:pointer}
+.sheet{padding-bottom:calc(110px + env(safe-area-inset-bottom))!important}
+.mini{position:fixed;top:0;left:0;right:0;z-index:45;color:#fff;background:var(--hglass);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.18);padding:calc(6px + env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) 8px max(14px,env(safe-area-inset-left));transform:translateY(-110%);transition:transform .25s ease;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.mini.on{transform:none}
+.mini .hrow{min-height:44px}
+.mini .mark{width:32px;height:32px;padding:5px;border-radius:10px}
+.mini .ttl h1{font-size:17px}.mini .ttl span{font-size:11.5px}
+.mini .hbtn{width:34px;height:34px}.mini .hbtn svg{width:18px;height:18px}
+@media(prefers-reduced-motion:reduce){.mini{transition:none}}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;width:calc(100% - 28px);max-width:520px;display:flex;gap:2px;padding:6px;border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border:1px solid var(--glassln);box-shadow:0 8px 28px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.25)}
+.tabbar button{position:relative;flex:1;border:0;background:none;color:var(--tx);font-family:inherit;font-size:11.5px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 4px 6px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
 .tabbar button svg{width:24px;height:24px}
-.tabbar button.on{color:var(--dr)}
+.tabbar button.on{color:var(--dr);background:var(--pill)}
 .tabbar button.on svg{stroke-width:2.3}
 .tb{position:absolute;top:2px;left:calc(50% - 20px);min-width:18px;height:18px;border-radius:9px;background:var(--red);color:#fff;font-style:normal;font-size:11px;font-weight:800;display:grid;place-items:center;padding:0 5px}
 .tb:empty{display:none}
@@ -361,6 +368,7 @@ html,body{background:#fff!important;color:#1f2125!important}
   </div>
 </section>
 </div>
+<div class="mini np hide" id="mini" aria-hidden="true"></div>
 <nav class="tabbar np hide" id="tabbar">
   <button type="button" data-p="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span>الرئيسية</span><i class="tb" id="tbHome"></i></button>
   <button type="button" data-p="players"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M17 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/></svg><span>اللاعبون</span></button>
@@ -396,7 +404,7 @@ async function load(){
     D=r; showApp(true); render(); loadEmp(); return true;
   }catch(e){ $('err').textContent='تعذّر الاتصال بالخادم'; return false; }
 }
-function showApp(on){ $('app').classList.toggle('hide',!on); $('tabbar').classList.toggle('hide',!on); $('login').classList.toggle('hide',on); $('lock').classList.add('hide'); $('ref').classList.toggle('hide',!on); if(on) fidUI(); }
+function showApp(on){ $('app').classList.toggle('hide',!on); $('tabbar').classList.toggle('hide',!on); $('mini').classList.toggle('hide',!on); $('login').classList.toggle('hide',on); $('lock').classList.add('hide'); $('ref').classList.toggle('hide',!on); if(on) fidUI(); }
 
 /* ===== الرسوم ===== */
 let TR={m:'plays',r:'7'}; try{ Object.assign(TR,JSON.parse(localStorage.getItem('mc_admin_tr')||'{}')); }catch(e){}
@@ -495,6 +503,20 @@ function renderTodo(pend){
   $('todo').querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{ const k=b.dataset.go; if(k==='vou') goVou('pend'); else goOpen(k); });
   $('tbMore').textContent=pend>0?fmt(pend):'';
 }
+
+/* ===== الترويسة الثابتة ===== */
+(function(){
+  const src=document.querySelector('.hero .hrow'), m=$('mini'); const c=src.cloneNode(true);
+  c.querySelectorAll('[id]').forEach(el=>{ const id=el.id; el.removeAttribute('id'); el.dataset.of=id; });
+  m.appendChild(c);
+  c.querySelectorAll('button[data-of]').forEach(b=>b.onclick=()=>$(b.dataset.of).click());
+  const sync=()=>{ c.querySelectorAll('[data-of]').forEach(el=>{ const o=$(el.dataset.of); if(!o) return; if(el.tagName!=='BUTTON') el.textContent=o.textContent; el.classList.toggle('hide',o.classList.contains('hide')); }); };
+  new MutationObserver(sync).observe(src,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class']});
+  sync();
+  const hero=document.querySelector('.hero'); let on=false;
+  const tick=()=>{ const v=window.scrollY>hero.offsetHeight-70; if(v!==on){ on=v; m.classList.toggle('on',v); m.setAttribute('aria-hidden',v?'false':'true'); } };
+  window.addEventListener('scroll',tick,{passive:true}); tick();
+})();
 
 /* ===== التبويبات ===== */
 let TAB='home'; try{ TAB=localStorage.getItem('mc_admin_tab')||'home'; }catch(e){}
@@ -784,7 +806,7 @@ function toastMsg(t){ let el=$('tst'); if(!el){ el=document.createElement('div')
 
 function lockNow(){
   LOCKED=true; clearInterval(timer); if(typeof closePlayer==='function'&&SEL) closePlayer();
-  $('app').classList.add('hide'); $('tabbar').classList.add('hide'); $('login').classList.add('hide'); $('ref').classList.add('hide'); $('lock').classList.remove('hide'); $('lerr').textContent='';
+  $('app').classList.add('hide'); $('tabbar').classList.add('hide'); $('mini').classList.add('hide'); $('login').classList.add('hide'); $('ref').classList.add('hide'); $('lock').classList.remove('hide'); $('lerr').textContent='';
   tryUnlock(true);
 }
 let busy=false;
