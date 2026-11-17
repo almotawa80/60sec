@@ -73,6 +73,9 @@ rep("""$('homeBtn').onclick = ()=>{ renderStats(); show('home'); homeRank(); };"
     """$('homeBtn').onclick = ()=>{ renderStats(); if(RD.back==='map'){ RD.back=null; openRoad(); } else show('home'); homeRank(); roadLoad(); };""")
 rep("function renderStats(){\n", "function renderStats(){\n  try{ roadCard(); }catch(e){}\n  setTimeout(function(){ try{ pfTiles(); }catch(e){} },0);\n")
 
+# swipe-back from the map to home
+rep("['store','badgesPage','profilePage','lbPage'].forEach(function(id){", "['store','badgesPage','profilePage','lbPage','roadPage'].forEach(function(id){")
+rep("{store:'backBtn',badgesPage:'backBtn2',profilePage:'backBtn3',lbPage:'backBtn4'}[id]", "{store:'backBtn',badgesPage:'backBtn2',profilePage:'backBtn3',lbPage:'backBtn4',roadPage:'rpBack'}[id]")
 # ---------- road JS ----------
 js = open(sys.argv[5], encoding='utf-8').read()
 i = s.rindex('</script>')
