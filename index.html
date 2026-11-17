@@ -306,7 +306,7 @@ button.bcount:active,.sndbtn:active{transform:scale(.93);background:rgba(255,255
 .ttl{min-width:0}
 .ttl .greet{display:block;font-size:13.5px;opacity:1;font-weight:500;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .mt1{display:block}.mt2{display:block;font-size:17px;font-weight:600;color:var(--muted);margin-top:4px}
-.greet .gt{font-size:15px;font-weight:800}.greet .gn{font-size:13px;font-weight:500;opacity:.85;margin-inline-start:6px}
+.greet .gt{font-size:15px;font-weight:800}.greet .gn{font-size:13px;font-weight:500;opacity:.85;margin-inline-start:4px}
 .bgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px 6px;padding:6px 0}
 .bt2{border:0;background:none;font:inherit;color:var(--text);text-align:center;cursor:pointer;padding:0}
 .ring{--p:0;width:74px;height:74px;margin:0 auto 6px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--line) 0);display:flex;align-items:center;justify-content:center}
@@ -663,7 +663,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611171350">
+<meta name="app-version" content="202611171400">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -1047,7 +1047,7 @@ const rnd = (a,b) => a + Math.random()*(b-a);
 const SCR={};
 function show(id){
   const cur=document.querySelector('.screen.active'); if(cur && cur.id!==id) SCR[cur.id]=window.scrollY||document.documentElement.scrollTop||0;
-  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active', s.id===id));
+  document.querySelectorAll('.screen').forEach(s=>{ const on=s.id===id; if(!on && s.style.animation) s.style.animation=''; s.classList.toggle('active', on); });
   const y=(id==='profilePage'||id==='home') ? (SCR[id]||0) : 0;
   window.scrollTo(0,y); requestAnimationFrame(()=>window.scrollTo(0,y));
 }
@@ -2061,7 +2061,7 @@ document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stat
     function clean(){ el.style.background=''; home.style.transform=''; home.style.top=''; home.style.bottom=''; home.style.left=''; home.style.animation=''; reset(); }
     if(dx>W*0.35 || v>0.6){
       el.style.transform='translateX('+(sg*W)+'px)'; if(LG){ LG.style.transition='transform .22s ease'; LG.style.transform='translateX('+(sg*W)+'px)'; }
-      setTimeout(function(){ var b=document.getElementById({store:'backBtn',badgesPage:'backBtn2',profilePage:'backBtn3',lbPage:'backBtn4'}[id]); if(b) b.click(); clean(); home.style.animation='none'; setTimeout(function(){ home.style.animation=''; },450); },210);
+      setTimeout(function(){ var b=document.getElementById({store:'backBtn',badgesPage:'backBtn2',profilePage:'backBtn3',lbPage:'backBtn4'}[id]); if(b) b.click(); clean(); home.style.animation='none'; },210);
     } else {
       el.style.transform='translateX(0)'; if(LG){ LG.style.transition='transform .22s ease'; LG.style.transform='translateX(0)'; }
       setTimeout(clean,230);
@@ -2235,7 +2235,7 @@ function splitName(s){ s=String(s||'').replace(/\s+/g,' ').trim(); if(!s) return
   const w=s.split(' '); if(w.length>=2 && /^بو\S{2,}$/.test(w[0])) return {t:w[0],n:w.slice(1).join(' ')};
   return {t:s,n:''}; }
 function renderGreet(){ const g=$('greet'); if(!stats.playerName){ g.textContent='أهلاً بك'; return; } const p=splitName(stats.playerName);
-  g.innerHTML='<b class="gt">أهلاً، '+esc(p.t)+' 👋</b>'+(p.n?'<small class="gn">'+esc(p.n)+'</small>':''); }
+  g.innerHTML='<b class="gt">أهلاً '+esc(p.t)+' 👋'+(p.n?'،':'')+'</b>'+(p.n?'<small class="gn">'+esc(p.n)+'</small>':''); }
 $('greet').onclick = ()=>askName(()=>{ closeModal(); renderGreet(); });
 renderGreet();
 $('meAv').innerHTML = svg('user',44);
