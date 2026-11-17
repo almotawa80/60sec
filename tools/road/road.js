@@ -258,7 +258,7 @@ function renderMap(scroll){
     sub.appendChild(t);
   }
 }
-$('rpGo').onclick=()=>{ if($('rpGo').disabled) return; if(rdLoggedIn() && !pointsAvailable()){ renderMap(); return; } RD.back='map'; RD.mall=null; startMatch(); };
+$('rpGo').onclick=()=>{ if($('rpGo').disabled) return; if(rdLoggedIn() && !pointsAvailable()){ renderMap(); return; } RD.back='map'; RD.mall=null; try{ playSword(1); }catch(e){} startMatch(); };
 
 function mallTap(k){
   const st=rdSt(), m=MALLS[k];
@@ -268,7 +268,7 @@ function mallTap(k){
   const keys=st.keys||0;
   showModal('⚡ محطة '+m.n,
     '<div style="line-height:1.9">تحدي سرعة ضد الجهاز.<br>الدخول يكلّف <b>🔑 مفتاح واحد</b> (عندك '+keys+').<br>الفوز = <b>🛡️ درع</b> يحمي سلسلتك + <b>100 نقطة</b>.'+(keys?'':'<br><span style="color:var(--accent)">ما عندك مفاتيح. كل 3 تدريبات = مفتاح.</span>')+'</div>',
-    keys ? [{t:'ادخل المحطة',full:true,f:()=>{ closeModal(); startMall(k); }},{t:'لاحقاً',ghost:true,full:true,f:closeModal}]
+    keys ? [{t:'ادخل المحطة',full:true,f:()=>{ closeModal(); try{ playSword(1); }catch(e){} startMall(k); }},{t:'لاحقاً',ghost:true,full:true,f:closeModal}]
          : [{t:'تدرّب من السيف واجمع مفاتيح',full:true,f:()=>{ closeModal(); RD.back=null; show('home'); }},{t:'إغلاق',ghost:true,full:true,f:closeModal}]);
 }
 async function startMall(k){
