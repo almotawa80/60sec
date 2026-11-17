@@ -579,7 +579,7 @@ function drawPlayer(){
       if(!r||!r.ok){ $('empSv').disabled=false; m.textContent=(r&&r.error==='taken')?'هذا الرقم مسجّل للاعب آخر':'تعذّر الحفظ، حاول مرة أخرى'; return; }
       SEL=v; await load(); };
   };
-  const rb=$('rzOne'); rb.onclick=async()=>{ if(!rb.classList.contains('sure')){ rb.classList.add('sure'); rb.textContent='اضغط مرة ثانية للتأكيد'; setTimeout(()=>{ if(rb.isConnected&&!rb.disabled){ rb.classList.remove('sure'); rb.textContent='تصفير نقاط ورصيد اللاعب'; } },4000); return; } rb.disabled=true; rb.textContent='جارٍ التصفير…'; try{ await rpc('admin_reset_points',{p_key:KEY,p_emp:p.emp_no}); }catch(e){} await load(); };
+  const rb=$('rzOne'); rb.onclick=async()=>{ if(!rb.classList.contains('sure')){ rb.classList.add('sure'); rb.textContent='اضغط مرة ثانية للتأكيد'; setTimeout(()=>{ if(rb.isConnected&&!rb.disabled){ rb.classList.remove('sure'); rb.textContent='تصفير نقاط ورصيد اللاعب'; } },4000); return; } rb.disabled=true; rb.textContent='جارٍ التصفير…'; let ok=false; try{ const r=await rpc('admin_reset_points',{p_key:KEY,p_emp:p.emp_no}); ok=!!(r&&r.ok); }catch(e){} try{ await load(); }catch(e){} if(SEL){ try{ drawPlayer(); }catch(e){} } const nb=$('rzOne'); if(nb){ nb.disabled=false; nb.classList.remove('sure'); nb.textContent=ok?'✓ تم التصفير':'تعذّر التصفير، حاول مرة ثانية'; setTimeout(()=>{ if(nb.isConnected) nb.textContent='تصفير نقاط ورصيد اللاعب'; },2500); } };
 }
 
 /* ===== قائمة الموظفين والرموز ===== */
