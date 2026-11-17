@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261117175846">
+<meta name="app-version" content="road-20261117182625">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1276,6 +1276,28 @@ body:has(#roadPage.active) .toast.show{transform:translate(-50%,0)}
 body:has(#roadPage.active) .toast{top:calc(200px + env(safe-area-inset-top))}
 #r2In{margin-bottom:250px}
 #r2In::after{height:250px}
+/* شاشة نتيجة الطريق بنفس ستايل النوافذ الموحّد */
+.rfx{align-items:center;background:radial-gradient(circle at 50% 35%,rgba(120,20,30,.55),rgba(20,10,5,.82) 70%);padding:20px;box-sizing:border-box;overflow-y:auto}
+.rfx .rays{top:40%;background:repeating-conic-gradient(rgba(255,215,106,.16) 0 10deg,transparent 10deg 20deg)}
+.rfx .in{min-height:0;margin:auto;width:min(360px,92vw);box-sizing:border-box;padding:66px 18px 20px;border-radius:30px;background:linear-gradient(#fffaf0,#fde9c4);border:4px solid #fff;box-shadow:0 0 0 4px #c8102e,inset 0 -6px 0 rgba(160,110,40,.15),0 12px 30px rgba(0,0,0,.45);color:#5a3412;animation:ppIn .32s cubic-bezier(.2,1.4,.4,1)}
+.rfx .k{color:#7a0c12;font-size:14px;font-weight:900}
+.rfx h2{position:absolute;left:-14px;right:-14px;top:-22px;height:74px;margin:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(#ff5a65,#d81f2e 60%,#a50f1c);clip-path:polygon(0 18%,10% 0,50% 22%,90% 0,100% 18%,96% 72%,50% 100%,4% 72%);color:#fff;font-size:26px;text-shadow:0 3px 0 #7a0c12,2px 0 0 #7a0c12,-2px 0 0 #7a0c12,0 -2px 0 #7a0c12;filter:drop-shadow(0 4px 0 rgba(0,0,0,.25));white-space:nowrap}
+.rfx .hint{color:#6b4520;font-weight:700}
+.rfx .s3 span.off{filter:grayscale(1) brightness(1.4) opacity(.45)}
+.rfx .mv,.rfx .grid div{background:#fff;border:3px solid #3fb7c9;color:#5a3412}
+.rfx .mv{border-radius:20px}
+.rfx .grid div{border-width:2px;color:#8a6a45}
+.rfx .grid b{color:#5a3412}
+.rfx .mini{color:#5a3412}
+.rfx .mini i.c{background:#f3e2bf}
+.rfx .arr{background:repeating-linear-gradient(90deg,#d81f2e 0 8px,transparent 8px 14px)}
+.rfx .chest{background:#fff;border:3px solid #f2b51e}
+.rfx .chest b{color:#a50f1c}
+.rfx .chest small{color:#6b4520}
+.rfx .note{border-color:#c8102e;color:#5a3412}
+.rfx .note b{color:#a50f1c!important}
+.rfx .gold{margin-top:16px;border:3px solid #fff;border-radius:22px;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c);box-shadow:0 6px 0 #7a0c12,0 10px 18px rgba(0,0,0,.3);color:#fff;font-size:24px;padding:12px;text-shadow:0 3px 0 #7a0c12,2px 0 0 #7a0c12,-2px 0 0 #7a0c12}
+.rfx .ghost{color:#8a6a45;font-weight:700}
 
 </style>
 </head>
@@ -3473,10 +3495,12 @@ function mallTap(k){
   if(!rdLoggedIn()){ toast('سجّل دخولك أول'); return; }
   if(st.pos<=m.at){ toast('🔒 تنفتح لك بعد ما تعدّي فرع '+ROUTE[m.at]); return; }
   const keys=st.keys||0;
-  showModal('⚡ محطة '+m.n,
-    '<div style="line-height:1.9">تحدي سرعة ضد الجهاز.<br>الدخول يكلّف <b>🔑 مفتاح واحد</b> (عندك '+keys+').<br>الفوز = <b>🛡️ درع</b> يحمي سلسلتك + <b>100 نقطة</b>.'+(keys?'':'<br><span style="color:var(--accent)">ما عندك مفاتيح. كل 3 تدريبات = مفتاح.</span>')+'</div>',
-    keys ? [{t:'ادخل المحطة',full:true,f:()=>{ closeModal(); try{ playSword(1); }catch(e){} startMall(k); }},{t:'لاحقاً',ghost:true,full:true,f:closeModal}]
-         : [{t:'تدرّب من السيف واجمع مفاتيح',full:true,f:()=>{ closeModal(); RD.back=null; show('home'); }},{t:'إغلاق',ghost:true,full:true,f:closeModal}]);
+  const body='<div class="pp-lbl">تحدي سرعة ضد الجهاز</div><div class="pp-box">'
+    +'<div class="pp-rw"><b>🔑</b><small>الدخول بمفتاح<br>(عندك '+keys+')</small></div>'
+    +'<div class="pp-rw"><b>🛡️</b><small>درع يحمي<br>سلسلتك</small></div>'
+    +'<div class="pp-rw"><b>🏆</b><small>100 نقطة<br>عند الفوز</small></div></div>';
+  if(keys) gamePop('⚡ '+m.n, body, ()=>{ try{ playSword(1); }catch(e){} startMall(k); }, 'ادخل المحطة');
+  else gamePop('⚡ '+m.n, body+'<div class="pp-tip">ما عندك مفاتيح 🔑<br>كل 3 تدريبات = مفتاح</div>', ()=>{ RD.back=null; show('home'); }, 'تدرّب واجمع مفاتيح');
 }
 async function startMall(k){
   if(DEMO){ toast('المحطات تشتغل بعد تسجيل الدخول'); return; }
@@ -3558,6 +3582,18 @@ window.addEventListener('pageshow',()=>{ try{ if(stats.sound && AC && AC.state!=
 
 /* إعادة فرع خلّصته عشان تحسّن نجومه: ضد الآلي، بدون نقاط وبدون تقدّم */
 function replayAsk(i){ if(!rdLoggedIn()){ toast('سجّل دخولك أول'); return; } stagePop(i,'replay'); }
+/* نافذة موحّدة بستايل الألعاب (الفروع والمحطات) */
+function gamePop(title, body, go, goText, foot){
+  let el=$('rpPop'); if(!el){ el=document.createElement('div'); el.id='rpPop'; document.body.appendChild(el); }
+  el.innerHTML='<div class="pp"><div class="pp-rib"><span>'+title+'</span></div><button class="pp-x" type="button" aria-label="إغلاق">✕</button>'
+    +body+(go?'<button class="pp-go" type="button">'+goText+'</button>':'')+'<div class="pp-done">'+(foot||'')+'</div></div>';
+  el.classList.add('on');
+  const close=()=>el.classList.remove('on');
+  el.onclick=e=>{ if(e.target===el) close(); };
+  el.querySelector('.pp-x').onclick=close;
+  const g=el.querySelector('.pp-go'); if(g) g.onclick=()=>{ close(); go(); };
+  return close;
+}
 /* نافذة الفرع بستايل الألعاب: شريط ذهبي، الجوائز، النجوم، وزر العب */
 function stagePop(i,mode){
   const st=rdSt(), s=(st.stars||[])[i]||0, nm=ROUTE[i];
@@ -3602,6 +3638,17 @@ function replayDone(R,quit){
     roadLoad();
   });
 }
+
+/* نص زر السيف يذكر فرع اليوم عشان اللاعب يعرف إنه نفس الخريطة */
+function rdGoLbl(){
+  const l=$('goLbl'); if(!l) return; const st=RD.st;
+  const pa=pointsAvailable(), ok=rdLoggedIn() && st && typeof st.pos==='number' && !st.arrived && st.pos<=HQ;
+  let t = pa ? (ok ? 'تحدَّ فرع '+ROUTE[st.pos] : 'اسحب للتحدّي') : 'اسحب للتدريب';
+  l.textContent=t; l.style.fontSize = t.length>18 ? '17px' : '';
+  const d=$('goDone'); if(d && !pa) d.textContent = ok ? 'تحدّيت فرع اليوم ✓' : 'أنهيت نقاط اليوم ✓';
+}
+(function(){ const _rs=renderStats; renderStats=function(){ const r=_rs.apply(this,arguments); try{ rdGoLbl(); }catch(e){} return r; }; })();
+(function(){ const _rc=roadCard; roadCard=function(){ const r=_rc.apply(this,arguments); try{ rdGoLbl(); }catch(e){} return r; }; })();
 
 </script>
 </body>
