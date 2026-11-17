@@ -223,6 +223,8 @@ body{font-family:'Noto Kufi Arabic',system-ui,sans-serif;color:var(--text);backg
 .rw{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);margin-bottom:10px}
 .rw .gi{width:46px;height:46px;border-radius:14px;background:var(--tile);color:var(--accent);display:flex;align-items:center;justify-content:center;flex:none}
 .rw .rb{flex:1;min-width:0}
+.rw .gi.logo{background:#fff;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+.rw .gi.logo img{width:100%;height:100%;object-fit:contain;display:block}
 .rw .rb b{display:block;font-size:15.5px}
 .rw .rb span{color:var(--muted);font-size:12.5px}
 .pbar{height:5px;border-radius:5px;background:var(--line);margin-top:6px;overflow:hidden}
@@ -652,7 +654,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170900">
+<meta name="app-version" content="202611170910">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -867,9 +869,9 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <script>
 /* ===== المكافآت (القيم تجريبية، عدّلها هنا) ===== */
 const REWARDS = [
-  {id:'gift_arabica', type:'gift', title:'قسيمة أرابيكا ٥ د.ك',       cost:1500, icon:'gift'},
-  {id:'gift_pick',    type:'gift', title:'قسيمة بيك ٥ د.ك',           cost:1500, icon:'gift'},
-  {id:'gift_wooden',  type:'gift', title:'قسيمة وودن بيكري ٥ د.ك',    cost:1500, icon:'gift'}
+  {id:'gift_arabica', type:'gift', title:'قسيمة أرابيكا ٥ د.ك',       cost:1500, icon:'gift', logo:'img/arabica.png'},
+  {id:'gift_pick',    type:'gift', title:'قسيمة بيك ٥ د.ك',           cost:1500, icon:'gift', logo:'img/pick.png'},
+  {id:'gift_wooden',  type:'gift', title:'قسيمة وودن بيكري ٥ د.ك',    cost:1500, icon:'gift', logo:'img/wooden.png'}
 ];
 
 /* ===== بنك الأسئلة: [السؤال، الصحيح، خطأ١، خطأ٢، خطأ٣، المستوى(١ سهل ٢ متوسط ٣ صعب)، التفسير] ===== */
@@ -2039,7 +2041,7 @@ function renderStore(){
     items.forEach(r=>{
       const can=stats.balance>=r.cost, pct=Math.min(100,Math.round(stats.balance/r.cost*100));
       const c=document.createElement('div'); c.className='rw';
-      c.innerHTML='<div class="gi">'+svg(r.icon,24)+'</div><div class="rb"><b>'+r.title+'</b><span>'+fmt(r.cost)+' نقطة</span><div class="pbar"><i style="width:'+pct+'%"></i></div></div><button class="rbtn"'+(can?'':' disabled')+'>'+(can?'استبدال':'ينقصك '+fmt(r.cost-stats.balance))+'</button>';
+      c.innerHTML=(r.logo?'<div class="gi logo"><img src="'+r.logo+'" alt=""></div>':'<div class="gi">'+svg(r.icon,24)+'</div>')+'<div class="rb"><b>'+r.title+'</b><span>'+fmt(r.cost)+' نقطة</span><div class="pbar"><i style="width:'+pct+'%"></i></div></div><button class="rbtn"'+(can?'':' disabled')+'>'+(can?'استبدال':'ينقصك '+fmt(r.cost-stats.balance))+'</button>';
       c.querySelector('.rbtn').onclick=()=>confirmRedeem(r);
       box.appendChild(c);
     });
