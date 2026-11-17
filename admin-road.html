@@ -7,14 +7,14 @@
 <meta name="theme-color" content="#d3232f">
 <meta name="app-version" content="202611171450">
 <title>لوحة تحكّم الطريق إلى الرئيسي</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon-32.png" sizes="32x32">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="img/road/favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="img/road/fav-32.png?v=2" sizes="32x32">
+<link rel="apple-touch-icon" href="img/road/apple-touch-icon.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script>try{var s=localStorage.getItem('mc_admin_dark');if(s==='1'||(s===null&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<script>/* ثيم الطريق: فاتح دائماً */</script>
 <style>
 :root{--hero:#d3232f;--page:#f4f4f5;--card:#fff;--tx:#1f2125;--mu:#6b7078;--ln:#e7e8eb;--soft:#f1f2f4;--red:#c8102e;--ok:#1a8f4c;--chip:#fbe7ea;--warn:#f2a900;--dr:#c8102e;--track:#d5d8de;--glass:rgba(255,255,255,.42);--glassln:rgba(255,255,255,.55);--pill:rgba(0,0,0,.07);--hglass:rgba(211,35,47,.82);--up:#1a8f4c;--dlbg-up:rgba(26,143,76,.12);--dlbg-dn:rgba(200,16,46,.1)}
 html[data-theme="dark"]{--hero:#202124;--page:#111312;--card:#2a2b2e;--tx:#f3f3f4;--mu:#9da1a8;--ln:#34353a;--soft:#232427;--red:#d93a42;--chip:#36292b;--warn:#e3a92b;--dr:#f2777b;--track:#3b3e44;--glass:rgba(38,39,42,.45);--glassln:rgba(255,255,255,.1);--pill:rgba(0,0,0,.45);--hglass:rgba(32,33,36,.78);--up:#5fd38d;--dlbg-up:#30343a;--dlbg-dn:#30343a;color-scheme:dark}
@@ -261,6 +261,35 @@ html,body{background:#fff!important;color:#1f2125!important}
 .tiles,.live{grid-template-columns:repeat(4,1fr)!important}.live{grid-template-columns:repeat(3,1fr)!important}
 .t,.lv,.ch,.kg div{break-inside:avoid;border:1px solid #ddd!important}
 }
+
+/* ===== ثيم الطريق (نفس اللعبة): خريطة + كريمي + أحمر بوبيان ===== */
+:root,html[data-theme="dark"]{--page:#fbf0dc;--card:#fffaf0;--tx:#4a2a0e;--mu:#8a6a45;--ln:#ecd7b0;--soft:#f8e8c9;--chip:#fde3e6;--track:#e9d6b2;--hero:#2a1408}
+#thm{display:none!important}
+.hero{background:radial-gradient(circle at 50% 30%,rgba(120,20,30,.35),rgba(20,10,5,.8) 80%),url(img/road/map0.jpg) center 30%/cover no-repeat,#2a1408!important}
+.hero:before,.hero:after,.hero .wm{display:none!important}
+.bklogo{color:#d81f2e!important;filter:drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff) drop-shadow(0 3px 3px rgba(0,0,0,.4))}
+.ttl h1{text-shadow:0 2px 0 #7a0c12,0 4px 10px rgba(0,0,0,.4)}
+.hbtn{border:2px solid #fff!important;background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c)!important;box-shadow:0 0 0 2px #c8102e,0 3px 6px rgba(0,0,0,.35)}
+.mark{background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c)!important;border:2px solid #fff;box-shadow:0 0 0 2px #c8102e}
+html,body{background:#f7e4c2!important}
+.sheet{background:linear-gradient(#fdf4e2,#f7e4c2)!important;border-top:4px solid #fff;box-shadow:0 -4px 0 #c8102e}
+.lv,.t,.ch,.grp,#login .card,#lock .card,.addf{background:linear-gradient(#fffdf7,#fff6e6)!important;border:2px solid #ecd7b0!important;box-shadow:0 3px 0 #e2c48f}
+.t.alert{border-color:#c8102e!important;background:#fff1f2!important}
+.li,.kg div{background:#fff!important;border:1px solid #f0e0c2}
+.body{background:#fbefd8!important}
+.row:hover{background:#fbefd8}
+.ps{background:linear-gradient(#fffaf0,#fde9c4)!important;border:4px solid #fff;box-shadow:0 0 0 4px #c8102e}
+.ps .pg div{background:#fff!important;border:1px solid #ecd7b0}
+.sb:not(.ghost):not(.addb),#go,.pbtn,.ps .eb.sv,.sb.red{box-shadow:0 3px 0 rgba(0,0,0,.22)}
+#go,.pbtn{border:3px solid #fff!important;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c)!important;box-shadow:0 0 0 2px #c8102e,0 4px 0 #7a0c12!important;text-shadow:0 2px 0 #7a0c12}
+.mini{background:rgba(42,20,8,.82)!important}
+.tabbar{background:#fffaf0!important;border:3px solid #fff!important;box-shadow:0 0 0 3px #c8102e,0 8px 20px rgba(0,0,0,.25)!important}
+.tabbar button{color:#8a6a45}
+.tabbar button.on{color:#fff!important;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c)!important}
+.chp.on{background:#c8102e!important;border-color:#c8102e!important;color:#fff!important}
+.pch button.on,.tg button.on{background:#c8102e!important;border-color:#c8102e!important;color:#fff!important}
+.srch,#login input,.addg input{background:#fff!important;border:2px solid #e6d3ae!important}
+.lth{background:#fbf0dc!important}
 </style>
 </head>
 <body>

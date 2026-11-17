@@ -808,3 +808,4 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 #gate #gGo{border:3px solid #fff!important;border-radius:20px!important;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c)!important;box-shadow:0 5px 0 #7a0c12,0 8px 14px rgba(0,0,0,.25)!important;color:#fff!important;font-weight:900;font-size:20px;text-shadow:0 2px 0 #7a0c12}
 #gate .ghelp{color:#8a6a45!important;font-weight:700}
 #gate .gerr{color:#c8102e!important}
+#gate .gsub{display:none!important}
