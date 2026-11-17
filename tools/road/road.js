@@ -188,7 +188,7 @@ function m2Build(){
   let tp='<svg class="r2top" width="'+M2.W+'" height="'+(M2.PT+40)+'">'; let rr=5; const rn=()=>{ rr=(rr*9301+49297)%233280; return rr/233280; };
   for(let k=0;k<9;k++){ const x=16+rn()*(M2.W-32), y=30+rn()*(M2.PT-30); tp+=(k%3===0?m2Pine(x,y,1):k%3===1?m2Cone(x,y,1,k):m2Tree(x,y,1.1,k)); }
   tp+='</svg>';
-  let h=tp+'<div class="r2art" style="top:'+M2.PT+'px">'+[0,1,2,3,4,5,6,7].map(k=>'<img src="img/road/map'+k+'.jpg" alt="" decoding="async"'+(k>1?' loading="lazy"':'')+'>').join('')+'</div>';
+  let h=tp+'<div class="r2art" style="top:'+M2.PT+'px">'+[0,1,2,3,4,5,6,7].map(k=>'<img src="img/road/map'+k+'.jpg" alt="" decoding="async"'+'>').join('')+'</div>';
   GOV.forEach((gv,gi)=>{ if(gv.a===0) return; const y=(m2y(gv.a)+m2y(gv.a-1))/2, x=(m2x(gv.a)+m2x(gv.a-1))/2, c=GCOL[gi];
     h+='<div class="r2gov" style="left:'+x.toFixed(0)+'px;top:'+y.toFixed(0)+'px;--c:'+c[0]+';--c2:'+c[1]+'"><span>محافظة '+gv.n+'</span></div>'; });
   h+='<div class="r2gov first" style="left:'+m2x(0).toFixed(0)+'px;top:'+(m2y(0)+70).toFixed(0)+'px;--c:'+GCOL[0][0]+';--c2:'+GCOL[0][1]+'"><span>محافظة '+GOV[0].n+'</span></div>';
@@ -249,12 +249,13 @@ function renderMap(scroll){
   if(!rdLoggedIn()){ go.innerHTML='سجّل دخولك وابدأ الرحلة<small>من الخيران إلى الفرع الرئيسي</small>'; sub.textContent=''; }
   else if(arrived){ go.classList.add('gray'); go.disabled=true; go.innerHTML='🏁 وصلت الرئيسي<small>رحلتك خلصت هالموسم</small>'; sub.textContent='الموسم الجاي يبدأ الكل من جديد'; }
   else if(pointsAvailable()){ go.innerHTML='العب: فرع '+ROUTE[pos]+'<small>العب تحدي اليوم وتقدّم للفرع اللي بعده ⚔️</small>'; sub.textContent=(st.streak? '🔥 العب اليوم عشان ما تنكسر سلسلة '+st.streak+' أيام' : 'التحدي اليومي مرة وحدة باليوم'); }
-  else { go.classList.add('gray'); go.disabled=true; const need=3-((st.practice||0)%3); go.innerHTML='✓ خلصت تحدي اليوم<small>تعال بكرة وكمّل من فرع '+ROUTE[Math.min(pos,HQ)]+'</small>'; sub.textContent='🗡️ التدريب من السيف في الرئيسية، كل 3 تدريبات = مفتاح 🔑'; }
+  else { go.classList.add('gray'); go.disabled=true; const need=3-((st.practice||0)%3); go.innerHTML='✓ خلصت تحدي اليوم · تعال بكرة'; sub.textContent=''; }
+  go.classList.toggle('slim', go.disabled);
   if(rdLoggedIn() && !arrived && String(stats.empNo)==='302' && !DEMO){
     const t=document.createElement('button'); t.type='button'; t.className='rp-test'; t.textContent='⏭️ تجربة: انتقل لليوم التالي';
     t.onclick=async()=>{ t.disabled=true; const r=await rpc('test_next_day',{p_id:PID},6000);
       if(r && r.ok){ stats.pointsDay=''; save(stats); toast('صار يوم جديد، العب التحدي ⚔️'); await roadLoad(); renderMap(); } else { t.disabled=false; toast('ما زبط، حاول مرة ثانية'); } };
-    sub.appendChild(document.createElement('br')); sub.appendChild(t);
+    sub.appendChild(t);
   }
 }
 $('rpGo').onclick=()=>{ if($('rpGo').disabled) return; if(rdLoggedIn() && !pointsAvailable()){ renderMap(); return; } RD.back='map'; RD.mall=null; startMatch(); };
