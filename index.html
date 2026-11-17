@@ -273,6 +273,13 @@ body{font-family:'Noto Kufi Arabic',system-ui,sans-serif}
 .exclusive{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);margin-top:2px}
 .exclusive .gi{width:46px;height:46px;border-radius:14px;background:var(--tile);color:var(--accent);display:flex;align-items:center;justify-content:center;flex:none}
 .exclusive b{font-size:14.5px;line-height:1.6}
+.guestbox{background:#fff6e0;border:1.5px solid #f2b705;border-radius:16px;padding:14px;margin-bottom:12px;color:#3a3112}
+.guestbox b{display:block;font-size:15px;margin-bottom:4px}.guestbox p{margin:0 0 10px;font-size:12.5px;line-height:1.8;color:#6b5a1d}
+.guestbox .rbtn{width:100%;padding:11px;border-radius:12px;font-size:15px}
+html[data-theme="dark"] .guestbox{background:#2f2a1a;border-color:#b98d10;color:#f3e7c0}html[data-theme="dark"] .guestbox p{color:#d9c88e}
+body.guest .wallet,body.guest #inviteBtn,body.guest #inviteBtn+.hint,body.guest #goDone{display:none!important}
+body.guest #lbBtn{opacity:.55}
+.lgcode{letter-spacing:8px;font-size:20px!important;direction:ltr}.lgcode::placeholder{letter-spacing:0;font-size:16px}
 .nameIn{width:100%;border:2px solid var(--line);background:var(--page);color:var(--text);border-radius:14px;padding:12px;font:inherit;font-size:16px;text-align:center;outline:none}
 .nameIn:focus{border-color:var(--accent)}
 .gpick{display:flex;gap:10px;margin-top:12px}.gpick button{flex:1;border:2px solid var(--line);background:var(--page);color:var(--text);border-radius:14px;padding:11px;font:inherit;font-weight:800;font-size:15px}.gpick button.on{border-color:var(--accent);background:var(--accent);color:#fff}
@@ -654,7 +661,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="202611170940">
+<meta name="app-version" content="202611171000">
 <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -675,6 +682,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
       </div>
     </div>
     <div class="sheet">
+      <div class="guestbox" id="guestBox" style="display:none"><b>أنت في وضع التدريب</b><p>تقدر تتدرّب ضد الكمبيوتر. عشان تجمع نقاط وتدخل المتصدرين وتتحدى زملاءك، سجّل دخولك برقمك الوظيفي والرمز.</p><button type="button" class="rbtn" id="guestLogin">تسجيل الدخول</button></div>
       <div class="wallet"><div><small>إجمالي نقاطك</small><b id="wBal">0</b></div><button class="wbtn" id="storeBtn">استبدل نقاطك</button></div>
       <div class="stats">
         <div class="stat"><b id="stBest">0</b><small>أفضل نتيجة</small></div>
@@ -1220,8 +1228,13 @@ let toastT;
 function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2400); }
 function shownDays(){ const t=dkey(new Date()), y=dkey(new Date(Date.now()-864e5)); return (stats.lastDay===t||stats.lastDay===y) ? (stats.dayStreak||0) : 0; }
 const fmt = n => Number(n||0).toLocaleString('en-US');
-const pointsAvailable = () => stats.pointsDay !== dkey(new Date());
+/* قائمة الموظفين: إذا رفعها المدير صار الدخول بالرقم الوظيفي + الرمز، واللي ما دخل يتدرّب بس */
+let LIST_ON = false; try{ LIST_ON = localStorage.getItem('mc_list')==='1'; }catch(e){}
+const GUEST = () => LIST_ON && !DEMO && !stats.empNo;
+const pointsAvailable = () => !GUEST() && stats.pointsDay !== dkey(new Date());
+function renderGuest(){ const gst=GUEST(); document.body.classList.toggle('guest',gst); const gb=$('guestBox'); if(gb) gb.style.display=gst?'block':'none'; }
 function renderStats(){
+  try{ renderGuest(); }catch(e){}
   $('stBest').textContent=stats.best; $('stWins').textContent=stats.wins; $('stStreak').textContent=shownDays();
   const pa = pointsAvailable();
   try{ setAv($('invAv'), stats.avatar, avInit()); setAv($('pfAv'), stats.avatar, avInit()); }catch(e){}
@@ -1322,6 +1335,7 @@ function showFound(name, human, tok){
   const t = setInterval(()=>{ if(tok!==matchTok){ clearInterval(t); return; } n--; if(n<=0){ clearInterval(t); startGame(); } else { $('cd').textContent=n; SND.count(); } }, 800);
 }
 async function startMatch(){
+  if(GUEST()){ audio(); const tok = ++matchTok; PV = null; window._viaInv=false; show('match'); $('searching').style.display='none'; $('inviteWait').style.display='none'; bot = { name:'', skill: botSkill() }; showFound(nextBotName(), false, tok); return; }
   if(needReg()){ askName(startMatch); return; }
   await syncPlayer();
   if(!stats.seenDailyNote && pointsAvailable()){
@@ -1355,6 +1369,7 @@ async function startMatch(){
 /* ===== دعوة صديق برابط ===== */
 let inviteTok = 0;
 async function inviteFriend(){
+  if(GUEST()){ askLogin(); return; }
   if(needReg()){ askName(inviteFriend); return; }
   await syncPlayer();
   const tok = ++inviteTok;
@@ -1402,7 +1417,7 @@ function startGameOld(){
         me:0, bot:0, start:performance.now(), qStart:0, over:false, timers:[], locked:false, lastSec:61 };
   G.scored = pointsAvailable();
   if(G.scored){ stats.pointsDay = dkey(new Date()); save(stats); if(!DEMO) rpc('start_scored',{p_id:PID},4000); }
-  if(!DEMO) rpc('set_playing',{p_id:PID},3000);
+  if(!DEMO && !GUEST()) rpc('set_playing',{p_id:PID},3000);
   $('myLbl').textContent = G.scored ? 'أنت' : 'أنت (تدريب)';
   $('myScore').textContent=0; $('botScore').textContent=0; $('botLbl').textContent=bot.name;
   updateRace(); $('combo').classList.remove('on');
@@ -1604,7 +1619,7 @@ function startGameSync(){
         combo:0, maxCombo:0, correct:0, wrong:0, me:0, bot:0, tbMe:0, tbOpp:0, start:performance.now(), over:false, timers:[], locked:false, cur:null, qMax:10 };
   G.scored = pointsAvailable();
   if(G.scored){ stats.pointsDay = dkey(new Date()); save(stats); if(!DEMO) rpc('start_scored',{p_id:PID},4000); }
-  if(!DEMO) rpc('set_playing',{p_id:PID},3000);
+  if(!DEMO && !GUEST()) rpc('set_playing',{p_id:PID},3000);
   $('myLbl').textContent = G.scored ? 'أنت' : 'أنت (تدريب)';
   $('myScore').textContent=0; $('botScore').textContent=0; $('botLbl').textContent=bot.name;
   updateRace(); $('combo').classList.remove('on');
@@ -1785,7 +1800,7 @@ function endGame(){
   const scored = G.scored, bonus = (scored && R==='win' && !G.force) ? (PV ? 50 : 0) : 0, earned = (scored && G.force!=='lose') ? me + bonus : 0;
   lastRes = {me:me, bot:b, opp:(bot.name||''), meAv:stats.avatar||'', oppAv:(window._oppAv||''), human:!!(PV||window._wasHuman), scored:scored, earned:earned, result: R};
   stats.balance += earned; stats.totalPoints += earned;
-  if(!DEMO) rpc('finish_game2',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus},5000).then(function(c){ if(c && typeof c.balance==='number'){ stats.balance=c.balance; save(stats); try{ renderStats(); }catch(e){}
+  if(!DEMO && !GUEST()) rpc('finish_game2',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus},5000).then(function(c){ if(c && typeof c.balance==='number'){ stats.balance=c.balance; save(stats); try{ renderStats(); }catch(e){}
     if(scored && c.earned!==earned){ lastRes.earned=c.earned; try{ $('earned').innerHTML='+'+fmt(c.earned)+' نقطة<small>'+me+' من الجولة'+(c.blocked?' — لا مكافأة فوز: سبق أن فزت على هذا الزميل بالرابط':'')+' — رصيدك '+fmt(c.balance)+'</small>'; }catch(e){} } } });
   stats.played++;
   const today=dkey(new Date()), yest=dkey(new Date(Date.now()-864e5));
@@ -1795,7 +1810,7 @@ function endGame(){
   if(R==='win' && lastRes.human && !G.force) stats.humanWins=(stats.humanWins||0)+1;
   if(window._viaInv && G.force!=='lose'){ stats.invited=(stats.invited||0)+1; } window._viaInv=false;
   if(scored && G.force!=='lose'){ stats.bestScored=Math.max(stats.bestScored||0, me); if(G.wrong===0 && G.correct>=6) stats.perfects=(stats.perfects||0)+1; }
-  const fresh = awardBadges();
+  const fresh = GUEST() ? [] : awardBadges();
   save(stats); renderStats(); syncProgress();
   if(fresh.length) setTimeout(SND.badge, 1100);
   $('newBadges').innerHTML = fresh.map((bd,i)=>`<div class="nb" style="animation-delay:${i*.2}s"><div class="bi">${svg(bd.i,24)}</div><div><small>شارة جديدة</small><b>${bd.n}</b><span>${bd.d}</span></div></div>`).join('');
@@ -1904,7 +1919,7 @@ async function drawCard(r,name){
   return c;
 }
 let shareFile=null, shareText='';
-const needReg = () => !stats.playerName || !stats.gender || (!DEMO && !stats.empNo);
+const needReg = () => LIST_ON && !DEMO ? !stats.empNo : (!stats.playerName || !stats.gender || (!DEMO && !stats.empNo));
 const normEmp = v => String(v||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,'');
 async function syncPlayer(){
   if(DEMO || !stats.empNo) return;
@@ -1929,7 +1944,28 @@ async function syncProgress(){
   if(k && typeof k==='object') stats.rk = {d10:!!(k.d10||(stats.rk||{}).d10), d1:!!(k.d1||(stats.rk||{}).d1), w10:!!(k.w10||(stats.rk||{}).w10), m1:!!(k.m1||(stats.rk||{}).m1)};
   save(stats); try{ renderBadges(); }catch(e){}
 }
+function askLogin(next){
+  let g = stats.gender || '';
+  showModal('تسجيل الدخول','<div style="font-size:13px;color:var(--muted);margin:-4px 0 12px">الرمز وصلك من إدارة المسابقة</div><input id="lgEmp" class="nameIn" inputmode="numeric" maxlength="10" placeholder="الرقم الوظيفي" autocomplete="off"><input id="lgCode" class="nameIn lgcode" style="margin-top:10px" inputmode="numeric" maxlength="6" placeholder="الرمز (٦ أرقام)" autocomplete="one-time-code">'+(g?'':'<div class="gpick"><button type="button" id="gM">ذكر</button><button type="button" id="gF">أنثى</button></div>')+'<div style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center">نسيت الرمز؟ تواصل مع إدارة المسابقة</div>',
+    [{t:'دخول',full:true,f:async()=>{
+        const emp=normEmp($('lgEmp').value), code=normEmp($('lgCode').value);
+        if(!/^[0-9]{3,10}$/.test(emp)){ toast('اكتب رقمك الوظيفي'); return; }
+        if(!/^[0-9]{6}$/.test(code)){ toast('الرمز ٦ أرقام'); return; }
+        if(!g){ toast('اختر ذكر أو أنثى'); return; }
+        const r = await rpc('login_player',{p_id:PID,p_emp:emp,p_code:code,p_gender:g},6000);
+        if(!r){ toast('تعذّر الاتصال، حاول مرة أخرى'); return; }
+        if(!r.ok){ toast(r.error==='wait'?'محاولات كثيرة، حاول بعد ١٥ دقيقة':(r.error==='locked'?'هذا الجهاز مسجّل برقم وظيفي آخر':'الرقم الوظيفي أو الرمز غير صحيح')); return; }
+        if(r.id && r.id!==PID){ PID=r.id; try{ localStorage.setItem('mc_pid',PID); }catch(e){} }
+        stats.empNo=r.emp||emp; stats.playerName=r.name||stats.playerName; stats.gender=r.gender||g;
+        stats.balance=r.balance; stats.totalPoints=r.total_points||0; stats.pointsDay = r.points_available ? '' : dkey(new Date());
+        save(stats); setTimeout(syncProgress,300); try{ syncProfile(); }catch(e){} closeModal(); renderGreet(); try{ renderStats(); renderGuest(); }catch(e){}
+        toast('أهلاً '+String(stats.playerName||'').split(' ')[0]); if(next) next(); }},
+     {t:'إلغاء',ghost:true,full:true,f:closeModal}]);
+  if(!stats.gender){ const mark=()=>{ $('gM').classList.toggle('on',g==='m'); $('gF').classList.toggle('on',g==='f'); };
+    $('gM').onclick=()=>{g='m';mark();}; $('gF').onclick=()=>{g='f';mark();}; mark(); }
+}
 function askName(next){
+  if(LIST_ON && !DEMO){ askLogin(next); return; }
   let g = stats.gender || ''; const locked = !!stats.empNo && !DEMO;
   showModal('بياناتك','<input id="nameIn" class="nameIn" maxlength="30" placeholder="الاسم الكامل" autocomplete="off"><input id="empIn" class="nameIn" style="margin-top:10px" inputmode="numeric" maxlength="10" placeholder="الرقم الوظيفي" autocomplete="off"'+(locked?' readonly':'')+'>'+(locked?'<div style="font-size:12px;color:var(--muted);margin-top:6px">الرقم الوظيفي مرتبط بهذا الجهاز ولا يمكن تغييره</div>':'')+'<div class="gpick"><button type="button" id="gM">ذكر</button><button type="button" id="gF">أنثى</button></div>',
     [{t:'متابعة',full:true,f:async()=>{
@@ -1941,6 +1977,7 @@ function askName(next){
           const r = await rpc('register_player',{p_id:PID,p_name:v,p_emp:emp,p_gender:g,p_balance:stats.empNo?0:(stats.balance||0)},6000);
           if(!r){ toast('تعذّر الاتصال، حاول مرة أخرى'); return; }
           if(r.error==='locked'){ toast('هذا الجهاز مسجّل برقم وظيفي آخر'); return; }
+          if(r.error==='need_code'){ LIST_ON=true; try{ localStorage.setItem('mc_list','1'); }catch(e){} closeModal(); askLogin(next); return; }
           if(!r.ok){ toast('تحقق من الاسم والرقم الوظيفي'); return; }
           if(r.id && r.id!==PID){ PID=r.id; try{ localStorage.setItem('mc_pid',PID); }catch(e){} }
           stats.empNo=r.emp||emp; stats.balance=r.balance; stats.totalPoints=r.total_points||0;
@@ -2068,7 +2105,7 @@ async function doRedeem(r){
   showModal('تم تسجيل طلبك','رمز الطلب:<br><code>'+code+'</code><br>تم تسجيل طلبك وسيتم التواصل معك لتسليم القسيمة. احتفظ بهذا الرمز.',[{t:'حسناً',f:closeModal}]);
   badgeEvent();
 }
-$('storeBtn').onclick = ()=>{ window._pfBack=0; openStore(); };
+$('storeBtn').onclick = ()=>{ if(GUEST()){ askLogin(); return; } window._pfBack=0; openStore(); };
 /* ===== المتصدرون ===== */
 const LB = {m:'daily', p:'day', lim:10, tok:0};
 const LBP = {day:'اليوم', week:'هذا الأسبوع', month:'هذا الشهر', all:'منذ البداية'};
@@ -2108,7 +2145,7 @@ async function homeRank(){
   const r = await rpc('get_leaderboard',{p_id:PID,p_period:'day',p_mode:'daily',p_limit:3},5000);
   $('lbMine').textContent = (r && r.me) ? 'ترتيبك اليوم #'+r.me.rank : '';
 }
-$('lbBtn').onclick=()=>{ LB.lim=10; show('lbPage'); loadLB(); };
+$('lbBtn').onclick=()=>{ if(GUEST()){ askLogin(); return; } LB.lim=10; show('lbPage'); loadLB(); };
 $('backBtn4').onclick=()=>{ $('lbMe').style.display='none'; show('home'); homeRank(); };
 $('lbMode').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; LB.m=b.dataset.m; LB.lim=10; $('lbMode').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); loadLB(); };
 $('lbPer').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; LB.p=b.dataset.p; LB.lim=10; $('lbPer').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); loadLB(); };
@@ -2352,6 +2389,8 @@ beat(); setInterval(beat,30000); document.addEventListener('visibilitychange',()
 if(!DEMO) rpc('log_visit',{p_id:PID},4000);
 syncPlayer();
 loadRemoteQuestions().then(acceptInviteFromUrl);
+$('guestLogin').onclick=()=>askLogin();
+if(!DEMO) rpc('auth_mode',{},5000).then(m=>{ if(m && typeof m.list==='boolean'){ LIST_ON=m.list; try{ localStorage.setItem('mc_list',m.list?'1':'0'); }catch(e){} try{ renderStats(); }catch(e){} } });
 
 /* تنبيه تثبيت التطبيق على الشاشة الرئيسية (سفاري iPhone/iPad) */
 (function(){ try{
