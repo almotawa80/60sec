@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611171340">
+<meta name="app-version" content="202611171450">
 <title>لوحة تحكّم تحدّي الدقيقة</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
@@ -460,7 +460,10 @@ function drawPlayer(){
 /* ===== قائمة الموظفين والرموز ===== */
 let EMP={total:0,joined:0};
 let PH={};
-let ISSUED={}; try{ ISSUED=JSON.parse(sessionStorage.getItem('mc_issued')||'{}')||{}; }catch(e){}
+/* الرموز اللي طلعتها تبقى محفوظة على هالجهاز ٢٤ ساعة (السيرفر يحفظها مشفّرة وما يقدر يرجعها) */
+const ISS_TTL=24*3600e3;
+let ISSUED={}; try{ ISSUED=JSON.parse(localStorage.getItem('mc_issued')||sessionStorage.getItem('mc_issued')||'{}')||{}; const nw=Date.now(); Object.keys(ISSUED).forEach(k=>{ if(!ISSUED[k].at || nw-ISSUED[k].at>ISS_TTL) delete ISSUED[k]; }); }catch(e){}
+function saveIssued(){ try{ localStorage.setItem('mc_issued',JSON.stringify(ISSUED)); }catch(e){} }
 const nPh=v=>{ let d=String(v==null?'':v).replace(/[٠-٩]/g,x=>'٠١٢٣٤٥٦٧٨٩'.indexOf(x)).replace(/[^0-9]/g,''); if(d.startsWith('00')) d=d.slice(2); if(d.length===8) d='965'+d; return d.length>=10&&d.length<=15?d:''; };
 const nEmp=v=>String(v==null?'':v).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,'');
 async function loadEmp(){
@@ -478,7 +481,7 @@ async function newCode(emp,btn){
   if(!btn.classList.contains('sure')){ btn.classList.add('sure'); lb.textContent='اضغط للتأكيد'; setTimeout(()=>{ if(btn.isConnected&&btn.classList.contains('sure')&&!btn.disabled){ btn.classList.remove('sure'); lb.textContent='رمز جديد'; } },4000); return; }
   btn.disabled=true; let r=null; try{ r=await rpc('admin_new_code',{p_key:KEY,p_emp:emp}); }catch(e){}
   if(!r||!r.ok){ btn.disabled=false; btn.classList.remove('sure'); lb.textContent=(r&&r.error==='notfound')?'مو في القائمة':'تعذّر'; return; }
-  ISSUED[r.emp||emp]={code:r.code,name:r.name||'',phone:r.phone||PH[r.emp||emp]||''}; try{ sessionStorage.setItem('mc_issued',JSON.stringify(ISSUED)); }catch(e){}
+  ISSUED[r.emp||emp]={code:r.code,name:r.name||'',phone:r.phone||PH[r.emp||emp]||'',at:Date.now()}; saveIssued();
   btn.disabled=false; btn.classList.remove('sure'); lb.textContent='رمز جديد';
   const a=btn.closest('.acts'); a.querySelectorAll('.codeb,.icb.wa').forEach(x=>x.remove()); a.insertAdjacentHTML('afterbegin',sentHtml(r.emp||emp));
 }
@@ -534,6 +537,7 @@ async function uploadEmp(rows){
     let r=null; try{ r=await rpc('admin_upload_employees',{p_key:KEY,p_rows:rows.slice(i,i+400)}); }catch(err){}
     if(!r||!r.ok){ m.className='empmsg err'; m.textContent='انقطع الرفع عند '+i+'. أعد رفع نفس الملف وبيكمل.'; break; }
     added+=r.added; updated+=r.updated; skipped+=r.skipped; codes=codes.concat(r.codes||[]); }
+  if(codes.length){ const nw=Date.now(); codes.forEach(c=>{ ISSUED[c.emp]={code:c.code,name:c.name||'',phone:c.phone||'',at:nw}; }); saveIssued(); }
   if(codes.length){ const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(codes.map(c=>({'الرقم الوظيفي':c.emp,'الاسم':c.name,'الهاتف':c.phone||'','الرمز':c.code}))),'الرموز');
     XLSX.writeFile(wb,'رموز-الموظفين-'+new Date().toISOString().slice(0,10)+'.xlsx'); }
   if(!m.classList.contains('err')) m.textContent='أُضيف '+fmt(added)+' · تحدّث اسم '+fmt(updated)+(skipped?' · تجاهلت '+fmt(skipped):'')+(codes.length?' · نزل ملف الرموز':'');
@@ -573,7 +577,7 @@ window.addEventListener('afterprint',()=>{ try{ Object.values(charts).forEach(c=
 
 /* ===== الأزرار ===== */
 $('resetAll').onclick=async()=>{ if(!confirm('تصفير رصيد ونقاط جميع اللاعبين؟ لا يمكن التراجع.')) return; if(!confirm('تأكيد أخير: تصفير الجميع؟')) return; try{ await rpc('admin_reset_points',{p_key:KEY}); }catch(e){} load(); };
-$('out').onclick=()=>{ try{localStorage.removeItem('mc_admin');sessionStorage.removeItem('mc_admin');localStorage.removeItem('mc_admin_fid');sessionStorage.removeItem('mc_admin_ok');}catch(e){} KEY=''; clearInterval(timer); location.reload(); };
+$('out').onclick=()=>{ try{localStorage.removeItem('mc_admin');sessionStorage.removeItem('mc_admin');localStorage.removeItem('mc_admin_fid');sessionStorage.removeItem('mc_admin_ok');localStorage.removeItem('mc_issued');}catch(e){} KEY=''; clearInterval(timer); location.reload(); };
 $('ref').onclick=()=>{ const b=$('ref'); b.classList.remove('spin'); void b.offsetWidth; b.classList.add('spin'); load(); };
 $('thm').onclick=()=>{ const d=!isDark(); if(d) document.documentElement.setAttribute('data-theme','dark'); else document.documentElement.removeAttribute('data-theme'); try{localStorage.setItem('mc_admin_dark',d?'1':'0');}catch(e){} const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=d?'#202124':'#d3232f'; drawCharts(); };
 if(isDark()){ const m=document.querySelector('meta[name=theme-color]'); if(m) m.content='#202124'; }
