@@ -2219,21 +2219,19 @@ html,body{overflow-x:clip;overscroll-behavior-x:none}
 
 #home #inviteBtn .mbd{margin:12px 0 8px!important;display:block}
 
-/* ملفي: الإحصاءات عمود يسار الصورة */
-#profilePage .pfstats.pfcol{position:absolute!important;left:6px;top:-6px;margin:0!important;display:flex!important;flex-direction:column;gap:6px!important;z-index:4;width:96px;grid-template-columns:none!important}
-#profilePage .pfstats.pfcol div{aspect-ratio:auto!important;width:96px;height:64px;padding:0 4px 0 34px!important;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;border:0!important;border-style:solid!important;border-width:10px!important;border-image:url(img/road/admin/cardS.webp) 40 fill / 10px stretch!important;background:none!important;filter:drop-shadow(0 4px 5px rgba(0,0,0,.35))}
-#profilePage .pfstats.pfcol div::before{position:absolute;right:auto;left:-2px;top:50%;transform:translateY(-50%);width:30px!important;height:30px!important;margin:0!important}
-#profilePage .pfstats.pfcol b{font-size:15px!important;line-height:1.1;color:#5a3412}
-#profilePage .pfstats.pfcol small{font-size:9.5px!important;line-height:1.25;white-space:nowrap}
 
 #profilePage .ttl h1{visibility:hidden}
 
-#profilePage .pfcard{min-height:200px;box-sizing:border-box}
 #profilePage #pfWrap{margin-top:-34px!important}
-#profilePage .pfstats.pfcol{top:-24px;width:104px;gap:5px!important}
-#profilePage .pfstats.pfcol div{width:104px;height:54px;padding:0 2px 0 28px!important}
-#profilePage .pfstats.pfcol div::before{width:26px!important;height:26px!important;left:-4px}
-#profilePage .pfstats.pfcol small{font-size:9px!important}
+
+/* ملفي: الإحصاءات صف تحت الصورة */
+#profilePage .pfstats.pfrow4{width:100%;margin:62px 0 0!important;flex-basis:100%}
+
+#profilePage .pfpk{top:24px!important}
+
+/* نافذة «تقدّمت فرع»: الشريط ما ينقص تحت شريط الجوال */
+.rfx{padding-top:calc(76px + env(safe-area-inset-top))!important;padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
+.rfx .in{margin:0 auto auto!important}
 </style>
 </head>
 <body>
@@ -2403,7 +2401,7 @@ html,body{overflow-x:clip;overscroll-behavior-x:none}
         <button class="pfwrap" id="pfWrap" type="button" aria-label="صورتك"><span class="pfbig" data-wb id="pfBig"></span><span class="pfplus" id="pfPlus">+</span></button>
         <div class="pfpk"><button type="button" id="pfPkA"><i></i><span>محاربي</span></button><button type="button" id="pfPkW"><i></i><span>سلاحي</span></button></div>
         <input type="file" id="pfFile" accept="image/*" hidden>
-        <div class="pfstats pfcol">
+        <div class="pfstats pfrow4">
         <div><b id="pfTot">0</b><small>إجمالي النقاط</small></div>
         <div><b id="pfBal">0</b><small>الرصيد</small></div>
         <div><b id="pfWins">0</b><small>فوز / لعب</small></div>
