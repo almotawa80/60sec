@@ -5086,5 +5086,25 @@ document.querySelectorAll('svg.mark').forEach(function(s){ var i=document.create
   sync(); const mo=new MutationObserver(sync); ['wBal','lbMine'].forEach(id=>{ const e=$(id); if(e) mo.observe(e,{childList:true,characterData:true,subtree:true}); });
 }catch(e){} })();
 </script>
+
+<script>
+/* تحديث تلقائي: الأيقونة المثبتة على الشاشة تفتح نسخة محفوظة، فنتأكد من الموقع ونحدّث لو فيه نسخة جديدة */
+(function(){
+  var K='road_etag', busy=false;
+  function idle(){ var h=document.getElementById('home'); var g=document.getElementById('gate'); return (h&&h.classList.contains('active'))||(g&&g.classList.contains('on')); }
+  function check(){
+    if(busy||!navigator.onLine) return; busy=true;
+    fetch(location.pathname+'?chk='+Date.now(),{method:'HEAD',cache:'no-store'}).then(function(r){
+      var e=r.headers.get('etag')||r.headers.get('last-modified'); if(!e) return;
+      var old=null; try{ old=localStorage.getItem(K); }catch(_){}
+      try{ localStorage.setItem(K,e); }catch(_){}
+      if(old && old!==e && idle()){ var u=location.pathname+'?v='+Date.now()+location.hash; location.replace(u); }
+    }).catch(function(){}).then(function(){ busy=false; });
+  }
+  window.addEventListener('load',function(){ setTimeout(check,1500); });
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') check(); });
+  window.addEventListener('pageshow',function(ev){ if(ev.persisted) check(); });
+})();
+</script>
 </body>
 </html>
