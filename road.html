@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118041500">
+<meta name="app-version" content="road-20261118050000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1389,6 +1389,11 @@ body:has(#roadPage.active) .toast{top:calc(200px + env(safe-area-inset-top))}
 @keyframes qbar{to{transform:scaleX(0)}}
 #game .qword{font-size:50px;font-weight:900;line-height:1.3}
 #game .opts.hide{visibility:hidden}
+#game .qimg{width:min(135px,36vw);aspect-ratio:1;border-radius:18px;overflow:hidden;border:4px solid #fff;box-shadow:0 0 0 3px #c8102e,0 6px 0 #8a0a12;background:#f0dcb5;margin:4px auto}
+#game .qimg img{width:100%;height:100%;object-fit:cover;display:block;filter:blur(18px) saturate(.6);transform:scale(1.15);animation:qimgClear 12s ease-out forwards}
+#game .qimg.rev img{animation:none;filter:none;transform:none;transition:filter .5s,transform .5s}
+#game .qimg.err img{display:none}
+@keyframes qimgClear{to{filter:blur(4px) saturate(1);transform:scale(1)}}
 #game .opts.icons .opt{justify-content:center!important;min-height:70px!important}
 #game .opts.icons .opt .lt{position:absolute;top:7px;right:7px;width:26px!important;height:26px!important;font-size:13px!important}
 #game .opts.icons .opt .tx{flex:none;display:flex}
@@ -2606,8 +2611,15 @@ function renderQText(it, box){
     qc.querySelector('.qask').textContent = k.a[2]||'شنو لون الكتابة؟';
     box.classList.add('cols'); return k;
   }
+  if(k.t==='img'){
+    qc.innerHTML = `<div class="qimg"><img alt=""></div><div class="qask"></div>`;
+    const im=qc.querySelector('img'); im.src=k.a[0]||''; im.onerror=()=>{ im.parentNode.classList.add('err'); };
+    qc.querySelector('.qask').textContent = k.a[1]||'مين صاحب الصورة؟';
+    return k;
+  }
   qc.textContent = k.a.join(' '); return null;
 }
+function revealQImg(){ const d=document.querySelector('#qText .qimg'); if(d) d.classList.add('rev'); }
 function fillOptText(b, t, k){
   const tx=b.querySelector('.tx');
   if(k && k.t==='mem' && QICON[t]){ tx.innerHTML=qIcon(t); b.setAttribute('aria-label',t); }
@@ -2615,13 +2627,14 @@ function fillOptText(b, t, k){
   else tx.textContent=t;
 }
 function showExpl(prefix){
+  revealQImg();
   const txt = (prefix?prefix+' — ':'') + (G.cur.ex||'');
   if(!txt.trim()) return;
   const ex = $('expl'); ex.innerHTML = svg('bulb',18)+'<span></span>'; ex.querySelector('span').textContent = txt; ex.classList.add('on');
 }
 function answer(btn, ok, box){
   if(G.locked || G.over) return;
-  G.locked = true; box.classList.add('lock');
+  G.locked = true; box.classList.add('lock'); revealQImg();
   btn.classList.add(ok?'ok':'bad');
   if(!ok){
     [...box.children].forEach(c=>{ if(c.dataset.ok==='1') c.classList.add('ok'); else if(c!==btn) c.classList.add('dim'); });
