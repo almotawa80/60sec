@@ -710,7 +710,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118073000">
+<meta name="app-version" content="road-20261118074000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -2886,10 +2886,10 @@ function answerS(btn, ok, box){
   btn.classList.add(ok?'ok':'bad');
   if(!ok){
     [...box.children].forEach(c=>{ if(c.dataset.ok==='1') c.classList.add('ok'); else if(c!==btn) c.classList.add('dim'); });
-    SND.bad(); SND.stab(); FXV.duel('stab'); g.wst=(g.wst||0)+1; FXV.flash('rgba(200,16,46,.6)'); FXV.shake($('qWrap')); showExpl('');
+    SND.stab(); FXV.duel('stab'); g.wst=(g.wst||0)+1; FXV.flash('rgba(200,16,46,.6)'); FXV.shake($('qWrap')); showExpl('');
   } else {
     [...box.children].forEach(c=>{ if(c!==btn) c.classList.add('dim'); });
-    g.wst=0; SND.ok((g.combo||0)+1); SND.slash(); FXV.duel('thrust'); FXV.flash('rgba(26,143,76,.55)'); floatPts(ptsFor(lv,ms,T),lv,ms<3000); showExpl('');
+    g.wst=0; SND.slash(); FXV.duel('thrust'); FXV.flash('rgba(26,143,76,.55)'); floatPts(ptsFor(lv,ms,T),lv,ms<3000); showExpl('');
   }
   try{ navigator.vibrate && navigator.vibrate(ok?20:[30,40,30]); }catch(e){}
   const rec={qi:g.qi,ok:ok,ms:ms}; try{ (g.picks=g.picks||{})[g.qi]=String((btn.querySelector('.tx')||btn).textContent||'').slice(0,120); }catch(e){}
@@ -2916,7 +2916,7 @@ function timeoutS(){
   const g=G; if(!g||g.locked||g.over||g.phase!=='q') return;
   g.locked=true; const box=$('opts'); box.classList.add('lock');
   [...box.children].forEach(c=>{ if(c.dataset.ok==='1') c.classList.add('ok'); else c.classList.add('dim'); });
-  SND.bad(); SND.stab(); FXV.duel('stab'); g.wst=(g.wst||0)+1; showExpl('انتهى وقت السؤال'); recompute();
+  SND.stab(); FXV.duel('stab'); g.wst=(g.wst||0)+1; showExpl('انتهى وقت السؤال'); recompute();
 }
 function botAns(i, elapsed){
   const g=G; if(!g||g.over||PV) return;
