@@ -689,6 +689,16 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 @keyframes fxbn{0%{transform:translate(-50%,90px);opacity:0}15%,80%{transform:translate(-50%,0);opacity:1}100%{transform:translate(-50%,90px);opacity:0}}
 .fxconf{position:fixed;top:-20px;width:9px;height:14px;z-index:300;pointer-events:none;border-radius:2px;animation:fxcf linear forwards}
 @keyframes fxcf{to{transform:translateY(110vh) rotate(720deg)}}
+
+/* متجر الحصريات */
+.exg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.ex{background:var(--card);border-radius:18px;padding:8px 8px 10px;box-shadow:var(--shadow);text-align:center;position:relative;border:2px solid #d4a017}
+.ex img{width:100%;aspect-ratio:1;border-radius:12px;display:block;object-fit:cover}
+.ex .cr{position:absolute;top:12px;right:12px;background:linear-gradient(#f6d365,#d4a017);color:#5a3b00;font-size:11px;font-weight:800;font-style:normal;padding:3px 9px;border-radius:20px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.ex b{display:block;margin:7px 0 2px;font-size:13.5px}.ex span{font-size:12px;opacity:.75}
+.ex button{margin-top:7px;width:100%;border:0;border-radius:12px;padding:8px;font-family:inherit;font-weight:800;font-size:13px;background:#c8102e;color:#fff;cursor:pointer}
+.ex button.own{background:#e3f4ea;color:#126b38}.ex button:disabled:not(.own){background:#eee;color:#999}
+.exn{font-size:11.5px;opacity:.75;margin:-4px 2px 10px}
 </style>
 <link rel="icon" type="image/svg+xml" href="img/road/favicon.svg?v=2">
 <link rel="icon" type="image/png" sizes="32x32" href="img/road/fav-32.png?v=2">
@@ -700,7 +710,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118063000">
+<meta name="app-version" content="road-20261118070000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -3257,7 +3267,7 @@ function showModal(title, body, btns){
   $('modal').classList.add('on');
 }
 function closeModal(){ $('modal').classList.remove('on'); }
-function openStore(){ renderStore(); show('store'); }
+function openStore(){ renderStore(); show('store'); loadOwn().then(()=>{ try{ renderStore(); }catch(e){} }); }
 if(!DEMO) document.getElementById('demoTop').style.display='none';
 document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stats.totalPoints+=5000; save(stats); renderStore(); renderStats(); };
 /* الرجوع بالسحب: الصفحة تتبع الإصبع والخلفية (الرئيسية) ثابتة */
@@ -3308,6 +3318,7 @@ function renderStore(){
   $('sBal').textContent = fmt(stats.balance);
   const groups=[['cash','مكافآت نقدية'],['gift','قسائم'],['miles','أميال']];
   const box=$('rewards'); box.innerHTML='';
+  try{ box.insertAdjacentHTML('beforeend', shopHtml()); box.querySelectorAll('.ex button[data-k]').forEach(b=>b.onclick=()=>confirmBuy(b.dataset.k)); }catch(e){}
   groups.forEach(([ty,label])=>{
     const items=REWARDS.filter(r=>r.type===ty); if(!items.length) return;
     const h=document.createElement('div'); h.className='label'; h.textContent=label; box.appendChild(h);
@@ -3322,6 +3333,29 @@ function renderStore(){
   const hs=$('history'); hs.innerHTML='';
   if(!stats.redeemed.length){ hs.innerHTML='<div class="empty">لا توجد طلبات بعد</div>'; }
   else stats.redeemed.slice(0,10).forEach(h=>{ const d=document.createElement('div'); d.className='hist'; d.innerHTML='<div><b>'+h.title+'</b><span>'+h.date+'</span></div><code>'+h.code+'</code>'; hs.appendChild(d); });
+}
+function shopHtml(){
+  const tile=(x,w)=>{ const own=OWN.has(x.k), can=stats.balance>=x.shop;
+    return '<div class="ex"><img src="'+(w?wpImg(x.k):avImg(x.k))+'" alt=""><i class="cr">👑 حصري</i><b>'+x.n+'</b><span>'+fmt(x.shop)+' نقطة</span>'
+      +(own?'<button type="button" class="own" disabled>✓ تملكه</button>':'<button type="button" data-k="'+x.k+'"'+(can?'':' disabled')+'>'+(can?'شراء':'ينقصك '+fmt(x.shop-stats.balance))+'</button>')+'</div>'; };
+  return '<div class="label">⚔️ محاربين حصريين</div><div class="exn">ما ينفتحون بالطريق، بس بالنقاط</div><div class="exg">'+AVS.filter(x=>x.shop).map(x=>tile(x,0)).join('')+'</div>'
+    +'<div class="label">🗡️ أسلحة حصرية</div><div class="exg">'+WPS.filter(x=>x.shop).map(x=>tile(x,1)).join('')+'</div>';
+}
+function confirmBuy(k){
+  if(GUEST()){ askLogin(); return; }
+  const x=AVS.find(y=>y.k===k&&y.shop)||WPS.find(y=>y.k===k&&y.shop); if(!x||OWN.has(k)) return;
+  showModal('تأكيد الشراء','سيُخصم '+fmt(x.shop)+' نقطة من رصيدك مقابل «'+x.n+'».',[{t:'شراء',f:()=>doBuy(x)},{t:'إلغاء',ghost:true,f:closeModal}]);
+}
+async function doBuy(x){
+  if(stats.balance<x.shop){ closeModal(); toast('رصيدك غير كافٍ'); return; }
+  if(!DEMO){
+    const r=await rpc('shop_buy',{p_id:PID,p_item:x.k},6000); closeModal();
+    if(!r||!r.ok){ if(r&&typeof r.balance==='number'){ stats.balance=r.balance; save(stats); } try{ renderStats(); renderStore(); }catch(e){} toast(r&&r.error==='balance'?'رصيدك غير كافٍ':'تعذّر الشراء، حاول مرة ثانية'); return; }
+    stats.balance=r.balance; setOwn(r.items||[...OWN,x.k]);
+  } else { closeModal(); stats.balance-=x.shop; OWN.add(x.k); }
+  save(stats); try{ renderStats(); renderStore(); }catch(e){}
+  const isW=WPS.includes(x);
+  gamePop('👑 مبروك!','<div class="unl"><div class="u'+(isW?' w':'')+'"><i style="background-image:url(\''+(isW?wpImg(x.k):avImg(x.k))+'\')"></i>'+x.n+'</div></div>',()=>openPick(false, isW?2:1),'جرّبه الآن');
 }
 function confirmRedeem(r){
   showModal('تأكيد الاستبدال','سيُخصم '+fmt(r.cost)+' نقطة مقابل «'+r.title+'».',
@@ -3641,18 +3675,25 @@ $('avDel').onclick=async()=>{ closeSheet(); const old=stats.avatar; stats.avatar
    الاختيار ينحفظ داخل رابط الصورة نفسه (data:...#a=knight&w=katana) عشان يوصل لكل مكان تظهر فيه الصورة
    (الترتيب، الخصم، لوحة التحكم) بدون أي تغيير في قاعدة البيانات. at = رقم الفرع اللي يفتح عنده. */
 var AVS=[{k:'knight',n:'الفارس',g:'m',at:0},{k:'desert',n:'ابن البادية',g:'m',at:0},{k:'samurai',n:'الساموراي',g:'m',at:5},{k:'viking',n:'الشمالي',g:'m',at:15},
-  {k:'knightess',n:'الفارسة',g:'f',at:0},{k:'archer',n:'الرامية',g:'f',at:0},{k:'desertess',n:'بنت البادية',g:'f',at:10},{k:'valkyrie',n:'المجنّحة',g:'f',at:20}];
+  {k:'knightess',n:'الفارسة',g:'f',at:0},{k:'archer',n:'الرامية',g:'f',at:0},{k:'desertess',n:'بنت البادية',g:'f',at:10},{k:'valkyrie',n:'المجنّحة',g:'f',at:20},
+  {k:'shemagh',n:'فارس الشماغ',g:'m',shop:800},{k:'redhood',n:'الحارس القرمزي',g:'m',shop:800},{k:'goldguard',n:'الحارسة الذهبية',g:'f',shop:800},{k:'silverwing',n:'المجنّحة الفضية',g:'f',shop:800}];
 var WPS=[{k:'longsword',n:'سيف الفارس',at:0},{k:'scimitar',n:'السيف العربي',at:0},{k:'katana',n:'الكاتانا',at:8},{k:'spear',n:'الرمح',at:0},
-  {k:'battleaxe',n:'فأس المعركة',at:0},{k:'doubleaxe',n:'ذو الحدّين',at:13},{k:'vikingaxe',n:'الفأس الشمالي',at:18},{k:'bow',n:'القوس',at:23}];
+  {k:'battleaxe',n:'فأس المعركة',at:0},{k:'doubleaxe',n:'ذو الحدّين',at:13},{k:'vikingaxe',n:'الفأس الشمالي',at:18},{k:'bow',n:'القوس',at:23},
+  {k:'goldsword',n:'السيف الذهبي',shop:400},{k:'golddouble',n:'الفأس الملكي',shop:400},{k:'lightning',n:'سيف البرق',shop:600},{k:'flail',n:'الكرة الشائكة',shop:600}];
+/* المتجر: محاربين وأسلحة حصرية تنشرى بالنقاط (السيرفر يتحقق من السعر والرصيد) */
+var OWN=new Set(); try{ JSON.parse(localStorage.getItem('rd_own')||'[]').forEach(k=>OWN.add(k)); }catch(e){}
+function setOwn(arr){ if(!Array.isArray(arr)) return; OWN=new Set(arr); try{ localStorage.setItem('rd_own',JSON.stringify(arr)); }catch(e){} }
+function loadOwn(){ if(DEMO||GUEST()||!PID) return Promise.resolve(); return rpc('shop_owned',{p_id:PID},4000).then(r=>{ if(r&&r.ok) setOwn(r.items||[]); },()=>{}); }
 const avImg=k=>'img/war/'+k+'.jpg', wpImg=k=>'img/wpn/'+k+'.jpg';
 function avMeta(src){ const o={a:'',w:'',base:src||''}; if(!src) return o; const i=src.indexOf('#'); if(i<0) return o; o.base=src.slice(0,i);
   src.slice(i+1).split('&').forEach(kv=>{ const p=kv.split('='); if(p[0]==='a'||p[0]==='w') o[p[0]]=String(p[1]||'').replace(/[^a-z]/g,''); }); return o; }
 function wpbHtml(w){ return '<i class="wpb" style="background-image:url(\''+wpImg(w)+'\')"></i>'; }
 const rdPos=()=>{ const st=rdSt(); return st.arrived ? HQ : Math.min(st.pos||0,HQ); };
-const isOpen=x=>DEMO || rdPos()>=x.at;
+const isOpen=x=>x.shop ? OWN.has(x.k) : (DEMO || rdPos()>=x.at);
 function toData(url){ return fetch(url).then(r=>r.blob()).then(b=>new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(b); })); }
 const PK={a:'',own:'',w:'',step:1,first:false};
 function openPick(first, step){
+  loadOwn().then(()=>{ try{ if($('pick').classList.contains('on')) renderPick(); }catch(e){} });
   const m=avMeta(stats.avatar);
   PK.first=!!first; PK.own = m.a ? '' : m.base; PK.a = m.a || (m.base ? 'own' : ''); PK.w = m.w || '';
   if(PK.a && PK.a!=='own' && !AVS.some(x=>x.k===PK.a)) PK.a='';
@@ -3663,27 +3704,29 @@ function openPick(first, step){
 }
 function closePick(){ $('pick').classList.remove('on'); if(!$('gate').classList.contains('on')) document.body.classList.remove('gated'); }
 function pkTile(x,on,isW){ const lk=!isOpen(x);
-  return '<button type="button" class="t'+(on?' on':'')+(lk?' lk':'')+'" data-k="'+x.k+'"><span class="im" style="background-image:url(\''+(isW?wpImg(x.k):avImg(x.k))+'\')"></span><span>'+x.n+(lk?'<small>فرع '+ROUTE[x.at]+'</small>':'')+'</span></button>'; }
+  return '<button type="button" class="t'+(on?' on':'')+(lk?' lk':'')+'" data-k="'+x.k+'"><span class="im" style="background-image:url(\''+(isW?wpImg(x.k):avImg(x.k))+'\')"></span><span>'+x.n+(lk?'<small>'+(x.shop?'👑 '+toAr(x.shop)+' نقطة':'فرع '+ROUTE[x.at])+'</small>':'')+'</span></button>'; }
 function renderPick(){
   const el=$('pick'), s1=PK.step===1;
   let h=(PK.first?'':'<button type="button" class="px" id="pkX" aria-label="إغلاق">✕</button>')
    +'<div class="ptop"><h1>تحدّي الدقيقة</h1><p>'+(s1?'🛡️ اختر محاربك':'⚔️ اختر سلاحك')+'</p><div class="steps"><i class="on"></i><i'+(s1?'':' class="on"')+'></i></div></div><div class="pcard">';
   if(s1){
-    h+='<h2>اختر صورتك</h2><div class="sec">⚔️ محاربون</div><div class="pk">'+AVS.filter(x=>x.g==='m').map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
-      +'<div class="sec">🛡️ محاربات</div><div class="pk">'+AVS.filter(x=>x.g==='f').map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
+    h+='<h2>اختر صورتك</h2><div class="sec">⚔️ محاربون</div><div class="pk">'+AVS.filter(x=>x.g==='m'&&!x.shop).map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
+      +'<div class="sec">🛡️ محاربات</div><div class="pk">'+AVS.filter(x=>x.g==='f'&&!x.shop).map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
+      +'<div class="sec">👑 حصرية من المتجر</div><div class="pk">'+AVS.filter(x=>x.shop).map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
       +'<button type="button" class="upl'+(PK.a==='own'?' on':'')+'" id="pkUp"><i'+(PK.own?' style="background-image:url(\''+PK.own+'\')"':'')+'>'+(PK.own?'':'📷')+'</i>'+(PK.own?(PK.a==='own'?'✓ صورتك الشخصية':'استخدم صورتك الشخصية'):'أو ارفع صورتك الشخصية')+'</button>'
       +'<button type="button" class="go" id="pkGo">التالي</button>';
   } else {
     const av=PK.a==='own'?PK.own:avImg(PK.a);
     h+='<h2>اختر سلاحك</h2><div class="hero"><div class="a" style="background-image:url(\''+av+'\')">'+(PK.w?wpbHtml(PK.w):'')+'</div></div>'
       +'<div class="sec">🗡️ سيوف ورمح</div><div class="pk wp">'+WPS.slice(0,4).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
-      +'<div class="sec">🪓 فؤوس وقوس</div><div class="pk wp">'+WPS.slice(4).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
+      +'<div class="sec">🪓 فؤوس وقوس</div><div class="pk wp">'+WPS.slice(4).filter(x=>!x.shop).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
+      +'<div class="sec">👑 حصرية من المتجر</div><div class="pk wp">'+WPS.filter(x=>x.shop).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
       +'<button type="button" class="go" id="pkGo"'+(PK.w?'':' disabled')+'>'+(PK.first?'ابدأ المغامرة':'حفظ')+'</button>'
       +'<button type="button" class="back" id="pkBack">→ رجوع للصورة</button>'+(PK.first?'<div class="note">تقدر تغيرهم بعدين من «ملفي»، وكل كم فرع ينفتح لك محارب وسلاح جديد 🔓</div>':'');
   }
   el.innerHTML=h+'</div>';
   el.querySelectorAll('.t').forEach(b=>b.onclick=()=>{ const k=b.dataset.k, list=s1?AVS:WPS, x=list.find(y=>y.k===k);
-    if(!isOpen(x)){ toast('🔒 ينفتح لما توصل فرع '+ROUTE[x.at]); return; }
+    if(!isOpen(x)){ if(x.shop){ if(PK.first){ toast('👑 حصري، تقدر تشتريه بعدين من متجر النقاط'); return; } closePick(); window._pfBack=0; openStore(); return; } toast('🔒 ينفتح لما توصل فرع '+ROUTE[x.at]); return; }
     try{ SND.tap&&SND.tap(); }catch(e){}
     if(s1) PK.a=k; else PK.w=k; renderPick(); });
   const x=$('pkX'); if(x) x.onclick=closePick;
@@ -3706,7 +3749,7 @@ async function savePick(){
 }
 /* صورة البوت: محارب ثابت لكل اسم (من نفس جنس الاسم، وغير محارب اللاعب نفسه) مع سلاح */
 function botAvatar(name){ let h=0; for(const c of String(name||'')) h=(h*31+c.charCodeAt(0))>>>0;
-  const mine=avMeta(stats.avatar).a, L=AVS.filter(x=>x.g===(stats.gender==='f'?'f':'m') && x.k!==mine), a=L[h%L.length], w=WPS[(h>>>3)%WPS.length];
+  const mine=avMeta(stats.avatar).a, L=AVS.filter(x=>!x.shop && x.g===(stats.gender==='f'?'f':'m') && x.k!==mine), WB=WPS.filter(x=>!x.shop), a=L[h%L.length], w=WB[(h>>>3)%WB.length];
   return avImg(a.k)+'#a='+a.k+'&w='+w.k; }
 
 /* ===== استراحات الشركاء: سؤال واحد، 3 أختام من نفس الشريك = قسيمة ===== */
