@@ -695,12 +695,12 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <link rel="apple-touch-icon" href="img/road/apple-touch-icon.png?v=2">
 <meta property="og:type" content="website">
 <meta property="og:title" content="تحدّي الدقيقة">
-<meta property="og:description" content="تحدٍّ شرعي سريع في ٦ أسئلة — هل تقبل التحدي؟">
+<meta property="og:description" content="تحدٍّ سريع في ٤ أسئلة — هل تقبل التحدي؟">
 <meta property="og:image" content="https://almotawa80.github.io/60sec/img/road/icon-512.png">
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118054000">
+<meta name="app-version" content="road-20261118060000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -2108,7 +2108,7 @@ const TRACKS = [
   {id:'score', n:'الدرجات',   i:'rocket',   v:()=>stats.bestScored||0, g:[100,140,170],
    d:['اجمع ١٠٠ نقطة في التحدي اليومي','اجمع ١٤٠ نقطة في التحدي اليومي','اجمع ١٧٠ نقطة في التحدي اليومي']},
   {id:'acc',   n:'الدقة',     i:'target',   v:()=>stats.perfects||0, g:[1,5,20],
-   d:['٦ من ٦ بلا خطأ في التحدي اليومي','٦ من ٦ بلا خطأ ٥ مرات','٦ من ٦ بلا خطأ ٢٠ مرة']},
+   d:['٤ من ٤ بلا خطأ في التحدي اليومي','٤ من ٤ بلا خطأ ٥ مرات','٤ من ٤ بلا خطأ ٢٠ مرة']},
   {id:'know',  n:'المعرفة',   i:'book',     v:()=>stats.correctTotal||0, g:[50,200,500],
    d:['أجب صحيحاً عن ٥٠ سؤالاً','أجب صحيحاً عن ٢٠٠ سؤال','أجب صحيحاً عن ٥٠٠ سؤال']},
   {id:'wins',  n:'الانتصارات', i:'crown',   v:()=>[stats.bestStreak||0, stats.wins||0, stats.wins||0], g:[3,10,50],
@@ -2658,16 +2658,19 @@ function onTimeout(){
   setTimeout(()=>{ if(G && !G.over) nextQuestion(); }, 1700);
 }
 
-/* ===== الجولة المتزامنة: ٦ أسئلة × ١٠ ثوانٍ ===== */
-const SYNC_MODE = true, NQ = 6, QMS = 10000, LVS = [1,1,2,2,3,3], PTS = {1:10,2:20,3:30}, REVEAL = 1300;
-function ptsFor(lvl,ms){ const b=PTS[lvl]; const rem=Math.max(0,Math.min(QMS,QMS-(ms||0))); return b+Math.round(b*0.5*rem/QMS); }
+/* ===== الجولة المتزامنة: ٤ أسئلة × ١٥ ثانية ===== */
+const SYNC_MODE = true, NQ = 4, QMS = 15000, MEMX = 3000, LVS = [1,2,2,3], PTS = {1:15,2:30,3:45}, REVEAL = 1300;
+/* وقت السؤال: ١٥ ث، وأسئلة الذاكرة +٣ ث لعرض البطاقات (لازم يطابق r_sync_q) */
+function qmsOf(it){ return QMS + (it && /^#memn?\|/.test(it.q||'') ? MEMX : 0); }
+function qmsAt(i){ const g=G; return qmsOf(g && g.qs && g.qs[i] ? g.qs[i].it : null); }
+function ptsFor(lvl,ms,T){ T=T||QMS; const b=PTS[lvl]; const rem=Math.max(0,Math.min(T,T-(ms||0))); return b+Math.round(b*0.5*rem/T); }
 /* أسئلة من السيرفر: لا يتكرر السؤال على اللاعب (أو على الطرفين في المباراة) خلال ٣٠ يوماً */
 let QPRE = null;
 function prefetchQs(){
   QPRE = null;
   if(!SYNC_MODE || DEMO || GUEST()) return;
   const pre = { v: undefined };
-  pre.p = (PV ? rpc('match_questions',{p_id:PID,p_match:PV.id},5000) : rpc('solo_questions',{p_id:PID},5000))
+  pre.p = (PV ? rpc('match_questions4',{p_id:PID,p_match:PV.id},5000) : rpc('solo_questions4',{p_id:PID},5000))
     .then(r=>{ pre.v = r; return r; }, ()=>{ pre.v = null; });
   QPRE = pre;
 }
@@ -2717,7 +2720,7 @@ function startGameSync(){
   $('myLbl').textContent = G.scored ? 'أنت' : (RD.mall ? 'أنت (محطة)' : (RD.replay!=null ? 'أنت (إعادة)' : 'أنت (تدريب)'));
   $('myScore').textContent=0; $('botScore').textContent=0; $('botLbl').textContent=bot.name;
   updateRace(); $('combo').classList.remove('on');
-  $('qNum').textContent='السؤال ١ من ٦'; $('timer').textContent='١٠';
+  $('qNum').textContent='السؤال ١ من ٤'; $('timer').textContent='١٥';
   $('qText').textContent='استعد… جارٍ تجهيز السؤال الأول'; $('opts').innerHTML=''; $('lvlChip').textContent=''; $('qSec').textContent=''; $('qRingPath').style.strokeDashoffset=0; $('ringFg').style.strokeDashoffset=0;
   const ex0=$('expl'); ex0.textContent=''; ex0.classList.remove('on'); $('clock').classList.remove('low','mid');
   if(PV){ $('cd').textContent='…'; }
@@ -2730,8 +2733,8 @@ function recompute(){
   const map={}; g.mineA.forEach(a=>map[a.qi]=a);
   let me=0, tbMe=0, st=0;
   for(let i=0;i<=Math.max(0,g.qi);i++){ const a=map[i]; if(a&&a.ok){ st++; } else if(a || i<g.qi) st=0; }
-  g.mineA.forEach(a=>{ if(a.ok){ me+=ptsFor(LVS[a.qi],a.ms); tbMe+=a.ms; } });
-  let ob=0, tbOpp=0; g.oppA.forEach(a=>{ if(a.ok){ ob+=ptsFor(LVS[a.qi],a.ms); tbOpp+=a.ms; } });
+  g.mineA.forEach(a=>{ if(a.ok){ me+=ptsFor(LVS[a.qi],a.ms,qmsAt(a.qi)); tbMe+=a.ms; } });
+  let ob=0, tbOpp=0; g.oppA.forEach(a=>{ if(a.ok){ ob+=ptsFor(LVS[a.qi],a.ms,qmsAt(a.qi)); tbOpp+=a.ms; } });
   g.tbMe=tbMe; g.tbOpp=tbOpp;
   if(me!==g.me){ g.me=me; $('myScore').textContent=me; pop('myScore'); }
   if(ob!==g.bot){ g.bot=ob; $('botScore').textContent=ob; pop('botScore'); }
@@ -2752,9 +2755,9 @@ function showQS(i, startAt){
   if(!g.shown){ g.shown=true; show('game'); SND.go(); }
   const q=g.qs[i]; g.qi=i; g.cur=q.it; g.phase='q'; g.locked=false; g.n=i+1;
   if(!g.t0) g.t0 = startAt||performance.now(); /* بداية الدقيقة الحقيقية */
-  g.deadline = (startAt||performance.now()) + QMS; g.qMax = QMS/1000; g.pend=null; g.lastSec=0;
+  g.qT = qmsOf(q.it); g.deadline = (startAt||performance.now()) + g.qT; g.qMax = g.qT/1000; g.pend=null; g.lastSec=0;
   $('qNum').textContent='السؤال '+toAr(i+1)+' من '+toAr(NQ);
-  const lv=q.it.lvl; $('lvlChip').textContent = LEVEL_NAME[lv]+' '+toAr(PTS[lv])+'–'+toAr(PTS[lv]*1.5); $('lvlChip').dataset.l = lv;
+  const lv=q.it.lvl; $('lvlChip').textContent = LEVEL_NAME[lv]+' '+toAr(PTS[lv])+'–'+toAr(Math.round(PTS[lv]*1.5)); $('lvlChip').dataset.l = lv;
   const qc=$('qText'); const QK=renderQText(q.it, $('opts')); qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
   buildRing(); setQTimer(g.qMax);
   const ex=$('expl'); ex.textContent=''; ex.classList.remove('on');
@@ -2776,20 +2779,20 @@ function floatPts(pts,lvl,fast){
 function answerS(btn, ok, box){
   const g=G; if(!g||g.over||g.locked||g.phase!=='q') return;
   g.locked=true; box.classList.add('lock');
-  const ms=Math.min(QMS,Math.max(0,Math.round(performance.now()-(g.deadline-QMS)))), lv=g.cur.lvl;
+  const T=g.qT||QMS, ms=Math.min(T,Math.max(0,Math.round(performance.now()-(g.deadline-T)))), lv=g.cur.lvl;
   btn.classList.add(ok?'ok':'bad');
   if(!ok){
     [...box.children].forEach(c=>{ if(c.dataset.ok==='1') c.classList.add('ok'); else if(c!==btn) c.classList.add('dim'); });
     SND.bad(); FXV.flash('rgba(200,16,46,.6)'); FXV.shake($('qWrap')); showExpl('');
   } else {
     [...box.children].forEach(c=>{ if(c!==btn) c.classList.add('dim'); });
-    SND.ok((g.combo||0)+1); FXV.flash('rgba(26,143,76,.55)'); floatPts(ptsFor(lv,ms),lv,ms<3000); showExpl('');
+    SND.ok((g.combo||0)+1); FXV.flash('rgba(26,143,76,.55)'); floatPts(ptsFor(lv,ms,T),lv,ms<3000); showExpl('');
   }
   try{ navigator.vibrate && navigator.vibrate(ok?20:[30,40,30]); }catch(e){}
   const rec={qi:g.qi,ok:ok,ms:ms};
   g.mineA = g.mineA.filter(a=>a.qi!==rec.qi).concat([rec]); g.pend={rec:rec,t:performance.now()};
   recompute(); waitLbl();
-  if(PV){ const p=PV; rpc('sync_q',{p_id:PID,p_match:p.id,p_qi:rec.qi,p_ok:ok,p_ms:ms},3500).then(s=>{ if(s && G===g && !g.over) applyS(s); }); }
+  if(PV){ const p=PV; rpc('sync_q4',{p_id:PID,p_match:p.id,p_qi:rec.qi,p_ok:ok,p_ms:ms},3500).then(s=>{ if(s && G===g && !g.over) applyS(s); }); }
 }
 function waitLbl(rem){
   const g=G; if(!g||!g.locked||(g.phase!=='q'&&g.phase!=='rev')) return;
@@ -2816,7 +2819,7 @@ function botAns(i, elapsed){
   const g=G; if(!g||g.over||PV) return;
   if(g.oppA.some(a=>a.qi===i)) return;
   const adj={1:.12,2:0,3:-.15}[LVS[i]], p=Math.max(.2,Math.min(.95,bot.skill+adj));
-  const t=Math.max(600, Math.min(9000-elapsed, 2200+(1-bot.skill)*2400+rnd(0,3200)-elapsed));
+  const t=Math.max(600, Math.min(qmsAt(i)-1000-elapsed, 2200+(1-bot.skill)*2400+rnd(0,3200)-elapsed));
   const ok=Math.random()<p;
   g.timers.push(setTimeout(()=>{
     if(G!==g||g.over||PV||g.qi!==i||g.oppA.some(a=>a.qi===i)) return;
@@ -2831,10 +2834,10 @@ function localAdv(now){
 function loopS(){
   const g=G; if(!g||g.over) return; const now=performance.now();
   /* دقيقة حقيقية متواصلة: العداد يمشي حتى بين الأسئلة */
-  const TOT=NQ*QMS, tl = 1e9; const qr = g.phase==='q' ? Math.max(0, g.deadline-now) : (g.lastQr!=null ? g.lastQr : QMS); if(g.phase==='q') g.lastQr=qr;
+  const TOT=NQ*QMS, tl = 1e9; const qr = g.phase==='q' ? Math.max(0, g.deadline-now) : (g.lastQr!=null ? g.lastQr : (g.qT||QMS)); if(g.phase==='q') g.lastQr=qr;
   if(g.t0){ $('timer').textContent=toAr(Math.ceil(qr/1000));
     $('clock').classList.toggle('low', qr<=3000); $('clock').classList.toggle('mid', qr<=5000);
-    $('ringFg').style.strokeDashoffset=RING*(1-qr/QMS); }
+    $('ringFg').style.strokeDashoffset=RING*(1-qr/(g.qT||QMS)); }
   if(g.t0 && tl<=0){ if(!g.timeUp){ g.timeUp=true; if(g.phase==='q'){ g.deadline=Math.min(g.deadline,now); timeoutS(); } FXV.vig(false); g.nextAt=0; g.phase='rev'; g.timers.push(setTimeout(()=>{ if(G===g) finishS(); }, 1100)); } return; }
   
   if((g.phase==='pre'||g.phase==='rev') && g.nextAt && now>=g.nextAt){
@@ -2858,13 +2861,13 @@ function takeover(msg){
   PV=null; bot.name=nextBotName(); bot.skill=botSkill();
   $('botLbl').textContent=bot.name; toast(msg||'انسحب الخصم — أكمل ضد منافس آلي'); const now=performance.now();
   if(g.phase==='wait'){ g.phase='pre'; g.nextQi=0; g.nextAt=now+700; }
-  else if(g.phase==='q'){ botAns(g.qi, Math.max(0, QMS-(g.deadline-now))); }
+  else if(g.phase==='q'){ botAns(g.qi, Math.max(0, (g.qT||QMS)-(g.deadline-now))); }
   else if((g.phase==='pre'||g.phase==='rev') && !g.nextAt){ g.nextAt=now+REVEAL; }
   recompute();
 }
 async function pollS(){
   const g=G; if(!g||g.over||!PV||g.polling) return; g.polling=true;
-  const p=PV, s=await rpc('sync_q',{p_id:PID,p_match:p.id,p_ready:(g.phase==='wait')},2500);
+  const p=PV, s=await rpc('sync_q4',{p_id:PID,p_match:p.id,p_ready:(g.phase==='wait')},2500);
   g.polling=false; if(G!==g||g.over||!PV) return;
   if(s) applyS(s);
 }
@@ -2915,7 +2918,7 @@ function endGame(){
   stats.bestStreak = Math.max(stats.bestStreak||0, stats.streak||0);
   if(R==='win' && lastRes.human && !G.force) stats.humanWins=(stats.humanWins||0)+1;
   if(window._viaInv && G.force!=='lose'){ stats.invited=(stats.invited||0)+1; } window._viaInv=false;
-  if(scored && G.force!=='lose'){ stats.bestScored=Math.max(stats.bestScored||0, me); if(G.wrong===0 && G.correct>=6) stats.perfects=(stats.perfects||0)+1; }
+  if(scored && G.force!=='lose'){ stats.bestScored=Math.max(stats.bestScored||0, me); if(G.wrong===0 && G.correct>=NQ) stats.perfects=(stats.perfects||0)+1; }
   const fresh = GUEST() ? [] : awardBadges();
   save(stats); renderStats(); syncProgress();
   if(fresh.length) setTimeout(SND.badge, 1100);
