@@ -2094,6 +2094,8 @@ background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);anim
 #home #goBtn.slide::after{opacity:var(--lo,1)!important;transition:opacity .15s}
 
 #home #goBtn .sknob.hasw{background:var(--kw) center/112% no-repeat!important;border-radius:50%!important;border:3px solid #fff!important;box-sizing:border-box!important;box-shadow:0 0 0 2.5px #e0a92e,0 3px 6px rgba(0,0,0,.35)!important;filter:none!important}
+
+.r2sw .wpm{display:block;width:58px;height:58px;border-radius:50%;background:#c8102e center/112% no-repeat;border:3px solid #fff;box-shadow:0 0 0 3px #e0a92e,0 4px 8px rgba(0,0,0,.35);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -4775,7 +4777,7 @@ function m2Build(){
   RESTS.forEach((r,k)=>{ const v=(st.rests||{})[k], won=v===1, lost=v===0, open=v==null && pos>r.at, pt=PARTNERS[r.p], i=r.at;
     const xm=m2x(i+0.5), mx=Math.max(56,Math.min(M2.W-56,xm+(xm<M2.W/2?110:-110)));
     h+='<button type="button" class="r2rest '+(won?'won':lost?'lost':open?'open':'off')+'" data-k="'+k+'" style="left:'+mx.toFixed(0)+'px;top:'+m2y(i+0.5).toFixed(0)+'px"><span class="b" style="background-image:url(\''+pt.logo+'\')">'+(open?'<i>!</i>':'')+'</span></button>'; });
-  if(!arrived) h+='<div class="r2sw" id="r2Sw" style="left:'+m2x(pos).toFixed(0)+'px;top:'+m2y(pos).toFixed(0)+'px"><div class="sw">'+M2SWORD+'</div></div>';
+  if(!arrived) h+='<div class="r2sw" id="r2Sw" style="left:'+m2x(pos).toFixed(0)+'px;top:'+m2y(pos).toFixed(0)+'px"><div class="sw">'+(()=>{ const w=avMeta(stats.avatar||'').w; return (w&&WPS.some(x=>x.k===w)) ? '<i class="wpm" style="background-image:url(\''+wpImg(w)+'\')"></i>' : M2SWORD; })()+'</div></div>';
   inner.innerHTML=h;
   inner.querySelectorAll('.r2mall').forEach(b=>b.onclick=e=>{ e.stopPropagation(); mallTap(+b.dataset.k); });
   inner.querySelectorAll('.r2rest').forEach(b=>b.onclick=e=>{ e.stopPropagation(); restTap(+b.dataset.k); });
