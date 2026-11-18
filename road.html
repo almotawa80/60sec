@@ -1743,6 +1743,9 @@ body.guest #home .hpt{display:none}
 /* Home v2: ChatGPT art assets */
 #home .hc{border:6px solid transparent!important;border-image:url(img/road/ui/pill.webp) 62 fill / 26px stretch!important;background:none!important;box-shadow:none!important;height:58px!important;padding:0 8px!important;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3))}
 #home .hc .ic img{width:40px;height:auto;display:block}
+#home .hlb{padding:0 14px!important}
+#home .hpt{padding:0 14px 0 10px!important}
+#home .hc b{font-size:22px!important}
 #home .rcard,#home #inviteBtn{border:8px solid transparent!important;border-image:url(img/road/ui/card.webp) 58 fill / 24px stretch!important;background:none!important;box-shadow:none!important;border-radius:0!important;filter:drop-shadow(0 8px 12px rgba(0,0,0,.3))}
 #home #goBtn.slide{border:0!important;border-image:url(img/road/ui/btn.webp) 118 fill / 44px stretch!important;background:none!important;box-shadow:none!important;height:90px;border-radius:0!important;overflow:visible!important}
 #home #goBtn .sknob{background:url(img/road/ui/knob.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;width:56px!important;height:56px!important;margin-top:-27px!important;right:18px!important;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35))}
@@ -1770,7 +1773,7 @@ body.guest #home .hpt{display:none}
         <div class="ttl"><h1>الطريق إلى الرئيسي</h1><span class="greet" id="greet"></span></div>
         <span class="pfhold"><button class="pfbtn" id="pfBtn" aria-label="ملفي"><span class="pfav" id="pfAv"></span></button></span>
       </div>
-      <div class="hcol"><button type="button" class="hc hpt" id="hPt" aria-label="نقاطك، استبدلها من المتجر"><span class="hl"><small>إجمالي نقاطك</small><b id="hPtN">0</b></span><i class="ic"><img src="img/road/ui/coins.webp" alt=""></i></button><button type="button" class="hc hlb" id="hLb" aria-label="المتصدرون"><i class="ic"><img src="img/road/ui/trophy.webp" alt=""></i><span class="hl"><b class="t">المتصدرون</b><small id="hLbN"></small></span></button></div>
+      <div class="hcol"><button type="button" class="hc hpt" id="hPt" aria-label="نقاطك، استبدلها من المتجر"><span class="hl"><b id="hPtN">0</b></span><i class="ic"><img src="img/road/ui/coins.webp" alt=""></i></button><button type="button" class="hc hlb" id="hLb" aria-label="المتصدرون"><i class="ic"><img src="img/road/ui/trophy.webp" alt=""></i><span class="hl" style="display:none"><small id="hLbN"></small></span></button></div>
     </div>
     <div class="sheet">
       <div class="guestbox" id="guestBox" style="display:none"><b>أنت في وضع التدريب</b><p>تقدر تتدرّب ضد الكمبيوتر. عشان تجمع نقاط وتدخل المتصدرين وتتحدى زملاءك، سجّل دخولك برقمك الوظيفي والرمز.</p><button type="button" class="rbtn" id="guestLogin">تسجيل الدخول</button></div>
