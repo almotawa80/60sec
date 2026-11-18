@@ -2027,6 +2027,14 @@ html #srchTip{border:3px solid #e0a92e!important;background:#fffdf7!important;co
 #home #inviteBtn .mem{width:66px!important;height:66px!important;border:0!important;background:url(img/road/home/plus.webp) center/100% 100% no-repeat!important;font-size:0!important;box-shadow:none!important}
 #home #inviteBtn .mvs.vs{width:62px;height:48px;font-size:0!important;background:url(img/road/home/vs.webp) center/contain no-repeat;text-shadow:none!important}
 
+
+/* ===== شاشة الأوسمة بأصول ChatGPT ===== */
+.md[style*="--bi"],#badgesPage .md[style*="--bi"],#badgesPage .md.on.t1[style*="--bi"],#badgesPage .md.on.t2[style*="--bi"],#badgesPage .md.on.t3[style*="--bi"],#modal .md[style*="--bi"],#modal .md.on.t1[style*="--bi"],#modal .md.on.t2[style*="--bi"],#modal .md.on.t3[style*="--bi"]{background:var(--bi) center/contain no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;width:40px!important;height:40px!important;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.md[style*="--bi"]>svg{display:none}
+.md[style*="--bi"]:not(.on){opacity:.85}
+#badgesPage .trow{border:0!important;border-style:solid!important;border-width:16px!important;border-image:url(img/road/badges/card.webp) 60 fill / 16px stretch!important;background:none!important;box-shadow:none!important;border-radius:0!important;padding:4px 6px!important;filter:drop-shadow(0 6px 10px rgba(0,0,0,.3))}
+#badgesPage .trow .pbar{height:16px!important;border:0!important;border-radius:0!important;background:url(img/road/badges/track.webp) center/100% 100% no-repeat!important;padding:3px 4px;box-sizing:border-box;overflow:visible!important}
+#badgesPage .trow .pbar i{background:url(img/road/badges/fill.webp) center/100% 100% no-repeat!important;border-radius:0!important;min-width:10px;height:100%;display:block}
 </style>
 </head>
 <body>
@@ -2720,7 +2728,7 @@ function renderBadges(){
   TRACKS.forEach(t=>{
     const lv = BADGES.filter(b=>b.track===t), nx = lv.find(b=>!stats.badges[b.id]);
     const row=document.createElement('button'); row.type='button'; row.className='trow';
-    const medals = lv.map(b=>'<span class="md t'+(b.k+1)+(stats.badges[b.id]?' on':'')+'">'+svg(t.i,16)+'</span>').join('');
+    const medals = lv.map(b=>'<span class="md t'+(b.k+1)+(stats.badges[b.id]?' on':'')+'" style="--bi:url(img/road/badges/'+(stats.badges[b.id]?b.id:'lock')+'.webp)">'+svg(t.i,16)+'</span>').join('');
     let goal, pct;
     if(!nx){ goal='أنجزت المستويات الثلاثة'; pct=100; }
     else if(stats.bq.indexOf(nx.id)>=0){ goal=TIER[nx.k]+': تُكشف بعد جولتك القادمة'; pct=100; }
@@ -2741,7 +2749,7 @@ function renderBadges(){
 }
 function showTrack(t){
   const lv=BADGES.filter(b=>b.track===t);
-  const body=lv.map(b=>{ const on=!!stats.badges[b.id]; return '<div class="tl'+(on?' on':'')+'"><span class="md t'+(b.k+1)+(on?' on':'')+'">'+svg(t.i,14)+'</span><span><b>'+TIER[b.k]+'</b> '+b.d+'</span>'+(on?svg('check',16):'')+'</div>'; }).join('');
+  const body=lv.map(b=>{ const on=!!stats.badges[b.id]; return '<div class="tl'+(on?' on':'')+'"><span class="md t'+(b.k+1)+(on?' on':'')+'" style="--bi:url(img/road/badges/'+(on?b.id:'lock')+'.webp)">'+svg(t.i,14)+'</span><span><b>'+TIER[b.k]+'</b> '+b.d+'</span>'+(on?svg('check',16):'')+'</div>'; }).join('');
   showModal(t.n, body, [{t:'حسناً',full:true,f:closeModal}]);
 }
 
