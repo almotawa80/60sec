@@ -1962,6 +1962,22 @@ html #srchTip{border:3px solid #e0a92e!important;background:#fffdf7!important;co
 #home .pfhold .pfav{border:0!important;box-shadow:none!important;background-size:cover!important;background-position:center!important}
 #home .pfhold .pfbtn{overflow:visible!important;position:relative}
 #home .pfhold .pfbtn::before{content:'';position:absolute;inset:-21%;background:url(img/road/profile/ring.webp) center/100% 100% no-repeat;pointer-events:none;z-index:2;filter:drop-shadow(0 4px 6px rgba(0,0,0,.35))}
+
+/* ===== شاشة النتيجة بأصول ChatGPT ===== */
+#result .res-title{clip-path:none!important;background:url(img/road/result/ribWin.webp) center/100% 100% no-repeat!important;width:min(390px,98vw)!important;height:96px!important;padding:0 88px 22px!important;margin:0 auto -40px!important;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))}
+#result[data-r="lose"] .res-title{background-image:url(img/road/result/ribLose.webp)!important;text-shadow:0 3px 0 #2c3342,2px 0 0 #2c3342,-2px 0 0 #2c3342!important}
+#result[data-r="draw"] .res-title{background-image:url(img/road/result/ribDraw.webp)!important;text-shadow:0 3px 0 #8a5300,2px 0 0 #8a5300,-2px 0 0 #8a5300!important}
+#result[data-r="win"] .hero.res::before{content:''!important;display:block!important;position:static!important;width:118px;height:112px;margin:0 auto -14px;background:url(img/road/result/trophy.webp) center/contain no-repeat;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));animation:ppIn .5s cubic-bezier(.2,1.4,.4,1)}
+#result .score-card{border:0!important;border-radius:0!important;background:url(img/road/result/cardMe.webp) center/100% 100% no-repeat!important;padding:14px 8px!important}
+#result .score-card.bot{background-image:url(img/road/result/cardOp.webp)!important}
+#result .score-card.me .s{color:#c8102e}
+#result .score-card.bot .s{color:#1d5fae}
+#result .earned{position:relative;border:3px solid #f2b51e!important;background:#fffdf7!important;border-radius:22px!important;padding:10px 12px 10px 64px!important;box-shadow:inset 0 0 0 3px #fff3d2}
+#result .earned::before{content:'';position:absolute;left:10px;top:50%;width:46px;height:46px;transform:translateY(-50%);background:url(img/road/profile/coin.webp) center/contain no-repeat}
+#result #shareBtn:not(.ghost),#result #homeBtn:not(.ghost),#result #againBtn{background:url(img/road/result/btn.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;min-height:62px;filter:drop-shadow(0 5px 6px rgba(0,0,0,.3))}
+#result #shareBtn.ghost,#result #homeBtn.ghost{background:url(img/road/result/btn2.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;min-height:50px;color:#a50f1c!important;font-weight:900!important;font-size:16px!important}
+#result .btn:active{transform:scale(.97)}
+#result .hero.res{flex-direction:column!important;align-items:center!important}
 </style>
 </head>
 <body>
@@ -3605,6 +3621,7 @@ function endGame(){
   $('resEmoji').style.display = 'none'; $('againBtn').style.display = 'none';
   { const q=(G.force==='lose'); $('shareBtn').classList.toggle('ghost',q); $('homeBtn').classList.toggle('ghost',!q); $('shareBtn').style.order=q?2:1; $('homeBtn').style.order=q?1:2; }
   $('resTitle').textContent = title+' '+EMO;
+  $('result').dataset.r = G.force==='lose' ? 'lose' : R;
   $('rMe').textContent=me; $('rBot').textContent=b; $('rBotLbl').textContent=bot.name;
   $('resExtra').textContent = G.force==='win' ? 'انسحب الخصم، فزت بالمباراة' : G.force==='lose' ? 'يمكنك المحاولة من جديد متى شئت' : isBest && me>0 ? 'رقم قياسي جديد لك!' : (R==='win' ? (G.tie==='win' ? 'تعادلتما في النقاط، وحسمت السرعة لصالحك' : 'أحسنت، الأسئلة تزداد صعوبة كلما تقدمت') : 'جرّب مرة أخرى، الدقيقة قصيرة!');
   const _res=()=>{ show('result'); fitResTitle(); };
