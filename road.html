@@ -2208,6 +2208,16 @@ html,body{overflow-x:clip;overscroll-behavior-x:none}
 #match .full:has(> #searching[style*="display: none"]){justify-content:center}
 #match .full{justify-content:flex-start;padding-top:calc(30px + env(safe-area-inset-top))}
 #found #cd{background-image:url(img/road/vs/cd2.webp)!important;width:124px!important;height:124px!important;margin-bottom:24px!important}
+
+/* تنبيه التدريب */
+.rfx.trn .in{padding-top:58px!important}
+.rfx.trn h2{font-size:24px!important}
+.rfx .trni{width:84px;height:84px;margin:6px auto 10px;display:grid;place-items:center;font-size:44px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#fff7df,#ffd77a 70%,#e0a92e);box-shadow:0 0 0 4px #fff,0 0 0 7px #e0a92e,0 6px 14px rgba(0,0,0,.25)}
+.rfx .trnt{margin:6px 6px 8px;color:#5a3412;font-size:15.5px;line-height:1.9;font-weight:700}
+.rfx .trnt b{color:#a50f1c}
+.rfx.trn .gold{width:100%;font-size:22px!important;margin-top:14px!important}
+
+#home #inviteBtn .mbd{margin:12px 0 8px!important;display:block}
 </style>
 </head>
 <body>
@@ -4608,7 +4618,18 @@ function renderStampCard(){
     return '<div class="srow'+(n>=3?' dn':'')+'"><span class="lg" style="background-image:url(\''+pt.logo+'\')"></span><span class="nm">'+pt.n+'<small>'+sub+'</small></span><span class="ss">'+rsDots(p,n)+'</span></div>'; }).join('')+'<div class="ft">٣ أختام من نفس الشريك = كوبون شراء ٢ د.ك · الاستراحات على خريطة الطريق</div>';
 }
 let _pkAsked=false;
+/* تنبيه التدريب: مرة لكل موظف، ويرجع إذا تغيّرت النسخة */
+const TRN_V='1';
+function trnKey(){ return 'mc_trn'+TRN_V+'_'+(stats.empNo||''); }
+function needTrn(){ if(/[?&]trn=1/.test(location.search)) return !window._trnOk; if(DEMO || !stats.empNo || GUEST()) return false; try{ return LS.getItem(trnKey())!=='1'; }catch(e){ return false; } }
+function showTrn(){
+  if($('rfx').classList.contains('on') && !$('rfx').classList.contains('trn')) return;
+  $('rfxIn').innerHTML='<h2>قبل ما تبدأ</h2><div class="trni">🎓</div><p class="trnt"><b>«تحدّي الدقيقة»</b> لعبة تدريبية تهدف إلى تطوير معرفتك ومهاراتك.</p><p class="trnt">قد تتم مشاركة نتائجك في التحديات مع <b>مديرك والإدارات المعنية</b>، وذلك لأغراض التدريب والتطوير فقط.</p><button class="gold" id="trnOk" type="button">فهمت وأوافق</button>';
+  $('rfx').classList.add('on','trn');
+  $('trnOk').onclick=()=>{ window._trnOk=1; try{ LS.setItem(trnKey(),'1'); }catch(e){} $('rfx').classList.remove('on','trn'); maybePick(); };
+}
 function maybePick(){
+  if(needTrn()){ setTimeout(()=>{ if(!$('gate').classList.contains('on') && needTrn()) showTrn(); },300); return; }
   if(DEMO || _pkAsked || !stats.empNo || GUEST() || needReg()) return;
   if(avMeta(stats.avatar).w) return;
   _pkAsked=true; setTimeout(()=>{ if(!$('gate').classList.contains('on')) openPick(true); },400);
@@ -5027,7 +5048,7 @@ function roadResult(r){
 }
 function rfxShow(h){
   $('rfxIn').innerHTML=h+'<button class="gold" id="rfxGo" type="button">كمّل الطريق</button><button class="ghost" id="rfxX" type="button">رجوع للنتيجة</button>';
-  $('rfx').classList.add('on'); try{ SND.badge(); }catch(e){}
+  $('rfx').classList.remove('trn'); $('rfx').classList.add('on'); try{ SND.badge(); }catch(e){}
   $('rfxGo').onclick=()=>{ rfxClose(); RD.back=null; openRoad(); };
   $('rfxX').onclick=rfxClose;
 }
