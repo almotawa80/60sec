@@ -748,7 +748,7 @@ html #pfOut.pfout{width:auto;min-width:220px;margin:14px auto 28px;padding:12px 
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road-lab.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118172600">
+<meta name="app-version" content="road-20261118174500">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1757,7 +1757,7 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
   #game #quitBtn:active{transform:translateX(-50%)!important}
 }
 /* واجهة الطريق: الرئيسية والدعوة والنتائج والمتجر */
-#app{--lab-cream:#fff8eb;--lab-ink:#4d2b19;--lab-line:#e7d2af;--lab-shadow:0 5px 16px #33170e30;--lab-out:cubic-bezier(.2,.7,.25,1)}
+#app{--lab-cream:#fff6e6;--lab-ink:#57351e;--lab-brand:#ce1126;--lab-bright:#f04452;--lab-gold:#e8b74b;--lab-line:#e7d2af;--lab-shadow:0 5px 16px #33170e30;--lab-out:cubic-bezier(.2,.7,.25,1)}
 #home,#game,#match,#result{
   background:linear-gradient(180deg,#23100972,#211007c9),var(--lab-scene) center top/cover no-repeat,#352414!important;
 }
@@ -1886,6 +1886,75 @@ html #inviteWait #invShare{border:1px solid #a50f1c!important;border-radius:18px
   .rfx .s3 span{opacity:1}
   #home :is(#lbBtn,#inviteBtn,.rcard,.wbtn):active,#store :is(.rbtn,.ex button):active{transform:none}
 }
+/* الدعوات والقسائم ومسار الفروع */
+#inviteWait .lab-invite-actions{display:flex;gap:8px}
+#inviteWait .lab-invite-actions .btn{flex:1;min-width:0;margin:0;height:56px;padding:0 6px;font-size:14px}
+#inviteWait #invShare{font-size:14px}
+#inviteWait #invCopy{background:#fff9ef;border:1px solid var(--lab-line);color:var(--lab-ink);box-shadow:none}
+#inviteStatus:empty{display:none}
+#inviteStatus{margin:8px 0 0;color:#176443;font-size:13px}
+#app #match.active > .full,#inviteWait,#searching{animation-duration:240ms}
+#home.active .hero-row{animation:labEnter 240ms var(--lab-out) both}
+#home.active #goBtn.slide{animation:labEnter 300ms var(--lab-out) both;background:linear-gradient(var(--lab-bright),#a20e25)!important}
+#home.active .rc-bar i{animation:labProgress 500ms var(--lab-out) both;transform-origin:right}
+@keyframes labProgress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+#found .vs{animation-duration:450ms}
+#found .vs .av{animation:labAvatar 450ms var(--lab-out) both}
+@keyframes labAvatar{from{transform:scale(.9);opacity:.55}to{transform:scale(1);opacity:1}}
+#game .qcard.in{animation-duration:300ms}
+#game .opt{transition-duration:100ms}
+#result .res-title{animation:labEnter 500ms var(--lab-out) both}
+#result .earned:not(.counting){animation-duration:400ms}
+#resultProgress{margin:0 0 10px;padding:10px;border:1px solid var(--lab-line);border-radius:16px;background:#fffaf0}
+#earned.counting ~ #resultProgress{visibility:hidden}
+#earned:not(.counting) ~ #resultProgress:not([hidden]){animation:labEnter 400ms var(--lab-out) both}
+.lab-result-route{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px}
+.lab-result-route > span{flex:1;min-width:0;overflow-wrap:anywhere}
+.lab-result-route .next{color:#176443;font-weight:900;text-align:end}
+.lab-result-route svg{flex:none;color:#85532e}
+#resultProgress small{display:block;margin-top:5px;color:#80593c;font-size:12px}
+#store .lab-vouchers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#store .lab-vouchers .rw{display:flex;flex-direction:column;align-items:stretch;min-width:0;margin:0;text-align:center;animation:labEnter 200ms var(--lab-out) both}
+#store .lab-vouchers .rw:nth-child(2){animation-delay:40ms}
+#store .lab-vouchers .rw:nth-child(3){animation-delay:80ms}
+#store .lab-vouchers .gi{align-self:center;width:48px;height:48px}
+#store .lab-vouchers .rb b{line-height:1.5;overflow-wrap:anywhere}
+#store .lab-vouchers .rb span{display:block;margin-top:4px}
+#store .lab-vouchers .rbtn{width:100%;font-size:13px;padding-inline:4px;white-space:normal}
+#store .lab-vouchers .rbtn:active{transition-duration:180ms}
+#store #sBal{display:inline-block;text-align:center;min-width:4ch}
+#modal.lab-redeemed .modal-card{animation:labEnter 350ms var(--lab-out) both}
+#roadPage .rp-row{height:auto;margin-bottom:8px;gap:6px}
+#roadPage .rp-back{width:44px;height:44px;border:1px solid #fff;background:#a8102b;box-shadow:var(--lab-shadow)}
+#roadPage .rp-chips{position:static;flex-direction:row;gap:3px;align-items:center}
+#roadPage .rp-chips i:nth-child(n){display:flex;width:auto;height:auto;padding:4px;border:1px solid #dfc18a;border-radius:10px;background:#fff6e6;box-shadow:none;gap:2px;font-size:12px;backdrop-filter:none}
+#roadPage .rp-chips i span{position:static;transform:none;padding:0;height:auto;border:0;background:none;color:#623926}
+#roadPage .rp-chips i span::after{content:none!important}
+#roadPage .rp-chap{position:static;width:100%;height:auto;min-height:42px;background:#fff6e6;border:1px solid #dfc18a;color:var(--lab-ink);backdrop-filter:none}
+#roadPage .rp-chap .n{white-space:normal}
+#roadPage .rp-chap .t{color:#8c2336}
+#roadPage #rpBar{background:linear-gradient(90deg,var(--lab-brand),var(--lab-gold))}
+#roadPage .rp-locate{min-width:44px;min-height:44px;border:1px solid #e7d2af;border-radius:14px;background:#fff6e6;color:#761c2b;font:inherit;font-size:12px;font-weight:800;padding:4px 10px;cursor:pointer}
+#roadPage .rp-locate:active{transform:scale(.97)}
+#roadPage .r2-trail{position:absolute;inset:0;z-index:1;pointer-events:none}
+#roadPage .r2n,#roadPage .r2gov,#roadPage .r2chest,#roadPage .r2mall,#roadPage .r2rest{z-index:2}
+#roadPage .r2n.cur{z-index:4}
+#roadPage .r2sw{z-index:5}
+#roadPage .r2n.cur .nm{color:#fff;background:#9f1730;border-color:#fff1cd}
+#roadPage .r2n.done:not(.hq) .nm{background:#f2fae9;color:#31513a;border-color:#a7c597}
+#roadPage .r2n.lock:not(.hq) .nm{background:#fff6e6;color:#65513d}
+#roadPage .r2n.hq .nm{background:#a11b31;color:#fff}
+#roadPage .r2n .nm{max-width:144px;overflow-wrap:anywhere}
+#roadPage .r2n.lab-arrived .nm{animation:answerBounce 320ms ease-out}
+#roadPage .r2gov span{background:#fff6e6;color:#57351e;border:1px solid #e8b74b;text-shadow:none}
+@media(max-width:340px){
+  #store .lab-vouchers{gap:6px}
+  #store .lab-vouchers .rw{padding:7px}
+  #roadPage .rp-locate{padding-inline:5px}
+}
+@media(prefers-reduced-motion:reduce){
+  #home.active :is(.hero-row,#goBtn.slide,.rc-bar i),#found .vs .av,#result .res-title,#earned:not(.counting) ~ #resultProgress:not([hidden]),#store .lab-vouchers .rw,#modal.lab-redeemed .modal-card,#roadPage .r2n.lab-arrived .nm{animation:none!important}
+}
 </style>
 </head>
 <body>
@@ -1936,6 +2005,7 @@ html #inviteWait #invShare{border:1px solid #a50f1c!important;border-radius:18px
       <div class="rp-hud">
         <div class="rp-row">
           <button class="rp-back" id="rpBack" type="button" aria-label="رجوع"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+          <button class="rp-locate" id="rpLocate" type="button">موقعي على الخريطة</button>
           <div class="rp-chips"><i title="أيام متتالية">🔥 <span id="rpSt">0</span></i><i title="دروع">🛡️ <span id="rpSh">0</span></i><i title="مفاتيح المولات">🔑 <span id="rpK">1</span></i></div>
         </div>
         <div class="rp-chap">
@@ -1972,7 +2042,11 @@ html #inviteWait #invShare{border:1px solid #a50f1c!important;border-radius:18px
         <div class="big">بانتظار زميلك…</div>
         <div class="sub" style="margin:6px auto 18px;max-width:300px;line-height:1.7">شارك الرابط، وعندما يفتحه تبدأ المباراة بينكما مباشرة. أبقِ هذه الصفحة مفتوحة.</div>
         <div id="invUrl" dir="ltr" style="word-break:break-all;border-radius:14px;padding:12px;font-size:13px;margin:0 auto 14px;max-width:320px"></div>
-        <button class="btn" id="invShare" style="max-width:320px;margin:0 auto">مشاركة الرابط</button>
+        <div class="lab-invite-actions">
+          <button class="btn" id="invShare" type="button">مشاركة الرابط</button>
+          <button class="btn ghost" id="invCopy" type="button">نسخ الرابط</button>
+        </div>
+        <p id="inviteStatus" role="status"></p>
         <details class="lab-ai" hidden><summary>معلومة أثناء الانتظار</summary>
         <div class="aic" id="aicI" hidden role="button" tabindex="0" aria-label="معلومة عن الذكاء الاصطناعي، اضغط للتالية"><div class="aih"><span style="font-size:17px">🤖</span><b>عن الذكاء الاصطناعي</b><span class="aitg"></span></div><p></p><div class="aif"><span>اضغط للتالية ›</span><span class="aibar"><i></i></span></div></div>
         </details>
@@ -2127,6 +2201,7 @@ html #inviteWait #invShare{border:1px solid #a50f1c!important;border-radius:18px
       </div>
       <div class="res-extra" id="resExtra"></div>
       <div class="earned" id="earned" aria-live="polite"></div>
+      <div id="resultProgress" hidden></div>
       <div id="newBadges"></div>
       <div class="lab-result-actions">
         <button class="btn" id="againBtn">تحدٍّ جديد</button>
@@ -2573,7 +2648,7 @@ function renderStats(){
   try{ $('invAv').classList.toggle('flip', !!avMeta(stats.avatar||'').a); }catch(e){}
   $('goLbl').textContent = pa ? 'اسحب للتحدّي' : 'اسحب للتدريب'; $('goDone').style.display = pa ? 'none' : 'block';
   $('goNote').style.display = 'none';
-  $('wBal').textContent=fmt(stats.balance); $('sBal').textContent=fmt(stats.balance);
+  $('wBal').textContent=fmt(stats.balance); $('sBal').textContent=toAr(fmt(stats.balance));
   renderBadges();
 }
 function renderBadges(){
@@ -2791,11 +2866,28 @@ async function inviteFriend(){
   if(!r || !r.code){ toast('تعذّر إنشاء الدعوة، تأكد من الاتصال'); return; }
   const url = location.origin + location.pathname + '?c=' + r.code;
   const text = stats.playerName + ' يتحداك في «تحدّي الدقيقة»! افتح الرابط لنبدأ المباراة الآن:\n' + url;
-  const sent=()=>{ $('invUrl').style.display='none'; $('invShare').style.display='none'; try{ aiStart('aicI'); }catch(e){} };
-  const share=async()=>{ try{ if(navigator.share){ await navigator.share({text}); sent(); return; } }catch(e){ return; } try{ await navigator.clipboard.writeText(text); toast('تم نسخ الدعوة'); sent(); }catch(e){ toast('انسخ الرابط يدوياً'); } };
+  const status=$('inviteStatus');
+  const copy=async()=>{
+    try{
+      await navigator.clipboard.writeText(url);
+      status.textContent='تم نسخ الرابط';
+    }catch(e){
+      const range=document.createRange();
+      range.selectNodeContents($('invUrl'));
+      const selection=window.getSelection();
+      if(selection){ selection.removeAllRanges(); selection.addRange(range); }
+      status.textContent='انسخ الرابط المحدد يدويًا';
+    }
+  };
+  const share=async()=>{
+    if(!navigator.share){ await copy(); return; }
+    try{ await navigator.share({text}); status.textContent='بانتظار فتح الرابط'; }
+    catch(e){ if(e.name!=='AbortError') await copy(); }
+  };
   matchTok++; show('match'); $('searching').style.display='none'; $('found').style.display='none'; $('inviteWait').style.display='block';
-  try{ aiStop(); }catch(e){}
-  $('invUrl').style.display=''; $('invShare').style.display=''; $('invUrl').textContent = url; $('invShare').onclick = share;
+  try{ aiStart('aicI'); }catch(e){}
+  status.textContent=''; $('invUrl').textContent=url;
+  $('invShare').onclick=share; $('invCopy').onclick=copy;
   $('invCancel').onclick = ()=>{ inviteTok++; $('inviteWait').style.display='none'; show('home'); };
   const t0 = Date.now();
   while(tok===inviteTok && Date.now()-t0 < 10*60*1000){
@@ -3595,8 +3687,10 @@ function endGame(){
   $('rMe').textContent=toAr(me); $('rBot').textContent=toAr(b); $('rBotLbl').textContent=bot.name;
   $('resExtra').textContent = G.force==='win' ? 'انسحب الخصم، فزت بالمباراة' : G.force==='lose' ? 'يمكنك المحاولة من جديد متى شئت' : isBest && me>0 ? 'رقم قياسي جديد لك!' : (R==='win' ? (G.tie==='win' ? 'تعادلتما في النقاط، وحسمت السرعة لصالحك' : 'أحسنت، الأسئلة تزداد صعوبة كلما تقدمت') : 'جرّب مرة أخرى، الدقيقة قصيرة!');
   const finishedGame=G;
+  $('resultProgress').hidden=true;
   const _res=()=>{
     show('result'); fitResTitle(); countResultScores(me,b);
+    renderResultProgress(finishedGame);
     if(finishedGame.roadReward) scheduleRoadReward(finishedGame);
   };
   const winResult=()=>{ _res(); try{ SND.win(); }catch(e){} setTimeout(()=>FXV.confetti(),250); };
@@ -3810,7 +3904,7 @@ function showModal(title, body, btns){
   btns.forEach(b=>{ const e=document.createElement('button'); e.className='btn'+(b.ghost?' ghost':''); e.style.flex=b.full?'1 1 100%':'1 1 40%'; e.textContent=b.t; e.onclick=b.f; bx.appendChild(e); });
   $('modal').classList.add('on');
 }
-function closeModal(){ $('modal').classList.remove('on'); }
+function closeModal(){ $('modal').classList.remove('on','lab-redeemed'); }
 function openStore(){ renderStore(); show('store'); loadOwn().then(()=>{ try{ renderStore(); }catch(e){} }); }
 if(!DEMO) $('storeDemoTools').hidden=true;
 document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stats.totalPoints+=5000; save(stats); renderStore(); renderStats(); };
@@ -3858,21 +3952,39 @@ document.getElementById('demoTop').onclick=function(){ stats.balance+=5000; stat
   el.addEventListener('touchend',end,{passive:true});
   el.addEventListener('touchcancel',end,{passive:true});
 });
-function renderStore(){
-  $('sBal').textContent = fmt(stats.balance);
+let storeBalanceFrame=0;
+function animateStoreBalance(from){
+  const balance=$('sBal'), to=stats.balance;
+  cancelAnimationFrame(storeBalanceFrame);
+  balance.textContent=toAr(fmt(to));
+  if(from==null || from===to || labReducedMotion() || !$('store').classList.contains('active')) return;
+  const start=performance.now();
+  balance.textContent=toAr(fmt(from));
+  const step=now=>{
+    const time=Math.min(1,(now-start)/500);
+    balance.textContent=toAr(fmt(Math.round(from+(to-from)*(1-Math.pow(1-time,3)))));
+    if(time<1 && $('store').classList.contains('active')) storeBalanceFrame=requestAnimationFrame(step);
+    else balance.textContent=toAr(fmt(to));
+  };
+  storeBalanceFrame=requestAnimationFrame(step);
+}
+function renderStore(previousBalance){
+  animateStoreBalance(previousBalance);
   const groups=[['cash','مكافآت نقدية'],['gift','قسائم'],['miles','أميال']];
   const box=$('rewards'), cosmeticsOpen=!!box.querySelector('.lab-store-extra[open]');
   box.innerHTML='';
   groups.forEach(([ty,label])=>{
     const items=REWARDS.filter(r=>r.type===ty); if(!items.length) return;
     const h=document.createElement('div'); h.className='label'; h.textContent=label; box.appendChild(h);
+    const grid=document.createElement('div'); grid.className='lab-vouchers';
     items.forEach(r=>{
       const can=stats.balance>=r.cost;
       const c=document.createElement('div'); c.className='rw';
-      c.innerHTML=(r.logo?'<div class="gi logo"><img src="'+r.logo+'" alt=""></div>':'<div class="gi">'+svg(r.icon,24)+'</div>')+'<div class="rb"><b>'+r.title+'</b><span>'+fmt(r.cost)+' نقطة</span></div><button class="rbtn"'+(can?'':' disabled')+'>'+(can?'استبدال':'ينقصك '+fmt(r.cost-stats.balance))+'</button>';
+      c.innerHTML=(r.logo?'<div class="gi logo"><img decoding="async" src="'+r.logo+'" alt=""></div>':'<div class="gi">'+svg(r.icon,24)+'</div>')+'<div class="rb"><b>'+r.title+'</b><span>'+fmt(r.cost)+' نقطة</span></div><button class="rbtn"'+(can?'':' disabled')+'>'+(can?'استبدال':'ينقصك '+fmt(r.cost-stats.balance))+'</button>';
       c.querySelector('.rbtn').onclick=()=>confirmRedeem(r);
-      box.appendChild(c);
+      grid.appendChild(c);
     });
+    box.appendChild(grid);
   });
   try{
     const extras=document.createElement('details');
@@ -3899,13 +4011,14 @@ function confirmBuy(k){
   showModal('تأكيد الشراء','سيُخصم '+fmt(x.shop)+' نقطة من رصيدك مقابل «'+x.n+'».',[{t:'شراء',f:()=>doBuy(x)},{t:'إلغاء',ghost:true,f:closeModal}]);
 }
 async function doBuy(x){
+  const previousBalance=stats.balance;
   if(stats.balance<x.shop){ closeModal(); toast('رصيدك غير كافٍ'); return; }
   if(!DEMO){
     const r=await rpc('shop_buy',{p_id:PID,p_item:x.k},6000); closeModal();
     if(!r||!r.ok){ if(r&&typeof r.balance==='number'){ stats.balance=r.balance; save(stats); } try{ renderStats(); renderStore(); }catch(e){} toast(r&&r.error==='balance'?'رصيدك غير كافٍ':'تعذّر الشراء، حاول مرة ثانية'); return; }
     stats.balance=r.balance; setOwn(r.items||[...OWN,x.k]);
   } else { closeModal(); stats.balance-=x.shop; OWN.add(x.k); }
-  save(stats); try{ renderStats(); renderStore(); }catch(e){}
+  save(stats); try{ renderStats(); renderStore(previousBalance); }catch(e){}
   const isW=WPS.includes(x);
   gamePop('👑 مبروك!','<div class="unl"><div class="u'+(isW?' w':'')+'"><i style="background-image:url(\''+(isW?wpImg(x.k):avImg(x.k))+'\')"></i>'+x.n+'</div></div>',()=>openPick(false, isW?2:1),'جرّبه الآن');
 }
@@ -3914,6 +4027,7 @@ function confirmRedeem(r){
     [{t:'تأكيد',f:()=>doRedeem(r)},{t:'إلغاء',ghost:true,f:closeModal}]);
 }
 async function doRedeem(r){
+  const previousBalance=stats.balance;
   if(stats.balance<r.cost){ closeModal(); return; }
   if(!DEMO){
     const q = await rpc('redeem_points',{p_id:PID,p_cost:r.cost},6000);
@@ -3924,8 +4038,9 @@ async function doRedeem(r){
   for(let i=0;i<8;i++) code+=A[Math.floor(Math.random()*A.length)];
   stats.redeemed.unshift({title:r.title, code:code, date:new Date().toLocaleDateString('ar-KW')});
   try{ rpc('request_redeem',{p_id:PID,p_name:stats.playerName||'',p_reward:r.title,p_cost:r.cost,p_code:code},5000); }catch(e){}
-  save(stats); renderStats(); renderStore();
+  save(stats); renderStats(); renderStore(previousBalance);
   SND.badge();
+  $('modal').classList.add('lab-redeemed');
   showModal('تم تسجيل طلبك','رمز الطلب:<br><code>'+code+'</code><br>تم تسجيل طلبك وسيتم التواصل معك لتسليم القسيمة. احتفظ بهذا الرمز.',[{t:'حسناً',f:closeModal}]);
   badgeEvent();
 }
@@ -4478,15 +4593,12 @@ function roadCard(){
   $('rcLeft').textContent = done ? 'أنهيت الرحلة · ⭐ '+starSum(st) : (left ? 'باقي '+left+' فرع للرئيسي' : 'الفرع الرئيسي قدامك!');
 }
 
-function openRoad(){ const dv=RD.drive; RD.drive=null; renderMap(true); show('roadPage'); setTimeout(()=>{ renderMap(true); if(dv) m2Drive(dv.from,dv.to); else m2Intro(); },30); }
-function m2Intro(){ if(labReducedMotion()) return; let seen=false; try{ seen=!!localStorage.getItem('rd_mapIntro'); }catch(e){}
-  if(seen) return; try{ localStorage.setItem('rd_mapIntro','1'); }catch(e){}
-  const box=$('r2'); if(!box) return; const st=rdSt(), pos=Math.min(st.pos,HQ);
-  const yEnd=Math.max(0,m2y(pos)-box.clientHeight*0.55); box.scrollTop=0; let stop=false;
-  const cancel=()=>{ stop=true; }; box.addEventListener('touchstart',cancel,{once:true,passive:true}); box.addEventListener('wheel',cancel,{once:true,passive:true});
-  const t0=performance.now(), dur=560;
-  const step=n=>{ if(stop || !$('roadPage').classList.contains('active')) return; const k=Math.max(0,Math.min(1,(n-t0)/dur)), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; box.scrollTop=yEnd*e; if(k<1) requestAnimationFrame(step); };
-  requestAnimationFrame(step); }
+function openRoad(){
+  const drive=RD.drive; RD.drive=null;
+  show('roadPage'); renderMap(true);
+  if(drive) m2Drive(drive.from,drive.to);
+}
+$('rpLocate').onclick=()=>{ M2.stopDrive?.(); m2Scroll(rdSt().pos,!labReducedMotion()); };
 function m3Drive(from,to){
   const car=document.querySelector('#r3Plane .m3n.car'); if(!car) return;
   const put=t=>{ car.style.left=m3x(t-0.45).toFixed(1)+'px'; car.style.top=m3y(t-0.45).toFixed(1)+'px'; m3Cam(t,false); };
@@ -4626,12 +4738,16 @@ function m2Build(){
   for(let k=0;k<9;k++){ const x=16+rn()*(M2.W-32), y=30+rn()*(M2.PT-30); tp+=(k%3===0?m2Pine(x,y,1):k%3===1?m2Cone(x,y,1,k):m2Tree(x,y,1.1,k)); }
   tp+='</svg>';
   let h=tp+'<div class="r2art" style="top:'+M2.PT+'px">'+[0,1,2,3,4,5,6,7].map(k=>'<img src="img/road/map'+k+'.jpg" alt="" decoding="sync"'+'>').join('')+'</div>';
+  const passed=M2ART.p.slice(m2Near(0),m2Near(Math.min(pos,HQ))+1);
+  const trail=passed.map(([x,y])=>(x*M2.W).toFixed(1)+','+(y*M2.W+M2.PT).toFixed(1)).join(' ');
+  h+='<svg class="r2-trail" width="'+M2.W+'" height="'+H+'" aria-hidden="true"><polyline points="'+trail+'" fill="none" stroke="#754725" stroke-opacity=".42" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="'+trail+'" fill="none" stroke="#fff0b5" stroke-width="2.5" stroke-dasharray="5 7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   GOV.forEach((gv,gi)=>{ if(gv.a===0) return; const y=(m2y(gv.a)+m2y(gv.a-1))/2, x=(m2x(gv.a)+m2x(gv.a-1))/2, c=GCOL[gi];
     h+='<div class="r2gov" style="left:'+x.toFixed(0)+'px;top:'+y.toFixed(0)+'px;--c:'+c[0]+';--c2:'+c[1]+'"><span>محافظة '+gv.n+'</span></div>'; });
   h+='<div class="r2gov first" style="left:'+m2x(0).toFixed(0)+'px;top:'+(m2y(0)+70).toFixed(0)+'px;--c:'+GCOL[0][0]+';--c2:'+GCOL[0][1]+'"><span>محافظة '+GOV[0].n+'</span></div>';
   ROUTE.forEach((nm,i)=>{ const x=m2x(i), y=m2y(i), done=i<pos, cur=(i===pos&&!arrived), hq=i===HQ, s=(st.stars||[])[i]||0, c=GCOL[govOf(i)];
     const cls=done?'done':cur?'cur':'lock';
-    h+='<button type="button" class="r2n '+cls+(hq?' hq':'')+'" data-i="'+i+'" style="left:'+x.toFixed(0)+'px;top:'+y.toFixed(0)+'px;--c:'+c[0]+';--c2:'+c[1]+'">'
+    const state=cur?'الفرع الحالي':done?'مكتمل':'مقفل';
+    h+='<button type="button" class="r2n '+cls+(hq?' hq':'')+'" data-i="'+i+'" aria-label="'+esc(nm+'، '+state+(done?'، النجوم '+toAr(s):''))+'" '+(cur?'aria-current="step" ':'')+'style="left:'+x.toFixed(0)+'px;top:'+y.toFixed(0)+'px;--c:'+c[0]+';--c2:'+c[1]+'">'
       +(done&&!hq?'<span class="st">'+[1,2,3].map(n=>'<i class="'+(n<=s?'on':'')+'"></i>').join('')+'</span>':'')
       +(hq?'<span class="twr">'+m2Tower()+'</span>':'')+(hq?'':'<span class="pd"><img class="dm" src="img/road/'+(cls==='lock'?'dome_lock':'dome')+'.png" alt="">'+(cur?'':bkLogo('lg',0))+'</span>')
       +'<span class="nm">'+(hq?'🏁 ':'')+nm+'</span></button>';
@@ -4653,6 +4769,7 @@ function m2Build(){
 }
 function m2Scroll(i,smooth){ const box=$('r2'); if(!box) return; const y=m2y(Math.max(0,Math.min(HQ,i)))-box.clientHeight*0.55; box.scrollTo({top:Math.max(0,y),behavior:smooth?'smooth':'auto'}); }
 function m2Drive(from,to){ const sw=$('r2Sw'), box=$('r2'); if(!sw||!box) return;
+  M2.stopDrive?.();
   if(labReducedMotion()){ m2Scroll(to,false); return; }
   const a=m2Near(from), b=m2Near(Math.min(HQ,to)), P=M2ART.p;
   const endX=m2x(to), endY=m2y(to);
@@ -4662,19 +4779,43 @@ function m2Drive(from,to){ const sw=$('r2Sw'), box=$('r2'); if(!sw||!box) return
     sw.style.transform='translate(-50%,-78%) translate3d('+(x-endX)+'px,'+(y+M2.PT-endY+hop)+'px,0)';
     box.scrollTop=startScroll+(endScroll-startScroll)*t; };
   put(0); sw.classList.add('go');
-  const t0=performance.now(), dur=640;
-  const step=n=>{ if(!sw.isConnected || !$('roadPage').classList.contains('active')) return;
-    const k=Math.max(0,Math.min(1,(n-t0)/dur)), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; put(e);
-    if(k<1) requestAnimationFrame(step); else { sw.classList.remove('go'); sw.style.transform=''; sw.classList.add('land');
-      const nb=document.querySelector('.r2n[data-i="'+from+'"]'); if(nb){ nb.classList.add('pop'); }
-      setTimeout(()=>sw.classList.remove('land'),600); } };
-  requestAnimationFrame(step);
+  const t0=performance.now(), dur=650;
+  const target=box.querySelector('.r2n[data-i="'+to+'"]');
+  let frame, stopped=false;
+  const finish=(arrived)=>{
+    stopped=true; cancelAnimationFrame(frame);
+    for(const type of gestures) box.removeEventListener(type, stop);
+    M2.stopDrive=null;
+    sw.classList.remove('go'); sw.style.transform='';
+    if(M2.redrawAfterDrive){
+      M2.redrawAfterDrive=false;
+      if($('roadPage').classList.contains('active')) setTimeout(()=>{ if($('roadPage').classList.contains('active')) renderMap(false); },arrived?350:0);
+    }
+    if(!arrived) return;
+    sw.classList.add('land'); target?.classList.add('lab-arrived');
+    box.querySelector('.r2n[data-i="'+from+'"]')?.classList.add('pop');
+    setTimeout(()=>{ sw.classList.remove('land'); target?.classList.remove('lab-arrived'); },600);
+  };
+  const gestures=['touchstart','wheel','pointerdown'];
+  const stop=()=>finish(false);
+  M2.stopDrive=stop;
+  for(const type of gestures) box.addEventListener(type,stop,{passive:true});
+  const step=n=>{
+    if(stopped) return;
+    if(!sw.isConnected || !$('roadPage').classList.contains('active')){ finish(false); return; }
+    const k=Math.min(1,(n-t0)/dur), eased=k*k*(3-2*k);
+    put(eased);
+    if(k<1) frame=requestAnimationFrame(step); else finish(true);
+  };
+  frame=requestAnimationFrame(step);
 }
 
 function renderMap(scroll){
+  if(!scroll && M2.stopDrive){ M2.redrawAfterDrive=true; return; }
   const st=rdSt(), pos=Math.min(st.pos,HQ+1), arrived=!!st.arrived;
-  const keep=$('r2')?$('r2').scrollTop:0; m2Build();
-  if(scroll || !M2.built) m2Scroll(Math.min(pos,HQ),false); else $('r2').scrollTop=keep;
+  const keep=$('r2')?$('r2').scrollTop:0, wasBuilt=M2.built;
+  M2.stopDrive?.(); m2Build();
+  if(scroll || !wasBuilt) m2Scroll(Math.min(pos,HQ),false); else $('r2').scrollTop=keep;
   const av=null;
   const cg=govOf(Math.min(pos,HQ));
   // HUD
@@ -4708,7 +4849,7 @@ function renderMap(scroll){
 $('rpGo').onclick=()=>{ if($('rpGo').disabled) return; if(rdLoggedIn() && !pointsAvailable()){ renderMap(); return; } RD.back='map'; RD.mall=null; RD.replay=null; try{ playSword(1); }catch(e){}
   /* إذا كنت متحرك بعيد في الخريطة: نرجعك لمكانك أول، السيف ينبض، وبعدين يبدأ التحدي */
   const box=$('r2'), pos=Math.min(HQ,(rdSt().pos||0)); let far=false;
-  if(box && M2.built && $('roadPage').classList.contains('active')){ const y=Math.max(0,m2y(pos)-box.clientHeight*0.55); far=Math.abs(box.scrollTop-y)>box.clientHeight*0.3;
+  if(!labReducedMotion() && box && M2.built && $('roadPage').classList.contains('active')){ const y=Math.max(0,m2y(pos)-box.clientHeight*0.55); far=Math.abs(box.scrollTop-y)>box.clientHeight*0.3;
     if(far){ const y0=box.scrollTop, t0=performance.now(), D=Math.min(900,350+Math.abs(y-y0)*0.25); $('rpGo').disabled=true;
       (function st(n){ const k=Math.min(1,(n-t0)/D), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; box.scrollTop=y0+(y-y0)*e; if(k<1) requestAnimationFrame(st);
         else { const sw=$('r2Sw'); if(sw){ sw.classList.remove('go'); void sw.offsetWidth; sw.classList.add('go'); } setTimeout(()=>{ $('rpGo').disabled=false; startMatch(); },450); } })(t0); } }
@@ -4738,6 +4879,15 @@ async function startMall(k){
   showFound(MALLS[k].n, false, tok);
 }
 
+function renderResultProgress(game){
+  const panel=$('resultProgress'), progress=game.routePreview;
+  if(!progress || !$('result').classList.contains('active')) return;
+  const {from,to,stars}=progress;
+  panel.innerHTML='<div class="lab-result-route"><span>'+ROUTE[from]+'</span>'
+    +'<svg width="24" height="20" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10H4m0 0 5-5m-5 5 5 5"/></svg>'
+    +'<span class="next">'+ROUTE[Math.min(to,HQ)]+'</span></div><small>تقدّم الطريق · النجوم: '+toAr(stars)+'</small>';
+  panel.hidden=false;
+}
 function rfxClose(){ $('rfx').classList.remove('on'); }
 function scheduleRoadReward(game){
   if(!$('result').classList.contains('active') || !game.roadReward) return;
@@ -4764,6 +4914,7 @@ function roadResult(r){
     roadLoad(); return; }
   if(!r.advanced){ roadLoad(); return; }
   const from=r.from, to=r.to, s=(typeof r.stars==='number'?r.stars:1), res=r.result||(s===3?'win':s===2?'draw':s===1?'lose':'quit'); if(!r.arrived) RD.drive={from:from,to:to};
+  if(G){ G.routePreview={from,to,stars:s}; renderResultProgress(G); }
   const RT={win:['فزت في فرع ','3 نجوم = '+(s*10)+' نقطة. أداء كامل!'],draw:['تعادلت في فرع ','نجمتين = 20 نقطة. الفوز يعطيك 3 نجوم'],lose:['خسرت في فرع ','نجمة = 10 نقاط. الفوز يعطيك 3 نجوم'],quit:['انسحبت من فرع ','ما في نجوم للانسحاب. كمّل التحدي المرة الجاية']}[res]||['فرع ',''];
   let nextEnd=GOV.find(g=>g.b>=to); nextEnd=nextEnd?nextEnd.b:HQ;
   let h='<div class="k">'+RT[0]+ROUTE[from]+'</div><h2>'+(r.arrived?'وصلت الرئيسي! 🏁':'تقدّمت فرع ⚔️')+'</h2>'
