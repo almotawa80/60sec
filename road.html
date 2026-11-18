@@ -1828,6 +1828,30 @@ body:has(#home.active) #app>.bklogo{display:none!important}
 #gate .gpick button{background:url(img/road/login/gOff.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:16px!important;font-size:17px!important}
 #gate .gpick button.on{background:url(img/road/login/gOn.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important}
 #gate #gGo{background:url(img/road/login/btn.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:22px!important;font-size:22px!important;text-shadow:0 2px 0 #7a0c12}
+/* ===== اختيار المحارب برسومات ChatGPT ===== */
+#pick .ptop h1{font-size:0!important;width:280px;max-width:80vw;height:76px;margin:0 auto!important;background:url(img/road/splash/title.webp) center/contain no-repeat;text-shadow:none!important;filter:drop-shadow(0 5px 8px rgba(0,0,0,.4))}
+#pick .ptop p{background:url(img/road/login/pill.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;padding:9px 30px 11px!important}
+#pick .steps i{width:44px!important;height:15px!important;border-radius:0!important;box-shadow:none!important;background:url(img/road/pick/stepOff.webp) center/100% 100% no-repeat!important}
+#pick .steps i.on{background-image:url(img/road/pick/stepOn.webp)!important}
+#pick .pcard{background:linear-gradient(#fffaf0,#fdebc9)!important;border:5px solid #f6c22c!important;box-shadow:0 0 0 5px #d81f2e,0 0 0 7px #8f0d18,0 14px 30px rgba(0,0,0,.5)!important;padding-top:82px!important}
+#pick h2{left:-16px!important;right:-16px!important;top:-36px!important;height:112px!important;background:url(img/road/login/ribbon.webp) center top/100% auto no-repeat!important;clip-path:none!important;padding-bottom:44px!important;font-size:25px!important}
+#pick .sec{display:flex;align-items:center;gap:6px}
+#pick .sec .si{width:28px;height:28px;flex:none;background:var(--i) center/contain no-repeat}
+#pick .pk{gap:16px 12px!important;padding:6px 4px 0}
+#pick .im{border:0!important;box-shadow:none!important;overflow:visible;width:78%!important;margin:9% auto 8px}
+#pick .im::before{content:''!important;position:absolute;inset:-13%;background:url(img/road/pick/rOff.webp) center/100% 100% no-repeat;font-size:0!important;filter:none;pointer-events:none}
+#pick .wp .im::before{background-image:url(img/road/pick/sOff.webp)}
+#pick .t.on .im{box-shadow:none!important}
+#pick .t.on .im::before{filter:drop-shadow(0 0 5px #ff2b3d) drop-shadow(0 0 9px rgba(255,43,61,.7))}
+#pick .t.on .im::after{content:''!important;width:28px!important;height:28px!important;top:-10px!important;left:-10px!important;border:0!important;background:url(img/road/pick/check.webp) center/contain no-repeat!important;z-index:2}
+#pick .t.lk .im{filter:grayscale(1) brightness(.7)}
+#pick .t.lk .im::before{background:url(img/road/pick/rLk.webp) center top/100% auto no-repeat;bottom:-30%}
+#pick .wp .t.lk .im::before{background-image:url(img/road/pick/sLk.webp)}
+#pick .upl i:not([style]){font-size:0!important;background:url(img/road/pick/camera.webp) center/contain no-repeat!important}
+#pick .hero .a{border:0!important;box-shadow:none!important;overflow:visible}
+#pick .hero .a::before{content:'';position:absolute;inset:-13%;background:url(img/road/pick/rOff.webp) center/100% 100% no-repeat;pointer-events:none}
+#pick .go{background:url(img/road/login/btn.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:22px!important;font-size:21px!important;text-shadow:0 2px 0 #7a0c12}
+#pick .px{background:url(img/road/pick/close.webp) center/contain no-repeat!important;border:0!important;box-shadow:none!important;font-size:0!important;width:44px!important;height:44px!important}
 </style>
 </head>
 <body>
@@ -4124,17 +4148,17 @@ function renderPick(){
   let h=(PK.first?'':'<button type="button" class="px" id="pkX" aria-label="إغلاق">✕</button>')
    +'<div class="ptop"><h1>تحدّي الدقيقة</h1><p>'+(s1?'🛡️ اختر محاربك':'⚔️ اختر سلاحك')+'</p><div class="steps"><i class="on"></i><i'+(s1?'':' class="on"')+'></i></div></div><div class="pcard">';
   if(s1){
-    h+='<h2>اختر صورتك</h2><div class="sec">⚔️ محاربون</div><div class="pk">'+AVS.filter(x=>x.g==='m'&&!x.shop).map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
-      +'<div class="sec">🛡️ محاربات</div><div class="pk">'+AVS.filter(x=>x.g==='f'&&!x.shop).map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
-      +'<div class="sec">👑 حصرية من المتجر</div><div class="pk">'+AVS.filter(x=>x.shop).map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
+    h+='<h2>اختر صورتك</h2><div class="sec"><i class="si" style="--i:url(img/road/pick/swords.webp)"></i>محاربون</div><div class="pk">'+AVS.filter(x=>x.g==='m'&&!x.shop).map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
+      +'<div class="sec"><i class="si" style="--i:url(img/road/pick/shield.webp)"></i>محاربات</div><div class="pk">'+AVS.filter(x=>x.g==='f'&&!x.shop).map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
+      +'<div class="sec"><i class="si" style="--i:url(img/road/pick/crown.webp)"></i>حصرية من المتجر</div><div class="pk">'+AVS.filter(x=>x.shop).map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
       +'<button type="button" class="upl'+(PK.a==='own'?' on':'')+'" id="pkUp"><i'+(PK.own?' style="background-image:url(\''+PK.own+'\')"':'')+'>'+(PK.own?'':'📷')+'</i>'+(PK.own?(PK.a==='own'?'✓ صورتك الشخصية':'استخدم صورتك الشخصية'):'أو ارفع صورتك الشخصية')+'</button>'
       +'<button type="button" class="go" id="pkGo">التالي</button>';
   } else {
     const av=PK.a==='own'?PK.own:avImg(PK.a);
     h+='<h2>اختر سلاحك</h2><div class="hero"><div class="a" style="background-image:url(\''+av+'\')">'+(PK.w?wpbHtml(PK.w):'')+'</div></div>'
-      +'<div class="sec">🗡️ سيوف ورمح</div><div class="pk wp">'+WPS.slice(0,4).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
-      +'<div class="sec">🪓 فؤوس وقوس</div><div class="pk wp">'+WPS.slice(4).filter(x=>!x.shop).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
-      +'<div class="sec">👑 حصرية من المتجر</div><div class="pk wp">'+WPS.filter(x=>x.shop).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
+      +'<div class="sec"><i class="si" style="--i:url(img/road/pick/swords.webp)"></i>سيوف ورمح</div><div class="pk wp">'+WPS.slice(0,4).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
+      +'<div class="sec"><i class="si" style="--i:url(img/road/pick/axe.webp)"></i>فؤوس وقوس</div><div class="pk wp">'+WPS.slice(4).filter(x=>!x.shop).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
+      +'<div class="sec"><i class="si" style="--i:url(img/road/pick/crown.webp)"></i>حصرية من المتجر</div><div class="pk wp">'+WPS.filter(x=>x.shop).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
       +'<button type="button" class="go" id="pkGo"'+(PK.w?'':' disabled')+'>'+(PK.first?'ابدأ المغامرة':'حفظ')+'</button>'
       +'<button type="button" class="back" id="pkBack">→ رجوع للصورة</button>'+(PK.first?'<div class="note">تقدر تغيرهم بعدين من «ملفي»، وكل كم فرع ينفتح لك محارب وسلاح جديد 🔓</div>':'');
   }
