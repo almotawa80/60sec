@@ -1978,6 +1978,9 @@ html #srchTip{border:3px solid #e0a92e!important;background:#fffdf7!important;co
 #result #shareBtn.ghost,#result #homeBtn.ghost{background:url(img/road/result/btn2.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;min-height:50px;color:#a50f1c!important;font-weight:900!important;font-size:16px!important}
 #result .btn:active{transform:scale(.97)}
 #result .hero.res{flex-direction:column!important;align-items:center!important}
+
+/* زر السحب: طبقة ثابتة حتى ما تختفي خلفيته وقت السحب على iOS */
+#home #goBtn.slide{transform:translateZ(0);-webkit-transform:translateZ(0);will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden;isolation:isolate}
 </style>
 </head>
 <body>
@@ -3642,13 +3645,15 @@ function endGame(){
   btn.addEventListener('pointerdown',function(e){
     if(done) return; try{ if(stats.sound){ audio(); loadSword(); } }catch(_){} drag=true; knob.classList.remove('back'); knob.classList.remove('hint'); knob.style.animation='none';
     max=btn.clientWidth-60-12; startX=e.clientX+x; lastX=e.clientX; lastT=performance.now(); vel=0; buzzed=false;
-    try{ btn.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); });
+    try{ btn.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); lockScroll(true); });
   btn.addEventListener('pointermove',function(e){
     if(!drag) return;
     var n=performance.now(), dt=n-lastT; if(dt>0){ vel=(lastX-e.clientX)/dt; } lastX=e.clientX; lastT=n;
     x=Math.max(0,Math.min(max,startX-e.clientX)); sched();
     if(!buzzed && x>=max*0.6){ buzzed=true; try{ navigator.vibrate&&navigator.vibrate(8); }catch(_){} } });
-  function up(){ if(!drag) return; drag=false; if(raf){ cancelAnimationFrame(raf); paint(); }
+  function lockScroll(on){ var sh=btn.closest('.sheet'); if(sh) sh.style.overflowY=on?'hidden':''; }
+  btn.addEventListener('touchmove',function(e){ if(drag) e.preventDefault(); },{passive:false});
+  function up(){ lockScroll(false); if(!drag) return; drag=false; if(raf){ cancelAnimationFrame(raf); paint(); }
     if(x>=max*0.6 || (vel>0.6 && x>=max*0.25)) fire(); else reset(); }
   btn.addEventListener('pointerup',up); btn.addEventListener('pointercancel',up);
   btn.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); max=btn.clientWidth-72; fire(); } });
