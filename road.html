@@ -1606,6 +1606,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .fxdng{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0;transition:opacity .7s ease}
 .fxdng.on{opacity:1;animation:fxdg var(--bp,1s) ease-in-out infinite}
 @keyframes fxdg{0%,100%{box-shadow:inset 0 0 30px 4px rgba(200,16,46,.22)}12%{box-shadow:inset 0 0 calc(70px*var(--bi,1)) calc(18px*var(--bi,1)) rgba(200,16,46,.6)}24%{box-shadow:inset 0 0 40px 8px rgba(200,16,46,.3)}36%{box-shadow:inset 0 0 calc(60px*var(--bi,1)) calc(14px*var(--bi,1)) rgba(200,16,46,.5)}}
+.fxdng.on.fin{animation:none;box-shadow:inset 0 0 calc(40px*var(--bi,1)) calc(8px*var(--bi,1)) rgba(200,16,46,.35)}
+.fxdng.on.fin.b{animation:fxdg .42s ease-out}
 .fxdng.relief{opacity:0;box-shadow:inset 0 0 80px 20px rgba(26,143,76,.45);animation:none}
 @media (prefers-reduced-motion:reduce){.duel.thrust,.duel.stab,.duel.clash,.fxdng.on{animation:none!important}}
 @keyframes duelHit{0%{transform:scale(1) rotate(0)}35%{transform:scale(1.3) rotate(-14deg)}65%{transform:scale(.95) rotate(10deg)}100%{transform:scale(1) rotate(0)}}
@@ -2288,6 +2290,11 @@ const FXV={
     if(lv){ v.classList.remove('relief'); v.style.setProperty('--bp', '.75s'); v.style.setProperty('--bi', lv>=2?1.35:1); v.classList.add('on'); }
     else if(was){ v.classList.remove('on'); v.classList.add('relief'); setTimeout(()=>v.classList.remove('relief'),50); }
     return lv; },
+  beat(){ const v=document.getElementById('fxDng'); if(!v||!v.classList.contains('on')) return; v.classList.remove('b'); void v.offsetWidth; v.classList.add('b'); },
+  final(f){ let v=document.getElementById('fxDng'); if(!v){ if(!f) return; v=document.createElement('div'); v.id='fxDng'; v.className='fxdng'; document.body.appendChild(v); }
+    if(f){ v.classList.remove('relief'); v.classList.add('on','fin'); v.style.setProperty('--bi', (1+f*.9).toFixed(2)); }
+    else { v.classList.remove('fin'); v.style.setProperty('--bi', 1); if(!(G&&G.dng)) v.classList.remove('on'); } },
+  gold(){ FXV.final(0); FXV.danger(0); FXV.flash('rgba(242,181,30,.55)'); const x=document.getElementById('raceX'); FXV.sparks(x,26,'#ffe68a'); },
   confetti(){ const cs=['#c8102e','#ffb703','#1a8f4c','#2563eb','#ff7a00']; for(let i=0;i<70;i++){ const c=document.createElement('div'); c.className='fxconf'; c.style.left=Math.random()*100+'vw'; c.style.background=cs[i%5]; c.style.animationDuration=(1.6+Math.random()*1.6)+'s'; c.style.animationDelay=(Math.random()*.4)+'s'; document.body.appendChild(c); setTimeout(()=>c.remove(),3800); } }
 };
 /* طلب خالد: أصوات اللعب = العد ٣٢١ والانطلاق، الصح والخطأ، وتكتكة قرب انتهاء الوقت، والسيف والفوز. الباقي صامت */
@@ -2814,7 +2821,7 @@ function recompute(){
   const ld = g.me>g.bot ? 1 : (g.me<g.bot ? -1 : 0);
   if(g.lead!=null && ld!==g.lead && !g.over && (g.phase==='q'||g.phase==='rev')){
     if(ld===-1 && (g.lead===1 || g.me>0)){ SND.alert(); FXV.banner('خصمك تقدّم! ⚡'); try{ navigator.vibrate && navigator.vibrate(50); }catch(e){} }
-    else if(ld===1 && g.lead===-1){ SND.lead(); FXV.banner('رجعت قدام! 💪',1); }
+    else if(ld===1 && g.lead===-1){ SND.lead(); FXV.gold(); FXV.banner('رجعت قدام! 💪',1); }
   }
   g.lead = ld;
   g.combo=st; if(st>g.maxCombo) g.maxCombo=st;
@@ -2930,7 +2937,7 @@ function loopS(){
     if(g.nextQi>=NQ){ finishS(); return; }
     showQS(g.nextQi, at); return;
   }
-  if(g.dng && (g.phase==='q'||g.phase==='rev')){ const per=750; if(!g.beatAt || now-g.beatAt>=per){ g.beatAt=now; const vg=document.getElementById('fxVig'); if(!(vg&&vg.classList.contains('on'))) SND.heart(); } }
+  if(g.dng && (g.phase==='q'||g.phase==='rev')){ const per=750; if(!g.beatAt || now-g.beatAt>=per){ g.beatAt=now; const vg=document.getElementById('fxVig'); if(!(vg&&vg.classList.contains('on')) && !g.final) SND.heart(); } }
   if(g.phase==='q'){
     const rem=Math.max(0,g.deadline-now);
     if(!g.locked){ setQTimer(rem/1000); if(rem<=0) timeoutS(); }
@@ -2938,8 +2945,16 @@ function loopS(){
     if(!PV) localAdv(now);
     else if(rem<=0 && now-g.deadline>7000) takeover('انقطع الاتصال — أكمل ضد منافس آلي');
     const last = g.qi===NQ-1 || tl<=10000, endIn = last ? Math.min(rem, tl) : rem;
-    if(last){ if(endIn>0){ const sec=Math.ceil(endIn/1000); if(sec!==g.lastSec){ g.lastSec=sec; if(sec<=5){ SND.heart(); try{ navigator.vibrate && navigator.vibrate([40,90,40]); }catch(e){} } else SND.tick(); } } FXV.vig(endIn>0 && endIn<=5000 && !g.locked); }
-    else if(g.deadline-now<=3000 && g.deadline-now>0){ const sec=Math.ceil((g.deadline-now)/1000); if(sec!==g.lastSec){ g.lastSec=sec; SND.tick(); } }
+    const behind = last && (g.bot||0)>(g.me||0);
+    if(behind && endIn>0 && endIn<=6000){
+      /* آخر ٦ ثواني للمتأخر: النبض يسرع والحواف تقوى (توتر «الحق!»، مو موت) */
+      const f=1-endIn/6000, per=1000-620*f; g.final=true; FXV.vig(false); FXV.final(f);
+      if(!g.fbAt || now-g.fbAt>=per){ g.fbAt=now; SND.heart(); FXV.beat(); try{ navigator.vibrate && navigator.vibrate(30); }catch(e){} }
+    } else {
+      if(g.final){ g.final=false; FXV.final(0); }
+      if(last){ if(endIn>0){ const sec=Math.ceil(endIn/1000); if(sec!==g.lastSec){ g.lastSec=sec; if(sec<=5){ SND.heart(); try{ navigator.vibrate && navigator.vibrate([40,90,40]); }catch(e){} } else SND.tick(); } } FXV.vig(endIn>0 && endIn<=5000 && !g.locked); }
+      else if(g.deadline-now<=3000 && g.deadline-now>0){ const sec=Math.ceil((g.deadline-now)/1000); if(sec!==g.lastSec){ g.lastSec=sec; SND.tick(); } }
+    }
   }
 }
 function takeover(msg){
@@ -2998,12 +3013,12 @@ function logAnswers(g){
 let lastMe = 0, lastRes = null;
 function endGame(){
   if(!G || G.over) return;
-  G.over = true; G.timers.forEach(t=>{clearInterval(t);clearTimeout(t)}); FXV.vig(false); FXV.danger(0); G.dng=0;
+  G.over = true; G.timers.forEach(t=>{clearInterval(t);clearTimeout(t)}); FXV.vig(false); FXV.final(0); FXV.danger(0); G.dng=0; G.final=false;
   const me=G.me, b=G.bot; lastMe = me;
   const R = G.force || (me>b?'win':(me<b?'lose':(G.tie||'draw')));
   let emoji,title;
   if(R==='win'){ emoji='trophy'; title='فزت!'; stats.wins++; stats.streak++; SND.win(); setTimeout(()=>FXV.confetti(),250); try{ navigator.vibrate && navigator.vibrate([40,60,40,60,120]); }catch(e){} }
-  else if(R==='lose'){ emoji='refresh'; title=G.force?'استسلمت':'خسرت هذه الجولة'; stats.streak=0; SND.lose(); }
+  else if(R==='lose'){ emoji='refresh'; title=G.force?'استسلمت':(((G.bot||0)-(G.me||0))<=45?'قريب! بكرة تكسرها ⚔️':'جولة قوية… بكرة لك ⚔️'); stats.streak=0; SND.lose(); }
   else { emoji='equal'; title='تعادل'; SND.draw(); }
   const isBest = me>stats.best; if(isBest) stats.best=me;
   const scored = G.scored, bonus = (scored && R==='win' && !G.force) ? (PV ? 50 : 0) : 0, earned = (scored && G.force!=='lose') ? me + bonus : 0;
@@ -3029,7 +3044,7 @@ function endGame(){
     ? '+'+fmt(earned)+' نقطة<small>'+me+' من الجولة'+(bonus?' + '+bonus+' مكافأة فوز':'')+' — رصيدك '+fmt(stats.balance)+'</small>'
     : 'جولة تدريبية<small>بدون نقاط — عُد غداً لتحدٍّ جديد بنقاط</small>';
   $('earned').style.color = scored ? '' : 'var(--muted)';
-  const EMO = G.force==='lose' ? '🫣' : (R==='win' ? '🥳' : (R==='lose' ? '😤' : '🤝'));
+  const EMO = G.force==='lose' ? '🫣' : (R==='win' ? '🥳' : (R==='lose' ? '💪' : '🤝'));
   $('resEmoji').style.display = 'none'; $('againBtn').style.display = 'none';
   { const q=(G.force==='lose'); $('shareBtn').classList.toggle('ghost',q); $('homeBtn').classList.toggle('ghost',!q); $('shareBtn').style.order=q?2:1; $('homeBtn').style.order=q?1:2; }
   $('resTitle').textContent = title+' '+EMO;
