@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611181330">
+<meta name="app-version" content="202611181500">
 <title>لوحة تحكّم الطريق إلى الرئيسي</title>
 <link rel="icon" href="img/road/favicon.svg?v=2" type="image/svg+xml">
 <link rel="icon" href="img/road/fav-32.png?v=2" sizes="32x32">
@@ -340,6 +340,10 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
 .htop small{display:block;color:var(--mu);font-weight:700;font-size:11px}
 #todoW .grp{margin:0}
 .pc{display:none}@media print{.pc{display:block}.hqa,.hlive{display:none!important}}
+.ps .pax{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.ps .pax button{font:inherit;background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:9px 2px 8px;color:var(--red);font-size:12px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}.ps .pax .ic{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--chip)}.ps .pax .dl .ic{background:var(--red);color:#fff}.ps .pax button.on{border-color:var(--red);box-shadow:0 0 0 1.5px var(--red) inset}
+.ps .pcf{margin-top:8px;background:#fff3f3;border:1px solid #f1b9bf;border-radius:14px;padding:10px 12px;font-size:12.5px;font-weight:700;color:#7a0716;display:flex;align-items:center;gap:8px}.ps .pcf b{flex:1;line-height:1.5}.ps .pcf button{font:inherit;border:0;border-radius:999px;padding:7px 14px;font-weight:800;font-size:12.5px;cursor:pointer}.ps .pcf .y{background:var(--red);color:#fff}.ps .pcf .n{background:#f1e2c8;color:#4a2a0e}.ps .pcf button:disabled{opacity:.6}
+.ps .pam{margin-top:8px;text-align:center;font-size:12.5px;font-weight:800;color:var(--red)}.ps .pam.ok{color:#1a8f4c}.ps .pam:empty{display:none}
+.ps .rpx{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 12px}.ps .rpx button{font:inherit;border-radius:999px;padding:10px 6px;font-weight:800;font-size:13.5px;cursor:pointer;border:1.5px solid var(--red);background:var(--red);color:#fff}.ps .rpx button.x2{background:#1d6f42;border-color:#1d6f42}.ps .rpx button:disabled{opacity:.55}
 </style>
 </head>
 <body>
@@ -560,12 +564,12 @@ function render(){
     .map(x=>'<div><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b></div>').join('');
   $('kg').innerHTML=K; $('kgP').innerHTML=K;
   renderPl(); renderRed(); renderPairs(); renderEv(); renderTodo(pend);
-  if(SEL){ const rb=$('rzOne'), rb2=$('rdOne'); if($('pRep')&&!(rb&&rb.classList.contains('sure'))&&!(rb2&&rb2.classList.contains('sure'))) drawPlayer(); }
+  if(SEL){ if($('pRep')&&!$('pcf')) drawPlayer(); }
   drawCharts();
 }
 /* صور اللاعبين: نجيبها بعد التقرير، فقط اللي رافعين صورة */
 let AV={};
-async function loadAV(){ const em=(D.players||[]).map(p=>p.emp_no).filter(Boolean); if(!em.length) return; let r=null; try{ r=await rpc('admin_avatars',{p_key:KEY,p_emps:em}); }catch(e){} if(!r||!r.ok) return; AV=r.av||{}; renderPl(); try{ renderTop(); }catch(e){} if(SEL){ const rb=$('rzOne'), rb2=$('rdOne'); if($('pRep')&&!(rb&&rb.classList.contains('sure'))&&!(rb2&&rb2.classList.contains('sure'))) drawPlayer(); } }
+async function loadAV(){ const em=(D.players||[]).map(p=>p.emp_no).filter(Boolean); if(!em.length) return; let r=null; try{ r=await rpc('admin_avatars',{p_key:KEY,p_emps:em}); }catch(e){} if(!r||!r.ok) return; AV=r.av||{}; renderPl(); try{ renderTop(); }catch(e){} if(SEL){ if($('pRep')&&!$('pcf')) drawPlayer(); } }
 const avCss=u=>"background-image:url('"+String(u).replace(/['"\\()\s]/g,'')+"')";
 /* الاسم الرسمي من قائمة الموظفين، واسم اللعب (اللي كتبه اللاعب) تحته */
 let ENM={};
@@ -657,6 +661,8 @@ let SEL=null;
 document.addEventListener('click',e=>{ const b=e.target.closest('.pp'); if(b) openPlayer(b.dataset.e); });
 function openPlayer(emp){ SEL=emp; drawPlayer(); $('ov').classList.remove('hide'); document.body.style.overflow='hidden'; const x=$('ps').querySelector('.x'); if(x) x.focus(); }
 function closePlayer(){ SEL=null; $('ov').classList.add('hide'); document.body.style.overflow=''; }
+const SVI=d=>'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>';
+let PAM=null;
 function drawPlayer(){
   if(!SEL||!D) return; const all=D.players||[], p=all.find(x=>x.emp_no===SEL); if(!p){ closePlayer(); return; }
   $('ps').innerHTML='<div class="ph">'+(AV[p.emp_no]?'<span class="av img" style="'+avCss(AV[p.emp_no])+'"></span>':'<span class="av">'+esc((offN(p)||'؟').trim().charAt(0))+'</span>')+'<div><b>'+(p.online?'<i class="dot"></i>':'')+esc(offN(p))+'</b><small>الرقم الوظيفي '+esc(p.emp_no)+' · الترتيب '+(all.indexOf(p)+1)+nickH(p)+'</small></div><button class="x" type="button" aria-label="إغلاق"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
@@ -665,14 +671,8 @@ function drawPlayer(){
    +'<div class="pl"><span>آخر لعب</span><b>'+dt(p.last_play)+'</b></div><div class="pl"><span>تاريخ التسجيل</span><b>'+dt(p.created_at)+'</b></div>'
    +(EMP.total?'<div class="pl ed"><span>رمز الدخول</span><button class="eb" type="button" id="pcNew">رمز جديد</button></div>':'')
    +'<button class="rzb rep" type="button" id="pRep">📊 تقرير نقاط القوة والضعف</button>'
-   +'<button class="rzb" type="button" id="rzOne">تصفير نقاط ورصيد اللاعب</button>'
-   +'<button class="rzb" type="button" id="rdOne">رجّع اللاعب لأول فرع (صباح الأحمد)</button>'
-   +'<button class="rzb del" type="button" id="delOne">حذف اللاعب من التحدي</button>';
+   +'<div class="pax"><button type="button" data-a="rz"><span class="ic">'+SVI('<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>')+'</span>تصفير النقاط</button><button type="button" data-a="rd"><span class="ic">'+SVI('<path d="M19 20L9 12l10-8v16zM5 19V5"/>')+'</span>رجّع للبداية</button><button type="button" class="dl" data-a="del"><span class="ic">'+SVI('<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/>')+'</span>حذف اللاعب</button></div><div id="paMsg"'+(PAM&&PAM.e===p.emp_no&&Date.now()<PAM.u?' class="pam'+(PAM.ok?' ok':'')+'">'+esc(PAM.t):' class="pam">')+'</div>';
   $('ps').querySelector('.x').onclick=closePlayer;
-  const db=$('delOne'); db.onclick=async()=>{ if(!db.classList.contains('sure')){ db.classList.add('sure'); db.textContent='متأكد؟ تنحذف نقاطه ونتائجه ويطلع من القائمة'; setTimeout(()=>{ if(db.isConnected&&!db.disabled){ db.classList.remove('sure'); db.textContent='حذف اللاعب من التحدي'; } },5000); return; }
-    db.disabled=true; db.textContent='جارٍ الحذف…'; let r=null; try{ r=await rpc('admin_delete_player',{p_key:KEY,p_emp:p.emp_no}); }catch(e){}
-    if(!r||!r.ok){ db.disabled=false; db.classList.remove('sure'); db.textContent='تعذّر الحذف، حاول مرة ثانية'; return; }
-    closePlayer(); await load(); };
   if($('pcNew')) $('pcNew').onclick=()=>newCode(p.emp_no,$('pcNew'));
   $('empEd').onclick=()=>{ const row=$('empRow'); row.classList.add('on');
     row.innerHTML='<input id="empNew" inputmode="numeric" maxlength="10" value="'+esc(p.emp_no)+'"><button class="eb sv" type="button" id="empSv">حفظ</button><button class="eb" type="button" id="empCx">إلغاء</button><small id="empMsg"></small>';
@@ -686,8 +686,21 @@ function drawPlayer(){
       if(!r||!r.ok){ $('empSv').disabled=false; m.textContent=(r&&r.error==='taken')?'هذا الرقم مسجّل للاعب آخر':'تعذّر الحفظ، حاول مرة أخرى'; return; }
       SEL=v; await load(); };
   };
-  const rd=$('rdOne'), RDL='رجّع اللاعب لأول فرع (صباح الأحمد)'; rd.onclick=async()=>{ if(!rd.classList.contains('sure')){ rd.classList.add('sure'); rd.textContent='متأكد؟ يرجع للخيران وتتصفّر نقاطه'; setTimeout(()=>{ if(rd.isConnected&&!rd.disabled){ rd.classList.remove('sure'); rd.textContent=RDL; } },4000); return; } rd.disabled=true; rd.textContent='جارٍ الإرجاع…'; let r=null; try{ r=await rpc('admin_reset_road',{p_key:KEY,p_emp:p.emp_no}); }catch(e){} try{ await load(); }catch(e){} if(SEL){ try{ drawPlayer(); }catch(e){} } const nb=$('rdOne'); if(nb){ nb.disabled=false; nb.classList.remove('sure'); nb.textContent=(r&&r.ok)?'✓ رجع لأول فرع':'تعذّر، تأكد إنك شغّلت ملف SQL'; setTimeout(()=>{ if(nb.isConnected) nb.textContent=RDL; },3000); } };
-  const rb=$('rzOne'); rb.onclick=async()=>{ if(!rb.classList.contains('sure')){ rb.classList.add('sure'); rb.textContent='اضغط مرة ثانية للتأكيد'; setTimeout(()=>{ if(rb.isConnected&&!rb.disabled){ rb.classList.remove('sure'); rb.textContent='تصفير نقاط ورصيد اللاعب'; } },4000); return; } rb.disabled=true; rb.textContent='جارٍ التصفير…'; let ok=false; try{ const r=await rpc('admin_reset_points',{p_key:KEY,p_emp:p.emp_no}); ok=!!(r&&r.ok); }catch(e){} try{ await load(); }catch(e){} if(SEL){ try{ drawPlayer(); }catch(e){} } const nb=$('rzOne'); if(nb){ nb.disabled=false; nb.classList.remove('sure'); nb.textContent=ok?'✓ تم التصفير':'تعذّر التصفير، حاول مرة ثانية'; setTimeout(()=>{ if(nb.isConnected) nb.textContent='تصفير نقاط ورصيد اللاعب'; },2500); } };
+  const PA={rz:{q:'تتصفّر نقاطه ورصيده. متأكد؟',fn:'admin_reset_points',ok:'✓ تم تصفير النقاط والرصيد',bad:'تعذّر التصفير، حاول مرة ثانية'},
+    rd:{q:'يرجع لأول فرع (صباح الأحمد) وتتصفّر نقاطه. متأكد؟',fn:'admin_reset_road',ok:'✓ رجع لأول فرع',bad:'تعذّر، تأكد إنك شغّلت ملف SQL'},
+    del:{q:'تنحذف نقاطه ونتائجه ويطلع من القائمة. متأكد؟',fn:'admin_delete_player',ok:'',bad:'تعذّر الحذف، حاول مرة ثانية'}};
+  const paMsg=(t,ok)=>{ PAM={e:p.emp_no,t,ok,u:Date.now()+3000}; const m=$('paMsg'); if(m){ m.className='pam'+(ok?' ok':''); m.textContent=t; } setTimeout(()=>{ const m2=$('paMsg'); if(m2&&m2.textContent===t) m2.textContent=''; },3000); };
+  $('ps').querySelectorAll('.pax button').forEach(bt=>bt.onclick=()=>{ const k=bt.dataset.a, A=PA[k], cur=$('pcf');
+    $('ps').querySelectorAll('.pax button').forEach(x=>x.classList.remove('on')); if(cur){ const same=cur.dataset.a===k; cur.remove(); if(same) return; }
+    bt.classList.add('on'); $('paMsg').insertAdjacentHTML('beforebegin','<div class="pcf" id="pcf" data-a="'+k+'"><b>'+A.q+'</b><button type="button" class="n">إلغاء</button><button type="button" class="y">تأكيد</button></div>');
+    const cf=$('pcf'); cf.scrollIntoView({block:'nearest',behavior:'smooth'});
+    cf.querySelector('.n').onclick=()=>{ cf.remove(); bt.classList.remove('on'); };
+    cf.querySelector('.y').onclick=async()=>{ const y=cf.querySelector('.y'); y.disabled=true; cf.querySelector('.n').disabled=true; y.textContent='جارٍ…';
+      let r=null; try{ r=await rpc(A.fn,{p_key:KEY,p_emp:p.emp_no}); }catch(e){} const ok=!!(r&&r.ok);
+      if(k==='del'&&ok){ closePlayer(); await load(); return; }
+      cf.remove(); if(ok){ try{ await load(); }catch(e){} if(SEL){ try{ drawPlayer(); }catch(e){} } } else bt.classList.remove('on');
+      paMsg(ok?A.ok:A.bad,ok); };
+  });
 }
 
 /* ===== قائمة الموظفين والرموز ===== */
@@ -1057,6 +1070,103 @@ $('rpX').onclick=async()=>{ const bt=$('rpX'); bt.disabled=true; let r=null; try
     cats.forEach(c=>{ const v=o.c[c]; row[c+' ٪']=v?pctOf(v.ok,v.n):''; row[c+' (عدد)']=v?v.n:0; }); return row; });
   const wb=XLSX.utils.book_new(), ws=XLSX.utils.json_to_sheet(out); wb.Workbook={Views:[{RTL:true}]};
   XLSX.utils.book_append_sheet(wb,ws,'نقاط القوة والضعف'); XLSX.writeFile(wb,'تقرير-الموظفين-'+new Date().toISOString().slice(0,10)+'.xlsx'); };
+/* تقرير PDF احترافي للموظف (صفحات A4 بالرسومات). d = {emp:{name,emp_no,org}, tot:{n,ok,ms}, cats:[{cat,n,ok,bank}], wrong:[{cat,q,right_ans,pick}], st:{points,played,wins,rank,of}, logo:'<svg..>', date:'..'} */
+function empPdfHtml(d){
+  const E=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const P=(a,b)=>b?Math.round(100*a/b):0, ar=n=>String(n);
+  const CI={'شرعية عامة':'🕌','شرعية مالية':'💰','منتجات البنك':'🏦','ثقافة عامة':'🌍','جغرافيا':'🗺️','سرعة بديهة':'⚡','حساب ذهني':'🔢','ذاكرة':'🧠','انتباه':'👁️'};
+  const CORE=['شرعية عامة','شرعية مالية','منتجات البنك'];
+  const col=p=>p>=75?'#1a8f4c':p>=60?'#e39b1c':'#c8102e', lvl=p=>p>=85?'ممتاز':p>=75?'جيد جداً':p>=60?'جيد':'يحتاج تطوير';
+  const tot=d.tot||{n:0,ok:0}, acc=P(tot.ok,tot.n), cats=(d.cats||[]).map(c=>({c:c.cat,n:c.n,p:P(c.ok,c.n),b:c.bank==null?null:Math.round(c.bank)}));
+  const bankAll=(()=>{ const w=cats.filter(c=>c.b!=null); const s=w.reduce((a,c)=>a+c.n,0); return s?Math.round(w.reduce((a,c)=>a+c.b*c.n,0)/s):null; })();
+  /* حلقة */
+  const ring=(p,sz,sw,c,lab,sub)=>{ const r=(sz-sw)/2, C=2*Math.PI*r, off=C*(1-p/100);
+    return '<svg width="'+sz+'" height="'+sz+'" viewBox="0 0 '+sz+' '+sz+'"><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="#f1e4cc" stroke-width="'+sw+'"/><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="'+c+'" stroke-width="'+sw+'" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 '+sz/2+' '+sz/2+')"/>'
+      +'<text x="50%" y="'+(sub?'47%':'53%')+'" text-anchor="middle" dominant-baseline="middle" font-size="'+Math.round(sz*.24)+'" font-weight="800" fill="#3d220b">'+lab+'</text>'+(sub?'<text x="50%" y="68%" text-anchor="middle" font-size="'+Math.round(sz*.09)+'" fill="#8a6a45">'+sub+'</text>':'')+'</svg>'; };
+  /* أعمدة أفقية: الموظف مقابل متوسط البنك */
+  const bars=()=>{ const rows=cats.slice().sort((a,b)=>b.p-a.p), H=40, W=430, L=170, h=rows.length*H+26;
+    let s='<svg width="100%" direction="ltr" viewBox="0 0 '+(W+L+40)+' '+h+'" font-family="inherit">';
+    [0,25,50,75,100].forEach(v=>{ const x=40+v/100*W; s+='<line x1="'+x+'" y1="4" x2="'+x+'" y2="'+(h-20)+'" stroke="#efe2c8" stroke-width="1"/><text x="'+x+'" y="'+(h-6)+'" text-anchor="middle" font-size="10" fill="#9a7b55">'+v+'٪</text>'; });
+    rows.forEach((r,i)=>{ const y=8+i*H, bw=Math.max(2,r.p/100*W), core=CORE.includes(r.c);
+      s+='<text x="'+(W+L+30)+'" y="'+(y+15)+'" text-anchor="end" font-size="15" font-weight="'+(core?800:600)+'" fill="#3d220b">'+(CI[r.c]||'📘')+' '+E(r.c)+'</text>'
+        +'<rect x="40" y="'+(y+4)+'" width="'+W+'" height="20" rx="10" fill="#f6ecd9"/>'
+        +'<rect x="'+(40+W-bw)+'" y="'+(y+4)+'" width="'+bw+'" height="20" rx="10" fill="'+col(r.p)+'"/>'
+        +'<text x="'+(40+W-bw-6)+'" y="'+(y+19)+'" text-anchor="end" font-size="13" font-weight="800" fill="'+col(r.p)+'">'+r.p+'٪</text>';
+      if(r.b!=null){ const bx=40+W-r.b/100*W; s+='<line x1="'+bx+'" y1="'+(y)+'" x2="'+bx+'" y2="'+(y+28)+'" stroke="#3d220b" stroke-width="2.2"/>'; } });
+    return s+'</svg>'; };
+  /* رادار */
+  const radar=()=>{ const r=cats.slice(0,8); if(r.length<3) return ''; const S=300, c=S/2, R=105, n=r.length, pt=(i,v)=>{ const a=-Math.PI/2+i*2*Math.PI/n; return [c+Math.cos(a)*R*v, c+Math.sin(a)*R*v]; };
+    let s='<svg width="100%" direction="ltr" viewBox="0 0 '+S+' '+S+'">';
+    [.25,.5,.75,1].forEach(k=>{ s+='<polygon points="'+r.map((_,i)=>pt(i,k).join(',')).join(' ')+'" fill="'+(k===1?'#fffaf0':'none')+'" stroke="#ecdcbc" stroke-width="1"/>'; });
+    r.forEach((x,i)=>{ const [X,Y]=pt(i,1), [lx,ly]=pt(i,1.2); s+='<line x1="'+c+'" y1="'+c+'" x2="'+X+'" y2="'+Y+'" stroke="#ecdcbc"/><text x="'+lx+'" y="'+ly+'" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="700" fill="#5a3a18">'+E(x.c)+'</text>'; });
+    if(r.some(x=>x.b!=null)) s+='<polygon points="'+r.map((x,i)=>pt(i,(x.b||0)/100).join(',')).join(' ')+'" fill="rgba(61,34,11,.06)" stroke="#3d220b" stroke-width="1.6" stroke-dasharray="4 3"/>';
+    s+='<polygon points="'+r.map((x,i)=>pt(i,x.p/100).join(',')).join(' ')+'" fill="rgba(200,16,46,.22)" stroke="#c8102e" stroke-width="2.4"/>';
+    r.forEach((x,i)=>{ const [X,Y]=pt(i,x.p/100); s+='<circle cx="'+X+'" cy="'+Y+'" r="3.5" fill="#c8102e" stroke="#fff" stroke-width="1.5"/>'; });
+    return s+'</svg>'; };
+  const core=CORE.map(k=>cats.find(c=>c.c===k)).filter(Boolean);
+  const coreCards=core.map(c=>'<div class="cc"><div class="cch">'+(CI[c.c]||'')+' '+E(c.c)+'</div>'+ring(c.p,108,12,col(c.p),c.p+'٪',c.n+' سؤال')
+    +'<div class="ccl" style="color:'+col(c.p)+'">'+lvl(c.p)+'</div><div class="ccb">'+(c.b==null?'':'متوسط البنك '+c.b+'٪ · '+(c.p>=c.b?'<b style="color:#1a8f4c">أعلى بـ '+(c.p-c.b)+'</b>':'<b style="color:#c8102e">أقل بـ '+(c.b-c.p)+'</b>'))+'</div></div>').join('');
+  const strong=cats.filter(c=>c.n>=3&&c.p>=75).sort((a,b)=>b.p-a.p).slice(0,3), weak=cats.filter(c=>c.n>=3&&c.p<60).sort((a,b)=>a.p-b.p).slice(0,3);
+  const recs=[]; core.filter(c=>c.p<75).forEach(c=>recs.push('مراجعة محور «'+c.c+'» ('+c.p+'٪) بالتركيز على الأسئلة الواردة في الجدول أدناه.'));
+  weak.filter(c=>!CORE.includes(c.c)).forEach(c=>recs.push('تحسين مهارة «'+c.c+'» بالتدريب اليومي داخل التحدي.'));
+  if(!recs.length) recs.push('أداء متميز؛ يُنصح بالمحافظة على المشاركة اليومية لترسيخ المعرفة.');
+  const wrong=(d.wrong||[]).slice().sort((a,b)=>(CORE.includes(b.cat)?1:0)-(CORE.includes(a.cat)?1:0));
+  const st=d.st||{}, emp=d.emp||{};
+  const head=(pg,of)=>'<div class="hd"><div class="lg">'+(d.logo||'')+'</div><div class="ht"><b>تقرير أداء الموظف</b><span>تحدّي الدقيقة · الطريق إلى الرئيسي</span></div><div class="hdt">'+E(d.date||'')+'</div></div>';
+  const foot=(pg,of)=>'<div class="ft"><span>سري · للاستخدام الداخلي</span><span>'+pg+' / '+of+'</span></div>';
+  const qtxt=q=>{ q=String(q||''); if(q.startsWith('#color|')){ const p=q.split('|'); return (p[3]||'اختر لون الحبر')+' — كلمة «'+p[1]+'»'; } return q; };
+  const pages=2;
+  let h='<div class="rp"><style>'
+   +'.rp{font-family:"Noto Kufi Arabic",system-ui,sans-serif;color:#3d220b;direction:rtl}'
+   +'.pg{width:794px;height:1123px;box-sizing:border-box;padding:0 0 46px;background:#fffdf8;position:relative;overflow:hidden;page-break-after:always;break-after:page}'
+   +'.hd{display:flex;align-items:center;gap:16px;background:linear-gradient(120deg,#d81f2e,#9e0d1b);color:#fff;padding:22px 34px 20px}.hd .lg svg{height:34px;width:auto;color:#fff;display:block}.ht{flex:1}.ht b{display:block;font-size:22px;font-weight:800}.ht span{font-size:12px;opacity:.88}.hdt{font-size:12px;opacity:.9;text-align:left}'
+   +'.bd{padding:20px 34px 0}.id{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #f0e0c2;border-radius:18px;padding:14px 16px}.av{width:54px;height:54px;border-radius:50%;background:#fde3e6;color:#c8102e;font-size:24px;font-weight:800;display:grid;place-items:center}.id b{font-size:19px;display:block}.id small{color:#8a6a45;font-size:12px}'
+   +'.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}.kp div{background:#fff;border:1px solid #f0e0c2;border-radius:16px;padding:10px;text-align:center}.kp b{display:block;font-size:24px;font-weight:800}.kp span{font-size:11.5px;color:#8a6a45}'
+   +'h3{font-size:15px;margin:18px 0 8px;display:flex;align-items:center;gap:8px}h3:before{content:"";width:5px;height:18px;border-radius:3px;background:#c8102e}'
+   +'.core{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.cc{background:linear-gradient(#fff,#fff8ec);border:1px solid #f0e0c2;border-radius:18px;padding:12px 8px;text-align:center}.cch{font-weight:800;font-size:13.5px;margin-bottom:4px}.ccl{font-weight:800;font-size:13px;margin-top:2px}.ccb{font-size:11px;color:#8a6a45;margin-top:3px}'
+   +'.two{display:grid;grid-template-columns:1.55fr 1fr;gap:12px}.box{background:#fff;border:1px solid #f0e0c2;border-radius:18px;padding:12px}.lgd{display:flex;gap:14px;font-size:10.5px;color:#8a6a45;margin-top:4px}.lgd i{display:inline-block;width:12px;height:4px;border-radius:2px;vertical-align:middle;margin-inline-end:4px}'
+   +'.sw{display:grid;grid-template-columns:1fr 1fr;gap:12px}.chips span{display:inline-block;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;margin:3px}.chips .s{background:#e3f4ea;color:#1a6b3c}.chips .w{background:#fde3e6;color:#a50f1c}'
+   +'ul.rc{margin:6px 0 0;padding:0 18px 0 0;font-size:12.5px;line-height:1.9}'
+   +'.ft{position:absolute;bottom:0;left:0;right:0;height:38px;display:flex;justify-content:space-between;align-items:center;padding:0 34px;font-size:10.5px;color:#9a7b55;border-top:1px solid #f0e0c2}'
+   +'table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:12px}th{font-size:11px;color:#8a6a45;text-align:right;padding:0 10px}td{background:#fff;border-top:1px solid #f0e0c2;border-bottom:1px solid #f0e0c2;padding:8px 10px;vertical-align:top}td:first-child{border-right:1px solid #f0e0c2;border-radius:0 12px 12px 0}td:last-child{border-left:1px solid #f0e0c2;border-radius:12px 0 0 12px}.tg{display:inline-block;background:#fbeed6;border-radius:999px;padding:2px 8px;font-size:10.5px;font-weight:700;white-space:nowrap}.tg.k{background:#fde3e6;color:#a50f1c}.bad{color:#c8102e;text-decoration:line-through}.ok{color:#1a8f4c;font-weight:800}'
+   +'</style>';
+  h+='<div class="pg">'+head(1,pages)+'<div class="bd">'
+   +'<div class="id"><div class="av">'+E((emp.name||'؟').trim().charAt(0))+'</div><div><b>'+E(emp.name)+'</b><small>الرقم الوظيفي '+E(emp.emp_no)+(emp.org?' · '+E(emp.org):'')+'</small></div><div style="margin-inline-start:auto">'+ring(acc,92,10,col(acc),acc+'٪','نسبة الصح')+'</div></div>'
+   +'<div class="kp"><div><b>'+tot.n+'</b><span>سؤال جاوبه</span></div><div><b style="color:'+col(acc)+'">'+acc+'٪</b><span>نسبة الصح'+(bankAll!=null?' · البنك '+bankAll+'٪':'')+'</span></div><div><b>'+(tot.ms?(tot.ms/1000).toFixed(1)+'ث':'—')+'</b><span>متوسط سرعة الإجابة</span></div><div><b>'+(st.points!=null?st.points:'—')+'</b><span>النقاط'+(st.rank?' · الترتيب '+st.rank+(st.of?' من '+st.of:''):'')+'</span></div></div>'
+   +(core.length?'<h3>المحاور الأساسية: الشرعية ومنتجات البنك</h3><div class="core">'+coreCards+'</div>':'')
+   +'<h3>الأداء حسب التصنيف</h3><div class="two"><div class="box">'+bars()+'<div class="lgd"><span><i style="background:#1a8f4c"></i>٧٥٪ فأكثر</span><span><i style="background:#e39b1c"></i>٦٠–٧٤٪</span><span><i style="background:#c8102e"></i>أقل من ٦٠٪</span><span><i style="background:#3d220b;width:3px;height:12px"></i>متوسط البنك</span></div></div>'
+   +'<div class="box">'+radar()+'<div class="lgd" style="justify-content:center"><span><i style="background:#c8102e"></i>الموظف</span><span><i style="background:#3d220b"></i>متوسط البنك</span></div></div></div>'
+   +'</div>'+foot(1,pages)+'</div>';
+  h+='<div class="pg">'+head(2,pages)+'<div class="bd">'+'<h3>الخلاصة والتوصيات</h3><div class="sw"><div class="box"><div class="chips">'+(strong.length?strong.map(x=>'<span class="s">💪 '+E(x.c)+' '+x.p+'٪</span>').join(''):'<span class="s">—</span>')+(weak.length?weak.map(x=>'<span class="w">⚠️ '+E(x.c)+' '+x.p+'٪</span>').join(''):'')+'</div></div><div class="box"><ul class="rc">'+recs.slice(0,4).map(r=>'<li>'+E(r)+'</li>').join('')+'</ul></div></div>';
+  if(wrong.length){ h+='<h3>أسئلة أخطأ فيها ('+wrong.length+')</h3><table><tr><th>التصنيف</th><th>السؤال</th><th>إجابته</th><th>الإجابة الصحيحة</th></tr>'
+     +wrong.slice(0,14).map(q=>'<tr><td><span class="tg'+(CORE.includes(q.cat)?' k':'')+'">'+(CI[q.cat]||'')+' '+E(q.cat)+'</span></td><td>'+E(qtxt(q.q))+'</td>'+(q.pick?'<td class="bad">'+E(q.pick):'<td style="color:#9a7b55">⏱️ انتهى الوقت')+'</td><td class="ok">'+E(q.right_ans)+'</td></tr>').join('')
+     +'</table>'; } else h+='<div class="box" style="margin-top:14px;text-align:center">🎉 ما فيه أسئلة أخطأ فيها خلال الفترة</div>';
+  h+='</div>'+foot(2,pages)+'</div>';
+  return h+'</div>';
+}
+
+function pRepData(p,r){ const e=(r&&r.emp)||{}, all=(D&&D.players)||[];
+  return {emp:{name:offN(p),emp_no:p.emp_no,org:[e.grp,e.dept,((e.unit_type||'')+' '+(e.unit||'')).trim()].filter(Boolean).join(' › ')},
+    tot:r.tot||{n:0,ok:0}, cats:r.cats||[], wrong:r.wrong||[], st:{points:p.total_points,played:p.played,wins:p.wins,rank:all.indexOf(p)+1,of:all.length},
+    logo:(document.querySelector('.bklogo')||{}).outerHTML||'', date:new Date().toLocaleDateString('ar-KW',{day:'numeric',month:'long',year:'numeric'})}; }
+const repFile=(p,ext)=>('تقرير-'+String(offN(p)||p.emp_no).replace(/[\\/:*?"<>|،,]+/g,' ').trim().replace(/\s+/g,'-')+'-'+p.emp_no+'-'+new Date().toISOString().slice(0,10)+(ext||''));
+function pRepPdf(p,r){
+  const html='<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><meta name="viewport" content="width=820"><title>'+esc(repFile(p))+'</title><link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800&display=swap" rel="stylesheet"><style>html,body{margin:0;background:#8a8a8a}@page{size:A4;margin:0}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}.pbar{position:sticky;top:0;z-index:9;display:flex;gap:8px;justify-content:center;padding:10px;background:#3d220b}.pbar button{font:800 15px "Noto Kufi Arabic",sans-serif;border:0;border-radius:999px;padding:10px 22px;background:#c8102e;color:#fff;cursor:pointer}.pbar button.c{background:#f1e2c8;color:#3d220b}.wrap{width:794px;margin:12px auto}.wrap .pg{margin-bottom:12px;box-shadow:0 4px 18px rgba(0,0,0,.3)}@media print{html,body{background:#fff}.pbar{display:none}.wrap{margin:0}.wrap .pg{margin:0;box-shadow:none}}</style></head><body><div class="pbar"><button type="button" onclick="print()">⬇️ حفظ PDF / طباعة</button><button type="button" class="c" onclick="close()">إغلاق</button></div><div class="wrap">'+empPdfHtml(pRepData(p,r))+'</div><script>addEventListener("load",function(){(document.fonts?document.fonts.ready:Promise.resolve()).then(function(){setTimeout(print,350)})})<\/script></body></html>';
+  const w=window.open('','_blank');
+  if(w){ w.document.open(); w.document.write(html); w.document.close(); return; }
+  const u=URL.createObjectURL(new Blob([html],{type:'text/html'})); location.href=u;
+}
+function pRepXls(p,r){ if(typeof XLSX==='undefined') return; const d=pRepData(p,r), P=(a,b)=>b?Math.round(100*a/b):0, CORE=['شرعية عامة','شرعية مالية','منتجات البنك'];
+  const lvl=x=>x>=85?'ممتاز':x>=75?'جيد جداً':x>=60?'جيد':'يحتاج تطوير';
+  const info=[['تقرير نقاط القوة والضعف'],[],['الاسم',d.emp.name],['الرقم الوظيفي',d.emp.emp_no],['الجهة',d.emp.org||'—'],['تاريخ التقرير',d.date],[],
+    ['الأسئلة',d.tot.n],['الإجابات الصحيحة',d.tot.ok],['نسبة الصح %',P(d.tot.ok,d.tot.n)],['متوسط السرعة (ث)',d.tot.ms?+(d.tot.ms/1000).toFixed(1):''],['إجمالي النقاط',d.st.points],['الترتيب',d.st.rank+' من '+d.st.of],[],
+    ['التصنيف','محور أساسي','الأسئلة','الصح','الغلط','نسبة الصح %','متوسط البنك %','الفرق عن البنك','المستوى']]
+    .concat(d.cats.slice().sort((a,b)=>(CORE.includes(b.cat)-CORE.includes(a.cat))||(P(a.ok,a.n)-P(b.ok,b.n))).map(c=>{ const pp=P(c.ok,c.n), bk=c.bank==null?'':Math.round(c.bank); return [c.cat,CORE.includes(c.cat)?'نعم':'',c.n,c.ok,c.n-c.ok,pp,bk,bk===''?'':pp-bk,lvl(pp)]; }));
+  const ws1=XLSX.utils.aoa_to_sheet(info); ws1['!cols']=[22,12,10,8,8,12,14,14,14].map(w=>({wch:w})); ws1['!merges']=[{s:{r:0,c:0},e:{r:0,c:8}}];
+  const qt=q=>{ q=String(q||''); if(q.startsWith('#color|')){ const a=q.split('|'); return (a[3]||'اختر لون الحبر')+' (الكلمة: '+(a[1]||'')+')'; } return q; };
+  const ws2=XLSX.utils.json_to_sheet(d.wrong.slice().sort((a,b)=>CORE.includes(b.cat)-CORE.includes(a.cat)).map(q=>({'التصنيف':q.cat,'السؤال':qt(q.q),'إجابته':q.pick||'انتهى الوقت','الإجابة الصحيحة':q.right_ans})));
+  ws2['!cols']=[16,60,22,26].map(w=>({wch:w}));
+  const wb=XLSX.utils.book_new(); wb.Workbook={Views:[{RTL:true}]}; XLSX.utils.book_append_sheet(wb,ws1,'الملخص حسب التصنيف'); XLSX.utils.book_append_sheet(wb,ws2,'الأسئلة الغلط'); XLSX.writeFile(wb,repFile(p,'.xlsx')); }
 async function openPRep(p){
   const ps=$('ps'), back='<div class="ph"><button class="rpbk" type="button" id="rpBk">‹ رجوع لبطاقة اللاعب</button></div>';
   ps.innerHTML=back+'<div class="rpe">جارٍ التحميل…</div>'; $('rpBk').onclick=drawPlayer;
@@ -1067,11 +1177,13 @@ async function openPRep(p){
   if(!r||!r.ok){ h+='<div class="rpe">'+(r&&r.error==='nf'?'اللاعب غير موجود':NOSQL)+'</div>'; }
   else if(!r.tot||!r.tot.n){ h+='<div class="rpe">ما فيه إجابات مسجّلة لهالموظف بعد. التسجيل يبدأ من أول جولة بعد التحديث.</div>'; }
   else { const t=r.tot, cats=r.cats||[], rk=cats.map(c=>({c:c.cat,p:pctOf(c.ok,c.n),n:c.n})).filter(x=>x.n>=3).sort((a,b)=>b.p-a.p);
+    h+='<div class="rpx"><button type="button" id="rpPdf">⬇️ تقرير PDF</button><button type="button" class="x2" id="rpXls">⬇️ Excel</button></div>';
     h+='<div class="rpk"><div><b>'+fmt(t.n)+'</b><span>سؤال جاوبه</span></div><div><b class="c'+tone(pctOf(t.ok,t.n))+'">'+pctOf(t.ok,t.n)+'٪</b><span>نسبة الصح</span></div><div><b>'+(t.ms?(t.ms/1000).toFixed(1):'—')+'ث</b><span>متوسط السرعة</span></div></div>'
      +'<h4 style="margin:14px 0 4px;font-size:13.5px">حسب التصنيف <small style="color:var(--mu);font-weight:600;font-size:11px">· الخط = متوسط البنك</small></h4>'+cats.map(c=>rbar(catL(c.cat),c.ok,c.n,c.bank,fmt(c.n)+' سؤال')).join('')
      +(rk.length?'<h4 style="margin:12px 0 4px;font-size:13.5px">نقاط القوة والضعف</h4><div class="rtg">'+rk.filter(x=>x.p>=75).slice(0,3).map(x=>'<span class="s">💪 '+esc(x.c)+'</span>').join('')+rk.filter(x=>x.p<60).slice(-3).reverse().map(x=>'<span class="w">⚠️ '+esc(x.c)+'</span>').join('')+'</div>':'')
      +'<h4 style="margin:14px 0 4px;font-size:13.5px">أسئلة غلط فيها</h4>'+((r.wrong||[]).length?r.wrong.map(q=>'<div class="rq"><span class="c">'+esc(q.cat)+'</span><p>'+esc(q.q)+'</p><div class="a">'+(q.pick?'جاوب <s>'+esc(q.pick)+'</s> · ':'<s>ما لحق يجاوب</s> · ')+'الصحيح <b>'+esc(q.right_ans)+'</b></div></div>').join(''):'<div class="rpe">ما غلط في ولا سؤال 👏</div>'); }
   ps.innerHTML=h; $('rpBk').onclick=drawPlayer; ps.scrollTop=0;
+  if($('rpPdf')){ $('rpPdf').onclick=()=>pRepPdf(p,r); $('rpXls').onclick=()=>pRepXls(p,r); }
 }
 $('ps').addEventListener('click',ev=>{ if(!ev.target.closest('#pRep')) return; const p=((D&&D.players)||[]).find(x=>x.emp_no===SEL); if(p) openPRep(p); });
 $('empTpl').onclick=()=>{ const H=['الرقم الوظيفي','الاسم','الهاتف','اللقب','المجموعة','الإدارة','النوع','اسم القسم / الفرع / الوحدة'];
