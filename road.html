@@ -708,13 +708,26 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 /* كسرة الساعة عند الخسارة */
 .ckb{position:fixed;z-index:60;pointer-events:none}
 .ckb .sh{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c);border:4px solid #fff;box-sizing:border-box;box-shadow:0 0 0 4px #c8102e}
-.ckb .sh.go{transition:transform .75s cubic-bezier(.2,.6,.3,1),opacity .75s ease-in;opacity:0}
+.ckb .sh.go{transition:transform 1s cubic-bezier(.2,.6,.3,1),opacity .5s ease-in .5s;opacity:0}
 .ckb svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .ckb svg path{stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-dasharray:60;stroke-dashoffset:60;animation:ckdraw .18s ease-out forwards;filter:drop-shadow(0 0 2px #7a0c12)}
 @keyframes ckdraw{to{stroke-dashoffset:0}}
 .ckb.shk{animation:ckshk .22s linear}
 @keyframes ckshk{25%{transform:translate(-3px,1px) rotate(-3deg)}50%{transform:translate(3px,-1px) rotate(3deg)}75%{transform:translate(-2px,0) rotate(-1deg)}}
-#meAv.flip{transform:scaleX(-1)}#meAv.flip .wpb{transform:scaleX(-1)}
+#meAv.flip,#invAv.flip{transform:scaleX(-1)}#meAv.flip .wpb,#invAv.flip .wpb{transform:scaleX(-1)}
+.ckb .ck{position:absolute;inset:0;will-change:transform}
+.ckb .sh{display:grid;place-items:center;color:#fff;font-weight:900;text-shadow:0 2px 0 #7a0c12;line-height:1}
+.ckb.shk2{animation:ckshk .1s linear infinite}
+.ckb svg.trail{z-index:3}
+.ckb svg.trail path{stroke:#fff;stroke-width:5;stroke-dasharray:180;stroke-dashoffset:180;animation:none;filter:drop-shadow(0 0 6px #ffe68a)}
+.ckb .ck.cut svg.trail path{animation:ckcut .5s ease-out forwards}
+@keyframes ckcut{0%{stroke-dashoffset:180;opacity:1}55%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+.ckb .wpn{position:absolute;width:62%;height:62%;left:95%;top:-55%;border-radius:50%;background:center/cover no-repeat;border:3px solid #ffd76a;box-sizing:border-box;box-shadow:0 0 14px rgba(255,215,90,.95);opacity:0;z-index:4}
+.ckb .ck.cut .wpn{animation:ckwpn .32s cubic-bezier(.5,0,.9,.6) forwards}
+@keyframes ckwpn{0%{opacity:1;transform:translate(0,0) rotate(0)}85%{opacity:1}100%{opacity:0;transform:translate(-245%,240%) rotate(-220deg)}}
+.ckb .sw{position:absolute;width:24%;height:118%;top:-14%;left:38%;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 100'><path d='M10 0 L14 9 L14 68 L6 68 L6 9Z' fill='%23eef3f8' stroke='%2378808c' stroke-width='1'/><path d='M10 4 L10 66' stroke='%23b8c2cc' stroke-width='1'/><rect x='0' y='68' width='20' height='6' rx='2' fill='%23d4a017'/><rect x='7.5' y='74' width='5' height='18' fill='%237a4a1a'/><circle cx='10' cy='95' r='4.5' fill='%23d4a017'/></svg>") center/contain no-repeat;opacity:0;transform-origin:50% 92%;z-index:3;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));transition:transform .26s cubic-bezier(.5,0,.8,.4),opacity .12s}
+.ckb .sw.l{transform:translateX(-260%) rotate(-50deg)}.ckb .sw.r{transform:translateX(260%) rotate(50deg)}
+.ckb .ck.clash .sw{opacity:1}.ckb .ck.clash .sw.l{transform:translateX(-125%) rotate(32deg)}.ckb .ck.clash .sw.r{transform:translateX(125%) rotate(-32deg)}
 #result .res-title{white-space:nowrap;overflow:hidden;padding-inline:26px}
 </style>
 <link rel="icon" type="image/svg+xml" href="img/road/favicon.svg?v=2">
@@ -727,7 +740,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118080000">
+<meta name="app-version" content="road-20261118090000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -2298,6 +2311,7 @@ function noiseBurst(t0,d,vol,f){ if(!stats.sound) return; const a=audio(); if(!a
     s.connect(fl); fl.connect(g); g.connect(a.destination); s.start(t); }catch(e){} }
 SND.stab  = ()=>{ noiseBurst(0,.09,.45,2600); tone(150,0,.22,'sine',.7,45); tone(95,.03,.28,'triangle',.35,40); };
 SND.shatter = ()=>{ noiseBurst(0,.06,.5,3200); noiseBurst(.38,.22,.45,6500); [2637,3520,4186,5274].forEach((f,i)=>tone(f,.38+i*.03,.18,'triangle',.05)); tone(110,.38,.3,'sine',.5,50); };
+SND.crack = ()=>{ noiseBurst(0,.05,.4,4200); tone(2400,0,.04,'square',.04,900); };
 SND.clash = ()=>{ noiseBurst(0,.12,.35,5200); [2093,3136,4186].forEach((f,i)=>tone(f,0,.45-i*.08,'square',.05)); tone(1568,.02,.5,'sine',.08); };
 SND.slash = ()=>{ try{ playSword(1.12); }catch(e){} };
 const FXV={
@@ -2350,6 +2364,7 @@ function renderStats(){
   $('stBest').textContent=stats.best; $('stWins').textContent=stats.wins; $('stStreak').textContent=shownDays();
   const pa = pointsAvailable();
   try{ setAv($('invAv'), stats.avatar, avInit()); setAv($('pfAv'), stats.avatar, avInit()); }catch(e){}
+  try{ $('invAv').classList.toggle('flip', !!avMeta(stats.avatar||'').a); }catch(e){}
   $('goLbl').textContent = pa ? 'اسحب للتحدّي' : 'اسحب للتدريب'; $('goDone').style.display = pa ? 'none' : 'block';
   $('goNote').style.display = 'none';
   $('wBal').textContent=fmt(stats.balance); $('sBal').textContent=fmt(stats.balance);
@@ -3027,26 +3042,71 @@ function finishS(){
 
 /* عنوان النتيجة: يصغر الخط لين تدخل الجملة سطر واحد */
 function fitResTitle(){ const t=$('resTitle'); if(!t) return; t.style.fontSize=''; requestAnimationFrame(()=>{ let fs=parseFloat(getComputedStyle(t).fontSize)||28, n=0; while(t.scrollWidth>t.clientWidth && fs>15 && n++<20){ fs-=1; t.style.fontSize=fs+'px'; } }); }
-/* كسرة الساعة: تتشقق ثم تنفجر قطع، وبعدها النتيجة */
+/* نهاية المبارزة على الساعة: خسارة = تنتفخ وتتشقق وتنفجر، فوز = سلاحك يقصها نصين، تعادل = سيفين يتصادمون عليها */
+function ckStage(){
+  const n=document.querySelector('#clock .num'); if(!n || !n.offsetWidth) return null;
+  const r=n.getBoundingClientRect(), w=r.width;
+  const box=document.createElement('div'); box.className='ckb';
+  box.style.cssText='left:'+r.left+'px;top:'+r.top+'px;width:'+w+'px;height:'+r.height+'px';
+  box.style.fontSize=getComputedStyle(n).fontSize; box.dataset.t=(n.textContent||'').trim(); box.innerHTML='<div class="ck"></div>'; document.body.appendChild(box); n.style.visibility='hidden';
+  const ck=box.firstChild, cx=innerWidth/2-w/2, cy=Math.min(innerHeight*0.36, innerHeight/2-w/2);
+  requestAnimationFrame(()=>{ box.style.transition='left .4s cubic-bezier(.3,.8,.3,1),top .4s cubic-bezier(.3,.8,.3,1)'; box.style.left=cx+'px'; box.style.top=cy+'px'; });
+  const end=()=>{ box.remove(); n.style.visibility=''; };
+  return {box, ck, w, n, end};
+}
+const ckDisc=(clip,t)=>'<div class="sh"'+(clip?' style="clip-path:polygon('+clip+')"':'')+'>'+(t||'')+'</div>';
+function ckOnce(done){ let f=false; return ()=>{ if(f) return; f=true; try{ done(); }catch(e){} }; }
 function clockBreak(done){
-  let fired=false; const fin=()=>{ if(fired) return; fired=true; try{ done(); }catch(e){} };
+  const fin=ckOnce(done); setTimeout(fin, 4500);
   try{
-    const n=document.querySelector('#clock .num'); if(!n || !n.offsetWidth){ fin(); return; }
-    const r=n.getBoundingClientRect(), w=r.width, box=document.createElement('div'); box.className='ckb';
-    box.style.cssText='left:'+r.left+'px;top:'+r.top+'px;width:'+w+'px;height:'+r.height+'px';
+    const S=ckStage(); if(!S){ fin(); return; } const {box,ck,w}=S;
     const P=[['50% 50%','50% 0','100% 0','100% 38%'],['50% 50%','100% 38%','100% 100%','70% 100%'],['50% 50%','70% 100%','0 100%','0 72%'],['50% 50%','0 72%','0 0','50% 0']];
     const D=[[1,-1],[1.1,.9],[-1,1],[-1,-1]];
-    box.innerHTML=P.map(p=>'<div class="sh" style="clip-path:polygon('+p.join(',')+')"></div>').join('')
-      +'<svg viewBox="0 0 100 100"><path d="M50 50 L46 30 L54 16 L50 2"/><path d="M50 50 L68 56 L80 48 L98 52" style="animation-delay:.05s"/><path d="M50 50 L40 66 L30 70 L18 92" style="animation-delay:.1s"/><path d="M50 50 L34 42 L14 38" style="animation-delay:.14s"/></svg>';
-    document.body.appendChild(box); n.style.visibility='hidden';
-    try{ SND.shatter(); }catch(e){} try{ navigator.vibrate && navigator.vibrate([60,40,120]); }catch(e){}
-    box.classList.add('shk');
-    setTimeout(()=>{ const sv=box.querySelector('svg'); if(sv) sv.style.opacity='0';
-      box.querySelectorAll('.sh').forEach((e,i)=>{ const d=D[i]; e.classList.add('go'); e.style.transform='translate('+(d[0]*w*.9)+'px,'+(d[1]*w*.7+w*.5)+'px) rotate('+(d[0]*(30+i*12))+'deg) scale(.8)'; });
-      try{ FXV.sparks(box,18,'#ffd0d0'); }catch(e){} }, 380);
-    setTimeout(()=>{ box.remove(); n.style.visibility=''; fin(); }, 1150);
+    ck.innerHTML=P.map(p=>ckDisc(p.join(','),box.dataset.t)).join('')
+      +'<svg viewBox="0 0 100 100"><path d="M50 50 L46 30 L54 16 L50 2"/><path d="M50 50 L68 56 L80 48 L98 52"/><path d="M50 50 L40 66 L30 70 L18 92"/><path d="M50 50 L34 42 L14 38"/><path d="M50 50 L62 72 L76 90"/></svg>';
+    const paths=[...ck.querySelectorAll('path')]; paths.forEach(p=>p.style.animationPlayState='paused');
+    /* ١) تنتفخ: ٣ نبضات تسرع والحجم يكبر لين الضعف */
+    const beats=[[450,1.35],[820,1.62],[1110,1.85],[1330,2.05]];
+    beats.forEach(([t,sc],i)=>setTimeout(()=>{ ck.style.transition='transform .14s ease-out,filter .3s'; ck.style.transform='scale('+(sc+.12)+')'; ck.style.filter='brightness('+(1-i*.08)+') drop-shadow(0 0 '+(8+i*8)+'px rgba(255,60,60,.9))';
+      setTimeout(()=>{ ck.style.transform='scale('+sc+')'; },140); try{ SND.heart(); }catch(e){} try{ navigator.vibrate && navigator.vibrate(35); }catch(e){} }, t));
+    /* ٢) تتشقق وحدة ورا الثانية وترجف */
+    setTimeout(()=>{ box.classList.add('shk2'); paths.forEach((p,i)=>setTimeout(()=>{ p.style.animationPlayState='running'; try{ SND.crack(); }catch(e){} }, i*120)); }, 1500);
+    /* ٣) تنفجر قطع وتطيح */
+    setTimeout(()=>{ box.classList.remove('shk2'); const sv=ck.querySelector('svg'); if(sv) sv.style.opacity='0'; const sc=2.05;
+      ck.querySelectorAll('.sh').forEach((e,i)=>{ const d=D[i]; e.classList.add('go'); e.style.transform='translate('+(d[0]*w*.55)+'px,'+(d[1]*w*.3+w*.75)+'px) rotate('+(d[0]*(40+i*15))+'deg) scale(.8)'; });
+      try{ SND.shatter(); }catch(e){} try{ navigator.vibrate && navigator.vibrate([60,40,140]); }catch(e){}
+      try{ FXV.sparks(ck,30,'#ffd0d0'); FXV.flash('rgba(255,255,255,.35)'); }catch(e){} void sc; }, 2200);
+    setTimeout(()=>{ S.end(); fin(); }, 3300);
   }catch(e){ fin(); }
-  setTimeout(fin, 2000);
+}
+function clockSlice(done){
+  const fin=ckOnce(done); setTimeout(fin, 3500);
+  try{
+    const S=ckStage(); if(!S){ fin(); return; } const {box,ck,w}=S;
+    const wk=avMeta(stats.avatar||'').w, wsrc=(wk && WPS.some(x=>x.k===wk)) ? wpImg(wk) : wpImg('longsword');
+    ck.innerHTML=ckDisc('0 0,100% 0,100% 18%,0 82%',box.dataset.t)+ckDisc('100% 18%,100% 100%,0 100%,0 82%',box.dataset.t)
+      +'<svg class="trail" viewBox="0 0 100 100"><path d="M118 -2 L-18 102"/></svg><i class="wpn" style="background-image:url(\''+wsrc+'\')"></i>';
+    setTimeout(()=>{ ck.style.transition='transform .3s cubic-bezier(.3,1.6,.5,1)'; ck.style.transform='scale(1.6)'; }, 60);
+    /* السلاح يضرب ضربة مايلة مع خط ضوء */
+    setTimeout(()=>{ ck.classList.add('cut'); try{ playSword(1.05); }catch(e){} try{ navigator.vibrate && navigator.vibrate(40); }catch(e){} }, 650);
+    /* الساعة تنقسم نصين وكل نص يطيح على جهة */
+    setTimeout(()=>{ const h=ck.querySelectorAll('.sh');
+      h[0].classList.add('go'); h[0].style.transform='translate('+(-w*.45)+'px,'+(-w*.15)+'px) rotate(-18deg)';
+      h[1].classList.add('go'); h[1].style.transform='translate('+(w*.45)+'px,'+(w*.9)+'px) rotate(16deg)';
+      try{ FXV.flash('rgba(255,215,90,.45)'); FXV.sparks(ck,28,'#ffe68a'); }catch(e){} }, 900);
+    setTimeout(()=>{ S.end(); fin(); }, 2050);
+  }catch(e){ fin(); }
+}
+function clockClash(done){
+  const fin=ckOnce(done); setTimeout(fin, 3000);
+  try{
+    const S=ckStage(); if(!S){ fin(); return; } const {box,ck}=S;
+    ck.innerHTML=ckDisc('',box.dataset.t)+'<i class="sw l"></i><i class="sw r"></i>';
+    setTimeout(()=>{ ck.style.transition='transform .3s cubic-bezier(.3,1.6,.5,1)'; ck.style.transform='scale(1.5)'; }, 60);
+    setTimeout(()=>{ ck.classList.add('clash'); }, 500);
+    setTimeout(()=>{ try{ SND.clash(); FXV.sparks(ck,24,'#fff3c4'); }catch(e){} box.classList.add('shk'); try{ navigator.vibrate && navigator.vibrate(50); }catch(e){} }, 760);
+    setTimeout(()=>{ S.end(); fin(); }, 1700);
+  }catch(e){ fin(); }
 }
 /* ===== النهاية ===== */
 /* تقرير نقاط القوة والضعف: نرسل إجابات الجولة (ضد البوت أو لاعب حقيقي) */
@@ -3070,7 +3130,7 @@ function endGame(){
   const me=G.me, b=G.bot; lastMe = me;
   const R = G.force || (me>b?'win':(me<b?'lose':(G.tie||'draw')));
   let emoji,title;
-  if(R==='win'){ emoji='trophy'; title='فزت!'; stats.wins++; stats.streak++; SND.win(); setTimeout(()=>FXV.confetti(),250); try{ navigator.vibrate && navigator.vibrate([40,60,40,60,120]); }catch(e){} }
+  if(R==='win'){ emoji='trophy'; title='فزت!'; stats.wins++; stats.streak++; if(G.force){ SND.win(); setTimeout(()=>FXV.confetti(),250); } try{ navigator.vibrate && navigator.vibrate([40,60,40,60,120]); }catch(e){} }
   else if(R==='lose'){ emoji='refresh'; title=G.force?'استسلمت':(((G.bot||0)-(G.me||0))<=45?'قريب! بكرة تكسرها ⚔️':'جولة قوية… بكرة لك ⚔️'); stats.streak=0; SND.lose(); }
   else { emoji='equal'; title='تعادل'; SND.draw(); }
   const isBest = me>stats.best; if(isBest) stats.best=me;
@@ -3103,7 +3163,8 @@ function endGame(){
   $('resTitle').textContent = title+' '+EMO;
   $('rMe').textContent=me; $('rBot').textContent=b; $('rBotLbl').textContent=bot.name;
   $('resExtra').textContent = G.force==='win' ? 'انسحب الخصم، فزت بالمباراة' : G.force==='lose' ? 'يمكنك المحاولة من جديد متى شئت' : isBest && me>0 ? 'رقم قياسي جديد لك!' : (R==='win' ? (G.tie==='win' ? 'تعادلتما في النقاط، وحسمت السرعة لصالحك' : 'أحسنت، الأسئلة تزداد صعوبة كلما تقدمت') : 'جرّب مرة أخرى، الدقيقة قصيرة!');
-  if(R==='lose' && !G.force){ clockBreak(()=>{ show('result'); fitResTitle(); }); } else { show('result'); fitResTitle(); }
+  const _res=()=>{ show('result'); fitResTitle(); };
+  if(G.force) _res(); else if(R==='lose') clockBreak(_res); else if(R==='win') clockSlice(()=>{ _res(); try{ SND.win(); }catch(e){} setTimeout(()=>FXV.confetti(),250); }); else clockClash(_res);
 }
 
 /* ===== الأزرار ===== */
@@ -3608,7 +3669,7 @@ function setAv(el, src, txt){ if(!el) return; if(src){ el.style.backgroundImage=
 function renderProfile(){
   try{ renderStampCard(); }catch(e){}
   setAv($('pfAv'), stats.avatar, avInit()); setAv($('pfBig'), stats.avatar, avInit());
-  try{ setAv($('invAv'), stats.avatar, avInit()); }catch(e){}
+  try{ setAv($('invAv'), stats.avatar, avInit()); $('invAv').classList.toggle('flip', !!avMeta(stats.avatar||'').a); }catch(e){}
   if(document.activeElement!==$('pfNameIn')) $('pfNameIn').value = stats.playerName||''; $('pfEmp').textContent = stats.empNo||'—';
   if(document.activeElement!==$('pfEmail')) $('pfEmail').value = stats.email||'';
   $('pfOut').hidden=!stats.empNo||DEMO; $('pfDept').textContent=stats.dept||''; $('pfDeptR').hidden=!stats.dept;
@@ -3872,7 +3933,7 @@ const nameAS=autoSave($('pfNameIn'),$('pfNameSt'),v=>v.length<2?'قصير':'',as
     const r=await rpc('register_player',{p_id:PID,p_name:v,p_emp:stats.empNo,p_gender:stats.gender||'m',p_balance:0},6000);
     if(!r||!r.ok) return false;
   }
-  stats.playerName=v; save(stats); renderGreet(); try{ setAv($('pfAv'),stats.avatar,avInit()); setAv($('pfBig'),stats.avatar,avInit()); setAv($('invAv'),stats.avatar,avInit()); }catch(e){} return true; });
+  stats.playerName=v; save(stats); renderGreet(); try{ setAv($('pfAv'),stats.avatar,avInit()); setAv($('pfBig'),stats.avatar,avInit()); setAv($('invAv'),stats.avatar,avInit()); $('invAv').classList.toggle('flip', !!avMeta(stats.avatar||'').a); }catch(e){} return true; });
 const mailAS=autoSave($('pfEmail'),$('pfMailSt'),v=>(v && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v))?'صيغة خطأ':'',async v=>{
   if(!DEMO){ const r=await rpc('set_profile',{p_id:PID,p_email:v},6000); if(!r||!r.ok) return false; }
   stats.email=v; save(stats); return true; });
