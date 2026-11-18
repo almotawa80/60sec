@@ -3506,7 +3506,7 @@ function answerS(btn, ok, box){
   btn.classList.add(ok?'ok':'bad');
   if(!ok){
     [...box.children].forEach(c=>{ if(c.dataset.ok==='1') c.classList.add('ok'); else if(c!==btn) c.classList.add('dim'); });
-    SND.stab(); FXV.duel('stab'); g.wst=(g.wst||0)+1; FXV.flash('rgba(200,16,46,.6)'); FXV.shake($('qWrap')); showExpl('');
+    SND.stab(); FXV.duel('stab'); g.wst=(g.wst||0)+1; FXV.flash('rgba(200,16,46,.6)'); FXV.shake($('qWrap')); showExpl('المحاولة الجاية أحسن 💪');
   } else {
     [...box.children].forEach(c=>{ if(c!==btn) c.classList.add('dim'); });
     g.wst=0; SND.slash(); FXV.duel('thrust'); FXV.flash('rgba(26,143,76,.55)'); flyPts(btn,ptsFor(lv,ms,T)); showExpl('');
