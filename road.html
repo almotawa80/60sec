@@ -729,6 +729,15 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 .fxstar{position:absolute;width:36px;height:36px;background:#fff;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);box-shadow:0 0 12px #fff;opacity:0;z-index:5}
 #meAv.flip,#invAv.flip{transform:scaleX(-1)}#meAv.flip .wpb,#invAv.flip .wpb{transform:scaleX(-1)}
 #result .res-title{white-space:nowrap;overflow:hidden;padding-inline:26px}
+.aic{margin:16px auto 0;max-width:330px;background:#fffaf0;border:2px solid #e8c98f;border-radius:18px;padding:11px 13px 9px;text-align:right;color:#4a2a0e;box-shadow:0 6px 16px rgba(0,0,0,.18);cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.aic[hidden]{display:none!important}
+.aic .aih{display:flex;align-items:center;gap:7px;margin-bottom:5px}.aic .aih b{font-size:12.5px;font-weight:900;color:#c8102e;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aic .aitg{flex:none;white-space:nowrap;font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#fde3e6;color:#a50f1c}
+.aic .aitg.t1{background:#e3f4ea;color:#1a6b3c}.aic .aitg.t2{background:#fdecc8;color:#8a5a00}.aic .aitg.t3{background:#e6ecfb;color:#2c4a9a}
+.aic p{margin:0;font-size:13.5px;line-height:1.85;font-weight:600;min-height:75px;transition:opacity .25s}.aic.sw p{opacity:0}
+.aic .aif{display:flex;align-items:center;gap:10px;margin-top:6px;font-size:11px;color:#8a6a45;font-weight:700}.aic .aibar{flex:1;height:3px;border-radius:2px;background:#f0e0c2;overflow:hidden}.aic .aibar i{display:block;height:100%;width:100%;background:#c8102e;border-radius:2px;transform-origin:right;transform:scaleX(0)}
+.aic.run .aibar i{animation:aiBar 8s linear forwards}@keyframes aiBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.aic.run .aibar i{animation:none;transform:scaleX(1)}}
 </style>
 <link rel="icon" type="image/svg+xml" href="img/road/favicon.svg?v=2">
 <link rel="icon" type="image/png" sizes="32x32" href="img/road/fav-32.png?v=2">
@@ -740,7 +749,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118153000">
+<meta name="app-version" content="road-20261118161500">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1768,6 +1777,7 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
         <div class="sub" style="margin-top:6px" id="srchSub">نبحث عن لاعب متاح الآن</div>
         <div class="sub" id="srchTip" hidden style="margin:14px auto 0;max-width:300px;line-height:1.8">انتظر لاعباً حقيقياً واربح ٥٠ نقطة إضافية، أو ابدأ الآن ضد المنافس الآلي</div>
         <button class="btn" id="skipWait" type="button" style="max-width:320px;margin:16px auto 0">ابدأ الآن ضد المنافس الآلي</button>
+        <div class="aic" id="aicS" hidden role="button" tabindex="0" aria-label="معلومة عن الذكاء الاصطناعي، اضغط للتالية"><div class="aih"><span style="font-size:17px">🤖</span><b>عن الذكاء الاصطناعي</b><span class="aitg"></span></div><p></p><div class="aif"><span>اضغط للتالية ›</span><span class="aibar"><i></i></span></div></div>
       </div>
       <div id="inviteWait" style="display:none;width:100%;text-align:center">
         <div class="radar"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
@@ -1775,6 +1785,7 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
         <div class="sub" style="margin:6px auto 18px;max-width:300px;line-height:1.7">شارك الرابط، وعندما يفتحه تبدأ المباراة بينكما مباشرة. أبقِ هذه الصفحة مفتوحة.</div>
         <div id="invUrl" dir="ltr" style="word-break:break-all;border-radius:14px;padding:12px;font-size:13px;margin:0 auto 14px;max-width:320px"></div>
         <button class="btn" id="invShare" style="max-width:320px;margin:0 auto">مشاركة الرابط</button>
+        <div class="aic" id="aicI" hidden role="button" tabindex="0" aria-label="معلومة عن الذكاء الاصطناعي، اضغط للتالية"><div class="aih"><span style="font-size:17px">🤖</span><b>عن الذكاء الاصطناعي</b><span class="aitg"></span></div><p></p><div class="aif"><span>اضغط للتالية ›</span><span class="aibar"><i></i></span></div></div>
         <button class="btn" id="invCancel" style="max-width:320px;margin:10px auto 0;box-shadow:none">إلغاء الدعوة</button>
       </div>
       <div id="found" style="display:none;width:100%">
@@ -2455,6 +2466,7 @@ function showFound(name, human, tok){
   bot.name = name;
 
   show('match');
+  try{ aiStop(); }catch(e){}
   $('searching').style.display='none'; $('inviteWait').style.display='none'; $('found').style.display='block';
   $('foundMsg').textContent = (human ? 'تحدٍّ مباشر مع لاعب حقيقي — مكافأة الفوز ٥٠ نقطة' : 'لا يوجد لاعب متاح الآن — ستلعب ضد الجهاز') + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط'); if(RD.mall) $('foundMsg').textContent = '⚡ محطة '+RD.mall.n+'\nافز على الجهاز واحصل على درع 🛡️ و١٠٠ نقطة'; if(RD.replay!=null) $('foundMsg').textContent = '🔁 إعادة فرع '+ROUTE[RD.replay]+'\nحسّن نجومك (بدون نقاط)';
   if(stats.avatar) setAv($('meAv'), stats.avatar); else { setAv($('meAv'), ''); $('meAv').innerHTML = svg('user',44); }
@@ -2485,6 +2497,7 @@ async function startMatch(){
   const wait = 30000; let skip = false;
   const sb = $('skipWait'); if(sb) sb.onclick = ()=>{ skip = true; };
   const tip=$('srchTip'); if(tip) tip.hidden=true;
+  try{ aiStart('aicS'); }catch(e){}
   const sub = $('srchSub');
   while(Date.now()-t0 < wait && !skip){
     if(sub) sub.textContent = 'نبحث عن لاعب… '+Math.max(0,Math.ceil((wait-(Date.now()-t0))/1000))+' ث'+(pointsAvailable()&&!RD.mall&&RD.replay==null?' · الفوز عليه +٥٠':'');
@@ -2498,6 +2511,65 @@ async function startMatch(){
   showFound(nextBotName(), false, tok);
 }
 
+
+/* ===== بطاقات معلومات الذكاء الاصطناعي في شاشات الانتظار ===== */
+const AIT=[
+/* استخدامات عملية */
+['عملي','اكتب للذكاء الاصطناعي «دوره» قبل طلبك، مثل: «أنت موظف خدمة عملاء محترف، صغ لي رداً مهذباً على…». النتيجة تكون أدق وأقرب لأسلوب البنك.'],
+['عملي','عندك إيميل طويل؟ اطلب: «لخّص لي هذا في ٣ نقاط واذكر المطلوب مني». توفر وقت القراءة وما يفوتك شي مهم.'],
+['عملي','الذكاء الاصطناعي ممتاز في المسودة الأولى: عرض، تقرير، رسالة. اكتب أنت الأفكار الرئيسية، وخله يرتبها، وبعدين راجعها بلمستك.'],
+['عملي','اطلب أكثر من نسخة: «اعطني ٣ صيغ مختلفة لهذا الإعلان: رسمية، ودية، مختصرة». تختار الأنسب بدل ما تبدأ من الصفر.'],
+['عملي','تقدر تستخدمه كمدرّب: «اسألني ١٠ أسئلة عن منتجات التمويل وصحح إجاباتي». طريقة سريعة للمراجعة قبل الاختبارات.'],
+['عملي','حدد الشكل اللي تبيه: «في جدول»، «بنقاط»، «بأقل من ١٠٠ كلمة». كل ما كان طلبك أوضح، كان الجواب أفضل.'],
+['عملي','إذا الجواب ما عجبك لا تبدأ من جديد. قل له وش الغلط: «أقصر»، «أبسط»، «بدون مصطلحات». المحادثة تتحسن بالتعديل.'],
+['عملي','الذكاء الاصطناعي يساعد في ترتيب الأفكار قبل الاجتماع: «هذي ملاحظاتي العشوائية، رتبها في أجندة واضحة».'],
+['عملي','يقدر يحوّل الأرقام لقصة: الصق جدول بيانات غير سري واطلب «شنو أهم ٣ ملاحظات هني؟». بس تأكد من الأرقام بنفسك.'],
+['عملي','للترجمة الاحترافية لا تكتفي بـ«ترجم». قل: «ترجم بأسلوب مصرفي رسمي مناسب لعميل في الكويت».'],
+/* الأمان والخصوصية */
+['أمان','لا تحط بيانات العملاء أبداً في أدوات الذكاء الاصطناعي العامة: لا أسماء، ولا أرقام حسابات، ولا مدنية. استخدم فقط الأدوات المعتمدة من البنك.'],
+['أمان','الذكاء الاصطناعي ممكن «يهلوس»: يعطيك معلومة غلط بثقة كاملة. أي رقم أو حكم أو مرجع، تأكد منه من المصدر قبل ما تعتمده.'],
+['أمان','المحتالون صاروا يستخدمون الذكاء الاصطناعي لتقليد الأصوات والوجوه. إذا جاك طلب تحويل مستعجل حتى بصوت مديرك، تحقق منه بطريقة ثانية.'],
+['أمان','رسائل التصيّد صارت بلغة سليمة ومقنعة بفضل الذكاء الاصطناعي. لا تحكم على الرسالة من أسلوبها، شوف الرابط والمرسل.'],
+['أمان','أي ملف ترفعه لأداة ذكاء اصطناعي عامة ممكن يُخزن عندهم. اسأل نفسك: لو انتشر هذا الملف، هل فيه ضرر؟ إذا نعم لا ترفعه.'],
+['أمان','الصور والفيديوهات «المزيفة العميقة» (Deepfake) صار صعب تفريقها. قبل لا تنشر أو تصدق مقطع مثير، تأكد من مصدر موثوق.'],
+['أمان','الأحكام الشرعية والفتاوى ارجع فيها للهيئة الشرعية في البنك، مو للذكاء الاصطناعي. ممكن يخلط بين المذاهب أو يجيب كلام غير دقيق.'],
+['أمان','الذكاء الاصطناعي يساعدك، بس القرار والمسؤولية عليك. لا ترسل رد لعميل أو تعتمد تقرير بدون ما تقراه وتراجعه.'],
+/* مفاهيم مبسطة */
+['مفهوم','الذكاء الاصطناعي التوليدي هو اللي «ينتج» محتوى جديد: نص، صورة، صوت، أو كود. مثل المساعدات اللي تكتب وترد عليك.'],
+['مفهوم','النموذج اللغوي الكبير (LLM) تدرّب على كمية ضخمة من النصوص، وتعلم يتوقع الكلمة اللي بعدها بذكاء، ومن هني يقدر يكتب ويفهم ويلخص.'],
+['مفهوم','«البرومبت» هو الطلب اللي تكتبه للذكاء الاصطناعي. جودة الجواب تعتمد بشكل كبير على وضوح البرومبت وتفاصيله.'],
+['مفهوم','«الهلوسة» مصطلح يعني إن الذكاء الاصطناعي يألّف معلومة غير صحيحة ويقدمها كأنها حقيقة. عشان كذا المراجعة البشرية ضرورية.'],
+['مفهوم','تعلم الآلة (Machine Learning) يعني إن النظام يتعلم من البيانات بدل ما نبرمج له كل قاعدة. مثل نظام يتعرف على العمليات المشبوهة من آلاف الأمثلة.'],
+['مفهوم','«الوكيل الذكي» (AI Agent) ما يكتفي بالرد. يقدر ينفذ خطوات بنفسه: يبحث، يفتح ملفات، يعبّي نماذج، ويرجع لك بالنتيجة.'],
+['مفهوم','«متعدد الوسائط» (Multimodal) يعني إن النموذج يفهم أكثر من نوع: نص وصورة وصوت مع بعض. تقدر تصوّر مستند وتسأله عنه.'],
+['مفهوم','«نافذة السياق» هي كمية الكلام اللي يقدر النموذج يتذكرها في نفس المحادثة. النماذج الحديثة تقدر تقرأ كتب كاملة دفعة وحدة.'],
+['مفهوم','الذكاء الاصطناعي ما «يفهم» مثل الإنسان ولا عنده رأي. هو يتعرف على أنماط في البيانات، عشان كذا ممكن يخطي في أشياء بديهية.'],
+['مفهوم','التحيّز (Bias): إذا كانت بيانات التدريب فيها تحيز، النموذج يتعلمه. عشان كذا البنوك تراجع أنظمة الذكاء الاصطناعي قبل اعتمادها في القرارات.'],
+/* آخر التطورات */
+['تطورات','من أكبر تطورات هالفترة: الوكلاء الأذكياء. صاروا ينفذون مهام كاملة على الكمبيوتر، مثل حجز موعد أو تعبئة طلب، بإشراف الإنسان.'],
+['تطورات','نماذج «التفكير» (Reasoning) الجديدة تاخذ وقت تفكر خطوة بخطوة قبل الجواب، فصارت أقوى في الرياضيات والتحليل وحل المشاكل المعقدة.'],
+['تطورات','المساعدات الصوتية صارت تتكلم بشكل طبيعي جداً وتفهم المقاطعة واللهجات، وصار ممكن تحاورها كأنك تكلم شخص.'],
+['تطورات','البنوك حول العالم تستخدم الذكاء الاصطناعي في كشف الاحتيال لحظياً: النظام يلاحظ العملية الغريبة ويوقفها قبل ما تكتمل.'],
+['تطورات','صار الذكاء الاصطناعي يكتب برامج كاملة من وصف بالكلام. حتى الموظف اللي ما يعرف برمجة يقدر يسوي أداة بسيطة تسهّل شغله.'],
+['تطورات','الدعم العربي تحسن كثير: النماذج الحديثة تفهم اللهجة الخليجية وتكتب بالعربي بطلاقة أكبر من قبل.'],
+['تطورات','دول كثيرة أصدرت أنظمة وقوانين لتنظيم الذكاء الاصطناعي، تركز على الشفافية وحماية البيانات ومسؤولية القرار.'],
+['تطورات','توليد الفيديو من نص صار واقعي جداً. عشان كذا صار التحقق من مصدر أي مقطع أهم من أي وقت.'],
+['تطورات','الذكاء الاصطناعي صار داخل الأدوات اليومية: البريد، والجداول، والعروض. تقدر تطلب منه داخل الملف نفسه بدون ما تنسخ وتلصق.'],
+['تطورات','في خدمة العملاء، الذكاء الاصطناعي صار يجاوب الأسئلة المتكررة، ويحوّل الحالات المعقدة للموظف مع ملخص جاهز للحالة.'],
+['تطورات','الوظائف ما راح تختفي بقدر ما راح تتغير: الموظف اللي يعرف يستخدم الذكاء الاصطناعي صح راح يكون أسرع وأدق من غيره.'],
+['تطورات','الرقابة البشرية صارت مبدأ أساسي: أي قرار مهم يخص العميل، مثل التمويل، لازم يكون فيه إنسان يراجع ويعتمد.']
+];
+const AIC={'عملي':['💼 في شغلك','t1'],'أمان':['🔒 أمان',''],'مفهوم':['📘 مفهوم','t3'],'تطورات':['🚀 آخر التطورات','t2']};
+let aiT=null, aiEl=null;
+function aiOrder(){ let o=null; try{ o=JSON.parse(localStorage.getItem('mc_ait')||'null'); }catch(e){}
+  if(!o||!Array.isArray(o.q)||o.n!==AIT.length||!o.q.length){ const q=AIT.map((_,i)=>i); for(let i=q.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [q[i],q[j]]=[q[j],q[i]]; } o={n:AIT.length,q}; }
+  return o; }
+function aiNext(){ const el=aiEl; if(!el) return; const o=aiOrder(), k=o.q.shift(); try{ localStorage.setItem('mc_ait',JSON.stringify(o)); }catch(e){}
+  const t=AIT[k]||AIT[0], c=AIC[t[0]]||['',''], tg=el.querySelector('.aitg'), p=el.querySelector('p');
+  el.classList.add('sw'); setTimeout(()=>{ tg.textContent=c[0]; tg.className='aitg '+c[1]; p.textContent=t[1]; el.classList.remove('sw'); el.classList.remove('run'); void el.offsetWidth; el.classList.add('run'); },aiEl.dataset.on?250:0);
+  el.dataset.on='1'; clearTimeout(aiT); aiT=setTimeout(()=>{ if(aiEl===el && el.offsetParent) aiNext(); else aiStop(); },8000); }
+function aiStart(id){ aiStop(); const el=$(id); if(!el) return; aiEl=el; el.hidden=false; delete el.dataset.on; el.onclick=aiNext; el.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); aiNext(); } }; aiNext(); }
+function aiStop(){ clearTimeout(aiT); aiT=null; if(aiEl){ aiEl.hidden=true; aiEl.classList.remove('run'); } aiEl=null; }
 /* ===== دعوة صديق برابط ===== */
 let inviteTok = 0;
 async function inviteFriend(){
@@ -2509,9 +2581,10 @@ async function inviteFriend(){
   if(!r || !r.code){ toast('تعذّر إنشاء الدعوة، تأكد من الاتصال'); return; }
   const url = location.origin + location.pathname + '?c=' + r.code;
   const text = stats.playerName + ' يتحداك في «تحدّي الدقيقة»! افتح الرابط لنبدأ المباراة الآن:\n' + url;
-  const sent=()=>{ $('invUrl').style.display='none'; $('invShare').style.display='none'; };
+  const sent=()=>{ $('invUrl').style.display='none'; $('invShare').style.display='none'; try{ aiStart('aicI'); }catch(e){} };
   const share=async()=>{ try{ if(navigator.share){ await navigator.share({text}); sent(); return; } }catch(e){ return; } try{ await navigator.clipboard.writeText(text); toast('تم نسخ الدعوة'); sent(); }catch(e){ toast('انسخ الرابط يدوياً'); } };
   matchTok++; show('match'); $('searching').style.display='none'; $('found').style.display='none'; $('inviteWait').style.display='block';
+  try{ aiStop(); }catch(e){}
   $('invUrl').style.display=''; $('invShare').style.display=''; $('invUrl').textContent = url; $('invShare').onclick = share;
   $('invCancel').onclick = ()=>{ inviteTok++; $('inviteWait').style.display='none'; show('home'); };
   const t0 = Date.now();
