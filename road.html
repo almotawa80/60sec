@@ -2078,6 +2078,11 @@ html #srchTip{border:3px solid #e0a92e!important;background:#fffdf7!important;co
 html:has(#home.active),body:has(#home.active){overscroll-behavior:none;overflow:hidden;height:100%}
 #home.active{position:fixed!important;inset:0;overscroll-behavior:none;touch-action:pan-x pan-y}
 #home>.sheet{overscroll-behavior:contain}
+
+#lbPage .pod .blk{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;overflow:hidden}
+#lbPage .pod .p1 .blk{height:76px!important}#lbPage .pod .p2 .blk{height:62px!important}#lbPage .pod .p3 .blk{height:54px!important}
+#lbPage .pod .blk::before{flex:none;width:48px!important;height:48px!important;margin:0!important}
+#lbPage .pod .p2 .blk::before{width:40px!important;height:40px!important}#lbPage .pod .p3 .blk::before{width:36px!important;height:36px!important}
 </style>
 </head>
 <body>
@@ -3910,7 +3915,7 @@ async function openShare(){
   shareFile = null;
   c.toBlob(b=>{ try{ if(b) shareFile = new File([b],'tahaddi-alduqaiqa.png',{type:'image/png'}); }catch(e){} },'image/png');
   showModal('شارك بطاقتك','<img class="shareimg" src="'+url+'" alt="بطاقة النتيجة"><div class="hint">إن لم تظهر نافذة المشاركة، اضغط مطولاً على البطاقة لحفظها.</div>',
-    [{t:'مشاركة',full:true,f:doShare},{t:'تغيير الاسم',ghost:true,f:()=>askName(openShare)},{t:'إغلاق',ghost:true,f:closeModal}]);
+    [{t:'مشاركة',full:true,f:doShare},{t:'إغلاق',ghost:true,f:closeModal}]);
 }
 function onShared(){ stats.shared=(stats.shared||0)+1; save(stats); setTimeout(badgeEvent,1600); }
 async function doShare(){
