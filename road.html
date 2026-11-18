@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118062000">
+<meta name="app-version" content="road-20261118063000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -2881,7 +2881,7 @@ function answerS(btn, ok, box){
     g.wst=0; SND.ok((g.combo||0)+1); SND.slash(); FXV.duel('thrust'); FXV.flash('rgba(26,143,76,.55)'); floatPts(ptsFor(lv,ms,T),lv,ms<3000); showExpl('');
   }
   try{ navigator.vibrate && navigator.vibrate(ok?20:[30,40,30]); }catch(e){}
-  const rec={qi:g.qi,ok:ok,ms:ms};
+  const rec={qi:g.qi,ok:ok,ms:ms}; try{ (g.picks=g.picks||{})[g.qi]=String((btn.querySelector('.tx')||btn).textContent||'').slice(0,120); }catch(e){}
   g.mineA = g.mineA.filter(a=>a.qi!==rec.qi).concat([rec]); g.pend={rec:rec,t:performance.now()};
   recompute(); waitLbl();
   if(PV){ const p=PV; rpc('sync_q4',{p_id:PID,p_match:p.id,p_qi:rec.qi,p_ok:ok,p_ms:ms},3500).then(s=>{ if(s && G===g && !g.over) applyS(s); }); }
@@ -2996,6 +2996,20 @@ function finishS(){
 }
 
 /* ===== النهاية ===== */
+/* تقرير نقاط القوة والضعف: نرسل إجابات الجولة (ضد البوت أو لاعب حقيقي) */
+function logAnswers(g){
+  try{
+    if(DEMO || GUEST() || !g || !g.qs) return;
+    const quit=g.force==='lose', last=quit ? (g.qi||0) : NQ-1, items=[];
+    for(let i=0;i<=last && i<g.qs.length;i++){
+      const it=g.qs[i] && g.qs[i].it; if(!it || !it.id) continue;
+      const a=(g.mineA||[]).find(x=>x.qi===i);
+      if(!a && quit && i===last) continue;
+      items.push({q:it.id, ok:!!(a&&a.ok), ms:a?a.ms:null, pick:(g.picks&&g.picks[i])||''});
+    }
+    if(items.length) rpc('log_answers',{p_id:PID,p_items:items,p_human:!!PV},5000);
+  }catch(e){}
+}
 let lastMe = 0, lastRes = null;
 function endGame(){
   if(!G || G.over) return;
@@ -3010,6 +3024,7 @@ function endGame(){
   const scored = G.scored, bonus = (scored && R==='win' && !G.force) ? (PV ? 50 : 0) : 0, earned = (scored && G.force!=='lose') ? me + bonus : 0;
   lastRes = {me:me, bot:b, opp:(bot.name||''), meAv:stats.avatar||'', oppAv:(window._oppAv||''), human:!!(PV||window._wasHuman), scored:scored, earned:earned, result: R};
   stats.balance += earned; stats.totalPoints += earned;
+  logAnswers(G);
   if(!DEMO && !GUEST()) rpc('finish_game3',{p_id:PID,p_score:me,p_won:(R==='win'),p_human:!!PV,p_quit:(G.force==='lose'),p_match:(PV?PV.id:null),p_bonus:bonus,p_draw:(R==='draw')},5000).then(function(c){ RD.mall=null; if(RD.replay!=null){ replayDone(R, G.force==='lose'); } else if(c && c.road) roadResult(c.road); if(c && typeof c.balance==='number'){ stats.balance=c.balance; save(stats); try{ renderStats(); }catch(e){}
     if(scored && c.earned!==earned){ lastRes.earned=c.earned; try{ $('earned').innerHTML='+'+fmt(c.earned)+' نقطة<small>'+me+' من الجولة'+(c.blocked?' — لا مكافأة فوز: سبق أن فزت على هذا الزميل بالرابط':'')+' — رصيدك '+fmt(c.balance)+'</small>'; }catch(e){} } } });
   stats.played++;
