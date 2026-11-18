@@ -4004,7 +4004,6 @@ function renderStore(){
   $('sBal').textContent = fmt(stats.balance);
   const groups=[['cash','مكافآت نقدية'],['gift','قسائم'],['miles','أميال']];
   const box=$('rewards'); box.innerHTML='';
-  try{ box.insertAdjacentHTML('beforeend', shopHtml()); box.querySelectorAll('.ex button[data-k]').forEach(b=>b.onclick=()=>confirmBuy(b.dataset.k)); }catch(e){}
   groups.forEach(([ty,label])=>{
     const items=REWARDS.filter(r=>r.type===ty); if(!items.length) return;
     const h=document.createElement('div'); h.className='label'; h.textContent=label; box.appendChild(h);
@@ -4016,6 +4015,7 @@ function renderStore(){
       box.appendChild(c);
     });
   });
+  try{ box.insertAdjacentHTML('beforeend', shopHtml()); box.querySelectorAll('.ex button[data-k]').forEach(b=>b.onclick=()=>confirmBuy(b.dataset.k)); }catch(e){}
   const hs=$('history'); hs.innerHTML='';
   if(!stats.redeemed.length){ hs.innerHTML='<div class="empty">لا توجد طلبات بعد</div>'; }
   else stats.redeemed.slice(0,10).forEach(h=>{ const d=document.createElement('div'); d.className='hist'; d.innerHTML='<div><b>'+h.title+'</b><span>'+h.date+'</span></div><code>'+h.code+'</code>'; hs.appendChild(d); });
