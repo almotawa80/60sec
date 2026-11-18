@@ -699,6 +699,23 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 .ex button{margin-top:7px;width:100%;border:0;border-radius:12px;padding:8px;font-family:inherit;font-weight:800;font-size:13px;background:#c8102e;color:#fff;cursor:pointer}
 .ex button.own{background:#e3f4ea;color:#126b38}.ex button:disabled:not(.own){background:#eee;color:#999}
 .exn{font-size:11.5px;opacity:.75;margin:-4px 2px 10px}
+
+/* الساعة: حمرا دايماً، وآخر ٥ ثواني تنبض مثل القلب (بدل الشاشة الحمرا) */
+.fxdng,.fxvig{display:none!important}
+#game .clock.mid .num,#game .clock.low .num{background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c)!important;box-shadow:0 0 0 4px #c8102e,inset 0 -5px 0 rgba(0,0,0,.2),0 6px 14px rgba(0,0,0,.45)!important;color:#fff!important;text-shadow:0 2px 0 #7a0c12!important}
+#game .clock.low .num{animation:hbeat var(--hb,1s) ease-out infinite!important}
+@keyframes hbeat{0%{transform:scale(1)}12%{transform:scale(1.2)}24%{transform:scale(1.02)}36%{transform:scale(1.13)}60%,100%{transform:scale(1)}}
+/* كسرة الساعة عند الخسارة */
+.ckb{position:fixed;z-index:60;pointer-events:none}
+.ckb .sh{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c);border:4px solid #fff;box-sizing:border-box;box-shadow:0 0 0 4px #c8102e}
+.ckb .sh.go{transition:transform .75s cubic-bezier(.2,.6,.3,1),opacity .75s ease-in;opacity:0}
+.ckb svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ckb svg path{stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-dasharray:60;stroke-dashoffset:60;animation:ckdraw .18s ease-out forwards;filter:drop-shadow(0 0 2px #7a0c12)}
+@keyframes ckdraw{to{stroke-dashoffset:0}}
+.ckb.shk{animation:ckshk .22s linear}
+@keyframes ckshk{25%{transform:translate(-3px,1px) rotate(-3deg)}50%{transform:translate(3px,-1px) rotate(3deg)}75%{transform:translate(-2px,0) rotate(-1deg)}}
+#meAv.flip{transform:scaleX(-1)}#meAv.flip .wpb{transform:scaleX(-1)}
+#result .res-title{white-space:nowrap;overflow:hidden;padding-inline:26px}
 </style>
 <link rel="icon" type="image/svg+xml" href="img/road/favicon.svg?v=2">
 <link rel="icon" type="image/png" sizes="32x32" href="img/road/fav-32.png?v=2">
@@ -710,7 +727,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118074000">
+<meta name="app-version" content="road-20261118080000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -2280,6 +2297,7 @@ function noiseBurst(t0,d,vol,f){ if(!stats.sound) return; const a=audio(); if(!a
     const s=a.createBufferSource(), fl=a.createBiquadFilter(), g=a.createGain(), t=a.currentTime+t0; s.buffer=b; fl.type='bandpass'; fl.frequency.value=f||1800; fl.Q.value=.9; g.gain.value=vol||.3;
     s.connect(fl); fl.connect(g); g.connect(a.destination); s.start(t); }catch(e){} }
 SND.stab  = ()=>{ noiseBurst(0,.09,.45,2600); tone(150,0,.22,'sine',.7,45); tone(95,.03,.28,'triangle',.35,40); };
+SND.shatter = ()=>{ noiseBurst(0,.06,.5,3200); noiseBurst(.38,.22,.45,6500); [2637,3520,4186,5274].forEach((f,i)=>tone(f,.38+i*.03,.18,'triangle',.05)); tone(110,.38,.3,'sine',.5,50); };
 SND.clash = ()=>{ noiseBurst(0,.12,.35,5200); [2093,3136,4186].forEach((f,i)=>tone(f,0,.45-i*.08,'square',.05)); tone(1568,.02,.5,'sine',.08); };
 SND.slash = ()=>{ try{ playSword(1.12); }catch(e){} };
 const FXV={
@@ -2424,6 +2442,7 @@ function showFound(name, human, tok){
   $('searching').style.display='none'; $('inviteWait').style.display='none'; $('found').style.display='block';
   $('foundMsg').textContent = (human ? 'تحدٍّ مباشر مع لاعب حقيقي — مكافأة الفوز ٥٠ نقطة' : 'لا يوجد لاعب متاح الآن — ستلعب ضد الجهاز') + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط'); if(RD.mall) $('foundMsg').textContent = '⚡ محطة '+RD.mall.n+'\nافز على الجهاز واحصل على درع 🛡️ و١٠٠ نقطة'; if(RD.replay!=null) $('foundMsg').textContent = '🔁 إعادة فرع '+ROUTE[RD.replay]+'\nحسّن نجومك (بدون نقاط)';
   if(stats.avatar) setAv($('meAv'), stats.avatar); else { setAv($('meAv'), ''); $('meAv').innerHTML = svg('user',44); }
+  try{ $('meAv').classList.toggle('flip', !!avMeta(stats.avatar||'').a); }catch(e){}
   $('botName').textContent = bot.name; $('botAv').classList.remove('hasimg'); $('botAv').style.backgroundImage=''; if(human){ $('botAv').textContent = bot.name.charAt(0); } $('botTag').innerHTML = human ? svg('bolt',13)+' متصل الآن' : svg('robot',14)+' منافس آلي'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت'; if(stats.avatar) setAv($('meAv'), stats.avatar); else { $('meAv').classList.remove('hasimg'); $('meAv').style.backgroundImage=''; $('meAv').innerHTML=svg('user',44); }
   if(!human){ try{ const ba=botAvatar(bot.name); setAv($('botAv'), ba); window._oppAv=avMeta(ba).base; }catch(e){} }
   prefetchQs();
@@ -2939,7 +2958,7 @@ function loopS(){
   /* دقيقة حقيقية متواصلة: العداد يمشي حتى بين الأسئلة */
   const TOT=NQ*QMS, tl = 1e9; const qr = g.phase==='q' ? Math.max(0, g.deadline-now) : (g.lastQr!=null ? g.lastQr : (g.qT||QMS)); if(g.phase==='q') g.lastQr=qr;
   if(g.t0){ $('timer').textContent=toAr(Math.ceil(qr/1000));
-    $('clock').classList.toggle('low', qr<=3000); $('clock').classList.toggle('mid', qr<=5000);
+    $('clock').classList.toggle('low', qr<=5000); $('clock').classList.remove('mid');
     $('ringFg').style.strokeDashoffset=RING*(1-qr/(g.qT||QMS)); }
   if(g.t0 && tl<=0){ if(!g.timeUp){ g.timeUp=true; if(g.phase==='q'){ g.deadline=Math.min(g.deadline,now); timeoutS(); } FXV.vig(false); g.nextAt=0; g.phase='rev'; g.timers.push(setTimeout(()=>{ if(G===g) finishS(); }, 1100)); } return; }
   
@@ -2948,7 +2967,7 @@ function loopS(){
     if(g.nextQi>=NQ){ finishS(); return; }
     showQS(g.nextQi, at); return;
   }
-  if(g.dng && (g.phase==='q'||g.phase==='rev')){ const per=750; if(!g.beatAt || now-g.beatAt>=per){ g.beatAt=now; const vg=document.getElementById('fxVig'); if(!(vg&&vg.classList.contains('on')) && !g.final) SND.heart(); } }
+  if(g.dng && (g.phase==='q'||g.phase==='rev')){ const per=750; if(!g.beatAt || now-g.beatAt>=per){ g.beatAt=now; const vg=document.getElementById('fxVig'); } }
   if(g.phase==='q'){
     const rem=Math.max(0,g.deadline-now);
     if(!g.locked){ setQTimer(rem/1000); if(rem<=0) timeoutS(); }
@@ -2957,13 +2976,13 @@ function loopS(){
     else if(rem<=0 && now-g.deadline>7000) takeover('انقطع الاتصال — أكمل ضد منافس آلي');
     const last = g.qi===NQ-1 || tl<=10000, endIn = last ? Math.min(rem, tl) : rem;
     const behind = last && (g.bot||0)>(g.me||0);
-    if(behind && endIn>0 && endIn<=6000){
+    if(behind && endIn>0 && endIn<=5000){
       /* آخر ٦ ثواني للمتأخر: النبض يسرع والحواف تقوى (توتر «الحق!»، مو موت) */
-      const f=1-endIn/6000, per=1000-620*f; g.final=true; FXV.vig(false); FXV.final(f);
-      if(!g.fbAt || now-g.fbAt>=per){ g.fbAt=now; SND.heart(); FXV.beat(); try{ navigator.vibrate && navigator.vibrate(30); }catch(e){} }
+      const f=1-endIn/5000, per=1000-620*f; g.final=true; try{ $('clock').style.setProperty('--hb', Math.round(per)+'ms'); }catch(e){}
+      if(!g.fbAt || now-g.fbAt>=per){ g.fbAt=now; SND.heart(); try{ navigator.vibrate && navigator.vibrate(30); }catch(e){} }
     } else {
-      if(g.final){ g.final=false; FXV.final(0); }
-      if(last){ if(endIn>0){ const sec=Math.ceil(endIn/1000); if(sec!==g.lastSec){ g.lastSec=sec; if(sec<=5){ SND.heart(); try{ navigator.vibrate && navigator.vibrate([40,90,40]); }catch(e){} } else SND.tick(); } } FXV.vig(endIn>0 && endIn<=5000 && !g.locked); }
+      if(g.final){ g.final=false; try{ $('clock').style.removeProperty('--hb'); }catch(e){} }
+      if(last){ if(endIn>0){ const sec=Math.ceil(endIn/1000); if(sec!==g.lastSec){ g.lastSec=sec; if(sec<=5){ SND.heart(); try{ navigator.vibrate && navigator.vibrate([40,90,40]); }catch(e){} } else if(sec<=10) SND.tick(); } } }
       else if(g.deadline-now<=3000 && g.deadline-now>0){ const sec=Math.ceil((g.deadline-now)/1000); if(sec!==g.lastSec){ g.lastSec=sec; SND.tick(); } }
     }
   }
@@ -3006,6 +3025,29 @@ function finishS(){
   endGame();
 }
 
+/* عنوان النتيجة: يصغر الخط لين تدخل الجملة سطر واحد */
+function fitResTitle(){ const t=$('resTitle'); if(!t) return; t.style.fontSize=''; requestAnimationFrame(()=>{ let fs=parseFloat(getComputedStyle(t).fontSize)||28, n=0; while(t.scrollWidth>t.clientWidth && fs>15 && n++<20){ fs-=1; t.style.fontSize=fs+'px'; } }); }
+/* كسرة الساعة: تتشقق ثم تنفجر قطع، وبعدها النتيجة */
+function clockBreak(done){
+  let fired=false; const fin=()=>{ if(fired) return; fired=true; try{ done(); }catch(e){} };
+  try{
+    const n=document.querySelector('#clock .num'); if(!n || !n.offsetWidth){ fin(); return; }
+    const r=n.getBoundingClientRect(), w=r.width, box=document.createElement('div'); box.className='ckb';
+    box.style.cssText='left:'+r.left+'px;top:'+r.top+'px;width:'+w+'px;height:'+r.height+'px';
+    const P=[['50% 50%','50% 0','100% 0','100% 38%'],['50% 50%','100% 38%','100% 100%','70% 100%'],['50% 50%','70% 100%','0 100%','0 72%'],['50% 50%','0 72%','0 0','50% 0']];
+    const D=[[1,-1],[1.1,.9],[-1,1],[-1,-1]];
+    box.innerHTML=P.map(p=>'<div class="sh" style="clip-path:polygon('+p.join(',')+')"></div>').join('')
+      +'<svg viewBox="0 0 100 100"><path d="M50 50 L46 30 L54 16 L50 2"/><path d="M50 50 L68 56 L80 48 L98 52" style="animation-delay:.05s"/><path d="M50 50 L40 66 L30 70 L18 92" style="animation-delay:.1s"/><path d="M50 50 L34 42 L14 38" style="animation-delay:.14s"/></svg>';
+    document.body.appendChild(box); n.style.visibility='hidden';
+    try{ SND.shatter(); }catch(e){} try{ navigator.vibrate && navigator.vibrate([60,40,120]); }catch(e){}
+    box.classList.add('shk');
+    setTimeout(()=>{ const sv=box.querySelector('svg'); if(sv) sv.style.opacity='0';
+      box.querySelectorAll('.sh').forEach((e,i)=>{ const d=D[i]; e.classList.add('go'); e.style.transform='translate('+(d[0]*w*.9)+'px,'+(d[1]*w*.7+w*.5)+'px) rotate('+(d[0]*(30+i*12))+'deg) scale(.8)'; });
+      try{ FXV.sparks(box,18,'#ffd0d0'); }catch(e){} }, 380);
+    setTimeout(()=>{ box.remove(); n.style.visibility=''; fin(); }, 1150);
+  }catch(e){ fin(); }
+  setTimeout(fin, 2000);
+}
 /* ===== النهاية ===== */
 /* تقرير نقاط القوة والضعف: نرسل إجابات الجولة (ضد البوت أو لاعب حقيقي) */
 function logAnswers(g){
@@ -3061,7 +3103,7 @@ function endGame(){
   $('resTitle').textContent = title+' '+EMO;
   $('rMe').textContent=me; $('rBot').textContent=b; $('rBotLbl').textContent=bot.name;
   $('resExtra').textContent = G.force==='win' ? 'انسحب الخصم، فزت بالمباراة' : G.force==='lose' ? 'يمكنك المحاولة من جديد متى شئت' : isBest && me>0 ? 'رقم قياسي جديد لك!' : (R==='win' ? (G.tie==='win' ? 'تعادلتما في النقاط، وحسمت السرعة لصالحك' : 'أحسنت، الأسئلة تزداد صعوبة كلما تقدمت') : 'جرّب مرة أخرى، الدقيقة قصيرة!');
-  show('result');
+  if(R==='lose' && !G.force){ clockBreak(()=>{ show('result'); fitResTitle(); }); } else { show('result'); fitResTitle(); }
 }
 
 /* ===== الأزرار ===== */
