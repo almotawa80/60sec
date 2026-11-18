@@ -705,17 +705,26 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 #game .clock.mid .num,#game .clock.low .num{background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c)!important;box-shadow:0 0 0 4px #c8102e,inset 0 -5px 0 rgba(0,0,0,.2),0 6px 14px rgba(0,0,0,.45)!important;color:#fff!important;text-shadow:0 2px 0 #7a0c12!important}
 #game .clock.low .num{animation:hbeat var(--hb,1s) ease-out infinite!important}
 @keyframes hbeat{0%{transform:scale(1)}12%{transform:scale(1.2)}24%{transform:scale(1.02)}36%{transform:scale(1.13)}60%,100%{transform:scale(1)}}
-/* حركات الساعة آخر المبارزة */
-.ckbg{position:fixed;inset:0;z-index:59;pointer-events:none;background:radial-gradient(circle at 50% 40%,rgba(40,8,12,.35),rgba(10,4,6,.72));-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);opacity:0}
-.ckb{position:fixed;z-index:60;pointer-events:none;will-change:transform}
-.ckb .ck{position:absolute;inset:0;will-change:transform}
-.ckb .glow{position:absolute;inset:-35%;border-radius:50%;background:radial-gradient(circle,rgba(255,70,70,.75),rgba(255,40,40,0) 65%);opacity:0}
-.ckb .sh{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c);border:3px solid #fff;box-sizing:border-box;display:grid;place-items:center;color:#fff;font-weight:900;line-height:1;text-shadow:0 2px 0 #7a0c12;will-change:transform,opacity}
-.ckb svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.ckb svg path{stroke:#fff;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1.5px rgba(122,12,18,.9))}
-.ckb svg.trail{z-index:3}.ckb svg.trail path{stroke-width:3.2;filter:drop-shadow(0 0 4px #ffe68a)}
-.ckb .wpn{position:absolute;width:56%;height:56%;left:78%;top:-40%;border-radius:50%;background:center/cover no-repeat;border:2px solid #ffd76a;box-sizing:border-box;box-shadow:0 0 12px rgba(255,215,90,.9);opacity:0;z-index:4}
-.ckb .sw{position:absolute;width:24%;height:118%;top:-14%;left:38%;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 100'><path d='M10 0 L14 9 L14 68 L6 68 L6 9Z' fill='%23eef3f8' stroke='%2378808c' stroke-width='1'/><path d='M10 4 L10 66' stroke='%23b8c2cc' stroke-width='1'/><rect x='0' y='68' width='20' height='6' rx='2' fill='%23d4a017'/><rect x='7.5' y='74' width='5' height='18' fill='%237a4a1a'/><circle cx='10' cy='95' r='4.5' fill='%23d4a017'/></svg>") center/contain no-repeat;opacity:0;transform-origin:50% 92%;z-index:3;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+/* حركات نهاية المبارزة */
+.fxr{position:fixed;inset:0;z-index:60;touch-action:none}
+.fxbg{position:absolute;inset:0;background:rgba(40,20,5,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0}
+.fxs{position:absolute;inset:0;pointer-events:none}
+.fxck{position:absolute;will-change:transform}
+.fxw{position:absolute;inset:0}
+.fxd{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c);border:3px solid #fff;box-sizing:border-box;box-shadow:0 6px 18px rgba(0,0,0,.35);display:grid;place-items:center;color:#fff;font-weight:900;line-height:1;text-shadow:0 2px 0 #7a0c12}
+.fxw .hv{position:absolute;inset:0;opacity:0;will-change:transform,opacity}.fxw .hv .fxd{box-shadow:none}
+.fxsw{position:absolute;width:40px;height:170px;transform-origin:20px 150px;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35));z-index:3}
+.fxsw .whole,.fxsw .pc{position:absolute;inset:0}.fxsw .pc{opacity:0}.fxsw svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fxsw .whole{transform-origin:20px 150px}
+.fxsw .crk path{fill:none;stroke:#3a2a1a;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.fxf{position:absolute;border-radius:50%;background:radial-gradient(circle,#fff 0,rgba(255,255,255,.85) 35%,rgba(255,255,255,0) 70%);opacity:0;z-index:4}
+.fxp{position:absolute;width:3px;height:12px;border-radius:2px;z-index:5;opacity:0}
+.fxc{position:absolute;border-radius:1px;z-index:5;opacity:0}
+.fxarc{position:absolute;opacity:0;z-index:4;transform-origin:6% 84%}.fxarc svg{width:100%;height:100%;display:block}
+.fxcut{position:absolute;height:3px;border-radius:3px;background:#fff;box-shadow:0 0 8px 2px rgba(255,236,170,.9);opacity:0;z-index:4}
+.fxsh{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,240,200,0) 45%,rgba(255,240,200,.55) 70%,rgba(255,255,255,.75) 100%);opacity:0;z-index:2}
+.fxring{position:absolute;border-radius:50%;border:4px solid #fff;box-sizing:border-box;opacity:0;z-index:2}
+.fxstar{position:absolute;width:36px;height:36px;background:#fff;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);box-shadow:0 0 12px #fff;opacity:0;z-index:5}
 #meAv.flip,#invAv.flip{transform:scaleX(-1)}#meAv.flip .wpb,#invAv.flip .wpb{transform:scaleX(-1)}
 #result .res-title{white-space:nowrap;overflow:hidden;padding-inline:26px}
 </style>
@@ -729,7 +738,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118133000">
+<meta name="app-version" content="road-20261118140000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -3032,95 +3041,165 @@ function finishS(){
 
 /* عنوان النتيجة: يصغر الخط لين تدخل الجملة سطر واحد */
 function fitResTitle(){ const t=$('resTitle'); if(!t) return; t.style.fontSize=''; requestAnimationFrame(()=>{ let fs=parseFloat(getComputedStyle(t).fontSize)||28, n=0; while(t.scrollWidth>t.clientWidth && fs>15 && n++<20){ fs-=1; t.style.fontSize=fs+'px'; } }); }
-/* نهاية المبارزة على الساعة (حركات ناعمة): خسارة = تنتفخ وتتشقق وتنكسر، فوز = سلاحك يقصها نصين، تعادل = سيفين يتصادمون عليها */
-const CKE={o:'cubic-bezier(.22,1,.36,1)', io:'cubic-bezier(.65,0,.35,1)', i:'cubic-bezier(.55,0,1,.45)'};
-function ckA(el,kf,o){ try{ return el.animate(kf,Object.assign({fill:'forwards'},o)); }catch(e){ return null; } }
-function ckStage(scale){
+/* نهاية المبارزة على الساعة (تصميم حركة ألعاب): فوز = سيفك يقص الساعة، خسارة = الساعة تصد وسيفك ينكسر، تعادل = سيفين يتصادمون والساعة سليمة */
+const FXE={snap:'cubic-bezier(.2,.9,.3,1)',over:'cubic-bezier(.34,1.56,.64,1)',strike:'cubic-bezier(.6,0,.9,.35)',grav:'cubic-bezier(.45,0,.9,.5)',antic:'cubic-bezier(.4,0,.6,1)'};
+const FX_RM=(()=>{ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } })();
+const SWSVG='<svg viewBox="0 0 40 170" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bl" x1="0" x2="1"><stop offset="0" stop-color="#f6f9fc"/><stop offset=".5" stop-color="#cfd8e2"/><stop offset="1" stop-color="#8d99a8"/></linearGradient><linearGradient id="gd" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ffe7a0"/><stop offset="1" stop-color="#c98f1d"/></linearGradient></defs>'
+ +'<path d="M20 2 L27.5 16 L26.5 126 L13.5 126 L12.5 16 Z" fill="url(#bl)" stroke="#6f7b8a" stroke-width="1"/><path d="M20 8 L20 122" stroke="#fff" stroke-width="1.6" opacity=".8"/><path d="M23.5 18 L23 122" stroke="#9aa6b4" stroke-width="1"/>'
+ +'<rect x="2" y="125" width="36" height="9" rx="4" fill="url(#gd)" stroke="#8a5a10" stroke-width="1"/><rect x="15.5" y="134" width="9" height="24" rx="2" fill="#6b3d1a"/><path d="M15.5 140h9M15.5 146h9M15.5 152h9" stroke="#3e220c" stroke-width="1.2"/><circle cx="20" cy="163" r="6" fill="url(#gd)" stroke="#8a5a10" stroke-width="1"/></svg>';
+const SW_CRACK='<svg class="crk" viewBox="0 0 40 170"><path class="c1" d="M13 61 L17 65 L20 59 L24 64 L27 60"/><path class="c2" d="M20 59 L19 50 L22 44"/></svg>';
+function fxA(el,kf,o){ try{ return el.animate(kf,Object.assign({fill:'forwards',easing:'linear'},o)); }catch(e){ return null; } }
+function fxStage(){
   const n=document.querySelector('#clock .num'); if(!n || !n.offsetWidth || !Element.prototype.animate) return null;
-  const r=n.getBoundingClientRect(), w=r.width, cs=getComputedStyle(n);
-  const bg=document.createElement('div'); bg.className='ckbg'; document.body.appendChild(bg);
-  const box=document.createElement('div'); box.className='ckb';
-  box.style.cssText='left:'+r.left+'px;top:'+r.top+'px;width:'+w+'px;height:'+w+'px;font-size:'+cs.fontSize+';font-family:'+cs.fontFamily;
-  box.innerHTML='<div class="ck"><i class="glow"></i></div>'; document.body.appendChild(box); n.style.visibility='hidden';
-  const ck=box.firstChild, dx=innerWidth/2-(r.left+w/2), dy=Math.min(innerHeight*.4, innerHeight/2)-(r.top+w/2);
-  ckA(bg,[{opacity:0},{opacity:1}],{duration:500,easing:'ease-out'});
-  ckA(box,[{transform:'translate(0,0)'},{transform:'translate('+dx+'px,'+dy+'px)'}],{duration:650,easing:CKE.o});
-  ckA(ck,[{transform:'scale(1)'},{transform:'scale('+scale+')'}],{duration:650,easing:CKE.o});
-  const t=(n.textContent||'').trim();
-  const out=(at)=>{ ckA(bg,[{opacity:1},{opacity:0}],{duration:450,delay:at,easing:'ease-in'}); };
-  const end=()=>{ box.remove(); bg.remove(); n.style.visibility=''; };
-  return {box, ck, w, t, out, end};
+  const r=n.getBoundingClientRect(), cs=getComputedStyle(n), w0=r.width, W=Math.round(Math.min(130,Math.max(100,w0*1.7)));
+  const cx=innerWidth/2, cy=Math.round(Math.min(innerHeight*.42, innerHeight/2));
+  const root=document.createElement('div'); root.className='fxr';
+  root.innerHTML='<div class="fxbg"></div><div class="fxs"></div>'; document.body.appendChild(root);
+  const bg=root.firstChild, st=root.lastChild, txt=(n.textContent||'').trim(), fs=parseFloat(cs.fontSize)*W/w0;
+  const disc=c=>'<div class="fxd"'+(c?' style="clip-path:polygon('+c+')"':'')+'><span style="font-size:'+fs+'px;font-family:'+cs.fontFamily.replace(/"/g,"'")+'">'+txt+'</span></div>';
+  const ck=document.createElement('div'); ck.className='fxck'; ck.style.cssText='width:'+W+'px;height:'+W+'px;left:'+(cx-W/2)+'px;top:'+(cy-W/2)+'px';
+  ck.innerHTML='<div class="fxw">'+disc('')+'</div>'; st.appendChild(ck); n.style.visibility='hidden';
+  const anims=[], A=(el,kf,o)=>{ const a=fxA(el,kf,o); if(a) anims.push(a); return a; };
+  const dx=(r.left+w0/2)-cx, dy=(r.top+w0/2)-cy, s0=w0/W;
+  A(bg,[{opacity:0},{opacity:1}],{duration:380,easing:FXE.snap});
+  A(ck,[{transform:'translate('+dx+'px,'+dy+'px) scale('+s0+')'},{transform:'translate('+(dx*.45)+'px,'+(dy*.45-20)+'px) scale('+((s0+1)/2)+')',offset:.5},{transform:'translate(0,0) scale(1)'}],{duration:380,easing:FXE.over});
+  A(ck.firstChild,[{transform:'scale(1)'},{transform:'scale(1.08,.92)',offset:.4},{transform:'scale(1)'}],{delay:380,duration:120,easing:FXE.snap});
+  const S={root,bg,st,ck,W,cx,cy,disc,anims,A,n,done:false};
+  S.shake=(t,amp)=>{ if(FX_RM) return; const a=amp||6, v=[1,-.66,.5,-.25,0]; A(st,v.map(k=>({transform:'translate('+(k*a)+'px,'+(k*a*.6)+'px)'})),{delay:t,duration:180}); };
+  S.flash=(t,op,x,y,sz)=>{ if(FX_RM) return; const f=document.createElement('i'); f.className='fxf'; const s=sz||W*1.4; f.style.cssText='width:'+s+'px;height:'+s+'px;left:'+((x==null?cx:x)-s/2)+'px;top:'+((y==null?cy:y)-s/2)+'px'; st.appendChild(f);
+    A(f,[{opacity:0},{opacity:op||.85,offset:.01},{opacity:0}],{delay:t,duration:140,easing:FXE.snap}); };
+  S.sparks=(t,x,y,dir,cone,cnt,cols,sp,life)=>{ for(let i=0;i<cnt;i++){ const e=document.createElement('i'); e.className='fxp'; const ang=(dir+(Math.random()*2-1)*cone)*Math.PI/180, v=(sp[0]+Math.random()*(sp[1]-sp[0]))/1000, L=life[0]+Math.random()*(life[1]-life[0]), d=v*L;
+      e.style.cssText='left:'+(x-1.5)+'px;top:'+(y-6)+'px;background:'+cols[i%cols.length];
+      const rot=(ang*180/Math.PI)+90, tx=Math.cos(ang)*d, ty=Math.sin(ang)*d; st.appendChild(e);
+      A(e,[{opacity:1,transform:'translate(0,0) rotate('+rot+'deg) scale(1)'},{opacity:0,transform:'translate('+tx+'px,'+ty+'px) rotate('+rot+'deg) scale(.2)'}],{delay:t,duration:L,easing:FXE.snap}); } };
+  S.chips=(t,x,y,cnt,col,sz)=>{ for(let i=0;i<cnt;i++){ const e=document.createElement('i'); e.className='fxc'; e.style.cssText='left:'+(x-sz/2)+'px;top:'+(y-sz/2)+'px;width:'+sz+'px;height:'+sz+'px;background:'+col; st.appendChild(e);
+      const vx=(Math.random()*2-1)*W*.5, up=-W*(.15+Math.random()*.25), r=(Math.random()*2-1)*360, L=520+Math.random()*200;
+      A(e,[{transform:'translate(0,0) rotate(0)',opacity:1},{transform:'translate('+(vx*.5)+'px,'+up+'px) rotate('+(r*.4)+'deg)',opacity:1,offset:.3,easing:FXE.grav},{transform:'translate('+vx+'px,'+(W*1.6)+'px) rotate('+r+'deg)',opacity:0}],{delay:t,duration:L,easing:FXE.snap}); } };
+  /* سيف: المسكة (نقطة الدوران) عند (gx,gy) نسبة لمركز الساعة، الزاوية من الأعلى مع عقارب الساعة */
+  S.sword=(gx,gy,cls)=>{ const h=document.createElement('div'); h.className='fxsw'+(cls?' '+cls:''); h.style.cssText='left:'+(cx+gx-20)+'px;top:'+(cy+gy-150)+'px'; h.innerHTML='<div class="whole">'+SWSVG+SW_CRACK+'</div>'; st.appendChild(h); return h; };
+  S.end=()=>{ if(S.done) return; S.done=true; try{ anims.forEach(a=>{ try{ a.cancel(); }catch(e){} }); }catch(e){} root.remove(); n.style.visibility=''; };
+  /* اللاعب يقدر يتخطى بلمسة بعد ٦٠٠ms */
+  const t0=performance.now(); root.addEventListener('pointerdown',()=>{ if(performance.now()-t0>600 && S.skip) S.skip(); });
+  return S;
 }
-const ckDisc=(clip,t)=>'<div class="sh"'+(clip?' style="clip-path:polygon('+clip+')"':'')+'><span>'+(t||'')+'</span></div>';
-function ckOnce(done){ let f=false; return ()=>{ if(f) return; f=true; try{ done(); }catch(e){} }; }
-function clockBreak(done){
-  const fin=ckOnce(done); setTimeout(fin, 6000);
-  try{
-    const S=ckStage(1.5); if(!S){ fin(); return; } const {box,ck,w}=S;
-    const P=[['50% 50%','50% -5%','105% -5%','105% 38%'],['50% 50%','105% 38%','105% 105%','68% 105%'],['50% 50%','68% 105%','-5% 105%','-5% 70%'],['50% 50%','-5% 70%','-5% -5%','50% -5%']];
-    const D=[[.7,-.7],[.8,.5],[-.7,.6],[-.8,-.6]];
-    ck.insertAdjacentHTML('beforeend', P.map(p=>ckDisc(p.join(','),S.t)).join('')
-      +'<svg viewBox="0 0 100 100"><path d="M50 50 L47 32 L53 18 L50 4"/><path d="M50 50 L66 55 L79 49 L96 52"/><path d="M50 50 L41 65 L31 71 L20 90"/><path d="M50 50 L35 43 L6 40"/><path d="M50 50 L61 70 L72 93"/></svg>');
-    const glow=ck.querySelector('.glow'), paths=[...ck.querySelectorAll('svg path')];
-    /* ١) تنتفخ مع ٤ نبضات تسرع (١.٥ → ٢.٢) */
-    const B=[700,1150,1520,1820], SC=[1.5,1.68,1.86,2.04,2.2];
-    B.forEach((t,i)=>setTimeout(()=>{ try{ SND.heart(); }catch(e){} try{ navigator.vibrate && navigator.vibrate(30); }catch(e){} }, t));
-    ckA(ck,[{transform:'scale(1.5)',offset:0}].concat(...B.map((t,i)=>{ const o=(t-650)/1500, o2=Math.min(1,o+.07); return [{transform:'scale('+SC[i]+')',offset:o},{transform:'scale('+(SC[i+1]+.1)+')',offset:o2}]; }),[{transform:'scale(2.2)',offset:1}]),{delay:650,duration:1500,easing:'linear'});
-    ckA(glow,[{opacity:0,transform:'scale(1)'},{opacity:1,transform:'scale(1.35)'}],{delay:650,duration:1500,easing:'ease-in'});
-    /* ٢) تتشقق خط ورا خط وترجف */
-    paths.forEach((p,i)=>{ const L=p.getTotalLength ? p.getTotalLength() : 60; p.style.strokeDasharray=L; p.style.strokeDashoffset=L;
-      setTimeout(()=>{ ckA(p,[{strokeDashoffset:L},{strokeDashoffset:0}],{duration:260,easing:'ease-out'}); try{ SND.crack(); }catch(e){} }, 2250+i*150); });
-    ckA(box,[0,1,2,3,4,5,6,7,8].map(k=>({transform:'translate('+((innerWidth/2)-(box.offsetLeft+w/2)+(k%2?2:-2))+'px,'+(Math.min(innerHeight*.4,innerHeight/2)-(box.offsetTop+w/2)+(k%3-1))+'px)'})),{delay:2250,duration:850,easing:'linear'});
-    /* ٣) تنكسر: القطع تطلع لبرا وتطيح بهدوء */
-    setTimeout(()=>{ const sv=ck.querySelector('svg'); ckA(sv,[{opacity:1},{opacity:0}],{duration:150});
-      ckA(glow,[{opacity:1},{opacity:0}],{duration:300});
-      ck.querySelectorAll('.sh').forEach((e,i)=>{ const d=D[i], ox=d[0]*w*.22, oy=d[1]*w*.22, r=d[0]*(25+i*8);
-        ckA(e,[{transform:'translate(0,0) rotate(0)',opacity:1},
-               {transform:'translate('+ox+'px,'+oy+'px) rotate('+(r*.3)+'deg)',opacity:1,offset:.25,easing:'cubic-bezier(.4,0,.9,.5)'},
-               {transform:'translate('+(ox*1.6)+'px,'+(oy+w*.9)+'px) rotate('+r+'deg)',opacity:0}],{duration:1300,easing:CKE.o}); });
-      try{ SND.shatter(); }catch(e){} try{ navigator.vibrate && navigator.vibrate([60,40,140]); }catch(e){}
-      try{ FXV.sparks(ck,26,'#ffd0d0'); }catch(e){} }, 3150);
-    S.out(4050);
-    setTimeout(()=>{ S.end(); fin(); }, 4550);
-  }catch(e){ fin(); }
+function fxHand(S,fin,at){
+  let gone=false; const go=()=>{ if(gone) return; gone=true; fin(); fxA(S.ck,[{opacity:1},{opacity:0}],{duration:200,easing:FXE.strike}); fxA(S.root,[{opacity:1},{opacity:0}],{delay:120,duration:300,easing:'ease-out'}); setTimeout(()=>S.end(),460); };
+  S.skip=()=>{ S.anims.forEach(a=>{ try{ a.finish(); }catch(e){} }); go(); };
+  setTimeout(go, at);
 }
+function fxOnce(done){ let f=false; return ()=>{ if(f) return; f=true; try{ done(); }catch(e){} }; }
+const fxSnd=(t,f)=>setTimeout(()=>{ try{ f(); }catch(e){} }, Math.max(0,t));
+const fxVib=(t,p)=>setTimeout(()=>{ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }, t);
+SND.whoosh = ()=>{ noiseBurst(0,.2,.32,700); noiseBurst(.04,.16,.22,1500); };
+SND.snap = ()=>{ noiseBurst(0,.05,.5,5200); tone(2600,0,.09,'square',.05,1300); tone(1750,.02,.3,'triangle',.08,850); [3136,4186].forEach((f,i)=>tone(f,.03+i*.03,.16,'triangle',.04)); };
+/* ===== فوز: سيفك يقص الساعة نصين ===== */
 function clockSlice(done){
-  const fin=ckOnce(done); setTimeout(fin, 5000);
+  const fin=fxOnce(done); setTimeout(fin, 4200);
   try{
-    const S=ckStage(1.7); if(!S){ fin(); return; } const {ck,w}=S;
-    const wk=avMeta(stats.avatar||'').w, wsrc=(wk && WPS.some(x=>x.k===wk)) ? wpImg(wk) : wpImg('longsword');
-    ck.insertAdjacentHTML('beforeend', ckDisc('-5% -5%,105% -5%,105% 18%,-5% 82%',S.t)+ckDisc('105% 18%,105% 105%,-5% 105%,-5% 82%',S.t)
-      +'<svg class="trail" viewBox="0 0 100 100"><path d="M112 2 L-12 98"/></svg><i class="wpn" style="background-image:url(\''+wsrc+'\')"></i>');
-    const wp=ck.querySelector('.wpn'), tr=ck.querySelector('.trail path'), h=ck.querySelectorAll('.sh'), L=157;
-    tr.style.strokeDasharray=L; tr.style.strokeDashoffset=L;
-    /* السلاح يطلع فوق يمين ويستعد */
-    ckA(wp,[{opacity:0,transform:'translate(30%,-30%) scale(.4) rotate(40deg)'},{opacity:1,transform:'translate(0,0) scale(1) rotate(0)'}],{delay:600,duration:400,easing:CKE.o});
-    /* ضربة مايلة مع خط ضوء */
-    setTimeout(()=>{ ckA(wp,[{opacity:1,transform:'translate(0,0) rotate(0)'},{opacity:1,transform:'translate(-215%,165%) rotate(-160deg)',offset:.8},{opacity:0,transform:'translate(-260%,200%) rotate(-200deg)'}],{duration:420,easing:CKE.i});
-      ckA(tr,[{strokeDashoffset:L,opacity:1},{strokeDashoffset:0,opacity:1,offset:.45},{strokeDashoffset:0,opacity:0}],{duration:900,easing:'ease-out'});
-      try{ playSword(1.05); }catch(e){} }, 1150);
-    /* الساعة تنقسم نصين وينفصلون على طول خط القص بهدوء */
-    setTimeout(()=>{ const ux=.54*w*.2, uy=.84*w*.2;
-      ckA(h[0],[{transform:'translate(0,0) rotate(0)',opacity:1},{transform:'translate('+(-ux)+'px,'+(-uy)+'px) rotate(-7deg)',opacity:1,offset:.75},{transform:'translate('+(-ux*1.4)+'px,'+(-uy*1.4)+'px) rotate(-10deg)',opacity:0}],{duration:1600,easing:'cubic-bezier(.25,.8,.4,1)'});
-      ckA(h[1],[{transform:'translate(0,0) rotate(0)',opacity:1},{transform:'translate('+ux+'px,'+uy+'px) rotate(7deg)',opacity:1,offset:.75},{transform:'translate('+(ux*1.4)+'px,'+(uy*1.4)+'px) rotate(10deg)',opacity:0}],{duration:1600,easing:'cubic-bezier(.25,.8,.4,1)'});
-      try{ FXV.sparks(ck,24,'#ffe68a'); }catch(e){} try{ navigator.vibrate && navigator.vibrate(40); }catch(e){} }, 1330);
-    S.out(2650);
-    setTimeout(()=>{ S.end(); fin(); }, 3100);
+    const S=fxStage(); if(!S){ fin(); return; } const {A,W,ck,cx,cy}=S, w=ck.firstChild;
+    const up='0 0,100% 0,100% 11%,0 89%', lo='100% 11%,100% 100%,0 100%,0 89%';
+    w.insertAdjacentHTML('beforeend','<div class="hv">'+S.disc(up)+'</div><div class="hv">'+S.disc(lo)+'</div>');
+    const whole=w.firstChild, h1=w.children[1], h2=w.children[2];
+    const gx=W*.78, gy=W*.18, sw=S.sword(gx,gy), T='translate(';
+    A(sw,[{opacity:0,transform:T+(W*.9)+'px,'+(-W*1.1)+'px) rotate(25deg)'},{opacity:1,offset:.45},{opacity:1,transform:'translate(0,0) rotate(-12deg)'}],{delay:450,duration:250,easing:FXE.snap});
+    A(sw,[{transform:'translate(0,0) rotate(-12deg) scale(1)'},{transform:'translate(0,0) rotate(8deg) scale(1.04)'}],{delay:700,duration:150,easing:FXE.antic});
+    A(sw,[{transform:'translate(0,0) rotate(8deg) scaleY(1.06)'},{transform:'translate(0,0) rotate(-118deg) scaleY(1.06)'}],{delay:850,duration:60,easing:FXE.strike});
+    A(sw,[{transform:'translate(0,0) rotate(-118deg)',opacity:1},{transform:'translate(0,0) rotate(-118deg)',opacity:1,offset:.33},{transform:'translate(0,0) rotate(-142deg)',opacity:1,offset:.9},{transform:'translate(0,0) rotate(-145deg)',opacity:0}],{delay:910,duration:340,easing:FXE.snap});
+    fxSnd(790,()=>SND.whoosh()); fxSnd(890,()=>playSword(1.05)); fxVib(910,40);
+    /* قوس الضربة */
+    const arc=document.createElement('div'); arc.className='fxarc'; arc.style.cssText='width:'+(W*1.9)+'px;height:'+(W*1.9)+'px;left:'+(cx-W*.95)+'px;top:'+(cy-W*.95)+'px';
+    arc.innerHTML='<svg viewBox="0 0 100 100"><path d="M6,84 Q44,46 96,10 Q52,58 6,84Z" fill="#fff" stroke="#e3b23c" stroke-width="1.4" stroke-linejoin="round"/></svg>'; S.st.appendChild(arc);
+    A(arc,[{opacity:0,transform:'scaleX(.4)'},{opacity:1,transform:'scaleX(.4)',offset:.01},{opacity:.9,transform:'scaleX(1.1) translate(-2px,2px)',offset:.35},{opacity:0,transform:'scaleX(1.15) translate(-4px,4px)'}],{delay:880,duration:240,easing:FXE.snap});
+    /* لحظة التلامس */
+    S.flash(910,.85); S.shake(910,6);
+    A(ck,[{transform:'scale(1)'},{transform:'scale(1.12,.88)',offset:.12},{transform:'scale(1.12,.88)',offset:.45},{transform:'scale(.97)',offset:.75},{transform:'scale(1)'}],{delay:910,duration:260,easing:FXE.snap});
+    S.sparks(910,cx,cy,-128,50,10,['#ffe08a','#fff','#f3c34a'],[200,340],[320,480]); S.sparks(910,cx,cy,52,50,6,['#ffe08a','#fff'],[160,280],[280,420]);
+    /* خط القص يلمع والنصين ينفصلون ويطيحون */
+    const cut=document.createElement('i'); cut.className='fxcut'; cut.style.cssText='width:'+(W*1.3)+'px;left:'+(cx-W*.65)+'px;top:'+(cy-1.5)+'px'; S.st.appendChild(cut);
+    A(cut,[{opacity:1,transform:'rotate(-38deg) scaleX(0)'},{opacity:1,transform:'rotate(-38deg) scaleX(1)',offset:.6},{opacity:0,transform:'rotate(-38deg) scaleX(1)'}],{delay:990,duration:260,easing:FXE.snap});
+    A(whole,[{opacity:1},{opacity:0}],{delay:1000,duration:1});
+    A(h1,[{opacity:0},{opacity:1}],{delay:1000,duration:1}); A(h2,[{opacity:0},{opacity:1}],{delay:1000,duration:1});
+    const nx=-.616, ny=-.788; /* اتجاه عمودي على خط القص (للأعلى يسار) */
+    A(h1,[{transform:'translate(0,0) rotate(0)'},{transform:T+(nx*W*.1)+'px,'+(ny*W*.1)+'px) rotate(-3deg)'}],{delay:1100,duration:120,easing:FXE.snap});
+    A(h2,[{transform:'translate(0,0) rotate(0)'},{transform:T+(-nx*W*.1)+'px,'+(-ny*W*.1)+'px) rotate(3deg)'}],{delay:1100,duration:120,easing:FXE.snap});
+    A(h1,[{transform:T+(nx*W*.1)+'px,'+(ny*W*.1)+'px) rotate(-3deg)',opacity:1},{transform:T+(-W*.35)+'px,'+(-W*.15)+'px) rotate(-10deg)',opacity:1,offset:.25},{transform:T+(-W*.35)+'px,'+(W*2.2)+'px) rotate(-25deg)',opacity:1,offset:.74},{transform:T+(-W*.35)+'px,'+(W*2.6)+'px) rotate(-28deg)',opacity:0}],{delay:1220,duration:680,easing:FXE.grav});
+    A(h2,[{transform:T+(-nx*W*.1)+'px,'+(-ny*W*.1)+'px) rotate(3deg)',opacity:1},{transform:T+(W*.3)+'px,'+(W*2.4)+'px) rotate(20deg)',opacity:1,offset:.74},{transform:T+(W*.32)+'px,'+(W*2.8)+'px) rotate(22deg)',opacity:0}],{delay:1260,duration:640,easing:FXE.grav});
+    S.chips(1000,cx,cy,4,'#d81f2e',6);
+    fxSnd(1100,()=>SND.shatter());
+    fxHand(S,()=>{ fin(); }, 2050);
   }catch(e){ fin(); }
 }
-function clockClash(done){
-  const fin=ckOnce(done); setTimeout(fin, 4500);
+/* ===== خسارة: الساعة تصد الضربة وسيفك ينكسر ===== */
+function clockBreak(done){
+  const fin=fxOnce(done); setTimeout(fin, 4400);
   try{
-    const S=ckStage(1.6); if(!S){ fin(); return; } const {box,ck}=S;
-    ck.insertAdjacentHTML('beforeend', ckDisc('',S.t)+'<i class="sw l"></i><i class="sw r"></i>');
-    const l=ck.querySelector('.sw.l'), r=ck.querySelector('.sw.r');
-    ckA(l,[{opacity:0,transform:'translateX(-260%) rotate(-60deg)'},{opacity:1,transform:'translateX(-125%) rotate(32deg)',offset:.85},{opacity:1,transform:'translateX(-118%) rotate(26deg)'}],{delay:700,duration:520,easing:CKE.i});
-    ckA(r,[{opacity:0,transform:'translateX(260%) rotate(60deg)'},{opacity:1,transform:'translateX(125%) rotate(-32deg)',offset:.85},{opacity:1,transform:'translateX(118%) rotate(-26deg)'}],{delay:700,duration:520,easing:CKE.i});
-    setTimeout(()=>{ try{ SND.clash(); FXV.sparks(ck,22,'#fff3c4'); }catch(e){} try{ navigator.vibrate && navigator.vibrate(50); }catch(e){}
-      ckA(ck,[{transform:'scale(1.6)'},{transform:'scale(1.72)'},{transform:'scale(1.6)'}],{duration:380,easing:'ease-out'}); }, 1140);
-    [l,r].forEach(e=>ckA(e,[{opacity:1},{opacity:0}],{delay:2000,duration:350,fill:'forwards'}));
-    S.out(2050);
-    setTimeout(()=>{ S.end(); fin(); }, 2550);
+    const S=fxStage(); if(!S){ fin(); return; } const {A,W,ck,cx,cy}=S, T='translate(';
+    const gx=W*.78, gy=W*.18, sw=S.sword(gx,gy), wh=sw.firstChild;
+    /* نصين السيف (مقصوصين على خط الكسر) مخفيين لين لحظة الكسر */
+    const tipC='0 0,100% 0,100% 35.3%,67.5% 35.3%,60% 37.6%,50% 34.7%,42.5% 38.2%,32.5% 35.9%,0 35.9%', hiltC='0 35.9%,32.5% 35.9%,42.5% 38.2%,50% 34.7%,60% 37.6%,67.5% 35.3%,100% 35.3%,100% 100%,0 100%';
+    sw.insertAdjacentHTML('beforeend','<div class="pc" style="clip-path:polygon('+tipC+')">'+SWSVG+'</div><div class="pc" style="clip-path:polygon('+hiltC+')">'+SWSVG+'</div>');
+    const tip=sw.children[1], hilt=sw.children[2], c1=sw.querySelector('.c1'), c2=sw.querySelector('.c2');
+    A(sw,[{opacity:0,transform:T+(W*.9)+'px,'+(-W*1.1)+'px) rotate(25deg)'},{opacity:1,offset:.45},{opacity:1,transform:'translate(0,0) rotate(-12deg)'}],{delay:450,duration:250,easing:FXE.snap});
+    A(sw,[{transform:'translate(0,0) rotate(-12deg) scale(1)'},{transform:'translate(0,0) rotate(8deg) scale(1.04)'}],{delay:700,duration:150,easing:FXE.antic});
+    /* الساعة «تنتبه» */
+    A(ck,[{transform:'rotate(0) scale(1)'},{transform:'rotate(-6deg) scale(1.04,.96)',offset:.5},{transform:'rotate(0) scale(1)'}],{delay:680,duration:200,easing:FXE.snap});
+    /* الضربة توقف عند الدرع */
+    A(sw,[{transform:'translate(0,0) rotate(8deg) scaleY(1.06)'},{transform:'translate(0,0) rotate(-26deg) scaleY(1.06)'}],{delay:850,duration:60,easing:FXE.strike});
+    A(sw,[{transform:'translate(0,0) rotate(-26deg)'},{transform:'translate(0,0) rotate(-26deg)'}],{delay:910,duration:110});
+    fxSnd(790,()=>SND.whoosh()); fxSnd(885,()=>SND.clash()); fxVib(910,[50,40,50]);
+    S.flash(910,.7); S.shake(910,4);
+    const sh=document.createElement('i'); sh.className='fxsh'; const R=W*1.24; sh.style.cssText='width:'+R+'px;height:'+R+'px;left:'+(cx-R/2)+'px;top:'+(cy-R/2)+'px'; S.st.insertBefore(sh,ck);
+    A(sh,[{opacity:0,transform:'scale(.92)'},{opacity:.8,transform:'scale(1)',offset:.25},{opacity:0,transform:'scale(1.05)'}],{delay:910,duration:240,easing:FXE.snap});
+    [910,990,1070].forEach((t,i)=>{ const g=document.createElement('i'); g.className='fxring'; g.style.cssText='width:'+R+'px;height:'+R+'px;left:'+(cx-R/2)+'px;top:'+(cy-R/2)+'px;border-color:'+(i%2?'#e3b23c':'#fff'); S.st.appendChild(g);
+      A(g,[{opacity:.9,transform:'scale(.9)'},{opacity:0,transform:'scale(1.6)'}],{delay:t,duration:380,easing:FXE.snap}); });
+    S.sparks(910,cx+W*.42,cy-W*.47,-60,60,8,['#fff','#ffe08a'],[180,300],[260,380]);
+    /* شق على السيف */
+    A(c1,[{opacity:0},{opacity:1}],{delay:940,duration:1}); A(c2,[{opacity:0},{opacity:1}],{delay:1000,duration:1});
+    fxSnd(940,()=>SND.crack()); fxSnd(1000,()=>SND.crack());
+    /* ارتداد ورجفة */
+    const rc=T+(W*.12)+'px,'+(-W*.28)+'px) rotate(10deg)';
+    A(sw,[{transform:'translate(0,0) rotate(-26deg)'},{transform:rc}],{delay:1020,duration:180,easing:FXE.snap});
+    A(wh,[{transform:'rotate(0)'},{transform:'rotate(3deg)'},{transform:'rotate(-3deg)'},{transform:'rotate(3deg)'},{transform:'rotate(-2deg)'},{transform:'rotate(0)'}],{delay:1020,duration:170});
+    /* الكسر: نصين السيف يطيرون ويلفون */
+    A(wh,[{opacity:1},{opacity:0}],{delay:1200,duration:1}); A(tip,[{opacity:0},{opacity:1}],{delay:1200,duration:1}); A(hilt,[{opacity:0},{opacity:1}],{delay:1200,duration:1});
+    fxSnd(1190,()=>SND.snap()); fxVib(1200,60);
+    const bx=cx+gx+W*.12+Math.sin(10*Math.PI/180)*89, by=cy+gy-W*.28-Math.cos(10*Math.PI/180)*89;
+    S.chips(1200,bx,by,5,'#cfd8e2',4); S.sparks(1200,bx,by,-90,80,6,['#fff','#e6edf4'],[160,260],[220,340]);
+    /* الحركة داخل إطار السيف المايل ١٠°: نحوّل اتجاه الشاشة لإطاره */
+    const loc=(x,y)=>{ const a=-10*Math.PI/180; return [x*Math.cos(a)-y*Math.sin(a), x*Math.sin(a)+y*Math.cos(a)]; };
+    const p1=loc(-W*.35,-W*.55), p2=loc(-W*.6,W*2.5), q1=loc(-W*.05,W*2.2);
+    A(tip,[{transform:'translate(0,0) rotate(0)',opacity:1},{transform:T+p1[0]+'px,'+p1[1]+'px) rotate(160deg)',offset:.3,easing:FXE.grav},{transform:T+p2[0]+'px,'+p2[1]+'px) rotate(540deg)',opacity:1,offset:.88},{transform:T+p2[0]+'px,'+(p2[1]+20)+'px) rotate(560deg)',opacity:0}],{delay:1200,duration:850,easing:FXE.snap});
+    A(hilt,[{transform:'translate(0,0) rotate(0)',opacity:1,easing:'cubic-bezier(.35,0,.75,.45)'},{transform:T+q1[0]+'px,'+q1[1]+'px) rotate(110deg)',opacity:1,offset:.82},{transform:T+q1[0]+'px,'+(q1[1]+40)+'px) rotate(118deg)',opacity:0}],{delay:1240,duration:720});
+    /* الساعة تنبض نبضة «انتصار» */
+    A(ck,[{transform:'scale(1) rotate(0)'},{transform:'scale(1.14) rotate(-4deg)',offset:.22},{transform:'scale(1) rotate(3deg)',offset:.45},{transform:'scale(1.07) rotate(-2deg)',offset:.65},{transform:'scale(1) rotate(0)'}],{delay:1350,duration:450,easing:FXE.over});
+    fxSnd(1330,()=>SND.heart());
+    fxHand(S,()=>{ fin(); }, 2150);
+  }catch(e){ fin(); }
+}
+/* ===== تعادل: سيفين يتصادمون فوق الساعة وهي سليمة ===== */
+function clockClash(done){
+  const fin=fxOnce(done); setTimeout(fin, 4000);
+  try{
+    const S=fxStage(); if(!S){ fin(); return; } const {A,W,ck,cx,cy}=S, T='translate(';
+    const gx=W*.82, gy=W*.2, r=S.sword(gx,gy), l=S.sword(-gx,gy,'mir');
+    const seq=(el,s)=>{ const R=v=>'rotate('+(v*s)+'deg)';
+      A(el,[{opacity:0,transform:T+(s*W*.9)+'px,'+(-W*1.0)+'px) '+R(30)},{opacity:1,offset:.45},{opacity:1,transform:'translate(0,0) '+R(-10)}],{delay:380,duration:220,easing:FXE.snap});
+      A(el,[{transform:'translate(0,0) '+R(-10)},{transform:'translate(0,0) '+R(5)}],{delay:600,duration:140,easing:FXE.antic});
+      A(el,[{transform:'translate(0,0) '+R(5)},{transform:'translate(0,0) '+R(-58)}],{delay:740,duration:70,easing:FXE.strike});
+      A(el,[{transform:'translate(0,0) '+R(-58)},{transform:'translate(0,0) '+R(-58)}],{delay:810,duration:90});
+      A(el,[-58,-54,-62,-54,-62,-56,-58].map(v=>({transform:'translate(0,0) '+R(v)})),{delay:900,duration:350});
+      A(el,[{transform:'translate(0,0) '+R(-58),opacity:1},{transform:T+(s*W*.6)+'px,0) '+R(-28),opacity:1,offset:.6},{transform:T+(s*W*.7)+'px,0) '+R(-24),opacity:0}],{delay:1250,duration:300,easing:FXE.snap}); };
+    seq(r,1); seq(l,-1);
+    const xX=cx, xY=cy-W*.28;
+    fxSnd(690,()=>SND.whoosh()); fxSnd(790,()=>SND.clash()); fxVib(810,50);
+    S.flash(810,.75,xX,xY,W*1.1); S.shake(810,5);
+    S.sparks(810,xX,xY,-90,170,12,['#fff3c4','#fff','#f3c34a'],[250,400],[300,450]);
+    const g=document.createElement('i'); g.className='fxstar'; g.style.cssText='left:'+(xX-18)+'px;top:'+(xY-18)+'px'; S.st.appendChild(g);
+    A(g,[{opacity:1,transform:'scale(0) rotate(0)'},{opacity:1,transform:'scale(1.4) rotate(25deg)',offset:.45},{opacity:0,transform:'scale(0) rotate(45deg)'}],{delay:810,duration:260,easing:FXE.snap});
+    [1015,1130,1245].forEach(t=>{ S.sparks(t,xX,xY,-90,120,2,['#fff3c4','#fff'],[150,260],[200,300]); fxSnd(t,()=>{ try{ tone(2093,0,.08,'square',.025); }catch(e){} }); });
+    A(ck,[{transform:'scale(1)'},{transform:'scale(1.04,.94)',offset:.15},{transform:'scale(1.04,.94)',offset:.85},{transform:'scale(1)'}],{delay:810,duration:440,easing:FXE.snap});
+    A(ck,[{transform:'scale(1)'},{transform:'scale(1.08)',offset:.4},{transform:'scale(1)'}],{delay:1300,duration:250,easing:FXE.over});
+    fxHand(S,()=>{ fin(); }, 1650);
   }catch(e){ fin(); }
 }
 /* ===== النهاية ===== */
