@@ -752,7 +752,7 @@ html #pfOut.pfout{width:auto;min-width:220px;margin:14px auto 28px;padding:12px 
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118191500">
+<meta name="app-version" content="road-20261118192000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1760,6 +1760,14 @@ body.guest #home .hpt{display:none}
 #home .hero h1{font-size:0!important;width:270px;max-width:100%;height:50px;background:url(img/road/ui/title.webp) center/contain no-repeat;text-shadow:none!important;filter:drop-shadow(0 4px 5px rgba(0,0,0,.35))}
 #home .greet{background:none!important;border:0!important;box-shadow:none!important;border-image:url(img/road/ui/ribbon.webp) 0 123 fill / 0 36px stretch!important;border-style:solid!important;border-width:0 34px!important;padding:6px 6px 9px!important;margin-top:4px!important;min-width:110px;text-align:center;text-shadow:0 1px 0 rgba(0,0,0,.3)}
 #home .greet::before,#home .greet::after{display:none!important}
+
+#home .hero h1{background:none!important;width:270px;height:58px;font-size:0!important}
+#home .ttlsvg{width:100%;height:100%;overflow:visible;display:block}
+#home .ttlsvg text{font-family:"Noto Kufi Arabic",system-ui,sans-serif;font-weight:900;font-size:40px}
+#home .ttlsvg .d{fill:#7a0a12;stroke:#7a0a12;stroke-width:10;stroke-linejoin:round}
+#home .ttlsvg .w{fill:#fff;stroke:#fff;stroke-width:10;stroke-linejoin:round}
+#home .ttlsvg .r{fill:url(#ttlG);fill:#e0262f}
+#home .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
 </head>
 <body>
@@ -1775,7 +1783,7 @@ body.guest #home .hpt{display:none}
         <svg class="mark" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" aria-hidden="true">
           <circle cx="24" cy="27" r="16"/><path d="M24 27V17M19 6h10M24 6v5M38 12l-3 3"/>
         </svg>
-        <div class="ttl"><h1>الطريق إلى الرئيسي</h1><span class="greet" id="greet"></span></div>
+        <div class="ttl"><h1><svg class="ttlsvg" viewBox="0 0 300 64" aria-hidden="true"><text x="150" y="46" text-anchor="middle" class="d">تحدّي الدقيقة</text><text x="150" y="40" text-anchor="middle" class="w">تحدّي الدقيقة</text><text x="150" y="40" text-anchor="middle" class="r">تحدّي الدقيقة</text></svg><span class="sr">تحدّي الدقيقة</span></h1><span class="greet" id="greet"></span></div>
         <span class="pfhold"><button class="pfbtn" id="pfBtn" aria-label="ملفي"><span class="pfav" id="pfAv"></span></button></span>
       </div>
       <div class="hcol"><button type="button" class="hc hpt" id="hPt" aria-label="نقاطك، استبدلها من المتجر"><span class="hl"><b id="hPtN">0</b></span><i class="ic"><img src="img/road/ui/coins.webp" alt=""></i></button><button type="button" class="hc hlb" id="hLb" aria-label="المتصدرون"><i class="ic"><img src="img/road/ui/trophy.webp" alt=""></i><span class="hl" style="display:none"><small id="hLbN"></small></span></button></div>
