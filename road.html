@@ -2251,7 +2251,7 @@ const FXV={
     if(kind==='stab'){ const w=x.parentNode; w.classList.remove('hurt'); void w.offsetWidth; w.classList.add('hurt'); } },
   danger(lv){ let v=document.getElementById('fxDng'); if(!v){ if(!lv) return; v=document.createElement('div'); v.id='fxDng'; v.className='fxdng'; document.body.appendChild(v); }
     const was=v.classList.contains('on');
-    if(lv){ v.classList.remove('relief'); v.style.setProperty('--bp', lv>=2?'.62s':'1s'); v.style.setProperty('--bi', lv>=2?1.35:1); v.classList.add('on'); }
+    if(lv){ v.classList.remove('relief'); v.style.setProperty('--bp', '.75s'); v.style.setProperty('--bi', lv>=2?1.35:1); v.classList.add('on'); }
     else if(was){ v.classList.remove('on'); v.classList.add('relief'); setTimeout(()=>v.classList.remove('relief'),50); }
     return lv; },
   confetti(){ const cs=['#c8102e','#ffb703','#1a8f4c','#2563eb','#ff7a00']; for(let i=0;i<70;i++){ const c=document.createElement('div'); c.className='fxconf'; c.style.left=Math.random()*100+'vw'; c.style.background=cs[i%5]; c.style.animationDuration=(1.6+Math.random()*1.6)+'s'; c.style.animationDelay=(Math.random()*.4)+'s'; document.body.appendChild(c); setTimeout(()=>c.remove(),3800); } }
@@ -2799,7 +2799,7 @@ function fxDuelCheck(){
   const gap=(g.bot||0)-(g.me||0), w=g.wst||0;
   /* يشتغل بعد الإجابة الغلط إذا متأخر، أو بعد غلطتين ورا بعض؛ وأول إجابة صح تطفيه */
   const lv = w===0 ? 0 : ((w>=2 && gap>=30) || gap>=60 ? 2 : ((gap>=30 || w>=2) ? 1 : 0));
-  if(lv!==g.dng){ g.dng=lv; FXV.danger(lv); g.beatAt=0; }
+  if(lv!==g.dng){ if(!g.dng) g.beatAt=0; g.dng=lv; FXV.danger(lv); }
 }
 function showQS(i, startAt){
   const g=G; if(!g||g.over) return;
@@ -2896,7 +2896,7 @@ function loopS(){
     if(g.nextQi>=NQ){ finishS(); return; }
     showQS(g.nextQi, at); return;
   }
-  if(g.dng && (g.phase==='q'||g.phase==='rev')){ const per=g.dng>=2?620:1000; if(!g.beatAt || now-g.beatAt>=per){ g.beatAt=now; const vg=document.getElementById('fxVig'); if(!(vg&&vg.classList.contains('on'))) SND.heart(); } }
+  if(g.dng && (g.phase==='q'||g.phase==='rev')){ const per=750; if(!g.beatAt || now-g.beatAt>=per){ g.beatAt=now; const vg=document.getElementById('fxVig'); if(!(vg&&vg.classList.contains('on'))) SND.heart(); } }
   if(g.phase==='q'){
     const rem=Math.max(0,g.deadline-now);
     if(!g.locked){ setQTimer(rem/1000); if(rem<=0) timeoutS(); }
