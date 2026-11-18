@@ -2051,6 +2051,28 @@ html #srchTip{border:3px solid #e0a92e!important;background:#fffdf7!important;co
 #home .pfhold{top:47.2%!important}
 #home .hpt{top:37%!important}
 #home .hlb{top:62%!important}
+
+/* الرئيسية في شاشة وحدة: كل شي يبين بدون سكرول */
+@media (max-height:920px){
+#home>.hero{width:min(100%,480px,calc((100dvh - 515px) * 900 / 555))!important;margin-left:auto!important;margin-right:auto!important}
+#home>.sheet{padding-top:0!important;padding-bottom:6px!important}
+#home .rcard{margin-bottom:6px!important;border-width:40px 16px 12px!important;border-image-width:40px 16px 12px!important}
+#home .rcard .rc-ch{top:-35px!important;height:24px!important}
+#home .rc-mid{margin:2px 0 4px!important}
+#home .rcard #rcCur{font-size:21px!important;line-height:1.25}
+#home .rc-bot{margin-top:4px!important}
+#home #goDone{margin-top:4px!important;font-size:15px!important}
+#home #goBtn.slide{height:72px!important;min-height:72px!important;margin-top:6px!important}
+#home .onlrow{margin-top:4px!important}
+#home #inviteBtn{margin-top:8px!important;border-width:38px 16px 12px!important;border-image-width:38px 16px 12px!important}
+#home #inviteBtn .mlb{top:-34px!important}
+#home #inviteBtn .mav{width:50px!important;height:50px!important}
+#home #inviteBtn .mem{width:54px!important;height:54px!important}
+#home #inviteBtn .mvs.vs{width:52px!important;height:40px!important}
+#home .sheet>.sp{display:none!important}
+}
+
+#home .onl{background:#fffaf0!important;border:2px solid #e0a92e!important;box-shadow:0 3px 6px rgba(0,0,0,.2)!important;color:#3b1d0e!important;font-weight:800;padding:3px 16px!important}
 </style>
 </head>
 <body>
@@ -4551,7 +4573,7 @@ async function roadLoad(){
 
 function roadCard(){
   const st=rdSt(), g=govOf(Math.min(st.pos,HQ)), done=!!st.arrived;
-  $('rcCh').textContent = done ? 'وصلت الفرع الرئيسي 🏁' : 'الفصل '+(g+1)+' من 6 · '+GOV[g].n;
+  $('rcCh').textContent = done ? 'وصلت الفرع الرئيسي 🏁' : (g+1)+'\u200F/\u200F6 · '+GOV[g].n;
   $('rcSt').textContent=st.streak||0; $('rcSh').textContent=st.shields||0; $('rcK').textContent=st.keys||0;
   if(!rdLoggedIn()){ $('rcCurL').textContent='الطريق إلى الرئيسي'; $('rcCur').textContent='ابدأ من صباح الأحمد'; }
   else { $('rcCurL').textContent = done ? 'ترتيبك بين الواصلين' : 'أنت في'; $('rcCur').textContent = done ? '#'+(st.rank||1) : 'فرع '+ROUTE[st.pos]; }
