@@ -2092,6 +2092,10 @@ background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);anim
 @media (prefers-reduced-motion:reduce){#home #goBtn.slide::before{animation:none}}
 
 #home #goBtn.slide::after{opacity:var(--lo,1)!important;transition:opacity .15s}
+
+#home #goBtn .sknob.hasw{background:var(--kw) center/112% no-repeat!important;border-radius:50%!important;border:3px solid #fff!important;box-sizing:border-box!important;box-shadow:0 0 0 2.5px #e0a92e,0 3px 6px rgba(0,0,0,.35)!important;filter:none!important}
+
+.r2sw .wpm{display:block;width:58px;height:58px;border-radius:50%;background:#c8102e center/112% no-repeat;border:3px solid #fff;box-shadow:0 0 0 3px #e0a92e,0 4px 8px rgba(0,0,0,.35);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -2367,9 +2371,9 @@ var LS=(function(){ var P='rd_'; try{ var L=window.localStorage; return {getItem
 <script>
 /* ===== المكافآت (القيم تجريبية، عدّلها هنا) ===== */
 const REWARDS = [
-  {id:'gift_arabica', type:'gift', title:'قسيمة أرابيكا ٥ د.ك',       cost:1500, icon:'gift', logo:'img/arabica.png'},
-  {id:'gift_pick',    type:'gift', title:'قسيمة بيك ٥ د.ك',           cost:1500, icon:'gift', logo:'img/pick.png'},
-  {id:'gift_wooden',  type:'gift', title:'قسيمة وودن بيكري ٥ د.ك',    cost:1500, icon:'gift', logo:'img/wooden.png'}
+  {id:'gift_arabica', type:'gift', title:'قسيمة أرابيكا ٥ د.ك',       cost:2500, icon:'gift', logo:'img/arabica.png'},
+  {id:'gift_pick',    type:'gift', title:'قسيمة بيك ٥ د.ك',           cost:2500, icon:'gift', logo:'img/pick.png'},
+  {id:'gift_wooden',  type:'gift', title:'قسيمة وودن بيكري ٥ د.ك',    cost:2500, icon:'gift', logo:'img/wooden.png'}
 ];
 
 /* ===== بنك الأسئلة: [السؤال، الصحيح، خطأ١، خطأ٢، خطأ٣، المستوى(١ سهل ٢ متوسط ٣ صعب)، التفسير] ===== */
@@ -2761,7 +2765,7 @@ const fmt = n => Number(n||0).toLocaleString('en-US');
 /* قائمة الموظفين: إذا رفعها المدير صار الدخول بالرقم الوظيفي + الرمز، واللي ما دخل يتدرّب بس */
 let LIST_ON = true; try{ LIST_ON = LS.getItem('mc_list')!=='0'; }catch(e){} /* افتراضياً مقفلة لين يأكد السيرفر */
 const GUEST = () => LIST_ON && !DEMO && !stats.empNo;
-const pointsAvailable = () => !GUEST() && stats.pointsDay !== dkey(new Date());
+const pointsAvailable = () => !GUEST() && !(()=>{ try{ return !!(RD.st && RD.st.arrived); }catch(e){ return false; } })(); // 2026-11-18: بدون حد يومي لين يوصل الرئيسي، بعدها تدريب بس
 function renderGuest(){ const gst=GUEST(); document.body.classList.toggle('guest',gst); const gt=$('gate'); if(gt){ if(gst&&!gt.classList.contains('on')) gateFill(); gt.classList.toggle('on',gst); gt.setAttribute('aria-hidden',gst?'false':'true'); document.body.classList.toggle('gated',gst); } const gb=$('guestBox'); if(gb) gb.style.display=gst?'block':'none'; }
 function renderStats(){
   try{ roadCard(); }catch(e){}
@@ -2771,6 +2775,7 @@ function renderStats(){
   const pa = pointsAvailable();
   try{ setAv($('invAv'), stats.avatar, avInit()); setAv($('pfAv'), stats.avatar, avInit()); }catch(e){}
   try{ $('invAv').classList.toggle('flip', !!avMeta(stats.avatar||'').a); }catch(e){}
+  try{ const kw=avMeta(stats.avatar||'').w, kn=$('goKnob'); kn.classList.toggle('hasw',!!kw); kn.style.setProperty('--kw',kw?"url('"+wpImg(kw)+"')":'none'); }catch(e){}
   $('goLbl').textContent = pa ? 'اسحب للتحدّي' : 'اسحب للتدريب'; $('goDone').style.display = pa ? 'none' : 'block';
   $('goNote').style.display = 'none';
   $('wBal').textContent=fmt(stats.balance); $('sBal').textContent=fmt(stats.balance);
@@ -4442,7 +4447,7 @@ async function restTap(k){
   const r=RESTS[k], pt=PARTNERS[r.p], st=rdSt(), v=(st.rests||{})[k];
   if(!rdLoggedIn()){ toast('سجّل دخولك عشان تدخل الاستراحة'); return; }
   if(v===1){ toast('أخذت ختم هذي الاستراحة ✓'); return; }
-  if(v===0){ toast('جاوبت هذي الاستراحة قبل، تعوضها في استراحة '+pt.n+' الجاية'); return; }
+  if(v===0){ toast('جاوبت هذي الاستراحة قبل'); return; }
   if(st.pos<=r.at){ toast('🔒 تنفتح لك بعد ما تعدّي فرع '+ROUTE[r.at]); return; }
   const q=await rpc('rest_get',{p_id:PID,p_idx:k},6000);
   if(!q || !q.ok){ if(q && q.error==='done'){ roadLoad(); toast('جاوبت هذي الاستراحة قبل'); } else toast(q && q.error==='locked' ? 'الاستراحة لسه مقفلة' : 'تعذّر فتح الاستراحة، حاول مرة ثانية'); return; }
@@ -4473,7 +4478,7 @@ function renderStampCard(){
   const rs=(rdSt().rests)||{};
   el.innerHTML='<h3>🎫 بطاقة الأختام</h3>'+Object.keys(PARTNERS).map(p=>{ const pt=PARTNERS[p], n=rsStamps(p,rs), tot=RESTS.filter(r=>r.p===p).length, used=RESTS.filter((r,k)=>r.p===p && rs[k]!=null).length;
     const sub = n>=3 ? '🎉 أخذت القسيمة! تلقاها في «قسائمي»' : (n+(tot-used)<3 ? 'فاتتك قسيمة هالموسم' : (3-n===1?'باقي ختم واحد للقسيمة':3-n===2?'باقي ختمين للقسيمة':'جاوب صح في استراحاته وخذ ٣ أختام'));
-    return '<div class="srow'+(n>=3?' dn':'')+'"><span class="lg" style="background-image:url(\''+pt.logo+'\')"></span><span class="nm">'+pt.n+'<small>'+sub+'</small></span><span class="ss">'+rsDots(p,n)+'</span></div>'; }).join('')+'<div class="ft">٣ أختام من نفس الشريك = قسيمة ٥ د.ك · الاستراحات على خريطة الطريق</div>';
+    return '<div class="srow'+(n>=3?' dn':'')+'"><span class="lg" style="background-image:url(\''+pt.logo+'\')"></span><span class="nm">'+pt.n+'<small>'+sub+'</small></span><span class="ss">'+rsDots(p,n)+'</span></div>'; }).join('')+'<div class="ft">٣ أختام من نفس الشريك = كوبون شراء ٢ د.ك · الاستراحات على خريطة الطريق</div>';
 }
 let _pkAsked=false;
 function maybePick(){
@@ -4772,7 +4777,7 @@ function m2Build(){
   RESTS.forEach((r,k)=>{ const v=(st.rests||{})[k], won=v===1, lost=v===0, open=v==null && pos>r.at, pt=PARTNERS[r.p], i=r.at;
     const xm=m2x(i+0.5), mx=Math.max(56,Math.min(M2.W-56,xm+(xm<M2.W/2?110:-110)));
     h+='<button type="button" class="r2rest '+(won?'won':lost?'lost':open?'open':'off')+'" data-k="'+k+'" style="left:'+mx.toFixed(0)+'px;top:'+m2y(i+0.5).toFixed(0)+'px"><span class="b" style="background-image:url(\''+pt.logo+'\')">'+(open?'<i>!</i>':'')+'</span></button>'; });
-  if(!arrived) h+='<div class="r2sw" id="r2Sw" style="left:'+m2x(pos).toFixed(0)+'px;top:'+m2y(pos).toFixed(0)+'px"><div class="sw">'+M2SWORD+'</div></div>';
+  if(!arrived) h+='<div class="r2sw" id="r2Sw" style="left:'+m2x(pos).toFixed(0)+'px;top:'+m2y(pos).toFixed(0)+'px"><div class="sw">'+(()=>{ const w=avMeta(stats.avatar||'').w; return (w&&WPS.some(x=>x.k===w)) ? '<i class="wpm" style="background-image:url(\''+wpImg(w)+'\')"></i>' : M2SWORD; })()+'</div></div>';
   inner.innerHTML=h;
   inner.querySelectorAll('.r2mall').forEach(b=>b.onclick=e=>{ e.stopPropagation(); mallTap(+b.dataset.k); });
   inner.querySelectorAll('.r2rest').forEach(b=>b.onclick=e=>{ e.stopPropagation(); restTap(+b.dataset.k); });
@@ -5001,7 +5006,7 @@ function rdGoLbl(){
   const pa=pointsAvailable(), ok=rdLoggedIn() && st && typeof st.pos==='number' && !st.arrived && st.pos<=HQ;
   let t = pa ? (ok ? 'تحدَّ فرع '+ROUTE[st.pos] : 'اسحب للتحدّي') : 'اسحب للتدريب';
   l.textContent=t; l.style.fontSize = t.length>18 ? '17px' : '';
-  const d=$('goDone'); if(d && !pa) d.textContent = ok ? 'تحدّيت فرع اليوم ✓' : 'أنهيت نقاط اليوم ✓';
+  const d=$('goDone'); if(d && !pa) d.textContent = (st && st.arrived) ? 'وصلت الرئيسي 🏁 · تدريب بدون نقاط' : 'أنهيت نقاط اليوم ✓';
 }
 (function(){ const _rs=renderStats; renderStats=function(){ const r=_rs.apply(this,arguments); try{ rdGoLbl(); }catch(e){} return r; }; })();
 (function(){ const _rc=roadCard; roadCard=function(){ const r=_rc.apply(this,arguments); try{ rdGoLbl(); }catch(e){} return r; }; })();
