@@ -710,7 +710,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118072000">
+<meta name="app-version" content="road-20261118073000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -3784,6 +3784,7 @@ async function restTap(k){
       $('rsNt').insertAdjacentHTML('afterend','<div class="vc">🎉 كمّلت ٣ أختام! أخذت '+esc(a.voucher.title)+'<code>'+esc(a.voucher.code)+'</code><small style="font-weight:700">تلقاها في «قسائمي» وبيتواصلون معك لتسليمها</small></div>');
       try{ renderStore(); }catch(e){} }
     try{ renderMap(false); renderStampCard(); }catch(e){}
+    try{ const pp=box.querySelector('.pp'), dn=pp&&pp.querySelector('.pp-done'); if(pp && !$('rsDone')){ const d=document.createElement('button'); d.type='button'; d.className='pp-go'; d.id='rsDone'; d.textContent=a.correct?'تم 👍':'تم'; d.onclick=()=>box.classList.remove('on'); pp.insertBefore(d, dn||null); } }catch(e){}
   });
 }
 function renderStampCard(){
