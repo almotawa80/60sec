@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118034000">
+<meta name="app-version" content="road-20261118041500">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1544,6 +1544,49 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 #gate .ghelp{color:#8a6a45!important;font-weight:700}
 #gate .gerr{color:#c8102e!important}
 #gate .gsub{display:none!important}
+
+/* ===== اختيار المحارب والسلاح ===== */
+#pick{position:fixed;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;overflow-y:auto;-webkit-overflow-scrolling:touch;background:radial-gradient(circle at 50% 30%,rgba(120,20,30,.35),rgba(20,10,5,.82) 78%),url(img/road/map0.jpg) center/cover no-repeat,#2a1408;color:#5a3412}
+#pick.on{display:flex}
+#pick .ptop{flex:none;text-align:center;padding:calc(22px + env(safe-area-inset-top)) 20px 44px;color:#fff}
+#pick .ptop h1{margin:0;font-size:30px;font-weight:900;text-shadow:0 3px 0 #7a0c12,2px 0 0 #7a0c12,-2px 0 0 #7a0c12,0 6px 12px rgba(0,0,0,.4)}
+#pick .ptop p{display:inline-block;margin:10px 0 0;background:#fff;border:3px solid #f2b51e;border-radius:999px;padding:5px 16px;color:#a50f1c;font-weight:800;font-size:13px;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+#pick .steps{display:flex;justify-content:center;gap:6px;margin-top:10px}
+#pick .steps i{width:28px;height:7px;border-radius:4px;background:rgba(255,255,255,.45);box-shadow:0 1px 0 rgba(0,0,0,.3)}#pick .steps i.on{background:#f2b51e}
+#pick .pcard{flex:none;position:relative;width:calc(100% - 32px);max-width:440px;box-sizing:border-box;margin:0 0 calc(24px + env(safe-area-inset-bottom));padding:62px 16px 18px;border-radius:30px;background:linear-gradient(#fffaf0,#fde9c4);border:4px solid #fff;box-shadow:0 0 0 4px #c8102e,inset 0 -6px 0 rgba(160,110,40,.15),0 12px 30px rgba(0,0,0,.45)}
+#pick h2{position:absolute;left:-14px;right:-14px;top:-22px;height:74px;margin:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(#ff5a65,#d81f2e 60%,#a50f1c);clip-path:polygon(0 18%,10% 0,50% 22%,90% 0,100% 18%,96% 72%,50% 100%,4% 72%);color:#fff;font-size:24px;font-weight:900;text-shadow:0 3px 0 #7a0c12,2px 0 0 #7a0c12,-2px 0 0 #7a0c12;padding-bottom:6px;box-sizing:border-box}
+#pick .px{position:absolute;top:calc(14px + env(safe-area-inset-top));left:14px;width:40px;height:40px;border-radius:50%;border:3px solid #fff;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c);color:#fff;font-size:18px;font-weight:900;box-shadow:0 0 0 2px #c8102e,0 4px 8px rgba(0,0,0,.35);display:grid;place-items:center;padding:0;z-index:2}
+#pick .sec{font-weight:900;color:#a50f1c;font-size:15px;margin:10px 2px 6px}
+#pick .pk{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 8px}
+#pick .t{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:0;padding:0;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#pick .im{position:relative;width:100%;aspect-ratio:1;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #e6d3ae,0 3px 0 #d9c19a;background:#fff center/cover no-repeat;box-sizing:border-box;transition:transform .15s}
+#pick .wp .im{border-radius:18px}
+#pick .t.on .im{box-shadow:0 0 0 3px #c8102e,0 4px 0 #7a0c12;transform:scale(1.06)}
+#pick .t.on .im::after{content:"✓";position:absolute;top:-6px;left:-6px;width:22px;height:22px;border-radius:50%;background:linear-gradient(#ff5a65,#d81f2e);border:2px solid #fff;color:#fff;font-size:12px;font-weight:900;display:grid;place-items:center}
+#pick .t span{font-size:11.5px;font-weight:800;color:#8a5a2a;text-align:center;line-height:1.3}
+#pick .t.lk .im{filter:grayscale(1) brightness(.55)}
+#pick .t.lk .im::before{content:"🔒";position:absolute;inset:0;display:grid;place-items:center;font-size:22px;filter:none}
+#pick .t.lk span{color:#a08a6e}
+#pick .t.lk small{display:block;font-size:10px;font-weight:700;color:#b0956f}
+#pick .upl{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:14px;background:#fff;border:2px dashed #e0b97a;border-radius:16px;padding:10px;font:inherit;font-weight:800;color:#8a5a2a;font-size:14px;cursor:pointer}
+#pick .upl.on{border:3px solid #c8102e;border-style:solid}
+#pick .upl i{width:40px;height:40px;border-radius:50%;background:#f3e6cc center/cover no-repeat;display:grid;place-items:center;font-style:normal;font-size:20px;flex:none}
+#pick .hero{display:flex;justify-content:center;margin:0 0 6px}
+#pick .hero .a{position:relative;width:86px;height:86px;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 3px #c8102e;background:#fff center/cover}
+#pick .hero .a .wpb{width:40px;height:40px;bottom:-8px;left:-12px}
+#pick .go{display:block;width:100%;margin-top:16px;padding:14px;border:3px solid #fff;border-radius:20px;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c);box-shadow:0 5px 0 #7a0c12,0 8px 14px rgba(0,0,0,.25);color:#fff;font:inherit;font-weight:900;font-size:20px;text-shadow:0 2px 0 #7a0c12;cursor:pointer}
+#pick .go:active{transform:translateY(3px);box-shadow:0 2px 0 #7a0c12}
+#pick .go:disabled{opacity:.7}
+#pick .back{display:block;margin:12px auto 0;background:none;border:0;color:#8a6a45;font:inherit;font-weight:800;font-size:13.5px}
+#pick .note{text-align:center;color:#8a6a45;font-weight:700;font-size:12.5px;margin-top:8px}
+/* شارة السلاح على الصورة */
+.wpb{position:absolute;bottom:-4px;right:-6px;width:34%;height:34%;min-width:20px;min-height:20px;border-radius:30%;border:2px solid #fff;background:#d81f2e center/cover no-repeat;box-shadow:0 0 0 2px #c8102e,0 2px 4px rgba(0,0,0,.35);pointer-events:none;font-size:0}
+.pfbig,.pod .pav,#found .vs .av{position:relative;overflow:visible!important}
+.pfbig .wpb{bottom:0;right:-2px}
+.unl{display:flex;justify-content:center;gap:14px;margin:6px 0 4px}
+.unl .u{text-align:center;font-weight:900;font-size:14px;color:#7a0c12}
+.unl .u i{display:block;width:84px;height:84px;margin:0 auto 6px;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 3px #f2b51e,0 6px 14px rgba(0,0,0,.4);background:#fff center/cover}
+.unl .u.w i{border-radius:22px}
 img.mark.rdmark{background:none!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))}
 
 </style>
@@ -1636,9 +1679,9 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
       <div id="found" style="display:none;width:100%">
         <div class="sub" id="foundMsg" style="white-space:pre-line;margin:0 auto 26px;text-align:center;max-width:300px;line-height:1.7"></div>
         <div class="vs">
-          <div class="pcol"><div class="av" id="meAv"></div><div class="pname" id="meName">أنت</div><div class="tag" id="meTag"></div></div>
+          <div class="pcol"><div class="av" data-wb id="meAv"></div><div class="pname" id="meName">أنت</div><div class="tag" id="meTag"></div></div>
           <div class="vsb">VS</div>
-          <div class="pcol"><div class="av" id="botAv"></div><div class="pname" id="botName"></div><div class="tag" id="botTag"></div></div>
+          <div class="pcol"><div class="av" data-wb id="botAv"></div><div class="pname" id="botName"></div><div class="tag" id="botTag"></div></div>
         </div>
         <div class="big" id="cd" style="margin-top:28px;font-size:64px">3</div>
       </div>
@@ -1708,7 +1751,7 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
     </div>
     <div class="sheet">
       <div class="pfcard">
-        <button class="pfwrap" id="pfWrap" type="button" aria-label="صورتك"><span class="pfbig" id="pfBig"></span><span class="pfplus" id="pfPlus">+</span></button>
+        <button class="pfwrap" id="pfWrap" type="button" aria-label="صورتك"><span class="pfbig" data-wb id="pfBig"></span><span class="pfplus" id="pfPlus">+</span></button>
         <input type="file" id="pfFile" accept="image/*" hidden>
       </div>
       <div class="pfsec">
@@ -1736,6 +1779,7 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
   </section>
 
 <div class="asheet" id="avSheet"><div class="asbox">
+  <button type="button" id="avPick">⚔️ اختر محاربك وسلاحك</button>
   <button type="button" id="avEdit">تعديل الصورة</button>
   <button type="button" id="avChange">تغيير الصورة</button>
   <button type="button" id="avDel" class="danger">حذف الصورة</button>
@@ -1805,6 +1849,7 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
     <div class="ghelp">نسيت الرمز؟ تواصل مع إدارة المسابقة</div>
   </form>
 </div>
+<div id="pick" aria-hidden="true"></div>
 <div class="modal" id="modal"><div class="mbox"><h3 id="mTitle"></h3><div id="mBody"></div><div class="mbtns" id="mBtns"></div></div></div>
 <div class="toast" id="toast"></div>
 
@@ -2234,7 +2279,7 @@ const GAME_SECONDS = 60, Q_SECONDS = 15, Q_BY_LEVEL = {1:12, 2:15, 3:20};
 const ALL = [];
 Object.values(BANK).filter(c=>c.on!==false).forEach(c=>c.q.forEach(r=>ALL.push({q:r[0],right:r[1],w:[r[2],r[3],r[4]],lvl:r[5],ex:r[6]||'',cat:c.name})));
 
-const BOT_M = ['بوماجد','بوخالد','بوأحمد','بوعلي','بوفهد','بومشاري','بوعزيز','بوجاسم','بومحمد'];
+const BOT_M = ['بوماجد','بوخالد','بوأحمد'];
 const BOT_F = ['منى','بشرى','بدرية','مضاوي','إيمان','دلال','فطوم','نوره'];
 function nextBotName(){
   const L = stats.gender==='f' ? BOT_F : BOT_M, k = stats.gender==='f' ? 'botIdxF' : 'botIdxM';
@@ -2279,7 +2324,9 @@ function showFound(name, human, tok){
   show('match');
   $('searching').style.display='none'; $('inviteWait').style.display='none'; $('found').style.display='block';
   $('foundMsg').textContent = (human ? 'تحدٍّ مباشر مع لاعب حقيقي — مكافأة الفوز ٥٠ نقطة' : 'لا يوجد لاعب متاح الآن — ستلعب ضد الجهاز') + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط'); if(RD.mall) $('foundMsg').textContent = '⚡ محطة '+RD.mall.n+'\nافز على الجهاز واحصل على درع 🛡️ و١٠٠ نقطة'; if(RD.replay!=null) $('foundMsg').textContent = '🔁 إعادة فرع '+ROUTE[RD.replay]+'\nحسّن نجومك (بدون نقاط)';
-  $('botName').textContent = bot.name; $('botAv').classList.remove('hasimg'); $('botAv').style.backgroundImage=''; if(human){ $('botAv').textContent = bot.name.charAt(0); } else { $('botAv').innerHTML = svg('robot',54); } $('botTag').innerHTML = human ? svg('bolt',13)+' متصل الآن' : svg('robot',14)+' منافس آلي'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت'; if(stats.avatar) setAv($('meAv'), stats.avatar); else { $('meAv').classList.remove('hasimg'); $('meAv').style.backgroundImage=''; $('meAv').innerHTML=svg('user',44); }
+  if(stats.avatar) setAv($('meAv'), stats.avatar); else { setAv($('meAv'), ''); $('meAv').innerHTML = svg('user',44); }
+  $('botName').textContent = bot.name; $('botAv').classList.remove('hasimg'); $('botAv').style.backgroundImage=''; if(human){ $('botAv').textContent = bot.name.charAt(0); } $('botTag').innerHTML = human ? svg('bolt',13)+' متصل الآن' : svg('robot',14)+' منافس آلي'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت'; if(stats.avatar) setAv($('meAv'), stats.avatar); else { $('meAv').classList.remove('hasimg'); $('meAv').style.backgroundImage=''; $('meAv').innerHTML=svg('user',44); }
+  if(!human){ const ba=botAvatar(bot.name); setAv($('botAv'), ba); window._oppAv=avMeta(ba).base; }
   prefetchQs();
   if(human && PV){ const pv=PV; rpc('opp_avatar',{p_id:PID,p_match:pv.id},4000).then(a=>{ if(a && typeof a==='string' && PV===pv){ setAv($('botAv'), a); window._oppAv=a; } }); }
   let n = 3; $('cd').textContent = n; SND.count();
@@ -2999,7 +3046,7 @@ async function doLogin(empV,codeV,g,err){
   if(r.id && r.id!==PID){ PID=r.id; try{ LS.setItem('mc_pid',PID); }catch(e){} }
   stats.empNo=r.emp||emp; stats.playerName=r.name||stats.playerName; stats.gender=r.gender||g;
   stats.balance=r.balance; stats.totalPoints=r.total_points||0; stats.pointsDay = r.points_available ? '' : dkey(new Date());
-  save(stats); setTimeout(syncProgress,300); try{ syncProfile(); }catch(e){} renderGreet(); try{ renderStats(); renderGuest(); }catch(e){}
+  save(stats); setTimeout(syncProgress,300); try{ syncProfile().then(maybePick,()=>{}); }catch(e){} renderGreet(); try{ renderStats(); renderGuest(); }catch(e){}
   toast('أهلاً '+splitName(stats.playerName).t); return true;
 }
 /* بوابة الدخول */
@@ -3189,7 +3236,7 @@ async function loadLB(){
   if(!top.length){ body.innerHTML='<div class="lbempty">لا أحد في الترتيب بعد '+LBP[LB.p]+'.<br>العب الآن وكن الأول!</div>'; }
   else {
     const pod=[top[1],top[0],top[2]].map((x,i)=>{ if(!x) return '<div class="pc"></div>'; const n=x.rank;
-      return '<div class="pc p'+n+'"><div class="pav"'+(x.av?' style="background-image:url(\''+x.av.replace(/'/g,'')+'\')"':'')+'>'+(x.av?'':esc(x.name.trim().charAt(0)))+'</div><div class="pn">'+esc(x.name)+'</div><div class="pp">'+fmt(x.pts)+'</div><div class="blk">'+n+'</div></div>'; }).join('');
+      return '<div class="pc p'+n+'"><div class="pav"'+(x.av?' style="background-image:url(\''+x.av.replace(/'/g,'')+'\')"':'')+'>'+(x.av?'':esc(x.name.trim().charAt(0)))+(x.av&&WPS.some(w=>w.k===avMeta(x.av).w)?wpbHtml(avMeta(x.av).w):'')+'</div><div class="pn">'+esc(x.name)+'</div><div class="pp">'+fmt(x.pts)+'</div><div class="blk">'+n+'</div></div>'; }).join('');
     const rest=top.slice(3).map(x=>'<div class="lbi'+(x.me?' me':'')+'"><span class="rk">'+x.rank+'</span><span class="nm">'+esc(x.name)+'</span><span class="pt">'+fmt(x.pts)+'</span></div>').join('');
     let h='<div class="pod">'+pod+'</div>'+(rest?'<div class="lbl">'+rest+'</div>':'');
     if(r.count>LB.lim && LB.lim<100) h+='<button class="lbmore" id="lbMore" type="button">عرض أعلى '+(LB.lim<=10?'١٠٠':'١٠')+'</button>';
@@ -3350,7 +3397,8 @@ document.addEventListener('visibilitychange',function(){ if(document.visibilityS
 
 /* ===== ملفي ===== */
 function avInit(){ return ((stats.playerName||'أ').trim().charAt(0)||'أ'); }
-function setAv(el, src, txt){ if(!el) return; if(src){ el.style.backgroundImage='url("'+src+'")'; el.classList.add('hasimg'); el.textContent=''; } else { el.style.backgroundImage=''; el.classList.remove('hasimg'); if(txt!=null) el.textContent=txt; } }
+function setAv(el, src, txt){ if(!el) return; if(src){ el.style.backgroundImage='url("'+src+'")'; el.classList.add('hasimg'); el.textContent=''; } else { el.style.backgroundImage=''; el.classList.remove('hasimg'); if(txt!=null) el.textContent=txt; }
+  if(el.hasAttribute('data-wb')){ const o=el.querySelector('.wpb'); if(o) o.remove(); const w=avMeta(src).w; if(w && WPS.some(x=>x.k===w)) el.insertAdjacentHTML('beforeend',wpbHtml(w)); } }
 function renderProfile(){
   setAv($('pfAv'), stats.avatar, avInit()); setAv($('pfBig'), stats.avatar, avInit());
   try{ setAv($('invAv'), stats.avatar, avInit()); }catch(e){}
@@ -3428,7 +3476,7 @@ function openCrop(src){
   st.addEventListener('pointerup',up); st.addEventListener('pointercancel',up);
   $('crZoom').oninput=e=>crZoomTo(+e.target.value);
 })();
-$('crCancel').onclick=()=>$('cropOv').classList.remove('on');
+$('crCancel').onclick=()=>{ CR.cb=null; $('cropOv').classList.remove('on'); };
 $('crSave').onclick=async()=>{
   const S=256, c=document.createElement('canvas'); c.width=S; c.height=S; const x=c.getContext('2d'); const sc=CR.base*CR.z;
   const sx=(-CR.R-CR.x)/sc, sy=(-CR.R-CR.y)/sc, sw=2*CR.R/sc;
@@ -3436,6 +3484,8 @@ $('crSave').onclick=async()=>{
   let q=.88, d=c.toDataURL('image/jpeg',q); while(d.length>55000 && q>.4){ q-=.1; d=c.toDataURL('image/jpeg',q); }
   $('cropOv').classList.remove('on');
   try{ LS.setItem('mc_avsrc', CR.src); }catch(_){}
+  if(CR.cb){ const f=CR.cb; CR.cb=null; f(d); return; }
+  { const w=avMeta(stats.avatar).w; if(w) d+='#w='+w; }
   const old=stats.avatar; stats.avatar=d; save(stats); renderProfile(); renderStats();
   if(DEMO) return;
   const r=await rpc('set_profile',{p_id:PID,p_avatar:d},8000);
@@ -3448,13 +3498,105 @@ function loadForCrop(file){ return new Promise((res,rej)=>{ const url=URL.create
 $('pfFile').onchange=async(e)=>{ const f=e.target.files&&e.target.files[0]; e.target.value=''; if(!f) return;
   try{ openCrop(await loadForCrop(f)); }catch(_){ toast('تعذّر قراءة الصورة'); } };
 const closeSheet=()=>$('avSheet').classList.remove('on');
-$('pfWrap').onclick=()=>{ if(!stats.avatar){ $('pfFile').click(); return; } $('avSheet').classList.add('on'); };
+$('pfWrap').onclick=()=>{ if(!stats.avatar){ openPick(false); return; } $('avSheet').classList.add('on'); };
 $('avSheet').onclick=e=>{ if(e.target.id==='avSheet') closeSheet(); };
 $('avCancel').onclick=closeSheet;
+$('avPick').onclick=()=>{ closeSheet(); openPick(false); };
 $('avChange').onclick=()=>{ closeSheet(); $('pfFile').click(); };
 $('avEdit').onclick=()=>{ closeSheet(); let src=''; try{ src=LS.getItem('mc_avsrc')||''; }catch(_){} openCrop(src||stats.avatar); };
 $('avDel').onclick=async()=>{ closeSheet(); const old=stats.avatar; stats.avatar=''; save(stats); try{ LS.removeItem('mc_avsrc'); }catch(_){} renderProfile(); renderStats(); if(DEMO) return;
   const r=await rpc('set_profile',{p_id:PID,p_clear_avatar:true},6000); if(!r||!r.ok){ stats.avatar=old; save(stats); renderProfile(); toast('تعذّر حذف الصورة'); } else toast('تم حذف الصورة'); };
+
+/* ===== اختيار المحارب والسلاح =====
+   الاختيار ينحفظ داخل رابط الصورة نفسه (data:...#a=knight&w=katana) عشان يوصل لكل مكان تظهر فيه الصورة
+   (الترتيب، الخصم، لوحة التحكم) بدون أي تغيير في قاعدة البيانات. at = رقم الفرع اللي يفتح عنده. */
+var AVS=[{k:'knight',n:'الفارس',g:'m',at:0},{k:'desert',n:'ابن البادية',g:'m',at:0},{k:'samurai',n:'الساموراي',g:'m',at:5},{k:'viking',n:'الشمالي',g:'m',at:15},
+  {k:'knightess',n:'الفارسة',g:'f',at:0},{k:'archer',n:'الرامية',g:'f',at:0},{k:'desertess',n:'بنت البادية',g:'f',at:10},{k:'valkyrie',n:'المجنّحة',g:'f',at:20}];
+var WPS=[{k:'longsword',n:'سيف الفارس',at:0},{k:'scimitar',n:'السيف العربي',at:0},{k:'katana',n:'الكاتانا',at:8},{k:'spear',n:'الرمح',at:0},
+  {k:'battleaxe',n:'فأس المعركة',at:0},{k:'doubleaxe',n:'ذو الحدّين',at:13},{k:'vikingaxe',n:'الفأس الشمالي',at:18},{k:'bow',n:'القوس',at:23}];
+const avImg=k=>'img/war/'+k+'.jpg', wpImg=k=>'img/wpn/'+k+'.jpg';
+function avMeta(src){ const o={a:'',w:'',base:src||''}; if(!src) return o; const i=src.indexOf('#'); if(i<0) return o; o.base=src.slice(0,i);
+  src.slice(i+1).split('&').forEach(kv=>{ const p=kv.split('='); if(p[0]==='a'||p[0]==='w') o[p[0]]=String(p[1]||'').replace(/[^a-z]/g,''); }); return o; }
+function wpbHtml(w){ return '<i class="wpb" style="background-image:url(\''+wpImg(w)+'\')"></i>'; }
+const rdPos=()=>{ const st=rdSt(); return st.arrived ? HQ : Math.min(st.pos||0,HQ); };
+const isOpen=x=>DEMO || rdPos()>=x.at;
+function toData(url){ return fetch(url).then(r=>r.blob()).then(b=>new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(b); })); }
+const PK={a:'',own:'',w:'',step:1,first:false};
+function openPick(first, step){
+  const m=avMeta(stats.avatar);
+  PK.first=!!first; PK.own = m.a ? '' : m.base; PK.a = m.a || (m.base ? 'own' : ''); PK.w = m.w || '';
+  if(PK.a && PK.a!=='own' && !AVS.some(x=>x.k===PK.a)) PK.a='';
+  if(!PK.a){ const d=AVS.find(x=>x.at===0 && x.g===(stats.gender==='f'?'f':'m')); PK.a=d.k; }
+  if(!PK.w || !WPS.some(x=>x.k===PK.w&&isOpen(x))) PK.w='';
+  PK.step=step||1; renderPick(); $('pick').classList.add('on');
+  if(!RD.st && !DEMO) roadLoad().then(()=>{ if($('pick').classList.contains('on')) renderPick(); },()=>{}); $('pick').scrollTop=0; document.body.classList.add('gated');
+}
+function closePick(){ $('pick').classList.remove('on'); if(!$('gate').classList.contains('on')) document.body.classList.remove('gated'); }
+function pkTile(x,on,isW){ const lk=!isOpen(x);
+  return '<button type="button" class="t'+(on?' on':'')+(lk?' lk':'')+'" data-k="'+x.k+'"><span class="im" style="background-image:url(\''+(isW?wpImg(x.k):avImg(x.k))+'\')"></span><span>'+x.n+(lk?'<small>فرع '+ROUTE[x.at]+'</small>':'')+'</span></button>'; }
+function renderPick(){
+  const el=$('pick'), s1=PK.step===1;
+  let h=(PK.first?'':'<button type="button" class="px" id="pkX" aria-label="إغلاق">✕</button>')
+   +'<div class="ptop"><h1>تحدّي الدقيقة</h1><p>'+(s1?'🛡️ اختر محاربك':'⚔️ اختر سلاحك')+'</p><div class="steps"><i class="on"></i><i'+(s1?'':' class="on"')+'></i></div></div><div class="pcard">';
+  if(s1){
+    h+='<h2>اختر صورتك</h2><div class="sec">⚔️ محاربون</div><div class="pk">'+AVS.filter(x=>x.g==='m').map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
+      +'<div class="sec">🛡️ محاربات</div><div class="pk">'+AVS.filter(x=>x.g==='f').map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
+      +'<button type="button" class="upl'+(PK.a==='own'?' on':'')+'" id="pkUp"><i'+(PK.own?' style="background-image:url(\''+PK.own+'\')"':'')+'>'+(PK.own?'':'📷')+'</i>'+(PK.own?(PK.a==='own'?'✓ صورتك الشخصية':'استخدم صورتك الشخصية'):'أو ارفع صورتك الشخصية')+'</button>'
+      +'<button type="button" class="go" id="pkGo">التالي</button>';
+  } else {
+    const av=PK.a==='own'?PK.own:avImg(PK.a);
+    h+='<h2>اختر سلاحك</h2><div class="hero"><div class="a" style="background-image:url(\''+av+'\')">'+(PK.w?wpbHtml(PK.w):'')+'</div></div>'
+      +'<div class="sec">🗡️ سيوف ورمح</div><div class="pk wp">'+WPS.slice(0,4).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
+      +'<div class="sec">🪓 فؤوس وقوس</div><div class="pk wp">'+WPS.slice(4).map(x=>pkTile(x,PK.w===x.k,1)).join('')+'</div>'
+      +'<button type="button" class="go" id="pkGo"'+(PK.w?'':' disabled')+'>'+(PK.first?'ابدأ المغامرة':'حفظ')+'</button>'
+      +'<button type="button" class="back" id="pkBack">→ رجوع للصورة</button>'+(PK.first?'<div class="note">تقدر تغيرهم بعدين من «ملفي»، وكل كم فرع ينفتح لك محارب وسلاح جديد 🔓</div>':'');
+  }
+  el.innerHTML=h+'</div>';
+  el.querySelectorAll('.t').forEach(b=>b.onclick=()=>{ const k=b.dataset.k, list=s1?AVS:WPS, x=list.find(y=>y.k===k);
+    if(!isOpen(x)){ toast('🔒 ينفتح لما توصل فرع '+ROUTE[x.at]); return; }
+    try{ SND.tap&&SND.tap(); }catch(e){}
+    if(s1) PK.a=k; else PK.w=k; renderPick(); });
+  const x=$('pkX'); if(x) x.onclick=closePick;
+  const bk=$('pkBack'); if(bk) bk.onclick=()=>{ PK.step=1; renderPick(); };
+  const up=$('pkUp'); if(up) up.onclick=()=>{ if(PK.own && PK.a!=='own'){ PK.a='own'; renderPick(); return; } $('pkFile').click(); };
+  $('pkGo').onclick=s1 ? ()=>{ PK.step=2; renderPick(); $('pick').scrollTop=0; } : savePick;
+}
+(function(){ const f=document.createElement('input'); f.type='file'; f.accept='image/*'; f.id='pkFile'; f.hidden=true; document.body.appendChild(f);
+  f.onchange=async e=>{ const fl=e.target.files&&e.target.files[0]; e.target.value=''; if(!fl) return;
+    try{ CR.cb=d=>{ PK.own=d; PK.a='own'; renderPick(); }; document.body.appendChild($('cropOv')); openCrop(await loadForCrop(fl)); }catch(_){ CR.cb=null; toast('تعذّر قراءة الصورة'); } }; })();
+async function savePick(){
+  if(!PK.w) return; const b=$('pkGo'); b.disabled=true; b.textContent='…';
+  let d;
+  try{ d = PK.a==='own' ? PK.own+'#w='+PK.w : (await toData(avImg(PK.a)))+'#a='+PK.a+'&w='+PK.w; }catch(e){ b.disabled=false; b.textContent=PK.first?'ابدأ المغامرة':'حفظ'; toast('تعذّر تحميل الصورة، حاول مرة ثانية'); return; }
+  if(!DEMO){ const r=await rpc('set_profile',{p_id:PID,p_avatar:d},8000);
+    if(!r||!r.ok){ b.disabled=false; b.textContent=PK.first?'ابدأ المغامرة':'حفظ'; toast('تعذّر الحفظ، حاول مرة ثانية'); return; } }
+  stats.avatar=d; if(stats.unlk==null && RD.st) stats.unlk=rdPos(); save(stats); try{ renderProfile(); renderStats(); }catch(e){}
+  const first=PK.first; closePick(); try{ playSword(1); }catch(e){}
+  toast(first ? 'جاهز يا بطل! ⚔️ يلا على الطريق' : 'تم حفظ اختيارك ⚔️');
+}
+/* صورة البوت: محارب ثابت لكل اسم (من نفس جنس الاسم، وغير محارب اللاعب نفسه) مع سلاح */
+function botAvatar(name){ let h=0; for(const c of String(name||'')) h=(h*31+c.charCodeAt(0))>>>0;
+  const mine=avMeta(stats.avatar).a, L=AVS.filter(x=>x.g===(stats.gender==='f'?'f':'m') && x.k!==mine), a=L[h%L.length], w=WPS[(h>>3)%WPS.length];
+  return avImg(a.k)+'#a='+a.k+'&w='+w.k; }
+let _pkAsked=false;
+function maybePick(){
+  if(DEMO || _pkAsked || !stats.empNo || GUEST() || needReg()) return;
+  if(avMeta(stats.avatar).w) return;
+  _pkAsked=true; setTimeout(()=>{ if(!$('gate').classList.contains('on')) openPick(true); },400);
+}
+/* فتح محارب/سلاح جديد مع التقدم في الطريق */
+function unlockCheck(){
+  const pos=rdPos(); if(stats.unlk==null){ stats.unlk=pos; save(stats); return; }
+  if(pos<=stats.unlk) return;
+  const nA=AVS.filter(x=>x.at>stats.unlk && x.at<=pos), nW=WPS.filter(x=>x.at>stats.unlk && x.at<=pos);
+  stats.unlk=pos; save(stats); if(!nA.length && !nW.length) return;
+  const items=nA.map(x=>'<div class="u"><i style="background-image:url(\''+avImg(x.k)+'\')"></i>'+x.n+'</div>').concat(nW.map(x=>'<div class="u w"><i style="background-image:url(\''+wpImg(x.k)+'\')"></i>'+x.n+'</div>')).join('');
+  const t=(nA.length&&nW.length)?'🔓 فتحت محارب وسلاح!':(nA.length?'🔓 فتحت محارب جديد!':'🔓 فتحت سلاح جديد!');
+  let n=0; const tryShow=()=>{ const busy=$('rfx').classList.contains('on') || ($('rpPop')&&$('rpPop').classList.contains('on')) || $('pick').classList.contains('on') || ['match','game','result'].some(id=>{ const e=$(id); return e && e.classList.contains('active'); });
+    if(busy && n++<120){ setTimeout(tryShow,1500); return; }
+    gamePop(t,'<div class="unl">'+items+'</div>',()=>openPick(false, nA.length?1:2),'جرّبه الآن'); };
+  setTimeout(tryShow,1200);
+}
 function autoSave(inp, st, check, saver){
   let t=null, last=inp.value;
   const mark=(c,txt)=>{ st.className='pfst '+c; st.textContent=txt; };
@@ -3477,7 +3619,7 @@ const mailAS=autoSave($('pfEmail'),$('pfMailSt'),v=>(v && !/^[^@\s]+@[^@\s]+\.[^
   stats.email=v; save(stats); return true; });
 async function syncProfile(){ if(DEMO||!stats.empNo) return; const r=await rpc('get_profile',{p_id:PID},5000);
   if(r && typeof r==='object'){ stats.avatar=r.avatar||''; stats.email=r.email||''; save(stats); try{ renderProfile(); mailAS.reset(); }catch(e){} } }
-renderProfile(); syncProfile();
+renderProfile(); syncProfile().then(maybePick,()=>{});
 
 /* المتصلون الآن */
 async function beat(){
@@ -3547,7 +3689,7 @@ const rdLoggedIn=()=>DEMO || (!GUEST() && !needReg());
 
 async function roadLoad(){
   if(DEMO){ if(!RD.st) RD.st={pos:4,stars:[3,2,3,1],streak:4,shields:1,keys:2,practice:1,malls:[],today:false,ahead:[{n:'سارة',pos:5},{n:'محمد',pos:6}],ahead_n:12,arrived:null,rank:null}; }
-  else if(rdLoggedIn()){ const r=await rpc('road_state',{p_id:PID},5000); if(r && typeof r.pos==='number') RD.st=r; }
+  else if(rdLoggedIn()){ const r=await rpc('road_state',{p_id:PID},5000); if(r && typeof r.pos==='number'){ RD.st=r; try{ unlockCheck(); }catch(e){} } }
   try{ roadCard(); }catch(e){}
   if($('roadPage').classList.contains('active')) renderMap(false);
 }
