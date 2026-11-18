@@ -4615,7 +4615,7 @@ function pkTile(x,on,isW){ const lk=!isOpen(x);
 function renderPick(){
   const el=$('pick'), s1=PK.step===1;
   let h=(PK.first?'':'<button type="button" class="px" id="pkX" aria-label="إغلاق">✕</button>')
-   +'<div class="ptop"><h1>تحدّي الدقيقة</h1><p>'+(s1?'🛡️ اختر محاربك':'⚔️ اختر سلاحك')+'</p><div class="steps"><i class="on"></i><i'+(s1?'':' class="on"')+'></i></div></div><div class="pcard">';
+   +'<div class="ptop"><h1>تحدّي الدقيقة</h1></div><div class="pcard">';
   if(s1){
     h+='<h2>اختر صورتك</h2><div class="sec"><i class="si" style="--i:url(img/road/pick/swords.webp)"></i>محاربون</div><div class="pk">'+AVS.filter(x=>x.g==='m'&&!x.shop).map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
       +'<div class="sec"><i class="si" style="--i:url(img/road/pick/shield.webp)"></i>محاربات</div><div class="pk">'+AVS.filter(x=>x.g==='f'&&!x.shop).map(x=>pkTile(x,PK.a===x.k)).join('')+'</div>'
