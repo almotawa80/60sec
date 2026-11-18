@@ -695,7 +695,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <link rel="apple-touch-icon" href="img/road/apple-touch-icon.png?v=2">
 <meta property="og:type" content="website">
 <meta property="og:title" content="تحدّي الدقيقة">
-<meta property="og:description" content="تحدٍّ شرعي سريع في ٦ أسئلة — هل تقبل التحدي؟">
+<meta property="og:description" content="تحدٍّ سريع في ٤ أسئلة — هل تقبل التحدي؟">
 <meta property="og:image" content="https://almotawa80.github.io/60sec/img/road/icon-512.png">
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
@@ -1592,6 +1592,22 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .racew{position:relative}#game .racew .race .m{padding-inline-end:26px}#game .racew .race .b{padding-inline-start:26px}#game .racew{margin-top:10px}#game .racew .race{margin-top:0!important}
 .duel{position:absolute;top:50%;left:50%;z-index:2;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:21px;line-height:1;background:radial-gradient(circle at 40% 30%,#ffe68a,#f2b51e 60%,#c98a08);border:3px solid #fff;box-shadow:0 0 0 2px #c98a08,0 4px 8px rgba(0,0,0,.4);transition:left .45s ease;pointer-events:none}
 .duel.hit{animation:duelHit .45s ease}
+/* مؤثرات السيف: اندفاع (صح)، طعنة (غلط)، تصادم (الثنين صح) */
+.duel.thrust{animation:duelThrust .5s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes duelThrust{0%{transform:translateX(0) scale(1)}30%{transform:translateX(calc(var(--dx,1)*-6px)) scale(1.05) rotate(calc(var(--dx,1)*10deg))}55%{transform:translateX(calc(var(--dx,1)*34px)) scale(1.35) rotate(calc(var(--dx,1)*-25deg))}100%{transform:translateX(0) scale(1)}}
+.duel.stab{animation:duelStab .45s ease}
+@keyframes duelStab{0%{transform:none}25%{transform:translateX(calc(var(--dx,1)*-26px)) scale(1.2)}40%{transform:translateX(calc(var(--dx,1)*-20px)) scale(1.1) rotate(8deg)}55%{transform:translateX(calc(var(--dx,1)*-24px)) rotate(-8deg)}100%{transform:none}}
+.duel.clash{animation:duelClash .6s ease}
+@keyframes duelClash{0%{transform:scale(1)}25%{transform:scale(1.6) rotate(-20deg);box-shadow:0 0 0 2px #c98a08,0 0 28px 12px rgba(255,214,90,.95)}55%{transform:scale(1.2) rotate(12deg)}100%{transform:scale(1)}}
+.fxspk{position:fixed;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;z-index:60;pointer-events:none;background:#fff3b0;box-shadow:0 0 6px 2px #ffb703;animation:fxspk .55s ease-out forwards}
+@keyframes fxspk{to{transform:translate(var(--sx),var(--sy)) scale(.2);opacity:0}}
+.racew.hurt .race{animation:fxshk .4s}
+/* نبض الخطر: حواف الشاشة تنبض أحمر للمتأخر */
+.fxdng{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0;transition:opacity .7s ease}
+.fxdng.on{opacity:1;animation:fxdg var(--bp,1s) ease-in-out infinite}
+@keyframes fxdg{0%,100%{box-shadow:inset 0 0 30px 4px rgba(200,16,46,.22)}12%{box-shadow:inset 0 0 calc(70px*var(--bi,1)) calc(18px*var(--bi,1)) rgba(200,16,46,.6)}24%{box-shadow:inset 0 0 40px 8px rgba(200,16,46,.3)}36%{box-shadow:inset 0 0 calc(60px*var(--bi,1)) calc(14px*var(--bi,1)) rgba(200,16,46,.5)}}
+.fxdng.relief{opacity:0;box-shadow:inset 0 0 80px 20px rgba(26,143,76,.45);animation:none}
+@media (prefers-reduced-motion:reduce){.duel.thrust,.duel.stab,.duel.clash,.fxdng.on{animation:none!important}}
 @keyframes duelHit{0%{transform:scale(1) rotate(0)}35%{transform:scale(1.3) rotate(-14deg)}65%{transform:scale(.95) rotate(10deg)}100%{transform:scale(1) rotate(0)}}
 /* الخريطة ثابتة: بدون سحب مطاطي من فوق أو تحت */
 .r2{overscroll-behavior:none}
@@ -2142,7 +2158,7 @@ const TRACKS = [
   {id:'score', n:'الدرجات',   i:'rocket',   v:()=>stats.bestScored||0, g:[100,140,170],
    d:['اجمع ١٠٠ نقطة في التحدي اليومي','اجمع ١٤٠ نقطة في التحدي اليومي','اجمع ١٧٠ نقطة في التحدي اليومي']},
   {id:'acc',   n:'الدقة',     i:'target',   v:()=>stats.perfects||0, g:[1,5,20],
-   d:['٦ من ٦ بلا خطأ في التحدي اليومي','٦ من ٦ بلا خطأ ٥ مرات','٦ من ٦ بلا خطأ ٢٠ مرة']},
+   d:['٤ من ٤ بلا خطأ في التحدي اليومي','٤ من ٤ بلا خطأ ٥ مرات','٤ من ٤ بلا خطأ ٢٠ مرة']},
   {id:'know',  n:'المعرفة',   i:'book',     v:()=>stats.correctTotal||0, g:[50,200,500],
    d:['أجب صحيحاً عن ٥٠ سؤالاً','أجب صحيحاً عن ٢٠٠ سؤال','أجب صحيحاً عن ٥٠٠ سؤال']},
   {id:'wins',  n:'الانتصارات', i:'crown',   v:()=>[stats.bestStreak||0, stats.wins||0, stats.wins||0], g:[3,10,50],
@@ -2245,11 +2261,33 @@ const SND = {
   badge:()=>{ [1175,1568,1976,2349].forEach((f,i)=>tone(f,i*.07,.25,'sine',.1)); }
 };
 SND.end = SND.lose;
+/* طعنة: ضربة مكتومة + احتكاك قصير */
+function noiseBurst(t0,d,vol,f){ if(!stats.sound) return; const a=audio(); if(!a) return;
+  try{ const n=Math.floor(a.sampleRate*d), b=a.createBuffer(1,n,a.sampleRate), x=b.getChannelData(0); for(let i=0;i<n;i++) x[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
+    const s=a.createBufferSource(), fl=a.createBiquadFilter(), g=a.createGain(), t=a.currentTime+t0; s.buffer=b; fl.type='bandpass'; fl.frequency.value=f||1800; fl.Q.value=.9; g.gain.value=vol||.3;
+    s.connect(fl); fl.connect(g); g.connect(a.destination); s.start(t); }catch(e){} }
+SND.stab  = ()=>{ noiseBurst(0,.09,.45,2600); tone(150,0,.22,'sine',.7,45); tone(95,.03,.28,'triangle',.35,40); };
+SND.clash = ()=>{ noiseBurst(0,.12,.35,5200); [2093,3136,4186].forEach((f,i)=>tone(f,0,.45-i*.08,'square',.05)); tone(1568,.02,.5,'sine',.08); };
+SND.slash = ()=>{ try{ playSword(1.12); }catch(e){} };
 const FXV={
   flash(c){ let f=document.getElementById('fxFlash'); if(!f){ f=document.createElement('div'); f.id='fxFlash'; f.className='fxflash'; document.body.appendChild(f); } f.style.background=c; f.classList.remove('go'); void f.offsetWidth; f.classList.add('go'); },
   shake(el){ if(!el) return; el.classList.remove('fxshake'); void el.offsetWidth; el.classList.add('fxshake'); },
   vig(on){ let v=document.getElementById('fxVig'); if(!v){ if(!on) return; v=document.createElement('div'); v.id='fxVig'; v.className='fxvig'; document.body.appendChild(v); } v.classList.toggle('on',!!on); },
   banner(t,up){ document.querySelectorAll('.fxban').forEach(x=>x.remove()); const b=document.createElement('div'); b.className='fxban'+(up?' up':''); b.textContent=t; document.body.appendChild(b); setTimeout(()=>b.remove(),1900); },
+  sparks(el,n,col){ if(!el) return; const r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    for(let i=0;i<(n||12);i++){ const d=document.createElement('div'); d.className='fxspk'; const a=Math.random()*Math.PI*2, v=26+Math.random()*44;
+      d.style.left=cx+'px'; d.style.top=cy+'px'; d.style.setProperty('--sx',Math.cos(a)*v+'px'); d.style.setProperty('--sy',Math.sin(a)*v+'px'); if(col) d.style.background=col;
+      document.body.appendChild(d); setTimeout(()=>d.remove(),650); } },
+  duel(kind){ const x=document.getElementById('raceX'); if(!x) return; const rtl=getComputedStyle(x.parentNode).direction==='rtl';
+    x.style.setProperty('--dx', rtl?-1:1); x.classList.remove('hit','thrust','stab','clash'); void x.offsetWidth; x.classList.add(kind); x.addEventListener('animationend',()=>x.classList.remove(kind),{once:true});
+    if(kind==='thrust') setTimeout(()=>FXV.sparks(x,12),230);
+    if(kind==='clash') FXV.sparks(x,22);
+    if(kind==='stab'){ const w=x.parentNode; w.classList.remove('hurt'); void w.offsetWidth; w.classList.add('hurt'); } },
+  danger(lv){ let v=document.getElementById('fxDng'); if(!v){ if(!lv) return; v=document.createElement('div'); v.id='fxDng'; v.className='fxdng'; document.body.appendChild(v); }
+    const was=v.classList.contains('on');
+    if(lv){ v.classList.remove('relief'); v.style.setProperty('--bp', '.75s'); v.style.setProperty('--bi', lv>=2?1.35:1); v.classList.add('on'); }
+    else if(was){ v.classList.remove('on'); v.classList.add('relief'); setTimeout(()=>v.classList.remove('relief'),50); }
+    return lv; },
   confetti(){ const cs=['#c8102e','#ffb703','#1a8f4c','#2563eb','#ff7a00']; for(let i=0;i<70;i++){ const c=document.createElement('div'); c.className='fxconf'; c.style.left=Math.random()*100+'vw'; c.style.background=cs[i%5]; c.style.animationDuration=(1.6+Math.random()*1.6)+'s'; c.style.animationDelay=(Math.random()*.4)+'s'; document.body.appendChild(c); setTimeout(()=>c.remove(),3800); } }
 };
 /* طلب خالد: أصوات اللعب = العد ٣٢١ والانطلاق، الصح والخطأ، وتكتكة قرب انتهاء الوقت، والسيف والفوز. الباقي صامت */
@@ -2692,16 +2730,19 @@ function onTimeout(){
   setTimeout(()=>{ if(G && !G.over) nextQuestion(); }, 1700);
 }
 
-/* ===== الجولة المتزامنة: ٦ أسئلة × ١٠ ثوانٍ ===== */
-const SYNC_MODE = true, NQ = 6, QMS = 10000, LVS = [1,1,2,2,3,3], PTS = {1:10,2:20,3:30}, REVEAL = 1300;
-function ptsFor(lvl,ms){ const b=PTS[lvl]; const rem=Math.max(0,Math.min(QMS,QMS-(ms||0))); return b+Math.round(b*0.5*rem/QMS); }
+/* ===== الجولة المتزامنة: ٤ أسئلة × ١٥ ثانية ===== */
+const SYNC_MODE = true, NQ = 4, QMS = 15000, MEMX = 3000, LVS = [1,2,2,3], PTS = {1:15,2:30,3:45}, REVEAL = 1300;
+/* وقت السؤال: ١٥ ث، وأسئلة الذاكرة +٣ ث لعرض البطاقات (لازم يطابق r_sync_q) */
+function qmsOf(it){ return QMS + (it && /^#memn?\|/.test(it.q||'') ? MEMX : 0); }
+function qmsAt(i){ const g=G; return qmsOf(g && g.qs && g.qs[i] ? g.qs[i].it : null); }
+function ptsFor(lvl,ms,T){ T=T||QMS; const b=PTS[lvl]; const rem=Math.max(0,Math.min(T,T-(ms||0))); return b+Math.round(b*0.5*rem/T); }
 /* أسئلة من السيرفر: لا يتكرر السؤال على اللاعب (أو على الطرفين في المباراة) خلال ٣٠ يوماً */
 let QPRE = null;
 function prefetchQs(){
   QPRE = null;
   if(!SYNC_MODE || DEMO || GUEST()) return;
   const pre = { v: undefined };
-  pre.p = (PV ? rpc('match_questions',{p_id:PID,p_match:PV.id},5000) : rpc('solo_questions',{p_id:PID},5000))
+  pre.p = (PV ? rpc('match_questions4',{p_id:PID,p_match:PV.id},5000) : rpc('solo_questions4',{p_id:PID},5000))
     .then(r=>{ pre.v = r; return r; }, ()=>{ pre.v = null; });
   QPRE = pre;
 }
@@ -2751,7 +2792,7 @@ function startGameSync(){
   $('myLbl').textContent = G.scored ? 'أنت' : (RD.mall ? 'أنت (محطة)' : (RD.replay!=null ? 'أنت (إعادة)' : 'أنت (تدريب)'));
   $('myScore').textContent=0; $('botScore').textContent=0; $('botLbl').textContent=bot.name;
   updateRace(); $('combo').classList.remove('on');
-  $('qNum').textContent='السؤال ١ من ٦'; $('timer').textContent='١٠';
+  $('qNum').textContent='السؤال ١ من ٤'; $('timer').textContent='١٥';
   $('qText').textContent='استعد… جارٍ تجهيز السؤال الأول'; $('opts').innerHTML=''; $('lvlChip').textContent=''; $('qSec').textContent=''; $('qRingPath').style.strokeDashoffset=0; $('ringFg').style.strokeDashoffset=0;
   const ex0=$('expl'); ex0.textContent=''; ex0.classList.remove('on'); $('clock').classList.remove('low','mid');
   if(PV){ $('cd').textContent='…'; }
@@ -2764,8 +2805,8 @@ function recompute(){
   const map={}; g.mineA.forEach(a=>map[a.qi]=a);
   let me=0, tbMe=0, st=0;
   for(let i=0;i<=Math.max(0,g.qi);i++){ const a=map[i]; if(a&&a.ok){ st++; } else if(a || i<g.qi) st=0; }
-  g.mineA.forEach(a=>{ if(a.ok){ me+=ptsFor(LVS[a.qi],a.ms); tbMe+=a.ms; } });
-  let ob=0, tbOpp=0; g.oppA.forEach(a=>{ if(a.ok){ ob+=ptsFor(LVS[a.qi],a.ms); tbOpp+=a.ms; } });
+  g.mineA.forEach(a=>{ if(a.ok){ me+=ptsFor(LVS[a.qi],a.ms,qmsAt(a.qi)); tbMe+=a.ms; } });
+  let ob=0, tbOpp=0; g.oppA.forEach(a=>{ if(a.ok){ ob+=ptsFor(LVS[a.qi],a.ms,qmsAt(a.qi)); tbOpp+=a.ms; } });
   g.tbMe=tbMe; g.tbOpp=tbOpp;
   if(me!==g.me){ g.me=me; $('myScore').textContent=me; pop('myScore'); }
   if(ob!==g.bot){ g.bot=ob; $('botScore').textContent=ob; pop('botScore'); }
@@ -2780,15 +2821,28 @@ function recompute(){
   if(st>=2){ $('combo').innerHTML=svg('flame',15)+' ×'+st; $('combo').classList.add('on'); } else $('combo').classList.remove('on');
   const oa = g.phase==='q' && g.oppA.some(a=>a.qi===g.qi);
   $('botLbl').textContent = bot.name + (oa ? ' • أجاب' : '');
+  fxDuelCheck();
+}
+/* تصادم السيوف لما الثنين يجاوبون صح، ونبض الخطر للمتأخر */
+function fxDuelCheck(){
+  const g=G; if(!g) return;
+  if(g.over){ FXV.danger(0); return; }
+  const qi=g.qi, a=g.mineA.find(x=>x.qi===qi), b=g.oppA.find(x=>x.qi===qi);
+  g.clashed=g.clashed||{};
+  if(a&&b&&a.ok&&b.ok&&!g.clashed[qi]){ g.clashed[qi]=1; setTimeout(()=>{ if(G===g&&!g.over){ SND.clash(); FXV.duel('clash'); } },520); }
+  const gap=(g.bot||0)-(g.me||0), w=g.wst||0;
+  /* يشتغل بعد الإجابة الغلط إذا متأخر، أو بعد غلطتين ورا بعض؛ وأول إجابة صح تطفيه */
+  const lv = w===0 ? 0 : ((w>=2 && gap>=30) || gap>=60 ? 2 : ((gap>=30 || w>=2) ? 1 : 0));
+  if(lv!==g.dng){ if(!g.dng) g.beatAt=0; g.dng=lv; FXV.danger(lv); }
 }
 function showQS(i, startAt){
   const g=G; if(!g||g.over) return;
   if(!g.shown){ g.shown=true; show('game'); SND.go(); }
   const q=g.qs[i]; g.qi=i; g.cur=q.it; g.phase='q'; g.locked=false; g.n=i+1;
   if(!g.t0) g.t0 = startAt||performance.now(); /* بداية الدقيقة الحقيقية */
-  g.deadline = (startAt||performance.now()) + QMS; g.qMax = QMS/1000; g.pend=null; g.lastSec=0;
+  g.qT = qmsOf(q.it); g.deadline = (startAt||performance.now()) + g.qT; g.qMax = g.qT/1000; g.pend=null; g.lastSec=0;
   $('qNum').textContent='السؤال '+toAr(i+1)+' من '+toAr(NQ);
-  const lv=q.it.lvl; $('lvlChip').textContent = LEVEL_NAME[lv]+' '+toAr(PTS[lv])+'–'+toAr(PTS[lv]*1.5); $('lvlChip').dataset.l = lv;
+  const lv=q.it.lvl; $('lvlChip').textContent = LEVEL_NAME[lv]+' '+toAr(PTS[lv])+'–'+toAr(Math.round(PTS[lv]*1.5)); $('lvlChip').dataset.l = lv;
   const qc=$('qText'); const QK=renderQText(q.it, $('opts')); qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
   buildRing(); setQTimer(g.qMax);
   const ex=$('expl'); ex.textContent=''; ex.classList.remove('on');
@@ -2810,20 +2864,20 @@ function floatPts(pts,lvl,fast){
 function answerS(btn, ok, box){
   const g=G; if(!g||g.over||g.locked||g.phase!=='q') return;
   g.locked=true; box.classList.add('lock');
-  const ms=Math.min(QMS,Math.max(0,Math.round(performance.now()-(g.deadline-QMS)))), lv=g.cur.lvl;
+  const T=g.qT||QMS, ms=Math.min(T,Math.max(0,Math.round(performance.now()-(g.deadline-T)))), lv=g.cur.lvl;
   btn.classList.add(ok?'ok':'bad');
   if(!ok){
     [...box.children].forEach(c=>{ if(c.dataset.ok==='1') c.classList.add('ok'); else if(c!==btn) c.classList.add('dim'); });
-    SND.bad(); FXV.flash('rgba(200,16,46,.6)'); FXV.shake($('qWrap')); showExpl('');
+    SND.bad(); SND.stab(); FXV.duel('stab'); g.wst=(g.wst||0)+1; FXV.flash('rgba(200,16,46,.6)'); FXV.shake($('qWrap')); showExpl('');
   } else {
     [...box.children].forEach(c=>{ if(c!==btn) c.classList.add('dim'); });
-    SND.ok((g.combo||0)+1); FXV.flash('rgba(26,143,76,.55)'); floatPts(ptsFor(lv,ms),lv,ms<3000); showExpl('');
+    g.wst=0; SND.ok((g.combo||0)+1); SND.slash(); FXV.duel('thrust'); FXV.flash('rgba(26,143,76,.55)'); floatPts(ptsFor(lv,ms,T),lv,ms<3000); showExpl('');
   }
   try{ navigator.vibrate && navigator.vibrate(ok?20:[30,40,30]); }catch(e){}
   const rec={qi:g.qi,ok:ok,ms:ms};
   g.mineA = g.mineA.filter(a=>a.qi!==rec.qi).concat([rec]); g.pend={rec:rec,t:performance.now()};
   recompute(); waitLbl();
-  if(PV){ const p=PV; rpc('sync_q',{p_id:PID,p_match:p.id,p_qi:rec.qi,p_ok:ok,p_ms:ms},3500).then(s=>{ if(s && G===g && !g.over) applyS(s); }); }
+  if(PV){ const p=PV; rpc('sync_q4',{p_id:PID,p_match:p.id,p_qi:rec.qi,p_ok:ok,p_ms:ms},3500).then(s=>{ if(s && G===g && !g.over) applyS(s); }); }
 }
 function waitLbl(rem){
   const g=G; if(!g||!g.locked||(g.phase!=='q'&&g.phase!=='rev')) return;
@@ -2844,13 +2898,13 @@ function timeoutS(){
   const g=G; if(!g||g.locked||g.over||g.phase!=='q') return;
   g.locked=true; const box=$('opts'); box.classList.add('lock');
   [...box.children].forEach(c=>{ if(c.dataset.ok==='1') c.classList.add('ok'); else c.classList.add('dim'); });
-  SND.bad(); showExpl('انتهى وقت السؤال'); recompute();
+  SND.bad(); SND.stab(); FXV.duel('stab'); g.wst=(g.wst||0)+1; showExpl('انتهى وقت السؤال'); recompute();
 }
 function botAns(i, elapsed){
   const g=G; if(!g||g.over||PV) return;
   if(g.oppA.some(a=>a.qi===i)) return;
   const adj={1:.12,2:0,3:-.15}[LVS[i]], p=Math.max(.2,Math.min(.95,bot.skill+adj));
-  const t=Math.max(600, Math.min(9000-elapsed, 2200+(1-bot.skill)*2400+rnd(0,3200)-elapsed));
+  const t=Math.max(600, Math.min(qmsAt(i)-1000-elapsed, 2200+(1-bot.skill)*2400+rnd(0,3200)-elapsed));
   const ok=Math.random()<p;
   g.timers.push(setTimeout(()=>{
     if(G!==g||g.over||PV||g.qi!==i||g.oppA.some(a=>a.qi===i)) return;
@@ -2865,10 +2919,10 @@ function localAdv(now){
 function loopS(){
   const g=G; if(!g||g.over) return; const now=performance.now();
   /* دقيقة حقيقية متواصلة: العداد يمشي حتى بين الأسئلة */
-  const TOT=NQ*QMS, tl = 1e9; const qr = g.phase==='q' ? Math.max(0, g.deadline-now) : (g.lastQr!=null ? g.lastQr : QMS); if(g.phase==='q') g.lastQr=qr;
+  const TOT=NQ*QMS, tl = 1e9; const qr = g.phase==='q' ? Math.max(0, g.deadline-now) : (g.lastQr!=null ? g.lastQr : (g.qT||QMS)); if(g.phase==='q') g.lastQr=qr;
   if(g.t0){ $('timer').textContent=toAr(Math.ceil(qr/1000));
     $('clock').classList.toggle('low', qr<=3000); $('clock').classList.toggle('mid', qr<=5000);
-    $('ringFg').style.strokeDashoffset=RING*(1-qr/QMS); }
+    $('ringFg').style.strokeDashoffset=RING*(1-qr/(g.qT||QMS)); }
   if(g.t0 && tl<=0){ if(!g.timeUp){ g.timeUp=true; if(g.phase==='q'){ g.deadline=Math.min(g.deadline,now); timeoutS(); } FXV.vig(false); g.nextAt=0; g.phase='rev'; g.timers.push(setTimeout(()=>{ if(G===g) finishS(); }, 1100)); } return; }
   
   if((g.phase==='pre'||g.phase==='rev') && g.nextAt && now>=g.nextAt){
@@ -2876,6 +2930,7 @@ function loopS(){
     if(g.nextQi>=NQ){ finishS(); return; }
     showQS(g.nextQi, at); return;
   }
+  if(g.dng && (g.phase==='q'||g.phase==='rev')){ const per=750; if(!g.beatAt || now-g.beatAt>=per){ g.beatAt=now; const vg=document.getElementById('fxVig'); if(!(vg&&vg.classList.contains('on'))) SND.heart(); } }
   if(g.phase==='q'){
     const rem=Math.max(0,g.deadline-now);
     if(!g.locked){ setQTimer(rem/1000); if(rem<=0) timeoutS(); }
@@ -2892,13 +2947,13 @@ function takeover(msg){
   PV=null; bot.name=nextBotName(); bot.skill=botSkill();
   $('botLbl').textContent=bot.name; toast(msg||'انسحب الخصم — أكمل ضد منافس آلي'); const now=performance.now();
   if(g.phase==='wait'){ g.phase='pre'; g.nextQi=0; g.nextAt=now+700; }
-  else if(g.phase==='q'){ botAns(g.qi, Math.max(0, QMS-(g.deadline-now))); }
+  else if(g.phase==='q'){ botAns(g.qi, Math.max(0, (g.qT||QMS)-(g.deadline-now))); }
   else if((g.phase==='pre'||g.phase==='rev') && !g.nextAt){ g.nextAt=now+REVEAL; }
   recompute();
 }
 async function pollS(){
   const g=G; if(!g||g.over||!PV||g.polling) return; g.polling=true;
-  const p=PV, s=await rpc('sync_q',{p_id:PID,p_match:p.id,p_ready:(g.phase==='wait')},2500);
+  const p=PV, s=await rpc('sync_q4',{p_id:PID,p_match:p.id,p_ready:(g.phase==='wait')},2500);
   g.polling=false; if(G!==g||g.over||!PV) return;
   if(s) applyS(s);
 }
@@ -2929,7 +2984,7 @@ function finishS(){
 let lastMe = 0, lastRes = null;
 function endGame(){
   if(!G || G.over) return;
-  G.over = true; G.timers.forEach(t=>{clearInterval(t);clearTimeout(t)}); FXV.vig(false);
+  G.over = true; G.timers.forEach(t=>{clearInterval(t);clearTimeout(t)}); FXV.vig(false); FXV.danger(0); G.dng=0;
   const me=G.me, b=G.bot; lastMe = me;
   const R = G.force || (me>b?'win':(me<b?'lose':(G.tie||'draw')));
   let emoji,title;
@@ -2949,7 +3004,7 @@ function endGame(){
   stats.bestStreak = Math.max(stats.bestStreak||0, stats.streak||0);
   if(R==='win' && lastRes.human && !G.force) stats.humanWins=(stats.humanWins||0)+1;
   if(window._viaInv && G.force!=='lose'){ stats.invited=(stats.invited||0)+1; } window._viaInv=false;
-  if(scored && G.force!=='lose'){ stats.bestScored=Math.max(stats.bestScored||0, me); if(G.wrong===0 && G.correct>=6) stats.perfects=(stats.perfects||0)+1; }
+  if(scored && G.force!=='lose'){ stats.bestScored=Math.max(stats.bestScored||0, me); if(G.wrong===0 && G.correct>=NQ) stats.perfects=(stats.perfects||0)+1; }
   const fresh = GUEST() ? [] : awardBadges();
   save(stats); renderStats(); syncProgress();
   if(fresh.length) setTimeout(SND.badge, 1100);
