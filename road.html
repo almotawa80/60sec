@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118043000">
+<meta name="app-version" content="road-20261118050000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1593,6 +1593,9 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .duel{position:absolute;top:50%;left:50%;z-index:2;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:21px;line-height:1;background:radial-gradient(circle at 40% 30%,#ffe68a,#f2b51e 60%,#c98a08);border:3px solid #fff;box-shadow:0 0 0 2px #c98a08,0 4px 8px rgba(0,0,0,.4);transition:left .45s ease;pointer-events:none}
 .duel.hit{animation:duelHit .45s ease}
 @keyframes duelHit{0%{transform:scale(1) rotate(0)}35%{transform:scale(1.3) rotate(-14deg)}65%{transform:scale(.95) rotate(10deg)}100%{transform:scale(1) rotate(0)}}
+/* الخريطة ثابتة: بدون سحب مطاطي من فوق أو تحت */
+.r2{overscroll-behavior:none}
+html:has(#roadPage.active),body:has(#roadPage.active),#roadPage.active{overscroll-behavior:none;overflow:hidden}
 img.mark.rdmark{background:none!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))}
 
 </style>
