@@ -2092,6 +2092,8 @@ background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);anim
 @media (prefers-reduced-motion:reduce){#home #goBtn.slide::before{animation:none}}
 
 #home #goBtn.slide::after{opacity:var(--lo,1)!important;transition:opacity .15s}
+
+#home #goBtn .sknob.hasw{background:var(--kw) center/112% no-repeat!important;border-radius:50%!important;border:3px solid #fff!important;box-sizing:border-box!important;box-shadow:0 0 0 2.5px #e0a92e,0 3px 6px rgba(0,0,0,.35)!important;filter:none!important}
 </style>
 </head>
 <body>
@@ -2771,6 +2773,7 @@ function renderStats(){
   const pa = pointsAvailable();
   try{ setAv($('invAv'), stats.avatar, avInit()); setAv($('pfAv'), stats.avatar, avInit()); }catch(e){}
   try{ $('invAv').classList.toggle('flip', !!avMeta(stats.avatar||'').a); }catch(e){}
+  try{ const kw=avMeta(stats.avatar||'').w, kn=$('goKnob'); kn.classList.toggle('hasw',!!kw); kn.style.setProperty('--kw',kw?"url('"+wpImg(kw)+"')":'none'); }catch(e){}
   $('goLbl').textContent = pa ? 'اسحب للتحدّي' : 'اسحب للتدريب'; $('goDone').style.display = pa ? 'none' : 'block';
   $('goNote').style.display = 'none';
   $('wBal').textContent=fmt(stats.balance); $('sBal').textContent=fmt(stats.balance);
