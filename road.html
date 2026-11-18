@@ -1957,6 +1957,11 @@ html #inviteWait #invShare:active,html #inviteWait #invCancel:active{transform:s
 html .rdX{background:url(img/road/pick/close.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;width:46px;height:46px;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
 html .rdX svg{display:none}
 html #srchTip{border:3px solid #e0a92e!important;background:#fffdf7!important;color:#6b4520!important}
+
+/* صورة اللاعب في الرئيسية: تملأ الدائرة داخل إطار ذهبي بدل الحد الأبيض */
+#home .pfhold .pfav{border:0!important;box-shadow:none!important;background-size:cover!important;background-position:center!important}
+#home .pfhold .pfbtn{overflow:visible!important;position:relative}
+#home .pfhold .pfbtn::before{content:'';position:absolute;inset:-21%;background:url(img/road/profile/ring.webp) center/100% 100% no-repeat;pointer-events:none;z-index:2;filter:drop-shadow(0 4px 6px rgba(0,0,0,.35))}
 </style>
 </head>
 <body>
