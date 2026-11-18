@@ -713,9 +713,10 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 .fxw{position:absolute;inset:0}
 .fxd{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c);border:3px solid #fff;box-sizing:border-box;box-shadow:0 6px 18px rgba(0,0,0,.35);display:grid;place-items:center;color:#fff;font-weight:900;line-height:1;text-shadow:0 2px 0 #7a0c12}
 .fxw .hv{position:absolute;inset:0;opacity:0;will-change:transform,opacity}.fxw .hv .fxd{box-shadow:none}
-.fxsw{position:absolute;width:40px;height:170px;transform-origin:20px 150px;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35));z-index:3}
+.fxsw{position:absolute;width:52px;height:221px;transform-origin:26px 195px;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35));z-index:3}
 .fxsw .whole,.fxsw .pc{position:absolute;inset:0}.fxsw .pc{opacity:0}.fxsw svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.fxsw .whole{transform-origin:20px 150px}
+.fxsw .whole{transform-origin:26px 195px}
+.fxsw .gl{position:absolute;inset:0;overflow:hidden;clip-path:polygon(50% 1.2%,68.75% 9.4%,66.25% 74.1%,33.75% 74.1%,31.25% 9.4%)}.fxsw .gl i{position:absolute;left:0;right:0;top:0;height:46px;background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.95),rgba(255,255,255,0));transform:translateY(230px)}
 .fxsw .crk path{fill:none;stroke:#3a2a1a;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:0}
 .fxf{position:absolute;border-radius:50%;background:radial-gradient(circle,#fff 0,rgba(255,255,255,.85) 35%,rgba(255,255,255,0) 70%);opacity:0;z-index:4}
 .fxp{position:absolute;width:3px;height:12px;border-radius:2px;z-index:5;opacity:0}
@@ -738,7 +739,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118140000">
+<meta name="app-version" content="road-20261118150000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -3048,7 +3049,9 @@ const SWSVG='<svg viewBox="0 0 40 170" xmlns="http://www.w3.org/2000/svg"><defs>
  +'<path d="M20 2 L27.5 16 L26.5 126 L13.5 126 L12.5 16 Z" fill="url(#bl)" stroke="#6f7b8a" stroke-width="1"/><path d="M20 8 L20 122" stroke="#fff" stroke-width="1.6" opacity=".8"/><path d="M23.5 18 L23 122" stroke="#9aa6b4" stroke-width="1"/>'
  +'<rect x="2" y="125" width="36" height="9" rx="4" fill="url(#gd)" stroke="#8a5a10" stroke-width="1"/><rect x="15.5" y="134" width="9" height="24" rx="2" fill="#6b3d1a"/><path d="M15.5 140h9M15.5 146h9M15.5 152h9" stroke="#3e220c" stroke-width="1.2"/><circle cx="20" cy="163" r="6" fill="url(#gd)" stroke="#8a5a10" stroke-width="1"/></svg>';
 const SW_CRACK='<svg class="crk" viewBox="0 0 40 170"><path class="c1" d="M13 61 L17 65 L20 59 L24 64 L27 60"/><path class="c2" d="M20 59 L19 50 L22 44"/></svg>';
-function fxA(el,kf,o){ try{ return el.animate(kf,Object.assign({fill:'forwards',easing:'linear'},o)); }catch(e){ return null; } }
+/* FXK = إبطاء الحركة كلها (خالد طلب ٤-٥ ثواني)؛ k:false = مدة خام بدون إبطاء */
+let FXK=2.1;
+function fxA(el,kf,o){ if(o && o.k!==false){ o=Object.assign({},o); if(o.delay) o.delay*=FXK; if(o.duration) o.duration*=FXK; } if(o) delete o.k; try{ return el.animate(kf,Object.assign({fill:'forwards',easing:'linear'},o)); }catch(e){ return null; } }
 function fxStage(){
   const n=document.querySelector('#clock .num'); if(!n || !n.offsetWidth || !Element.prototype.animate) return null;
   const r=n.getBoundingClientRect(), cs=getComputedStyle(n), w0=r.width, W=Math.round(Math.min(130,Math.max(100,w0*1.7)));
@@ -3071,30 +3074,31 @@ function fxStage(){
   S.sparks=(t,x,y,dir,cone,cnt,cols,sp,life)=>{ for(let i=0;i<cnt;i++){ const e=document.createElement('i'); e.className='fxp'; const ang=(dir+(Math.random()*2-1)*cone)*Math.PI/180, v=(sp[0]+Math.random()*(sp[1]-sp[0]))/1000, L=life[0]+Math.random()*(life[1]-life[0]), d=v*L;
       e.style.cssText='left:'+(x-1.5)+'px;top:'+(y-6)+'px;background:'+cols[i%cols.length];
       const rot=(ang*180/Math.PI)+90, tx=Math.cos(ang)*d, ty=Math.sin(ang)*d; st.appendChild(e);
-      A(e,[{opacity:1,transform:'translate(0,0) rotate('+rot+'deg) scale(1)'},{opacity:0,transform:'translate('+tx+'px,'+ty+'px) rotate('+rot+'deg) scale(.2)'}],{delay:t,duration:L,easing:FXE.snap}); } };
+      A(e,[{opacity:1,transform:'translate(0,0) rotate('+rot+'deg) scale(1)'},{opacity:0,transform:'translate('+tx+'px,'+ty+'px) rotate('+rot+'deg) scale(.2)'}],{delay:t*FXK,duration:L*1.5,easing:FXE.snap,k:false}); } };
   S.chips=(t,x,y,cnt,col,sz)=>{ for(let i=0;i<cnt;i++){ const e=document.createElement('i'); e.className='fxc'; e.style.cssText='left:'+(x-sz/2)+'px;top:'+(y-sz/2)+'px;width:'+sz+'px;height:'+sz+'px;background:'+col; st.appendChild(e);
       const vx=(Math.random()*2-1)*W*.5, up=-W*(.15+Math.random()*.25), r=(Math.random()*2-1)*360, L=520+Math.random()*200;
-      A(e,[{transform:'translate(0,0) rotate(0)',opacity:1},{transform:'translate('+(vx*.5)+'px,'+up+'px) rotate('+(r*.4)+'deg)',opacity:1,offset:.3,easing:FXE.grav},{transform:'translate('+vx+'px,'+(W*1.6)+'px) rotate('+r+'deg)',opacity:0}],{delay:t,duration:L,easing:FXE.snap}); } };
+      A(e,[{transform:'translate(0,0) rotate(0)',opacity:1},{transform:'translate('+(vx*.5)+'px,'+up+'px) rotate('+(r*.4)+'deg)',opacity:1,offset:.3,easing:FXE.grav},{transform:'translate('+vx+'px,'+(W*1.6)+'px) rotate('+r+'deg)',opacity:0}],{delay:t,duration:L,easing:FXE.snap,k:false,delay:t*FXK,duration:L*1.4}); } };
   /* سيف: المسكة (نقطة الدوران) عند (gx,gy) نسبة لمركز الساعة، الزاوية من الأعلى مع عقارب الساعة */
-  S.sword=(gx,gy,cls)=>{ const h=document.createElement('div'); h.className='fxsw'+(cls?' '+cls:''); h.style.cssText='left:'+(cx+gx-20)+'px;top:'+(cy+gy-150)+'px'; h.innerHTML='<div class="whole">'+SWSVG+SW_CRACK+'</div>'; st.appendChild(h); return h; };
+  S.sword=(gx,gy,cls)=>{ const h=document.createElement('div'); h.className='fxsw'+(cls?' '+cls:''); h.style.cssText='left:'+(cx+gx-26)+'px;top:'+(cy+gy-195)+'px'; h.innerHTML='<div class="whole">'+SWSVG+SW_CRACK+'<div class="gl"><i></i></div></div>'; st.appendChild(h); return h; };
+  S.glint=(sw,t)=>{ const g=sw.querySelector('.gl i'); if(g) A(g,[{transform:'translateY(230px)'},{transform:'translateY(-50px)'}],{delay:t,duration:260,easing:FXE.antic}); };
   S.end=()=>{ if(S.done) return; S.done=true; try{ anims.forEach(a=>{ try{ a.cancel(); }catch(e){} }); }catch(e){} root.remove(); n.style.visibility=''; };
   /* اللاعب يقدر يتخطى بلمسة بعد ٦٠٠ms */
-  const t0=performance.now(); root.addEventListener('pointerdown',()=>{ if(performance.now()-t0>600 && S.skip) S.skip(); });
+  const t0=performance.now(); root.addEventListener('pointerdown',()=>{ if(performance.now()-t0>1200 && S.skip) S.skip(); });
   return S;
 }
 function fxHand(S,fin,at){
-  let gone=false; const go=()=>{ if(gone) return; gone=true; fin(); fxA(S.ck,[{opacity:1},{opacity:0}],{duration:200,easing:FXE.strike}); fxA(S.root,[{opacity:1},{opacity:0}],{delay:120,duration:300,easing:'ease-out'}); setTimeout(()=>S.end(),460); };
+  let gone=false; const go=()=>{ if(gone) return; gone=true; fin(); fxA(S.ck,[{opacity:1},{opacity:0}],{duration:260,easing:FXE.strike,k:false}); fxA(S.root,[{opacity:1},{opacity:0}],{delay:160,duration:380,easing:'ease-out',k:false}); setTimeout(()=>S.end(),600); };
   S.skip=()=>{ S.anims.forEach(a=>{ try{ a.finish(); }catch(e){} }); go(); };
-  setTimeout(go, at);
+  setTimeout(go, at*FXK);
 }
 function fxOnce(done){ let f=false; return ()=>{ if(f) return; f=true; try{ done(); }catch(e){} }; }
-const fxSnd=(t,f)=>setTimeout(()=>{ try{ f(); }catch(e){} }, Math.max(0,t));
-const fxVib=(t,p)=>setTimeout(()=>{ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }, t);
+const fxSnd=(t,f)=>setTimeout(()=>{ try{ f(); }catch(e){} }, Math.max(0,t*FXK));
+const fxVib=(t,p)=>setTimeout(()=>{ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }, t*FXK);
 SND.whoosh = ()=>{ noiseBurst(0,.2,.32,700); noiseBurst(.04,.16,.22,1500); };
 SND.snap = ()=>{ noiseBurst(0,.05,.5,5200); tone(2600,0,.09,'square',.05,1300); tone(1750,.02,.3,'triangle',.08,850); [3136,4186].forEach((f,i)=>tone(f,.03+i*.03,.16,'triangle',.04)); };
 /* ===== فوز: سيفك يقص الساعة نصين ===== */
 function clockSlice(done){
-  const fin=fxOnce(done); setTimeout(fin, 4200);
+  FXK=2.1; const fin=fxOnce(done); setTimeout(fin, 9500);
   try{
     const S=fxStage(); if(!S){ fin(); return; } const {A,W,ck,cx,cy}=S, w=ck.firstChild;
     const up='0 0,100% 0,100% 11%,0 89%', lo='100% 11%,100% 100%,0 100%,0 89%';
@@ -3103,6 +3107,7 @@ function clockSlice(done){
     const gx=W*.78, gy=W*.18, sw=S.sword(gx,gy), T='translate(';
     A(sw,[{opacity:0,transform:T+(W*.9)+'px,'+(-W*1.1)+'px) rotate(25deg)'},{opacity:1,offset:.45},{opacity:1,transform:'translate(0,0) rotate(-12deg)'}],{delay:450,duration:250,easing:FXE.snap});
     A(sw,[{transform:'translate(0,0) rotate(-12deg) scale(1)'},{transform:'translate(0,0) rotate(8deg) scale(1.04)'}],{delay:700,duration:150,easing:FXE.antic});
+    S.glint(sw,640); fxSnd(650,()=>{ try{ tone(3520,0,.25,'sine',.04,4186); }catch(e){} });
     A(sw,[{transform:'translate(0,0) rotate(8deg) scaleY(1.06)'},{transform:'translate(0,0) rotate(-118deg) scaleY(1.06)'}],{delay:850,duration:60,easing:FXE.strike});
     A(sw,[{transform:'translate(0,0) rotate(-118deg)',opacity:1},{transform:'translate(0,0) rotate(-118deg)',opacity:1,offset:.33},{transform:'translate(0,0) rotate(-142deg)',opacity:1,offset:.9},{transform:'translate(0,0) rotate(-145deg)',opacity:0}],{delay:910,duration:340,easing:FXE.snap});
     fxSnd(790,()=>SND.whoosh()); fxSnd(890,()=>playSword(1.05)); fxVib(910,40);
@@ -3131,7 +3136,7 @@ function clockSlice(done){
 }
 /* ===== خسارة: الساعة تصد الضربة وسيفك ينكسر ===== */
 function clockBreak(done){
-  const fin=fxOnce(done); setTimeout(fin, 4400);
+  FXK=2.1; const fin=fxOnce(done); setTimeout(fin, 9800);
   try{
     const S=fxStage(); if(!S){ fin(); return; } const {A,W,ck,cx,cy}=S, T='translate(';
     const gx=W*.78, gy=W*.18, sw=S.sword(gx,gy), wh=sw.firstChild;
@@ -3141,6 +3146,7 @@ function clockBreak(done){
     const tip=sw.children[1], hilt=sw.children[2], c1=sw.querySelector('.c1'), c2=sw.querySelector('.c2');
     A(sw,[{opacity:0,transform:T+(W*.9)+'px,'+(-W*1.1)+'px) rotate(25deg)'},{opacity:1,offset:.45},{opacity:1,transform:'translate(0,0) rotate(-12deg)'}],{delay:450,duration:250,easing:FXE.snap});
     A(sw,[{transform:'translate(0,0) rotate(-12deg) scale(1)'},{transform:'translate(0,0) rotate(8deg) scale(1.04)'}],{delay:700,duration:150,easing:FXE.antic});
+    S.glint(sw,640); fxSnd(650,()=>{ try{ tone(3520,0,.25,'sine',.04,4186); }catch(e){} });
     /* الساعة «تنتبه» */
     A(ck,[{transform:'rotate(0) scale(1)'},{transform:'rotate(-6deg) scale(1.04,.96)',offset:.5},{transform:'rotate(0) scale(1)'}],{delay:680,duration:200,easing:FXE.snap});
     /* الضربة توقف عند الدرع */
@@ -3163,7 +3169,7 @@ function clockBreak(done){
     /* الكسر: نصين السيف يطيرون ويلفون */
     A(wh,[{opacity:1},{opacity:0}],{delay:1200,duration:1}); A(tip,[{opacity:0},{opacity:1}],{delay:1200,duration:1}); A(hilt,[{opacity:0},{opacity:1}],{delay:1200,duration:1});
     fxSnd(1190,()=>SND.snap()); fxVib(1200,60);
-    const bx=cx+gx+W*.12+Math.sin(10*Math.PI/180)*89, by=cy+gy-W*.28-Math.cos(10*Math.PI/180)*89;
+    const bx=cx+gx+W*.12+Math.sin(10*Math.PI/180)*116, by=cy+gy-W*.28-Math.cos(10*Math.PI/180)*116;
     S.chips(1200,bx,by,5,'#cfd8e2',4); S.sparks(1200,bx,by,-90,80,6,['#fff','#e6edf4'],[160,260],[220,340]);
     /* الحركة داخل إطار السيف المايل ١٠°: نحوّل اتجاه الشاشة لإطاره */
     const loc=(x,y)=>{ const a=-10*Math.PI/180; return [x*Math.cos(a)-y*Math.sin(a), x*Math.sin(a)+y*Math.cos(a)]; };
@@ -3178,7 +3184,7 @@ function clockBreak(done){
 }
 /* ===== تعادل: سيفين يتصادمون فوق الساعة وهي سليمة ===== */
 function clockClash(done){
-  const fin=fxOnce(done); setTimeout(fin, 4000);
+  FXK=2.5; const fin=fxOnce(done); setTimeout(fin, 9500);
   try{
     const S=fxStage(); if(!S){ fin(); return; } const {A,W,ck,cx,cy}=S, T='translate(';
     const gx=W*.82, gy=W*.2, r=S.sword(gx,gy), l=S.sword(-gx,gy,'mir');
@@ -3190,6 +3196,7 @@ function clockClash(done){
       A(el,[-58,-54,-62,-54,-62,-56,-58].map(v=>({transform:'translate(0,0) '+R(v)})),{delay:900,duration:350});
       A(el,[{transform:'translate(0,0) '+R(-58),opacity:1},{transform:T+(s*W*.6)+'px,0) '+R(-28),opacity:1,offset:.6},{transform:T+(s*W*.7)+'px,0) '+R(-24),opacity:0}],{delay:1250,duration:300,easing:FXE.snap}); };
     seq(r,1); seq(l,-1);
+    S.glint(r,500); S.glint(l,540);
     const xX=cx, xY=cy-W*.28;
     fxSnd(690,()=>SND.whoosh()); fxSnd(790,()=>SND.clash()); fxVib(810,50);
     S.flash(810,.75,xX,xY,W*1.1); S.shake(810,5);
