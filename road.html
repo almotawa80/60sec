@@ -2160,6 +2160,45 @@ background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);anim
 .a2s span{font-size:11.5px;line-height:1.45;color:#8a6a45;text-align:center}.a2s b{color:#5a3412;font-size:12.5px}
 .a2s em{align-self:center;font-style:normal;font-weight:900;color:#e0a92e;font-size:22px}
 .a2n{margin:8px 0 0;text-align:center;font-size:11.5px;color:#8a6a45}
+
+/* شاشة السؤال الجديدة (تصميم ChatGPT) */
+#game .qwrap{position:relative;margin-top:22px}
+#game .qcat{position:absolute;z-index:3;left:50%;top:-24px;transform:translateX(-50%);display:none;align-items:center;gap:6px;height:40px;box-sizing:border-box;border-style:solid;border-width:0 28px;border-image:url(img/road/ui/ribbon.webp) 0 123 fill / 0 28px stretch;padding:0 4px 5px;color:#fff;font-weight:900;font-size:14px;white-space:nowrap;text-shadow:0 1px 0 #7a0c12;filter:drop-shadow(0 3px 4px rgba(0,0,0,.3))}
+#game .qcat.on{display:flex;animation:qcIn .45s cubic-bezier(.2,1.4,.4,1) both}
+#game .qcat i{font-style:normal;width:30px;height:30px;margin:-2px -14px 0 0;border-radius:50%;display:grid;place-items:center;font-size:16px;background:radial-gradient(circle at 40% 30%,#fff3b0,#f2b51e 60%,#c98a08);border:2px solid #fff;box-shadow:0 0 0 2px #c8102e;order:-1}
+@keyframes qcIn{from{opacity:0;transform:translateX(-50%) translateY(-10px) scale(.8)}to{opacity:1;transform:translateX(-50%)}}
+#game .qcard{padding-top:34px!important}
+#game .qcard.in{animation:qIn2 .5s cubic-bezier(.2,1.35,.4,1) both!important}
+@keyframes qIn2{0%{opacity:0;transform:translateY(-26px) scale(.96)}100%{opacity:1;transform:none}}
+#game .opt.pin{animation:optIn .38s cubic-bezier(.2,1.5,.4,1) both;animation-delay:calc(.25s + var(--i,0)*.09s)}
+@keyframes optIn{0%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:none}}
+#game .opt.ok{animation:optOk .5s ease-out!important}
+@keyframes optOk{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
+#game .opt.ok::after{content:'';position:absolute;inset:-6px;border-radius:24px;box-shadow:0 0 18px 6px rgba(120,230,90,.7);animation:okGl 1s ease-out forwards;pointer-events:none}
+@keyframes okGl{from{opacity:1}to{opacity:0}}
+#game .opt{position:relative}
+#game .opt.bad{animation:optBad .4s ease-in-out!important}
+@keyframes optBad{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+#game .meta .chip .stz{font-style:normal;color:#f2b51e;margin-inline-end:4px;letter-spacing:-2px;text-shadow:0 1px 0 #c98a08}
+#game .meta{position:relative}
+#game .meta .combo{position:absolute;left:50%;top:-40px;z-index:5;transform:translateX(-50%) scale(.6);opacity:0;display:flex;align-items:center;gap:5px;height:38px;box-sizing:border-box;border-style:solid;border-width:0 26px;border-image:url(img/road/ui/ribbon.webp) 0 123 fill / 0 26px stretch;padding:0 2px 5px;color:#fff!important;font-weight:900;font-size:14px;white-space:nowrap;text-shadow:0 1px 0 #7a0c12;filter:drop-shadow(0 3px 5px rgba(0,0,0,.35));pointer-events:none}
+#game .meta .combo.on{animation:cmbIn 1.8s cubic-bezier(.2,1.4,.4,1) forwards}
+#game .meta .combo b{color:#ffe08a}
+@keyframes cmbIn{0%{opacity:0;transform:translateX(-50%) scale(.5)}14%{opacity:1;transform:translateX(-50%) scale(1.12)}24%{transform:translateX(-50%) scale(1)}80%{opacity:1;transform:translateX(-50%) scale(1)}100%{opacity:0;transform:translateX(-50%) translateY(-8px) scale(.95)}}
+.flyp{position:fixed;z-index:70;pointer-events:none;font-weight:900;font-size:34px;color:#ffd23f;-webkit-text-stroke:2px #a85d00;paint-order:stroke fill;text-shadow:0 0 14px rgba(255,210,63,.9);white-space:nowrap}
+#raceMe.hit{animation:msHit .5s ease-out}
+@keyframes msHit{40%{filter:brightness(1.35) drop-shadow(0 0 8px #ffd23f)}}
+#game .clock.urg .num{animation:ckUrg .5s ease-in-out infinite alternate;filter:hue-rotate(-12deg) saturate(1.6) drop-shadow(0 0 14px rgba(255,60,40,.9)) drop-shadow(0 6px 8px rgba(0,0,0,.45))!important}
+@keyframes ckUrg{from{transform:scale(1)}to{transform:scale(1.1)}}
+#game .qwait{display:none;align-items:center;justify-content:center;gap:10px;margin-top:14px;min-height:58px;border-style:solid;border-width:12px;border-color:transparent;border-image:url(img/road/admin/cardS.webp) 40 fill/12px stretch;color:#5a3412;font-weight:900;font-size:15px}
+#game .qwait.on{display:flex;animation:fade .3s ease}
+#game .qwait i{font-style:normal;font-size:22px;animation:hgl 1.6s ease-in-out infinite}
+@keyframes hgl{0%,40%{transform:rotate(0)}60%,100%{transform:rotate(180deg)}}
+#game .qwait .dots{display:flex;gap:4px}#game .qwait .dots u{width:6px;height:6px;border-radius:50%;background:#c8102e;animation:dts 1s ease-in-out infinite}
+#game .qwait .dots u:nth-child(2){animation-delay:.15s}#game .qwait .dots u:nth-child(3){animation-delay:.3s}
+@keyframes dts{50%{opacity:.25;transform:translateY(-3px)}}
+#game.waiting #quitBtn{display:none}
+@media (prefers-reduced-motion:reduce){#game .opt.pin,#game .qcard.in,#game .qcat.on,#game .clock.urg .num{animation:none!important}}
 </style>
 </head>
 <body>
@@ -2277,9 +2316,10 @@ background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);anim
     </div>
     <div class="sheet" style="padding-top:16px">
       <div class="meta"><span class="chip" id="lvlChip">سهل</span><span class="combo" id="combo"></span><span class="qsec" id="qSec"></span><span id="qNum">السؤال 1</span></div>
-      <div class="qwrap" id="qWrap"><div class="qcard" id="qText"></div><svg class="qring" id="qRing" aria-hidden="true"><path id="qRingPath" pathLength="100" fill="none" stroke-width="4" stroke-linecap="round"/></svg></div>
+      <div class="qwrap" id="qWrap"><div class="qcat" id="qCat"></div><div class="qcard" id="qText"></div><svg class="qring" id="qRing" aria-hidden="true"><path id="qRingPath" pathLength="100" fill="none" stroke-width="4" stroke-linecap="round"/></svg></div>
       <div class="opts" id="opts"></div>
       <div class="expl" id="expl"></div>
+      <div class="qwait" id="qWait"><i>⏳</i><span></span><b class="dots"><u></u><u></u><u></u></b></div>
       <button class="btn" id="quitBtn" style="margin-top:14px;padding:12px;font-size:15px;background:var(--accent);color:#fff;border:0">استسلام / خروج</button>
     </div>
   </section>
@@ -3204,7 +3244,7 @@ function setQTimer(ql){
   $('qRingPath').style.strokeDashoffset = -(1-f)*100;
   const sec=Math.ceil(ql);
   $('qSec').textContent = toAr(sec)+' ث';
-  const wr=$('qWrap'); wr.classList.toggle('danger', sec<=5); wr.classList.toggle('warn', sec>5 && sec<=8); const qs=$('qSec'); qs.classList.toggle('danger', sec<=5); qs.classList.toggle('warn', sec>5 && sec<=8);
+  const wr=$('qWrap'); try{ $('clock').classList.toggle('urg', sec<=5 && sec>0); }catch(e){} wr.classList.toggle('danger', sec<=5); wr.classList.toggle('warn', sec>5 && sec<=8); const qs=$('qSec'); qs.classList.toggle('danger', sec<=5); qs.classList.toggle('warn', sec>5 && sec<=8);
 }
 function nextQuestion(){
   const it = pick(); G.cur = it; G.n++; G.qStart = performance.now();
@@ -3407,7 +3447,7 @@ function recompute(){
   }
   g.lead = ld;
   g.combo=st; if(st>g.maxCombo) g.maxCombo=st;
-  if(st>=2){ $('combo').innerHTML=svg('flame',15)+' ×'+st; $('combo').classList.add('on'); } else $('combo').classList.remove('on');
+  if(st>=2){ const cb=$('combo'), was=cb.dataset.n|0; cb.innerHTML='🔥 <b>'+toAr(st)+' ×</b> متتالية صواب'; cb.dataset.n=st; if(was!==st){ cb.classList.remove('on'); void cb.offsetWidth; } cb.classList.add('on'); } else { $('combo').classList.remove('on'); $('combo').dataset.n=0; }
   const oa = g.phase==='q' && g.oppA.some(a=>a.qi===g.qi);
   $('botLbl').textContent = bot.name + (oa ? ' • أجاب' : '');
   fxDuelCheck();
@@ -3431,7 +3471,8 @@ function showQS(i, startAt){
   if(!g.t0) g.t0 = startAt||performance.now(); /* بداية الدقيقة الحقيقية */
   g.qT = qmsOf(q.it); g.deadline = (startAt||performance.now()) + g.qT; g.qMax = g.qT/1000; g.pend=null; g.lastSec=0;
   $('qNum').textContent='السؤال '+toAr(i+1)+' من '+toAr(NQ);
-  const lv=q.it.lvl; $('lvlChip').textContent = LEVEL_NAME[lv]+' '+toAr(PTS[lv])+'–'+toAr(Math.round(PTS[lv]*1.5)); $('lvlChip').dataset.l = lv;
+  const lv=q.it.lvl; $('lvlChip').innerHTML = '<i class="stz">'+'★'.repeat(lv)+'</i>'+LEVEL_NAME[lv]+' · '+toAr(PTS[lv])+' نقطة'; $('lvlChip').dataset.l = lv;
+  qCatSet(q.it.cat); qWaitSet('');
   const qc=$('qText'); const QK=renderQText(q.it, $('opts')); qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
   buildRing(); setQTimer(g.qMax);
   const ex=$('expl'); ex.textContent=''; ex.classList.remove('on');
@@ -3441,11 +3482,19 @@ function showQS(i, startAt){
   q.opts.forEach((o,idx)=>{
     const b=document.createElement('button'); b.className='opt'; b.dataset.ok=o.ok?'1':'0';
     b.innerHTML=`<span class="lt">${LET[idx]}</span><span class="tx"></span><span class="st">${svg(o.ok?'check':'x',16)}</span>`;
-    fillOptText(b,o.t,QK); b.onclick=()=>answerS(b,o.ok,box); box.appendChild(b);
+    fillOptText(b,o.t,QK); b.style.setProperty('--i',idx); b.classList.add('pin'); b.onclick=()=>answerS(b,o.ok,box); box.appendChild(b);
   });
   recompute();
   if(!PV) botAns(i, 0);
 }
+const QCATI={'شرعية عامة':'🕌','شرعية مالية':'💰','منتجات البنك':'🏦','ذاكرة':'🧠','انتباه':'👁️','سرعة بديهة':'⚡','حساب ذهني':'🔢','ثقافة عامة':'🌍','جغرافيا':'🗺️','اللغة العربية':'📖'};
+function qCatSet(c){ const el=$('qCat'); if(!el) return; c=String(c||'').trim(); el.innerHTML=c?'<i>'+(QCATI[c]||'📘')+'</i><span></span>':''; if(c) el.querySelector('span').textContent=c; el.classList.toggle('on',!!c); }
+function qWaitSet(t,on){ const w=$('qWait'); if(!w) return; w.querySelector('span').textContent=t||''; const v=!!(on&&t); w.classList.toggle('on',v); $('game').classList.toggle('waiting',v); }
+function flyPts(from,pts){ try{ const a=from.getBoundingClientRect(), r=$('raceMe').getBoundingClientRect(), b={left:r.right-90,width:60,top:r.top,height:r.height}; const d=document.createElement('div'); d.className='flyp'; d.textContent='+'+toAr(pts);
+  d.style.left=(a.left+a.width/2)+'px'; d.style.top=(a.top+a.height/2)+'px'; document.body.appendChild(d);
+  const dx=b.left+b.width/2-(a.left+a.width/2), dy=b.top+b.height/2-(a.top+a.height/2);
+  d.animate([{transform:'translate(-50%,-50%) scale(.6)',opacity:0},{transform:'translate(-50%,-50%) scale(1.25)',opacity:1,offset:.18},{transform:'translate(calc(-50% + '+dx+'px),calc(-50% + '+dy+'px)) scale(.7)',opacity:.9}],{duration:1150,easing:'cubic-bezier(.5,0,.3,1)',fill:'forwards'}).onfinish=()=>{ d.remove(); try{ const s=$('raceMe'); s.classList.remove('hit'); void s.offsetWidth; s.classList.add('hit'); }catch(e){} };
+}catch(e){} }
 function floatPts(pts,lvl,fast){
   const d=document.createElement('div'); d.className='fpts l'+lvl; d.innerHTML='+'+toAr(pts)+(fast?'<small>سريع!</small>':'');
   document.body.appendChild(d); setTimeout(()=>d.remove(),2000);
@@ -3460,7 +3509,7 @@ function answerS(btn, ok, box){
     SND.stab(); FXV.duel('stab'); g.wst=(g.wst||0)+1; FXV.flash('rgba(200,16,46,.6)'); FXV.shake($('qWrap')); showExpl('');
   } else {
     [...box.children].forEach(c=>{ if(c!==btn) c.classList.add('dim'); });
-    g.wst=0; SND.slash(); FXV.duel('thrust'); FXV.flash('rgba(26,143,76,.55)'); floatPts(ptsFor(lv,ms,T),lv,ms<3000); showExpl('');
+    g.wst=0; SND.slash(); FXV.duel('thrust'); FXV.flash('rgba(26,143,76,.55)'); flyPts(btn,ptsFor(lv,ms,T)); showExpl('');
   }
   try{ navigator.vibrate && navigator.vibrate(ok?20:[30,40,30]); }catch(e){}
   const rec={qi:g.qi,ok:ok,ms:ms}; try{ (g.picks=g.picks||{})[g.qi]=String((btn.querySelector('.tx')||btn).textContent||'').slice(0,120); }catch(e){}
@@ -3477,10 +3526,10 @@ function waitLbl(rem){
   if(!opp){
     if(g.phase!=='q') return;
     if(rem==null) rem=Math.max(0,g.deadline-performance.now());
-    q.textContent='بانتظار '+nm+' — '+toAr(Math.ceil(rem/1000))+' ث'; return;
+    q.textContent='بانتظار '+nm+' — '+toAr(Math.ceil(rem/1000))+' ث'; qWaitSet('بانتظار إجابة '+(nm||'المنافس')+'…',1); return;
   }
   const d=opp.ms-mine.ms, sec=String((Math.abs(d)/1000).toFixed(1)).replace('.','٫').replace(/\d/g,x=>AR_DIG[x]);
-  q.textContent = Math.abs(d)<150 ? 'أجبتما معاً' : (d>0 ? nm+' أجاب بعدك بـ '+sec+' ث' : nm+' أجاب قبلك بـ '+sec+' ث');
+  qWaitSet(''); q.textContent = Math.abs(d)<150 ? 'أجبتما معاً' : (d>0 ? nm+' أجاب بعدك بـ '+sec+' ث' : nm+' أجاب قبلك بـ '+sec+' ث');
   g.lblDone=g.qi;
 }
 function timeoutS(){
