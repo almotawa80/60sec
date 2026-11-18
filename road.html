@@ -2268,6 +2268,24 @@ html .toast{white-space:nowrap;max-width:94vw;width:auto!important;font-size:14p
 #home .pfhold{top:30%!important}
 
 #home #goBtn .slbl{padding:0 128px 0 16px!important;white-space:nowrap;box-sizing:border-box}
+
+/* أنواع الأسئلة الجديدة */
+#game .qblank{display:inline-block;min-width:64px;margin:0 6px;padding:0 10px;border-bottom:3px dashed #c8102e;color:#c8102e;font-weight:900;line-height:1.3;animation:qbl 1.2s ease-in-out infinite}
+#game .qblank.fill{border-bottom-style:solid;border-color:#1e9e6a;color:#1e9e6a;animation:none}
+@keyframes qbl{50%{opacity:.45}}
+#game .opts.tf{display:grid!important;grid-template-columns:1fr 1fr;gap:12px}
+#game .opts.tf .opt{min-height:96px!important;flex-direction:column!important;justify-content:center!important;font-size:24px!important;font-weight:900!important}
+#game .opts.tf .opt .lt{display:none!important}
+#game .opts.tf .opt .tx::before{display:block;font-size:30px;line-height:1.1;margin-bottom:2px}
+#game .opts.tf .opt:nth-child(1) .tx::before{content:'✔';color:#1e9e6a}
+#game .opts.tf .opt:nth-child(2) .tx::before{content:'✖';color:#c8102e}
+
+#badgesPage .sph{margin:12px auto 6px!important}
+#badgesPage .bgrid{gap:6px!important;margin-top:0!important}
+#badgesPage .bt2 .ring{width:64px!important;height:64px!important;box-shadow:0 0 0 2px #fff,0 0 0 4px #e0a92e,0 5px 0 #8a5a12,0 8px 12px rgba(0,0,0,.4)!important;margin:6px auto 4px!important}
+#badgesPage .bt2 .ring .bi{width:52px!important;height:52px!important}
+#badgesPage .bt2 .ring .bi svg{width:22px;height:22px}
+#badgesPage .bt2 .nm{margin-top:6px!important;font-size:11.5px!important;padding:0 8px 2px!important}
 </style>
 </head>
 <body>
@@ -2971,8 +2989,8 @@ function renderBadges(){
     row.onclick=()=>showTrack(t);
     box.appendChild(row);
   });
-  const sp=document.createElement('div'); sp.className='sph'; sp.textContent='شارات خاصة'; box.appendChild(sp);
-  const g=document.createElement('div'); g.className='bgrid'; box.appendChild(g);
+  const sp=document.createElement('div'); sp.className='sph'; sp.textContent='شارات خاصة';
+  const g=document.createElement('div'); g.className='bgrid'; box.insertBefore(g, box.firstChild); box.insertBefore(sp, g);
   BADGES.filter(b=>b.sp).forEach(b=>{
     const on=!!stats.badges[b.id], v=Math.min(b.val(),b.goal), pct=on?100:Math.round(v/b.goal*100);
     const t=document.createElement('button'); t.className='bt2'+(on?' on':'');
@@ -3317,7 +3335,7 @@ function setQTimer(ql){
 function nextQuestion(){
   const it = pick(); G.cur = it; G.n++; G.qStart = performance.now();
   let opts = [{t:it.right,ok:true}, ...it.w.map(t=>({t,ok:false}))];
-  if(PV && PV.seed!=null && G.rng){ for(let i=opts.length-1;i>0;i--){ const j=Math.floor(G.rng()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; } } else opts = shuffle(opts);
+  if(PV && PV.seed!=null && G.rng){ for(let i=opts.length-1;i>0;i--){ const j=Math.floor(G.rng()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; } } else opts = shuffle(opts); opts=tfOpts(it,opts);
   $('qNum').textContent = 'السؤال '+G.n;
   $('lvlChip').textContent = LEVEL_NAME[it.lvl]; $('lvlChip').dataset.l = it.lvl;
   const qc = $('qText'); const QK = renderQText(it, $('opts')); qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
@@ -3360,13 +3378,29 @@ const QCOL_AR={red:'الأحمر',blue:'الأزرق',green:'الأخضر',yello
 const qIcon = k => `<svg viewBox="0 0 64 64" aria-hidden="true">${QICON[k]||''}</svg>`;
 function qKind(q){ if(typeof q!=='string' || q.charAt(0)!=='#' || q.indexOf('|')<0) return null; const p=q.split('|'); return {t:p[0].slice(1), a:p.slice(1)}; }
 let QSPEC_T = null;
+/* صح أم خطأ: زرّين بس (صح ثم خطأ) */
+function tfOpts(it,opts){ if(!it || !/^#tf\|/.test(it.q||'')) return opts; return opts.filter(o=>{ const t=String(o.t||'').trim(); return t && t!=='-'; }).sort((a,b)=>(String(b.t).trim()==='صح')-(String(a.t).trim()==='صح')); }
 /* يكتب نص السؤال؛ ويرجع نوع السؤال الخاص أو null. للذاكرة: يخفي الخيارات ٣ ثوانٍ */
 function renderQText(it, box){
   clearTimeout(QSPEC_T); QSPEC_T=null;
   const qc=$('qText'), k=qKind(it.q);
-  box.classList.remove('cols','icons','hide');
+  box.classList.remove('cols','icons','hide','tf');
   qc.classList.toggle('spec', !!k);
   if(!k){ qc.textContent = it.q; return null; }
+  if(k.t==='tf'){
+    qc.innerHTML = `<div class="qhint">صح أم خطأ؟ ⚖️</div><div class="qask"></div>`;
+    qc.querySelector('.qask').textContent = k.a[0]||''; box.classList.add('tf'); return k;
+  }
+  if(k.t==='gap'){
+    qc.innerHTML = `<div class="qhint">أكمل العبارة ✍️</div><div class="qask qgap"></div>`;
+    const el=qc.querySelector('.qgap'), parts=String(k.a[0]||'').split(/_{2,}|…{1,}/);
+    parts.forEach((p,i)=>{ el.appendChild(document.createTextNode(p)); if(i<parts.length-1){ const b=document.createElement('span'); b.className='qblank'; b.textContent='؟'; el.appendChild(b); } });
+    return null;
+  }
+  if(k.t==='odd'){
+    qc.innerHTML = `<div class="qhint">اكتشف المختلف 🔎</div><div class="qask"></div>`;
+    qc.querySelector('.qask').textContent = k.a[0]||'أي واحد مختلف عن الباقي؟'; return null;
+  }
   if(k.t==='mem' || k.t==='memn'){
     const items=(k.a[0]||'').split(',').filter(Boolean), ask=k.a[1]||'', hi=+(k.a[2]||0);
     const cell = x => k.t==='mem' ? `<div class="qci">${qIcon(x)}</div>` : `<div class="qci num">${esc(x)}</div>`;
@@ -3400,7 +3434,7 @@ function showExpl(prefix){
 }
 function answer(btn, ok, box){
   if(G.locked || G.over) return;
-  G.locked = true; box.classList.add('lock');
+  G.locked = true; box.classList.add('lock'); try{ const bl=document.querySelector('#qText .qblank'), rb=[...box.children].find(c=>c.dataset.ok==='1'); if(bl&&rb){ bl.textContent=(rb.querySelector('.tx')||rb).textContent; bl.classList.add('fill'); } }catch(e){} 
   btn.classList.add(ok?'ok':'bad');
   if(!ok){
     [...box.children].forEach(c=>{ if(c.dataset.ok==='1') c.classList.add('ok'); else if(c!==btn) c.classList.add('dim'); });
@@ -3464,7 +3498,7 @@ function buildQs(seed){
       const opts = [{t:it.right,ok:true}, ...it.w.map(t=>({t,ok:false}))];
       const orng = mkRng(seed*131 + i + 1 + (PV ? PV.me*7919 : 0));
       for(let k=opts.length-1;k>0;k--){ const j=Math.floor(orng()*(k+1)); [opts[k],opts[j]]=[opts[j],opts[k]]; }
-      out.push({it,opts}); continue;
+      out.push({it,opts:tfOpts(it,opts)}); continue;
     }
     let pool = ALL.filter(x=>x.lvl===LVS[i] && !used.has(x));
     if(!pool.length) pool = ALL.filter(x=>!used.has(x));
@@ -3475,7 +3509,7 @@ function buildQs(seed){
     const opts = [{t:it.right,ok:true}, ...it.w.map(t=>({t,ok:false}))];
     const orng = mkRng(seed*131 + i + 1 + (PV ? PV.me*7919 : 0));
     for(let k=opts.length-1;k>0;k--){ const j=Math.floor(orng()*(k+1)); [opts[k],opts[j]]=[opts[j],opts[k]]; }
-    out.push({it,opts});
+    out.push({it,opts:tfOpts(it,opts)});
   }
   return out;
 }
@@ -3570,6 +3604,7 @@ function floatPts(pts,lvl,fast){
 function answerS(btn, ok, box){
   const g=G; if(!g||g.over||g.locked||g.phase!=='q') return;
   g.locked=true; box.classList.add('lock');
+  try{ const bl=document.querySelector('#qText .qblank'), rb=[...box.children].find(c=>c.dataset.ok==='1'); if(bl&&rb){ bl.textContent=(rb.querySelector('.tx')||rb).textContent; bl.classList.add('fill'); } }catch(e){} 
   const T=g.qT||QMS, ms=Math.min(T,Math.max(0,Math.round(performance.now()-(g.deadline-T)))), lv=g.cur.lvl;
   btn.classList.add(ok?'ok':'bad');
   if(!ok){
