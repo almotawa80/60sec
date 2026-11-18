@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611181100">
+<meta name="app-version" content="202611181130">
 <title>لوحة تحكّم الطريق إلى الرئيسي</title>
 <link rel="icon" href="img/road/favicon.svg?v=2" type="image/svg+xml">
 <link rel="icon" href="img/road/fav-32.png?v=2" sizes="32x32">
@@ -526,12 +526,17 @@ function render(){
 let AV={};
 async function loadAV(){ const em=(D.players||[]).map(p=>p.emp_no).filter(Boolean); if(!em.length) return; let r=null; try{ r=await rpc('admin_avatars',{p_key:KEY,p_emps:em}); }catch(e){} if(!r||!r.ok) return; AV=r.av||{}; renderPl(); if(SEL){ const rb=$('rzOne'), rb2=$('rdOne'); if($('pRep')&&!(rb&&rb.classList.contains('sure'))&&!(rb2&&rb2.classList.contains('sure'))) drawPlayer(); } }
 const avCss=u=>"background-image:url('"+String(u).replace(/['"\\()\s]/g,'')+"')";
+/* الاسم الرسمي من قائمة الموظفين، واسم اللعب (اللي كتبه اللاعب) تحته */
+let ENM={};
+const offN=p=>ENM[p.emp_no]||p.name||'';
+const nickN=p=>{ const o=ENM[p.emp_no]; return (o && p.name && o.replace(/\s+/g,'')!==String(p.name).replace(/\s+/g,'')) ? p.name : ''; };
+const nickH=p=>nickN(p)?' · 🎮 '+esc(nickN(p)):'';
 function renderPl(){
   const all=D.players||[], q=($('q').value||'').trim();
-  let rows=all.filter(p=>!q||(p.name||'').includes(q)||(p.emp_no||'').includes(q));
+  let rows=all.filter(p=>!q||(p.name||'').includes(q)||offN(p).includes(q)||(p.emp_no||'').includes(q));
   if(PLF==='on') rows=rows.filter(p=>p.online); else if(PLF==='top') rows=rows.slice().sort((a,b)=>(b.total_points||0)-(a.total_points||0)).slice(0,10);
   $('vPl').textContent=fmt(all.length); $('vOn').textContent=fmt(all.filter(p=>p.online).length);
-  $('pl').innerHTML=rows.length?rows.map(p=>'<button class="li pp" type="button" data-e="'+esc(p.emp_no)+'"><span class="av">'+(all.indexOf(p)+1)+'</span>'+(AV[p.emp_no]?'<span class="pav" style="'+avCss(AV[p.emp_no])+'"></span>':'')+'<span class="n">'+(p.online?'<i class="dot"></i>':'')+esc(p.name)+'<small>'+esc(p.emp_no)+'</small></span><span class="m"><b>'+fmt(p.total_points)+'</b><br>نقطة</span>'+'<svg class="cv2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>'+'</button>').join(''):empty(q?'لا نتائج للبحث':PLF==='on'?'لا يوجد أحد متصل الآن':'لا يوجد لاعبون');
+  $('pl').innerHTML=rows.length?rows.map(p=>'<button class="li pp" type="button" data-e="'+esc(p.emp_no)+'"><span class="av">'+(all.indexOf(p)+1)+'</span>'+(AV[p.emp_no]?'<span class="pav" style="'+avCss(AV[p.emp_no])+'"></span>':'')+'<span class="n">'+(p.online?'<i class="dot"></i>':'')+esc(offN(p))+'<small>'+esc(p.emp_no)+nickH(p)+'</small></span><span class="m"><b>'+fmt(p.total_points)+'</b><br>نقطة</span>'+'<svg class="cv2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>'+'</button>').join(''):empty(q?'لا نتائج للبحث':PLF==='on'?'لا يوجد أحد متصل الآن':'لا يوجد لاعبون');
 
 }
 function vItem(r){
@@ -613,7 +618,7 @@ function openPlayer(emp){ SEL=emp; drawPlayer(); $('ov').classList.remove('hide'
 function closePlayer(){ SEL=null; $('ov').classList.add('hide'); document.body.style.overflow=''; }
 function drawPlayer(){
   if(!SEL||!D) return; const all=D.players||[], p=all.find(x=>x.emp_no===SEL); if(!p){ closePlayer(); return; }
-  $('ps').innerHTML='<div class="ph">'+(AV[p.emp_no]?'<span class="av img" style="'+avCss(AV[p.emp_no])+'"></span>':'<span class="av">'+esc((p.name||'؟').trim().charAt(0))+'</span>')+'<div><b>'+(p.online?'<i class="dot"></i>':'')+esc(p.name)+'</b><small>الرقم الوظيفي '+esc(p.emp_no)+' · الترتيب '+(all.indexOf(p)+1)+'</small></div><button class="x" type="button" aria-label="إغلاق"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
+  $('ps').innerHTML='<div class="ph">'+(AV[p.emp_no]?'<span class="av img" style="'+avCss(AV[p.emp_no])+'"></span>':'<span class="av">'+esc((offN(p)||'؟').trim().charAt(0))+'</span>')+'<div><b>'+(p.online?'<i class="dot"></i>':'')+esc(offN(p))+'</b><small>الرقم الوظيفي '+esc(p.emp_no)+' · الترتيب '+(all.indexOf(p)+1)+nickH(p)+'</small></div><button class="x" type="button" aria-label="إغلاق"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
    +'<div class="pg"><div><b>'+fmt(p.total_points)+'</b><span>إجمالي النقاط</span></div><div><b>'+fmt(p.balance)+'</b><span>الرصيد</span></div><div><b>'+fmt(p.vouchers)+'</b><span>قسائم</span></div><div><b>'+fmt(p.played)+'</b><span>مباريات</span></div><div><b>'+fmt(p.wins)+'</b><span>فوز</span></div><div><b>'+fmt(p.quits)+'</b><span>انسحاب</span></div></div>'
    +'<div class="pl ed" id="empRow"><span>الرقم الوظيفي</span><b>'+esc(p.emp_no)+'</b><button class="eb" type="button" id="empEd">تعديل</button></div>'
    +'<div class="pl"><span>آخر لعب</span><b>'+dt(p.last_play)+'</b></div><div class="pl"><span>تاريخ التسجيل</span><b>'+dt(p.created_at)+'</b></div>'
@@ -658,6 +663,7 @@ async function loadEmp(){
 }
 let EF='all', EG='a';
 function renderEmp(){ const r=EMP; if(!r||!r.rows) return;
+  { let ch=false; r.rows.forEach(x=>{ if(x.name && ENM[x.emp_no]!==x.name){ ENM[x.emp_no]=x.name; ch=true; } }); if(ch && D){ try{ renderPl(); if(SEL && $('pRep')) drawPlayer(); }catch(e){} } }
   $('vEmp').textContent=fmt(r.total); $('empSub').textContent=r.total?'الدخول بالرقم الوظيفي والرمز مفعّل':'ارفع القائمة ليصير الدخول بالرمز';
   $('empSt').innerHTML='<div><b>'+fmt(r.total)+'</b><span>في القائمة</span></div><div><b style="color:var(--ok)">'+fmt(r.joined)+'</b><span>دخلوا</span></div><div><b>'+fmt(r.total-r.joined)+'</b><span>ما دخلوا</span></div>';
   const q=($('empQ').value||'').trim();
@@ -864,7 +870,7 @@ document.querySelectorAll('.it[data-k]').forEach(it=>{
 });
 
 /* ===== التصدير ===== */
-const shPlayers=()=>XLSX.utils.json_to_sheet(D.players.map(p=>({'الاسم':p.name,'الرقم الوظيفي':p.emp_no,'إجمالي النقاط':p.total_points,'الرصيد':p.balance,'مباريات':p.played,'فوز':p.wins,'انسحاب':p.quits,'قسائم':p.vouchers,'آخر لعب':p.last_play,'تاريخ التسجيل':p.created_at})));
+const shPlayers=()=>XLSX.utils.json_to_sheet(D.players.map(p=>({'الاسم':offN(p),'اسم اللعب':p.name,'الرقم الوظيفي':p.emp_no,'إجمالي النقاط':p.total_points,'الرصيد':p.balance,'مباريات':p.played,'فوز':p.wins,'انسحاب':p.quits,'قسائم':p.vouchers,'آخر لعب':p.last_play,'تاريخ التسجيل':p.created_at})));
 const shVouchers=()=>XLSX.utils.json_to_sheet(D.redemptions.map(r=>({'الرمز':r.code,'الاسم':r.player_name,'الرقم الوظيفي':r.emp_no,'القسيمة':r.reward,'النقاط':r.cost,'الحالة':r.status,'التاريخ':r.created_at})));
 function exportXls(kind){
   if(!D||typeof XLSX==='undefined') return;
@@ -1015,7 +1021,7 @@ async function openPRep(p){
   let r=null; try{ r=await rpc('admin_player_report',{p_key:KEY,p_emp:p.emp_no,p_days:0}); }catch(e){}
   if(SEL!==p.emp_no) return;
   const e=(r&&r.emp)||{}, org=[e.grp,e.dept,((e.unit_type||'')+' '+(e.unit||'')).trim()].filter(Boolean).join(' › ');
-  let h=back+'<div class="ph">'+(AV[p.emp_no]?'<span class="av img" style="'+avCss(AV[p.emp_no])+'"></span>':'<span class="av">'+esc((p.name||'؟').trim().charAt(0))+'</span>')+'<div><b>'+esc(p.name)+'</b><small>'+esc(p.emp_no)+(org?' · '+esc(org):'')+'</small></div></div>';
+  let h=back+'<div class="ph">'+(AV[p.emp_no]?'<span class="av img" style="'+avCss(AV[p.emp_no])+'"></span>':'<span class="av">'+esc((offN(p)||'؟').trim().charAt(0))+'</span>')+'<div><b>'+esc(offN(p))+'</b><small>'+esc(p.emp_no)+nickH(p)+(org?' · '+esc(org):'')+'</small></div></div>';
   if(!r||!r.ok){ h+='<div class="rpe">'+(r&&r.error==='nf'?'اللاعب غير موجود':NOSQL)+'</div>'; }
   else if(!r.tot||!r.tot.n){ h+='<div class="rpe">ما فيه إجابات مسجّلة لهالموظف بعد. التسجيل يبدأ من أول جولة بعد التحديث.</div>'; }
   else { const t=r.tot, cats=r.cats||[], rk=cats.map(c=>({c:c.cat,p:pctOf(c.ok,c.n),n:c.n})).filter(x=>x.n>=3).sort((a,b)=>b.p-a.p);
