@@ -344,7 +344,28 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
 .ps .pcf{margin-top:8px;background:#fff3f3;border:1px solid #f1b9bf;border-radius:14px;padding:10px 12px;font-size:12.5px;font-weight:700;color:#7a0716;display:flex;align-items:center;gap:8px}.ps .pcf b{flex:1;line-height:1.5}.ps .pcf button{font:inherit;border:0;border-radius:999px;padding:7px 14px;font-weight:800;font-size:12.5px;cursor:pointer}.ps .pcf .y{background:var(--red);color:#fff}.ps .pcf .n{background:#f1e2c8;color:#4a2a0e}.ps .pcf button:disabled{opacity:.6}
 .ps .pam{margin-top:8px;text-align:center;font-size:12.5px;font-weight:800;color:var(--red)}.ps .pam.ok{color:#1a8f4c}.ps .pam:empty{display:none}
 .ps .rpx{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 12px}.ps .rpx button{font:inherit;border-radius:999px;padding:10px 6px;font-weight:800;font-size:13.5px;cursor:pointer;border:1.5px solid var(--red);background:var(--red);color:#fff}.ps .rpx button.x2{background:#1d6f42;border-color:#1d6f42}.ps .rpx button:disabled{opacity:.55}
-#pdfOv{position:fixed;inset:0;z-index:9999;background:#7d7d7d;overflow:auto;-webkit-overflow-scrolling:touch}#pdfOv .pvb{position:sticky;top:0;z-index:2;display:flex;gap:8px;justify-content:center;padding:calc(10px + env(safe-area-inset-top)) 10px 10px;background:#3d220b}#pdfOv .pvb button{font:800 13.5px "Noto Kufi Arabic",system-ui,sans-serif;border:0;border-radius:999px;padding:9px 13px;cursor:pointer;white-space:nowrap}#pdfOv .pvr{flex-wrap:nowrap!important;gap:6px!important}#pdfOv .pvs{background:#c8102e;color:#fff}#pdfOv .pvs:disabled{opacity:.7}#pdfOv .pvc,#pdfOv .pvo{background:#f1e2c8;color:#3d220b}#pdfOv .pvr{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}#pdfOv .pvb{flex-direction:column}#pdfOv .pvp{display:none;max-height:46vh;overflow:auto;padding:4px 2px 2px}#pdfOv.opt .pvp{display:block}#pdfOv.opt .pvo{background:#fff;color:#c8102e}#pdfOv .pvl{color:#f1e2c8;font-size:12px;font-weight:800;margin:8px 4px 4px}#pdfOv .pcs{display:flex;flex-wrap:wrap;gap:6px}#pdfOv .pch{font:700 12.5px "Noto Kufi Arabic",system-ui,sans-serif!important;padding:6px 12px!important;border-radius:999px;border:1.5px solid #8a6a45!important;background:transparent;color:#d9c4a0;cursor:pointer}#pdfOv .pch.on{background:#f1e2c8;color:#3d220b;border-color:#f1e2c8!important}#pdfOv .pvn{color:#f1e2c8;font-size:12px;text-align:center;margin-top:8px;opacity:.85}#pdfOv .pvw{margin:10px auto 30px;overflow:hidden}#pdfOv .pvz{width:794px;transform-origin:top right}#pdfOv .pvz .pg{margin-bottom:12px;box-shadow:0 4px 18px rgba(0,0,0,.3)}
+#pdfOv{position:fixed;inset:0;z-index:9999;background:#6f6a64;display:flex;flex-direction:column;font-family:"Noto Kufi Arabic",system-ui,sans-serif}
+#pdfOv .pvt{flex:none;display:flex;align-items:center;gap:8px;padding:calc(8px + env(safe-area-inset-top)) 12px 8px;background:var(--card);border-bottom:1px solid var(--ln);color:var(--tx)}
+#pdfOv .pvt b{flex:1;font-size:15px;font-weight:800}#pdfOv .pvt small{display:block;font-size:11px;color:var(--mu);font-weight:600}
+#pdfOv .ib{width:38px;height:38px;border-radius:50%;border:1px solid var(--ln);background:var(--soft);color:var(--tx);display:grid;place-items:center;cursor:pointer;padding:0;flex:none}
+#pdfOv .ib.on{background:var(--red);border-color:var(--red);color:#fff}
+#pdfOv .pvm{flex:none;display:flex;gap:6px;padding:8px 10px 0}#pdfOv .pvm::-webkit-scrollbar{display:none}#pdfOv .pvm button{flex:1 1 auto;justify-content:center;font:inherit;font-size:12px;font-weight:800;border:1.5px solid rgba(255,255,255,.55);background:rgba(0,0,0,.12);color:#fff;border-radius:999px;padding:6px 8px;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}#pdfOv .pvm button i{width:15px;height:15px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font-style:normal;font-size:10px;line-height:1}#pdfOv .pvm button i:after{content:"+"}#pdfOv .pvm button.on{background:var(--card);border-color:var(--card);color:var(--red)}#pdfOv .pvm button.on i{background:var(--red);border-color:var(--red);color:#fff}#pdfOv .pvm button.on i:after{content:"✓"}
+#pdfOv .pvsc{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding-bottom:90px}
+#pdfOv .pvw{margin:10px auto 0;overflow:hidden}#pdfOv .pvz{width:794px;transform-origin:top right}#pdfOv .pvz .pg{margin-bottom:12px;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+#pdfOv .pvf{position:absolute;left:0;right:0;bottom:0;padding:10px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(rgba(111,106,100,0),rgba(111,106,100,.95) 40%)}
+#pdfOv .pvs{width:100%;font:800 15px inherit;font-family:inherit;border:0;border-radius:999px;padding:13px;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c);color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer}#pdfOv .pvs:disabled{opacity:.7}
+#pdfOv .shd{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s}
+#pdfOv .sht{position:absolute;left:0;right:0;bottom:0;max-height:78vh;overflow:auto;background:var(--card);border-radius:20px 20px 0 0;padding:6px 16px calc(14px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.9,.3,1);color:var(--tx)}
+#pdfOv.opt .shd{opacity:1;pointer-events:auto}#pdfOv.opt .sht{transform:none}
+#pdfOv .grab{width:38px;height:4px;border-radius:2px;background:var(--ln);margin:4px auto 8px}
+#pdfOv .shh{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}#pdfOv .shh b{font-size:15px}#pdfOv .shh button{font:inherit;font-weight:800;font-size:13.5px;border:0;background:none;color:var(--red);cursor:pointer;padding:6px}
+#pdfOv .sl{font-size:11.5px;font-weight:800;color:var(--mu);margin:12px 2px 4px}
+#pdfOv .grp{background:var(--soft);border-radius:14px;padding:0 12px}
+#pdfOv .row{display:flex;align-items:center;justify-content:space-between;min-height:42px;border-bottom:1px solid var(--ln);font-size:13.5px;font-weight:700;cursor:pointer;user-select:none}#pdfOv .row:last-child{border-bottom:0}
+#pdfOv .swt{width:42px;height:25px;border-radius:999px;background:var(--track);position:relative;flex:none;transition:background .15s}#pdfOv .swt:after{content:"";position:absolute;top:2.5px;right:2.5px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .15s}
+#pdfOv .row.on .swt{background:var(--ok)}#pdfOv .row.on .swt:after{transform:translateX(-17px)}
+#pdfOv .pls{display:flex;flex-wrap:wrap;gap:6px}#pdfOv .pl{font:inherit;font-size:12.5px;font-weight:700;border:1px solid var(--ln);background:var(--card);color:var(--mu);border-radius:999px;padding:5px 11px;cursor:pointer}#pdfOv .pl.on{background:var(--red);border-color:var(--red);color:#fff}
+#pdfOv .seg{display:flex;background:var(--track);border-radius:10px;padding:2px;margin:6px 0 10px}#pdfOv .seg button{flex:1;font:inherit;font-size:12.5px;font-weight:800;border:0;background:none;color:var(--tx);border-radius:8px;padding:6px;cursor:pointer}#pdfOv .seg button.on{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
@@ -1090,7 +1111,7 @@ function empPdfParts(d,o){
   const ring=(p,sz,sw,c,lab,sub)=>{ const r=(sz-sw)/2, C=2*Math.PI*r, off=C*(1-p/100);
     return '<svg width="'+sz+'" height="'+sz+'" viewBox="0 0 '+sz+' '+sz+'"><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="#f1e4cc" stroke-width="'+sw+'"/><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="'+c+'" stroke-width="'+sw+'" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 '+sz/2+' '+sz/2+')"/>'
       +'<text x="50%" y="'+(sub?'47%':'53%')+'" text-anchor="middle" dominant-baseline="middle" font-size="'+Math.round(sz*.24)+'" font-weight="800" fill="#3d220b">'+lab+'</text>'+(sub?'<text x="50%" y="68%" text-anchor="middle" font-size="'+Math.round(sz*.09)+'" fill="#8a6a45">'+sub+'</text>':'')+'</svg>'; };
-  const bars=()=>{ const rows=cats.slice().sort((a,b)=>b.p-a.p), H=40, W=430, L=170, h=rows.length*H+26;
+  const bars=(rd)=>{ const rows=cats.slice().sort((a,b)=>b.p-a.p), H=rd?40:32, W=430, L=170, h=rows.length*H+26;
     let s='<svg width="100%" direction="ltr" viewBox="0 0 '+(W+L+40)+' '+h+'" font-family="inherit">';
     [0,25,50,75,100].forEach(v=>{ const x=40+v/100*W; s+='<line x1="'+x+'" y1="4" x2="'+x+'" y2="'+(h-20)+'" stroke="#efe2c8" stroke-width="1"/><text x="'+x+'" y="'+(h-6)+'" text-anchor="middle" font-size="10" fill="#9a7b55">'+v+'٪</text>'; });
     rows.forEach((r,i)=>{ const y=8+i*H, bw=Math.max(2,r.p/100*W), core=CORE.includes(r.c);
@@ -1126,9 +1147,9 @@ function empPdfParts(d,o){
   const rd=o.radar?radar():'';
   if(cats.length&&(o.bars||rd)){ const lg1='<div class="lgd"><span><i style="background:#1a8f4c"></i>٧٥٪ فأكثر</span><span><i style="background:#e39b1c"></i>٦٠–٧٤٪</span><span><i style="background:#c8102e"></i>أقل من ٦٠٪</span>'+(BK?'<span><i style="background:#3d220b;width:3px;height:12px"></i>متوسط البنك</span>':'')+'</div>';
     const lg2='<div class="lgd" style="justify-content:center"><span><i style="background:#c8102e"></i>الموظف</span>'+(BK?'<span><i style="background:#3d220b"></i>متوسط البنك</span>':'')+'</div>';
-    B.push('<h3>الأداء حسب التصنيف</h3><div class="'+(o.bars&&rd?'two':'one')+'">'+(o.bars?'<div class="box">'+bars()+lg1+'</div>':'')+(rd?'<div class="box"'+(o.bars?'':' style="max-width:420px;margin:0 auto"')+'>'+rd+lg2+'</div>':'')+'</div>'); }
+    B.push('<h3>الأداء حسب التصنيف</h3><div class="'+(o.bars&&rd?'two':'one')+'">'+(o.bars?'<div class="box">'+(rd?bars(1):'<div style="max-width:560px;margin:0 auto">'+bars(0)+'</div>')+lg1+'</div>':'')+(rd?'<div class="box"'+(o.bars?'':' style="max-width:420px;margin:0 auto"')+'>'+rd+lg2+'</div>':'')+'</div>'); }
   const chips=strong.map(x=>'<span class="s">💪 '+E(x.c)+' '+x.p+'٪</span>').join('')+weak.map(x=>'<span class="w">⚠️ '+E(x.c)+' '+x.p+'٪</span>').join('');
-  if(o.sw||o.recs) B.push('<h3>'+(o.sw&&o.recs?'الخلاصة والتوصيات':o.sw?'نقاط القوة والضعف':'التوصيات')+'</h3><div class="'+(o.sw&&o.recs?'sw':'one')+'">'+(o.sw?'<div class="box"><div class="chips">'+(chips||'<span class="s">—</span>')+'</div></div>':'')+(o.recs?'<div class="box"><ul class="rc">'+recs.slice(0,4).map(r=>'<li>'+E(r)+'</li>').join('')+'</ul></div>':'')+'</div>');
+  if(o.sw||o.recs) B.push('<h3>'+(o.sw&&o.recs?'الخلاصة والتوصيات':o.sw?'نقاط القوة والضعف':'التوصيات')+'</h3><div class="'+(o.sw&&o.recs?'sw':'one')+'">'+(o.sw?'<div class="box"><div class="chips">'+(chips||'<span style="font-size:12px;color:#8a6a45">لا توجد نقاط قوة أو ضعف بارزة في المهارات المختارة.</span>')+'</div></div>':'')+(o.recs?'<div class="box"><ul class="rc">'+recs.slice(0,4).map(r=>'<li>'+E(r)+'</li>').join('')+'</ul></div>':'')+'</div>');
   let T=null;
   if(o.wrong){ if(wrong.length) T={pre:'<h3>أسئلة أخطأ فيها ('+wrong.length+')</h3>', th:'<tr><th>التصنيف</th><th>السؤال</th>'+(o.ans?'<th>إجابته</th>':'')+'<th>الإجابة الصحيحة</th></tr>',
       rows:wrong.map(q=>'<tr><td><span class="tg'+(CORE.includes(q.cat)?' k':'')+'">'+(CI[q.cat]||'')+' '+E(q.cat)+'</span></td><td>'+E(qtxt(q.q))+'</td>'+(o.ans?(q.pick?'<td class="bad">'+E(q.pick):'<td style="color:#9a7b55">⏱️ انتهى الوقت')+'</td>':'')+'<td class="ok">'+E(q.right_ans)+'</td></tr>')};
@@ -1176,32 +1197,31 @@ let PDFO={}; try{ PDFO=JSON.parse(localStorage.getItem('mc_pdf_opts')||'{}')||{}
 function pRepPdf(p,r){
   const old=$('pdfOv'); if(old) old.remove();
   const data=pRepData(p,r), allC=(data.cats||[]).map(c=>c.cat);
-  const O=Object.assign({},PDF_DEF,PDFO); if(O.cats) O.cats=O.cats.filter(c=>allC.includes(c)); if(O.cats&&!O.cats.length) O.cats=null;
-  const SEC=[['id','بطاقة الموظف والمؤشرات'],['core','المحاور الأساسية'],['bars','شارت التصنيفات'],['radar','الرادار'],['sw','نقاط القوة والضعف'],['recs','التوصيات'],['wrong','الأسئلة الغلط']];
+  /* الأساسي يطلع على طول، والإضافات بأزرار */
+  const EXT=[['wrong','الأسئلة الغلط'],['radar','الرادار'],['core','الشرعية والمنتجات']];
+  const E0=PDFO.ex&&typeof PDFO.ex==='object'?PDFO.ex:{}, EX={wrong:!!E0.wrong,radar:!!E0.radar,core:!!E0.core};
+  let O={};
+  const X='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
   const ov=document.createElement('div'); ov.id='pdfOv';
-  ov.innerHTML='<div class="pvb"><div class="pvr"><button type="button" class="pvs" id="pvSave">⬇️ حفظ / مشاركة PDF</button><button type="button" class="pvo" id="pvOpt">⚙️ الخيارات</button><button type="button" class="pvc" id="pvClose">إغلاق</button></div><div class="pvp" id="pvP"></div></div><div class="pvw"><div class="pvz" id="pvZ"></div></div>';
+  ov.innerHTML='<div class="pvt"><button type="button" class="ib" id="pvClose" aria-label="إغلاق">'+X+'</button><b>تقرير PDF<small id="pvN"></small></b></div>'
+    +'<div class="pvm" id="pvM">'+EXT.map(([k,l])=>'<button type="button" data-k="'+k+'"><i></i>'+l+'</button>').join('')+'</div>'
+    +'<div class="pvsc"><div class="pvw"><div class="pvz" id="pvZ"></div></div></div>'
+    +'<div class="pvf"><button type="button" class="pvs" id="pvSave">⬇️ حفظ / مشاركة PDF</button></div>';
   document.body.appendChild(ov); document.body.style.overflow='hidden';
-  const z=$('pvZ'), pan=$('pvP');
+  const z=$('pvZ');
   const fit=()=>{ const k=Math.min(1,(ov.clientWidth-16)/794); z.style.transform='scale('+k+')'; z.parentNode.style.height=(z.scrollHeight*k)+'px'; z.parentNode.style.width=(794*k)+'px'; };
-  const chip=(k,l,on)=>'<button type="button" class="pch'+(on?' on':'')+'" data-k="'+k+'">'+(on?'✓ ':'')+esc(l)+'</button>';
-  const drawPan=()=>{ pan.innerHTML='<div class="pvl">الأقسام</div><div class="pcs">'+SEC.map(([k,l])=>chip(k,l,O[k])).join('')+'</div>'
-      +'<div class="pvl">المهارات</div><div class="pcs">'+chip('c:*','الكل',!O.cats)+allC.map(c=>chip('c:'+c,c,!O.cats||O.cats.includes(c))).join('')+'</div>'
-      +'<div class="pvl">إضافات</div><div class="pcs">'+chip('bank','المقارنة بمتوسط البنك',O.bank)+(O.wrong?chip('ans','إجابته الغلط',O.ans)+chip('n:5','٥ أسئلة',O.nq===5)+chip('n:10','١٠ أسئلة',O.nq===10)+chip('n:0','كل الأسئلة',!O.nq):'')+'</div>'
-      +'<div class="pvn" id="pvN"></div>'; };
-  const render=()=>{ const n=empPdfLayout(z,data,O); fit(); const pn=$('pvN'); if(pn) pn.textContent='التقرير '+(n===1?'صفحة وحدة':n===2?'صفحتين':n+' صفحات'); blob=null; sv.textContent='⬇️ حفظ / مشاركة PDF'; try{ PDFO=Object.assign({},O); localStorage.setItem('mc_pdf_opts',JSON.stringify(PDFO)); }catch(e){} };
-  pan.onclick=e=>{ const b=e.target.closest('.pch'); if(!b) return; const k=b.dataset.k;
-    if(k==='c:*') O.cats=null;
-    else if(k.startsWith('c:')){ const c=k.slice(2); let cur=O.cats?O.cats.slice():allC.slice(); cur=cur.includes(c)?cur.filter(x=>x!==c):cur.concat(c); if(!cur.length) return; O.cats=cur.length===allC.length?null:cur; }
-    else if(k.startsWith('n:')) O.nq=+k.slice(2);
-    else { O[k]=O[k]?0:1; if(SEC.every(([q])=>!O[q])){ O[k]=1; return; } }
-    drawPan(); render(); };
-  $('pvOpt').onclick=()=>{ ov.classList.toggle('opt'); };
   let blob=null, busy=false; const sv=$('pvSave'), fn=repFile(p,'.pdf');
-  drawPan(); render(); addEventListener('resize',fit);
+  const render=()=>{ const cc=PDF_CORE.filter(c=>allC.includes(c));
+    O=Object.assign({},PDF_DEF,{wrong:EX.wrong?1:0,radar:EX.radar?1:0,nq:10,cats:EX.core&&cc.length?cc:null});
+    $('pvM').querySelectorAll('button').forEach(b=>b.classList.toggle('on',!!EX[b.dataset.k]));
+    const n=empPdfLayout(z,data,O); fit(); $('pvN').textContent=offN(p)+' · '+(n===1?'صفحة وحدة':n===2?'صفحتين':n+' صفحات'); blob=null; sv.textContent='⬇️ حفظ / مشاركة PDF';
+    try{ PDFO={ex:EX}; localStorage.setItem('mc_pdf_opts',JSON.stringify(PDFO)); }catch(e){} };
+  $('pvM').onclick=e=>{ const b=e.target.closest('[data-k]'); if(!b) return; EX[b.dataset.k]=!EX[b.dataset.k]; render(); };
+  render(); addEventListener('resize',fit);
   const close=()=>{ removeEventListener('resize',fit); ov.remove(); if(!$('ov')||$('ov').classList.contains('hide')) document.body.style.overflow=''; };
   $('pvClose').onclick=close;
   const deliver=async()=>{ const file=new File([blob],fn,{type:'application/pdf'});
-    if(navigator.canShare&&navigator.canShare({files:[file]})){ try{ await navigator.share({files:[file],title:fn}); return; }catch(e){ if(e&&e.name==='AbortError') return; if(e&&e.name==='NotAllowedError'){ sv.textContent='✅ جاهز، اضغط للحفظ'; return; } } }
+    if(navigator.canShare&&navigator.canShare({files:[file]})){ try{ await navigator.share({files:[file],title:fn}); return; }catch(e){ if(e&&e.name==='AbortError') return; if(e&&e.name==='NotAllowedError'){ sv.textContent='✅ الملف جاهز، اضغط للحفظ'; return; } } }
     const u=URL.createObjectURL(blob), a=document.createElement('a'); a.href=u; a.download=fn; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),60000); };
   sv.onclick=async()=>{ if(busy) return; if(blob){ await deliver(); return; } busy=true; sv.disabled=true; sv.textContent='جارٍ تجهيز الملف…';
     let box=null;
