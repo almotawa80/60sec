@@ -1327,5 +1327,24 @@ document.querySelector('section[data-p="home"]').addEventListener('click',ev=>{
 
 if(TAB==='rep') loadRep();
 </script>
+<script>
+/* تحديث تلقائي: الأيقونة المثبتة على الشاشة تفتح نسخة محفوظة، فنتأكد من الموقع ونحدّث لو فيه نسخة جديدة */
+(function(){
+  var K='admin_road_etag', busy=false;
+  function idle(){ var a=document.activeElement; return !(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.tagName==='SELECT')); }
+  function check(){
+    if(busy||!navigator.onLine) return; busy=true;
+    fetch(location.pathname+'?chk='+Date.now(),{method:'HEAD',cache:'no-store'}).then(function(r){
+      var e=r.headers.get('etag')||r.headers.get('last-modified'); if(!e) return;
+      var old=null; try{ old=localStorage.getItem(K); }catch(_){}
+      try{ localStorage.setItem(K,e); }catch(_){}
+      if(old && old!==e && idle()){ var u=location.pathname+'?v='+Date.now()+location.hash; location.replace(u); }
+    }).catch(function(){}).then(function(){ busy=false; });
+  }
+  window.addEventListener('load',function(){ setTimeout(check,1500); });
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') check(); });
+  window.addEventListener('pageshow',function(ev){ if(ev.persisted) check(); });
+})();
+</script>
 </body>
 </html>
