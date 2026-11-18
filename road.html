@@ -2218,6 +2218,20 @@ html,body{overflow-x:clip;overscroll-behavior-x:none}
 .rfx.trn .gold{width:100%;font-size:22px!important;margin-top:14px!important}
 
 #home #inviteBtn .mbd{margin:12px 0 8px!important;display:block}
+
+
+#profilePage .ttl h1{visibility:hidden}
+
+#profilePage #pfWrap{margin-top:-34px!important}
+
+/* ملفي: الإحصاءات صف تحت الصورة */
+#profilePage .pfstats.pfrow4{width:100%;margin:62px 0 0!important;flex-basis:100%}
+
+#profilePage .pfpk{top:24px!important}
+
+/* نافذة «تقدّمت فرع»: الشريط ما ينقص تحت شريط الجوال */
+.rfx{padding-top:calc(76px + env(safe-area-inset-top))!important;padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
+.rfx .in{margin:0 auto auto!important}
 </style>
 </head>
 <body>
@@ -2387,19 +2401,18 @@ html,body{overflow-x:clip;overscroll-behavior-x:none}
         <button class="pfwrap" id="pfWrap" type="button" aria-label="صورتك"><span class="pfbig" data-wb id="pfBig"></span><span class="pfplus" id="pfPlus">+</span></button>
         <div class="pfpk"><button type="button" id="pfPkA"><i></i><span>محاربي</span></button><button type="button" id="pfPkW"><i></i><span>سلاحي</span></button></div>
         <input type="file" id="pfFile" accept="image/*" hidden>
+        <div class="pfstats pfrow4">
+        <div><b id="pfTot">0</b><small>إجمالي النقاط</small></div>
+        <div><b id="pfBal">0</b><small>الرصيد</small></div>
+        <div><b id="pfWins">0</b><small>فوز / لعب</small></div>
+        <div><b id="pfBest">0</b><small>أفضل نتيجة</small></div>
+      </div>
       </div>
       <div class="pfsec">
         <div class="pfrow pfin"><span>الاسم</span><input id="pfNameIn" maxlength="30" autocomplete="name" placeholder="الاسم الكامل"><i class="pfst" id="pfNameSt"></i></div>
         <div class="pfrow"><span>الرقم الوظيفي</span><b id="pfEmp"></b><i class="pflock">ثابت</i></div>
         <div class="pfrow" id="pfDeptR" hidden><span>الإدارة</span><b id="pfDept"></b><i class="pflock">من القائمة</i></div>
         <div class="pfrow pfin"><span>البريد</span><input id="pfEmail" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" maxlength="120" dir="ltr"><i class="pfst" id="pfMailSt"></i></div>
-      </div>
-      <h3 class="pfh">إحصاءاتي</h3>
-      <div class="pfstats">
-        <div><b id="pfTot">0</b><small>إجمالي النقاط</small></div>
-        <div><b id="pfBal">0</b><small>الرصيد</small></div>
-        <div><b id="pfWins">0</b><small>فوز / لعب</small></div>
-        <div><b id="pfBest">0</b><small>أفضل نتيجة</small></div>
       </div>
       <h3 class="pfh">الإعدادات</h3>
       <div class="pfsec pfset">
@@ -5236,6 +5249,64 @@ drawCard = async function(r,name){
   x.restore();
   /* النص السفلي */
   x.fillStyle='#fff'; x.font='800 54px "Noto Kufi Arabic", sans-serif'; x.fillText('هل تستطيع التغلب عليّ؟',540,1290);
+  return c;
+};
+
+/* بطاقة المشاركة v2: نفس رسومات اللعبة الجديدة */
+function nine(x,im,sl,dx,dy,dw,dh,b){ const W=im.width,H=im.height,S=sl,B=b;
+  const sx=[0,S,W-S,W], sy=[0,S,H-S,H], tx=[dx,dx+B,dx+dw-B,dx+dw], ty=[dy,dy+B,dy+dh-B,dy+dh];
+  for(let i=0;i<3;i++) for(let j=0;j<3;j++){ const w=sx[i+1]-sx[i], h=sy[j+1]-sy[j], tw=tx[i+1]-tx[i], th=ty[j+1]-ty[j]; if(w>0&&h>0&&tw>0&&th>0) x.drawImage(im,sx[i],sy[j],w,h,tx[i],ty[j],tw,th); } }
+function strokeTxt(x,t,cx,cy,fill,stroke,lw){ x.lineJoin='round'; x.lineWidth=lw; x.strokeStyle=stroke; x.strokeText(t,cx,cy); x.fillStyle=fill; x.fillText(t,cx,cy); }
+async function rdAv2(x,cx,cy,R,src,ch,robot,ring){
+  const im=await loadImg(src);
+  x.save(); x.beginPath(); x.arc(cx,cy,R,0,Math.PI*2); x.closePath(); x.clip();
+  if(im){ const m=Math.min(im.width,im.height); x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,cx-R,cy-R,2*R,2*R); }
+  else { const g=x.createRadialGradient(cx-R*.25,cy-R*.4,R*.1,cx,cy,R*1.1);
+    if(robot){ g.addColorStop(0,'#8fe3ef'); g.addColorStop(.55,'#3fb7c9'); g.addColorStop(1,'#1f7f90'); } else { g.addColorStop(0,'#ff6b75'); g.addColorStop(.55,'#d81f2e'); g.addColorStop(1,'#a50f1c'); }
+    x.fillStyle=g; x.fillRect(cx-R,cy-R,2*R,2*R); x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle';
+    x.font='800 '+(R*0.95)+'px "Noto Kufi Arabic", sans-serif'; x.fillText(robot?'🤖':(ch||'؟'),cx,cy+6); x.textBaseline='alphabetic'; }
+  x.restore();
+  const rg=await loadImg(ring); if(rg){ const D=R*2*1.32; x.drawImage(rg,cx-D/2,cy-D/2,D,D); }
+}
+drawCard = async function(r,name){
+  try{ await document.fonts.load('800 64px "Noto Kufi Arabic"'); await document.fonts.load('900 64px "Noto Kufi Arabic"'); }catch(e){}
+  const W=1080,H=1350, c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d');
+  const L=p=>loadImg(p);
+  const [bg,ttlI,card,rib,vs,ribR,ribB,cMe,cOp,pill]=await Promise.all(['img/road/v2/m3.jpg','img/road/splash/title.webp','img/road/badges/card.webp',
+    'img/road/result/'+(r.result==='win'?'ribWin':r.result==='lose'?'ribLose':'ribDraw')+'.webp','img/road/vs/vs.webp','img/road/vs/ribR.webp','img/road/vs/ribB.webp','img/road/result/cardMe.webp','img/road/result/cardOp.webp','img/road/ui/pill.webp'].map(L));
+  x.fillStyle='#2a1408'; x.fillRect(0,0,W,H);
+  if(bg){ const s=Math.max(W/bg.width,H/bg.height), w=bg.width*s, h=bg.height*s; x.drawImage(bg,(W-w)/2,0,w,h); }
+  const ov=x.createLinearGradient(0,0,0,H); ov.addColorStop(0,'rgba(0,0,0,.05)'); ov.addColorStop(.7,'rgba(0,0,0,.12)'); ov.addColorStop(1,'rgba(30,12,4,.55)'); x.fillStyle=ov; x.fillRect(0,0,W,H);
+  x.direction='rtl'; x.textAlign='center'; x.textBaseline='alphabetic';
+  /* الشعار والعنوان */
+  try{ const lw=210, sc=lw/2525; x.save(); x.translate(540-lw/2,36); x.scale(sc,sc); const LP=new Path2D(BKLOGO_D); x.lineJoin='round'; x.strokeStyle='#fff'; x.lineWidth=9/sc; x.stroke(LP); x.fillStyle='#d81f2e'; x.fill(LP,'evenodd'); x.restore(); }catch(e){}
+  if(ttlI){ const tw=640, th=tw*ttlI.height/ttlI.width; x.save(); x.shadowColor='rgba(0,0,0,.35)'; x.shadowBlur=18; x.shadowOffsetY=8; x.drawImage(ttlI,540-tw/2,112,tw,th); x.restore(); }
+  /* البطاقة */
+  const cx0=56, cy0=380, cw=968, chh=820;
+  x.save(); x.shadowColor='rgba(0,0,0,.4)'; x.shadowBlur=30; x.shadowOffsetY=12;
+  if(card) nine(x,card,60,cx0,cy0,cw,chh,40); else rr(x,cx0,cy0,cw,chh,50,'#fdf1d8'); x.restore();
+  /* الشريط */
+  const ttl = r.result==='win'?'فاز في التحدّي':(r.result==='lose'?'خاض التحدّي':'تعادل في التحدّي');
+  if(rib){ const rw=900, rh=rw*rib.height/rib.width; x.drawImage(rib,540-rw/2,cy0-92,rw,rh); }
+  x.font='900 58px "Noto Kufi Arabic", sans-serif'; strokeTxt(x,ttl,540,cy0+12,'#fff','#7a0c12',12);
+  /* اللاعبين */
+  const opp=r.opp||'المنافس', ay=cy0+230;
+  await rdAv2(x,780,ay,98,r.meAv,(name||'أ').trim().charAt(0),false,'img/road/vs/ringR.webp');
+  await rdAv2(x,300,ay,98,r.oppAv,opp.trim().charAt(0),!r.human,'img/road/vs/ringB.webp');
+  if(vs){ const vw=210, vh=vw*vs.height/vs.width; x.drawImage(vs,540-vw/2,ay-vh/2,vw,vh); }
+  const nm=(im,cx,t)=>{ if(im){ const w=360,h=w*im.height/im.width; x.drawImage(im,cx-w/2,ay+118,w,h); } x.font='800 44px "Noto Kufi Arabic", sans-serif'; fitFont(x,t,250,44,'800'); strokeTxt(x,t,cx,ay+180,'#fff','rgba(0,0,0,.35)',6); };
+  nm(ribR,780,name); nm(ribB,300,opp);
+  /* النتيجة */
+  const sy=ay+226, sb=(im,cx,v,col)=>{ const w=272,h=w*(im?im.height/im.width:.68); if(im) x.drawImage(im,cx-w/2,sy,w,h); else rr(x,cx-w/2,sy,w,h,30,'#fff');
+    x.font='900 108px "Noto Kufi Arabic", sans-serif'; x.fillStyle=col; x.fillText(String(v),cx,sy+h/2+38); };
+  sb(cMe,780,r.me,r.result==='lose'?'#8a6a45':'#1e9e6a'); sb(cOp,300,r.bot,r.result==='win'?'#8a6a45':'#d81f2e');
+  /* الفرع */
+  const st=RD.st; let br='';
+  if(st && typeof st.pos==='number'){ br = st.arrived ? '🏁 وصل الفرع الرئيسي' : '🚩 في فرع '+ROUTE[Math.min(st.pos,HQ)]+' · باقي '+(HQ-Math.min(st.pos,HQ))+' للرئيسي'; }
+  if(br){ const tw=800, th=112, ty=cy0+chh-150; if(pill) nine(x,pill,62,540-tw/2,ty,tw,th,64); else rr(x,540-tw/2,ty,tw,th,60,'#fff');
+    x.fillStyle='#a50f1c'; fitFont(x,br,tw-120,40,'800'); x.fillText(br,540,ty+th/2+14); }
+  /* النص السفلي */
+  x.font='900 60px "Noto Kufi Arabic", sans-serif'; strokeTxt(x,'هل تستطيع التغلب عليّ؟',540,1292,'#fff','#7a0c12',12);
   return c;
 };
 
