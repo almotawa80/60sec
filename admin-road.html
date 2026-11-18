@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611181530">
+<meta name="app-version" content="202611181620">
 <title>لوحة تحكّم الطريق إلى الرئيسي</title>
 <link rel="icon" href="img/road/favicon.svg?v=2" type="image/svg+xml">
 <link rel="icon" href="img/road/fav-32.png?v=2" sizes="32x32">
@@ -164,7 +164,7 @@ body.painting #selBar,body.painting #tst{pointer-events:none;opacity:.35}
 .eup{display:flex;gap:8px}.eup .sb.wide{flex:1}.sb.addb{background:var(--tx);color:var(--page);display:flex;align-items:center;justify-content:center;gap:6px}
 .addf{background:var(--card);border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
 .addg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.addg label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--mu);font-weight:600}.addg label.full{grid-column:1/-1}
-.addg input{font-family:inherit;font-size:16px;border:1px solid var(--ln);background:var(--page);color:var(--tx);border-radius:10px;padding:8px 10px;outline:none;width:100%;min-width:0}.addg input:focus{border-color:var(--red)}
+.addg input{font-family:inherit;font-size:16px;border:1px solid var(--ln);background:var(--page);color:var(--tx);border-radius:10px;padding:8px 10px;outline:none;width:100%;min-width:0}.addg input:focus{border-color:var(--red)}.addg select{font-family:inherit;font-size:16px;border:2px solid #e6d3ae;background:#fff;color:var(--tx);border-radius:10px;padding:7px 8px;width:100%;min-width:0}
 .adderr{color:var(--red);font-size:13px;font-weight:700;min-height:0;margin:8px 0 0}.adderr:empty{display:none}.addb2{margin-top:10px}.addb2 .sb.wide{margin-bottom:6px}
 @media(max-width:440px){.sw .codeb.cm .dt{display:none}.sw .acts{gap:6px}}
 .swhint{color:var(--mu);font-size:12px;text-align:center;margin:2px 0 6px}
@@ -440,12 +440,12 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
         <form class="addf" id="addF" hidden autocomplete="off">
           <div class="addg"><label>الرقم الوظيفي *<input id="aEmp" inputmode="numeric" maxlength="10" required></label><label>الاسم *<input id="aName" maxlength="50" required></label>
           <label>اللقب<input id="aTitle" maxlength="20" placeholder="مثل: بوعلي"></label><label>الهاتف<input id="aPh" inputmode="tel" maxlength="16" dir="ltr" placeholder="99887766"></label>
-          <label class="full">الإدارة<input id="aDept" maxlength="60" list="deptL"></label><datalist id="deptL"></datalist></div>
+          <span id="aOrg" style="display:contents"></span></div>
           <div class="adderr" id="aErr"></div>
           <div class="addb2"><button class="sb wide" type="submit" id="aOk">إضافة وإعطاء رمز</button><button class="sb ghost wide2" type="button" id="aNo">إلغاء</button></div>
         </form>
         <button class="sb ghost wide2" type="button" id="empTpl" style="margin:8px 0 0;width:100%">⬇️ نزّل نموذج ملف الموظفين</button>
-        <div class="empnote">الأعمدة: الرقم الوظيفي، الاسم، الهاتف، اللقب، المجموعة، الإدارة، النوع (قسم / فرع / وحدة)، اسم القسم أو الفرع أو الوحدة. كلها اختيارية ما عدا الرقم والاسم. الجدد ياخذون رموز تطلع هنا وتنزل في ملف، والموجودون يتحدث اسمهم بس.</div>
+        <div class="empnote">الأعمدة: الرقم الوظيفي، الاسم، الهاتف، اللقب، المجموعة، الإدارة، النوع (قسم / فرع / وحدة)، اسم القسم أو الفرع أو الوحدة، اسم المدير. كلها اختيارية ما عدا الرقم والاسم. الجدد ياخذون رموز تطلع هنا وتنزل في ملف، والموجودون يتحدث اسمهم بس.</div>
         <div class="empmsg" id="empMsg"></div><div id="empRev"></div>
         <input class="srch" id="empQ" placeholder="ابحث برقم وظيفي أو اسم" autocomplete="off"><div class="efb" id="empF"></div><div class="list" id="empL"></div></div></div>
   </div>
@@ -831,17 +831,31 @@ function openEmpCard(emp){ const x=(EMP&&EMP.rows||[]).find(r=>String(r.emp_no)=
     db.disabled=true; db.textContent='جارٍ الحذف…'; let r=null; try{ r=await rpc('admin_delete_player',{p_key:KEY,p_emp:x.emp_no}); }catch(_){}
     if(!r||!r.ok){ db.disabled=false; db.classList.remove('sure'); db.textContent='تعذّر الحذف'; return; }
     delete ISSUED[x.emp_no]; saveIssued(); closePlayer(); toastMsg('انحذف من القائمة'); loadEmp(); try{ load(); }catch(_){} }; }
+/* حقول الهيكل التنظيمي + المدير (إضافة وتعديل الموظف) */
+const UTS=['قسم','فرع','وحدة'];
+function orgFields(px,x){ x=x||{}; const v=k=>esc(x[k]||'');
+  return '<label class="full">المجموعة<input id="'+px+'Grp" maxlength="60" list="grpL" value="'+v('grp')+'"></label>'
+   +'<label class="full">الإدارة<input id="'+px+'Dept" maxlength="60" list="deptL" value="'+v('dept')+'"></label>'
+   +'<label>النوع<select id="'+px+'Ut"><option value="">—</option>'+UTS.map(u=>'<option'+(x.unit_type===u?' selected':'')+'>'+u+'</option>').join('')+'</select></label>'
+   +'<label>اسم القسم / الفرع<input id="'+px+'Unit" maxlength="60" list="unitL" value="'+v('unit')+'"></label>'
+   +'<label class="full">اسم المدير<input id="'+px+'Mgr" maxlength="60" list="mgrL" value="'+v('manager')+'"></label>'; }
+function orgLists(){ const R=(EMP&&EMP.rows)||[], u=k=>[...new Set(R.map(x=>x[k]).filter(Boolean))].sort().map(d=>'<option value="'+esc(d)+'">').join('');
+  const set=(id,h)=>{ let d=$(id); if(!d){ d=document.createElement('datalist'); d.id=id; document.body.appendChild(d); } d.innerHTML=h; };
+  set('grpL',u('grp')); set('deptL',u('dept')); set('unitL',u('unit')); set('mgrL',u('manager')); }
+const orgVal=px=>{ const g=id=>(($(px+id)||{}).value||'').replace(/\s+/g,' ').trim(); return {grp:g('Grp'),dept:g('Dept'),utype:g('Ut'),unit:g('Unit'),mgr:g('Mgr')}; };
 /* تعديل بيانات موظف */
 function openEdit(emp){ const x=(EMP&&EMP.rows||[]).find(r=>String(r.emp_no)===String(emp)); if(!x) return; SEL=null;
   const nm=String(x.name||''), i=nm.indexOf('، '), t=i>0&&i<=20?nm.slice(0,i):'', n=i>0&&i<=20?nm.slice(i+2):nm;
-  $('ps').innerHTML='<form class="edf" id="edF" autocomplete="off"><h3>تعديل بيانات '+esc(n)+'</h3><div class="addg"><label>الرقم الوظيفي *<input id="eEmp" inputmode="numeric" maxlength="10" required value="'+esc(x.emp_no)+'"></label><label>الاسم *<input id="eName" maxlength="50" required value="'+esc(n)+'"></label><label>اللقب<input id="eTitle" maxlength="20" placeholder="مثل: بوعلي" value="'+esc(t)+'"></label><label>الهاتف<input id="ePh" inputmode="tel" maxlength="16" dir="ltr" value="'+esc(x.phone||'')+'"></label><label class="full">الإدارة<input id="eDept" maxlength="60" list="deptL" value="'+esc(x.dept||'')+'"></label></div><div class="adderr" id="eErr"></div><div class="addb2"><button class="sb wide" type="submit" id="eOk">حفظ التعديل</button><button class="sb ghost wide2" type="button" id="eNo">إلغاء</button></div></form>';
+  $('ps').innerHTML='<form class="edf" id="edF" autocomplete="off"><h3>تعديل بيانات '+esc(n)+'</h3><div class="addg"><label>الرقم الوظيفي *<input id="eEmp" inputmode="numeric" maxlength="10" required value="'+esc(x.emp_no)+'"></label><label>الاسم *<input id="eName" maxlength="50" required value="'+esc(n)+'"></label><label>اللقب<input id="eTitle" maxlength="20" placeholder="مثل: بوعلي" value="'+esc(t)+'"></label><label>الهاتف<input id="ePh" inputmode="tel" maxlength="16" dir="ltr" value="'+esc(x.phone||'')+'"></label>'+orgFields('e',x)+'</div><div class="adderr" id="eErr"></div><div class="addb2"><button class="sb wide" type="submit" id="eOk">حفظ التعديل</button><button class="sb ghost wide2" type="button" id="eNo">إلغاء</button></div></form>';
   $('ov').classList.remove('hide'); document.body.style.overflow='hidden';
-  $('eNo').onclick=()=>openEmpCard(x.emp_no);
+  orgLists(); $('eNo').onclick=()=>openEmpCard(x.emp_no);
   $('edF').onsubmit=async ev=>{ ev.preventDefault(); const dg=v=>String(v||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,'');
-    const ne=dg($('eEmp').value), nn=$('eName').value.trim(), tt=$('eTitle').value.trim(), ph=dg($('ePh').value), dp=$('eDept').value.trim(), er=$('eErr'); er.textContent='';
+    const ne=dg($('eEmp').value), nn=$('eName').value.trim(), tt=$('eTitle').value.trim(), ph=dg($('ePh').value), OG=orgVal('e'), dp=OG.dept, er=$('eErr'); er.textContent='';
     if(!/^[0-9]{1,10}$/.test(ne)){ er.textContent='الرقم الوظيفي أرقام فقط'; return; } if(!nn){ er.textContent='اكتب الاسم'; return; }
     const ok=$('eOk'); ok.disabled=true; ok.textContent='جارٍ الحفظ…'; let r=null;
-    try{ r=await rpc('admin_edit_employee',{p_key:KEY,p_emp:String(x.emp_no),p_new_emp:ne,p_name:tt?tt+'، '+nn:nn,p_dept:dp,p_phone:ph}); }catch(_){}
+    const nmF=tt?tt+'، '+nn:nn;
+    try{ r=await rpc('admin_edit_employee2',{p_key:KEY,p_emp:String(x.emp_no),p_new_emp:ne,p_name:nmF,p_dept:dp,p_phone:ph,p_grp:OG.grp,p_utype:OG.utype,p_unit:OG.unit,p_mgr:OG.mgr}); }catch(_){}
+    if(!r){ try{ r=await rpc('admin_edit_employee',{p_key:KEY,p_emp:String(x.emp_no),p_new_emp:ne,p_name:nmF,p_dept:dp,p_phone:ph}); }catch(_){} if(r&&r.ok) toastMsg('انحفظ، بس المجموعة والقسم والمدير تحتاج ملف SQL الجديد'); }
     ok.disabled=false; ok.textContent='حفظ التعديل';
     if(!r||!r.ok){ er.textContent=r&&r.error==='taken'?'الرقم الوظيفي '+ne+' مستخدم لموظف ثاني':r&&r.error==='notfound'?'الموظف مو موجود في القائمة':'تعذّر الحفظ، حاول مرة ثانية'; return; }
     if(ne!==String(x.emp_no)&&ISSUED[x.emp_no]){ ISSUED[ne]=ISSUED[x.emp_no]; delete ISSUED[x.emp_no]; saveIssued(); }
@@ -878,13 +892,13 @@ $('empFile').onchange=async e=>{
   const f=e.target.files[0]; e.target.value=''; if(!f) return; const m=$('empMsg'); m.className='empmsg'; m.textContent='جارٍ قراءة الملف…'; $('empRev').innerHTML='';
   let rows=[], bad=[], seen={};
   try{ const wb=XLSX.read(new Uint8Array(await f.arrayBuffer()),{type:'array'}); const sh=wb.Sheets[wb.SheetNames[0]];
-    const AOA=XLSX.utils.sheet_to_json(sh,{header:1,raw:false,blankrows:false}); const H0=(AOA[0]||[]).map(c=>String(c||'')); const tCol=H0.findIndex(c=>/لقب|كني/.test(c)), gCol=H0.findIndex(c=>/مجموع/.test(c)), yCol=H0.findIndex(c=>/^\s*(ال)?نوع/.test(c)), uCol=H0.findIndex(c=>/اسم القسم|الفرع|الوحدة/.test(c)); let dCol=H0.findIndex(c=>/إدار|ادار/.test(c)); if(dCol<0&&uCol<0) dCol=H0.findIndex(c=>/قسم/.test(c));
-    AOA.forEach((r,i)=>{ let emp='',name='',num='',phone='',title='',dept='',grp='',utype='',unit='';
-      if(tCol>=0||dCol>=0||gCol>=0||uCol>=0){ if(i===0) return; const cv=k=>k<0?'':String((r||[])[k]==null?'':r[k]).replace(/\s+/g,' ').trim(); title=cv(tCol); dept=cv(dCol).slice(0,60); grp=cv(gCol).slice(0,60); utype=cv(yCol); if(!/^(قسم|فرع|وحدة)$/.test(utype)) utype=''; unit=cv(uCol).slice(0,60); const sk=[tCol,dCol,gCol,yCol,uCol]; r=(r||[]).filter((_,k)=>sk.indexOf(k)<0); }
+    const AOA=XLSX.utils.sheet_to_json(sh,{header:1,raw:false,blankrows:false}); const H0=(AOA[0]||[]).map(c=>String(c||'')); const tCol=H0.findIndex(c=>/لقب|كني/.test(c)), gCol=H0.findIndex(c=>/مجموع/.test(c)), yCol=H0.findIndex(c=>/^\s*(ال)?نوع/.test(c)), uCol=H0.findIndex(c=>/اسم القسم|الفرع|الوحدة/.test(c)), mCol=H0.findIndex(c=>/مدير|مسؤول/.test(c)); let dCol=H0.findIndex(c=>/إدار|ادار/.test(c)); if(dCol<0&&uCol<0) dCol=H0.findIndex(c=>/قسم/.test(c));
+    AOA.forEach((r,i)=>{ let emp='',name='',num='',phone='',title='',dept='',grp='',utype='',unit='',mgr='';
+      if(tCol>=0||dCol>=0||gCol>=0||uCol>=0||mCol>=0){ if(i===0) return; const cv=k=>k<0?'':String((r||[])[k]==null?'':r[k]).replace(/\s+/g,' ').trim(); title=cv(tCol); dept=cv(dCol).slice(0,60); grp=cv(gCol).slice(0,60); utype=cv(yCol); if(!/^(قسم|فرع|وحدة)$/.test(utype)) utype=''; unit=cv(uCol).slice(0,60); mgr=cv(mCol).slice(0,60); const sk=[tCol,dCol,gCol,yCol,uCol,mCol]; r=(r||[]).filter((_,k)=>sk.indexOf(k)<0); }
       (r||[]).forEach(c=>{ const s=String(c==null?'':c).trim(), d=nEmp(s); if(!s) return; if(emp && !phone && /^[+0-9٠-٩\s\-()]+$/.test(s) && nPh(s)){ phone=nPh(s); return; } if(/^[0-9]+$/.test(d)){ if(!num) num=d; if(!emp && /^[0-9]{1,10}$/.test(d)) emp=d; } else if(!name && s.length>=2) name=s; });
       if(title && name && !/[،,]/.test(name)) name=title+'، '+name;
       const line=i+1;
-      if(emp && name){ if(seen[emp]){ bad.push({line,emp,name,why:'مكرر في الملف (السطر '+seen[emp]+')'}); } else { seen[emp]=line; rows.push({emp,name,phone,dept,grp,utype,unit,line}); } }
+      if(emp && name){ if(seen[emp]){ bad.push({line,emp,name,why:'مكرر في الملف (السطر '+seen[emp]+')'}); } else { seen[emp]=line; rows.push({emp,name,phone,dept,grp,utype,unit,mgr,line}); } }
       else if(i>0 || num) bad.push({line,emp:emp||num,name,why:!(emp||num)?'بدون رقم وظيفي':(!emp?'الرقم أطول من ١٠ أرقام':'بدون اسم')}); });
   }catch(err){ m.className='empmsg err'; m.textContent='تعذّر قراءة الملف'; return; }
   m.textContent=rows.length?'جارٍ التحقق من الموجودين…':'';
@@ -903,21 +917,22 @@ $('empFile').onchange=async e=>{
     +(rows.length?'<div class="rvt"><table><thead><tr><th>السطر</th><th>الرقم الوظيفي</th><th>الاسم</th><th>الهاتف</th><th>الحالة</th></tr></thead><tbody>'+rows.map(x=>'<tr'+(x.dupName?' class="dn"':'')+'><td>'+x.line+'</td><td>'+esc(x.emp)+'</td><td>'+esc(x.name)+(x.dupName?' <i class="tg">اسم مكرر</i>':'')+'</td><td dir="ltr">'+(x.phone?esc('+'+x.phone):'—')+'</td><td class="'+x.c+'">'+esc(x.st)+'</td></tr>').join('')+'</tbody></table></div>':'')
     +'<div class="rvb">'+(rows.length?'<button class="sb wide" type="button" id="rvOk">تأكيد ورفع '+fmt(rows.length)+' موظف</button>':'')+'<button class="sb ghost wide2" type="button" id="rvNo">إلغاء</button></div>';
   $('rvNo').onclick=()=>{ $('empRev').innerHTML=''; };
-  if(rows.length) $('rvOk').onclick=()=>{ $('empRev').innerHTML=''; uploadEmp(rows.map(x=>({emp:x.emp,name:x.name,phone:x.phone||'',dept:x.dept||'',grp:x.grp||'',utype:x.utype||'',unit:x.unit||''}))); };
+  if(rows.length) $('rvOk').onclick=()=>{ $('empRev').innerHTML=''; uploadEmp(rows.map(x=>({emp:x.emp,name:x.name,phone:x.phone||'',dept:x.dept||'',grp:x.grp||'',utype:x.utype||'',unit:x.unit||'',mgr:x.mgr||''}))); };
   $('empRev').scrollIntoView({behavior:'smooth',block:'start'});
 };
-$('empAdd').onclick=()=>{ const f=$('addF'); f.hidden=!f.hidden; $('aErr').textContent=''; if(!f.hidden){ const ds=[...new Set(((EMP&&EMP.rows)||[]).map(x=>x.dept).filter(Boolean))]; $('deptL').innerHTML=ds.map(d=>'<option value="'+esc(d)+'">').join(''); $('aEmp').focus(); } };
+$('empAdd').onclick=()=>{ const f=$('addF'); f.hidden=!f.hidden; $('aErr').textContent=''; if(!f.hidden){ if(!$('aGrp')) $('aOrg').innerHTML=orgFields('a'); orgLists(); $('aEmp').focus(); } };
 $('addF').addEventListener('input',()=>{ $('aErr').textContent=''; });
 $('aNo').onclick=()=>{ $('addF').reset(); $('addF').hidden=true; };
 $('addF').onsubmit=async e=>{ e.preventDefault(); const er=$('aErr'); er.textContent='';
-  const emp=nEmp($('aEmp').value.trim()), nm=$('aName').value.replace(/\s+/g,' ').trim(), t=$('aTitle').value.replace(/[،,]/g,'').trim(), phR=$('aPh').value.trim(), ph=phR?nPh(phR):'', dp=$('aDept').value.replace(/\s+/g,' ').trim();
+  const emp=nEmp($('aEmp').value.trim()), nm=$('aName').value.replace(/\s+/g,' ').trim(), t=$('aTitle').value.replace(/[،,]/g,'').trim(), phR=$('aPh').value.trim(), ph=phR?nPh(phR):'', OG=orgVal('a'), dp=OG.dept;
   if(!/^[0-9]{1,10}$/.test(emp)) return er.textContent='الرقم الوظيفي أرقام بس (لين ١٠)';
   if(nm.length<2) return er.textContent='اكتب الاسم';
   if(phR && !ph) return er.textContent='رقم الهاتف مو صحيح';
   const ok=$('aOk'); ok.disabled=true; ok.textContent='…';
   let c=null; try{ c=await rpc('admin_check_employees',{p_key:KEY,p_emps:[emp]}); }catch(_){}
   if(c&&c.ok&&c.existing&&c.existing[emp]!=null){ ok.disabled=false; ok.textContent='إضافة وإعطاء رمز'; return er.textContent='الرقم '+emp+' موجود باسم: '+c.existing[emp]; }
-  let r=null; try{ r=await rpc('admin_upload_employees',{p_key:KEY,p_rows:[{emp,name:t?t+'، '+nm:nm,phone:ph,dept:dp}]}); }catch(_){}
+  const row={emp,name:t?t+'، '+nm:nm,phone:ph,dept:dp,grp:OG.grp,utype:OG.utype,unit:OG.unit,mgr:OG.mgr};
+  let r=null; try{ r=await rpc('admin_upload_employees2',{p_key:KEY,p_rows:[row]}); }catch(_){} if(!r){ try{ r=await rpc('admin_upload_employees',{p_key:KEY,p_rows:[row]}); }catch(_){} }
   ok.disabled=false; ok.textContent='إضافة وإعطاء رمز';
   if(!r||!r.ok) return er.textContent='تعذّرت الإضافة';
   (r.codes||[]).forEach(x=>{ ISSUED[x.emp]={code:x.code,name:x.name||'',phone:x.phone||'',at:Date.now()}; }); saveIssued();
@@ -1186,7 +1201,7 @@ function empPdfLayout(target,d,o){
   return pages.length;
 }
 function pRepData(p,r){ const e=(r&&r.emp)||{}, all=(D&&D.players)||[];
-  return {emp:{name:offN(p),emp_no:p.emp_no,org:[e.grp,e.dept,((e.unit_type||'')+' '+(e.unit||'')).trim()].filter(Boolean).join(' › ')},
+  return {emp:{name:offN(p),emp_no:p.emp_no,org:(()=>{ const m=(((EMP&&EMP.rows)||[]).find(x=>String(x.emp_no)===String(p.emp_no))||{}).manager; return [e.grp,e.dept,((e.unit_type||'')+' '+(e.unit||'')).trim()].filter(Boolean).join(' › ')+(m?' · المدير: '+m:''); })()},
     tot:r.tot||{n:0,ok:0}, cats:r.cats||[], wrong:r.wrong||[], st:{points:p.total_points,played:p.played,wins:p.wins,rank:all.indexOf(p)+1,of:all.length},
     logo:(()=>{ const l=document.querySelector('.bklogo'); if(!l) return ''; const c=l.cloneNode(true); c.removeAttribute('class'); c.setAttribute('width','123'); c.setAttribute('height','34'); c.setAttribute('xmlns','http://www.w3.org/2000/svg'); return c.outerHTML.replace(/currentColor/g,'#ffffff'); })(), date:new Date().toLocaleDateString('ar-KW',{day:'numeric',month:'long',year:'numeric'})}; }
 const repFile=(p,ext)=>('تقرير-'+String(offN(p)||p.emp_no).replace(/[\\/:*?"<>|،,]+/g,' ').trim().replace(/\s+/g,'-')+'-'+p.emp_no+'-'+new Date().toISOString().slice(0,10)+(ext||''));
@@ -1264,9 +1279,9 @@ async function openPRep(p){
   if($('rpPdf')){ $('rpPdf').onclick=()=>pRepPdf(p,r); $('rpXls').onclick=()=>pRepXls(p,r); }
 }
 $('ps').addEventListener('click',ev=>{ if(!ev.target.closest('#pRep')) return; const p=((D&&D.players)||[]).find(x=>x.emp_no===SEL); if(p) openPRep(p); });
-$('empTpl').onclick=()=>{ const H=['الرقم الوظيفي','الاسم','الهاتف','اللقب','المجموعة','الإدارة','النوع','اسم القسم / الفرع / الوحدة'];
-  const ws=XLSX.utils.aoa_to_sheet([H,['900001','مثال: أحمد','99001122','بوخالد','مجموعة الأفراد','إدارة الفروع المصرفية','فرع','الفحيحيل'],['900002','مثال: يوسف','','','مجموعة العمليات المركزية','إدارة العمليات المصرفية','قسم','قسم الحوالات']]);
-  ws['!cols']=[14,18,12,10,26,26,10,28].map(w=>({wch:w})); const wb=XLSX.utils.book_new(); wb.Workbook={Views:[{RTL:true}]}; XLSX.utils.book_append_sheet(wb,ws,'الموظفين'); XLSX.writeFile(wb,'نموذج-قائمة-الموظفين.xlsx'); };
+$('empTpl').onclick=()=>{ const H=['الرقم الوظيفي','الاسم','الهاتف','اللقب','المجموعة','الإدارة','النوع','اسم القسم / الفرع / الوحدة','اسم المدير'];
+  const ws=XLSX.utils.aoa_to_sheet([H,['900001','مثال: أحمد','99001122','بوخالد','مجموعة الأفراد','إدارة الفروع المصرفية','فرع','الفحيحيل','مثال: بوفهد'],['900002','مثال: يوسف','','','مجموعة العمليات المركزية','إدارة العمليات المصرفية','قسم','قسم الحوالات','']]);
+  ws['!cols']=[14,18,12,10,26,26,10,28,20].map(w=>({wch:w})); const wb=XLSX.utils.book_new(); wb.Workbook={Views:[{RTL:true}]}; XLSX.utils.book_append_sheet(wb,ws,'الموظفين'); XLSX.writeFile(wb,'نموذج-قائمة-الموظفين.xlsx'); };
 
 /* ===== الرئيسية: بطاقة اليوم، أزرار سريعة، نسب، أضعف المواضيع، المتصدرون ===== */
 const kwDay=t=>{ try{ return new Date(t).toLocaleDateString('en-CA',{timeZone:'Asia/Kuwait'}); }catch(e){ return ''; } };
