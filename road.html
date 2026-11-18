@@ -2765,7 +2765,7 @@ const fmt = n => Number(n||0).toLocaleString('en-US');
 /* قائمة الموظفين: إذا رفعها المدير صار الدخول بالرقم الوظيفي + الرمز، واللي ما دخل يتدرّب بس */
 let LIST_ON = true; try{ LIST_ON = LS.getItem('mc_list')!=='0'; }catch(e){} /* افتراضياً مقفلة لين يأكد السيرفر */
 const GUEST = () => LIST_ON && !DEMO && !stats.empNo;
-const pointsAvailable = () => !GUEST(); // 2026-11-18: بدون حد يومي، كل مباراة تنحسب وتفتح الفرع اللي بعده
+const pointsAvailable = () => !GUEST() && !(()=>{ try{ return !!(RD.st && RD.st.arrived); }catch(e){ return false; } })(); // 2026-11-18: بدون حد يومي لين يوصل الرئيسي، بعدها تدريب بس
 function renderGuest(){ const gst=GUEST(); document.body.classList.toggle('guest',gst); const gt=$('gate'); if(gt){ if(gst&&!gt.classList.contains('on')) gateFill(); gt.classList.toggle('on',gst); gt.setAttribute('aria-hidden',gst?'false':'true'); document.body.classList.toggle('gated',gst); } const gb=$('guestBox'); if(gb) gb.style.display=gst?'block':'none'; }
 function renderStats(){
   try{ roadCard(); }catch(e){}
@@ -5006,7 +5006,7 @@ function rdGoLbl(){
   const pa=pointsAvailable(), ok=rdLoggedIn() && st && typeof st.pos==='number' && !st.arrived && st.pos<=HQ;
   let t = pa ? (ok ? 'تحدَّ فرع '+ROUTE[st.pos] : 'اسحب للتحدّي') : 'اسحب للتدريب';
   l.textContent=t; l.style.fontSize = t.length>18 ? '17px' : '';
-  const d=$('goDone'); if(d && !pa) d.textContent = ok ? 'تحدّيت فرع اليوم ✓' : 'أنهيت نقاط اليوم ✓';
+  const d=$('goDone'); if(d && !pa) d.textContent = (st && st.arrived) ? 'وصلت الرئيسي 🏁 · تدريب بدون نقاط' : 'أنهيت نقاط اليوم ✓';
 }
 (function(){ const _rs=renderStats; renderStats=function(){ const r=_rs.apply(this,arguments); try{ rdGoLbl(); }catch(e){} return r; }; })();
 (function(){ const _rc=roadCard; roadCard=function(){ const r=_rc.apply(this,arguments); try{ rdGoLbl(); }catch(e){} return r; }; })();
