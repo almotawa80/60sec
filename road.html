@@ -712,6 +712,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 .fxck{position:absolute;will-change:transform}
 .fxw{position:absolute;inset:0}
 .fxd{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c);border:3px solid #fff;box-sizing:border-box;box-shadow:0 6px 18px rgba(0,0,0,.35);display:grid;place-items:center;color:#fff;font-weight:900;line-height:1;text-shadow:0 2px 0 #7a0c12}
+.fxd.ck60{inset:-12%;background:none;border:0;border-radius:0;box-shadow:none;display:block}.fxd.ck60 svg{display:block;width:100%;height:100%;overflow:visible}
 .fxw .hv{position:absolute;inset:0;opacity:0;will-change:transform,opacity}.fxw .hv .fxd{box-shadow:none}
 .fxsw{position:absolute;width:52px;height:221px;transform-origin:26px 195px;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35));z-index:3}
 .fxsw .whole,.fxsw .pc{position:absolute;inset:0}.fxsw .pc{opacity:0}.fxsw svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
@@ -739,7 +740,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118150000">
+<meta name="app-version" content="road-20261118153000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -3052,14 +3053,19 @@ const SW_CRACK='<svg class="crk" viewBox="0 0 40 170"><path class="c1" d="M13 61
 /* FXK = إبطاء الحركة كلها (خالد طلب ٤-٥ ثواني)؛ k:false = مدة خام بدون إبطاء */
 let FXK=2.1;
 function fxA(el,kf,o){ if(o && o.k!==false){ o=Object.assign({},o); if(o.delay) o.delay*=FXK; if(o.duration) o.duration*=FXK; } if(o) delete o.k; try{ return el.animate(kf,Object.assign({fill:'forwards',easing:'linear'},o)); }catch(e){ return null; } }
+/* ساعة الخاتمة = نفس ساعة السبلاش (٦٠ ثانية). ننسخها قبل لا ينشال السبلاش */
+let CK60='', CK60DEF='';
+try{ const sv=document.querySelector('#splash .spT svg'); if(sv){ const c=sv.cloneNode(true), d=c.querySelector('defs'); const ren=h=>h.replace(/\b(id="|url\(#)ck([GFR])\b/g,'$1fx60$2');
+  if(d){ CK60DEF=ren(d.innerHTML); d.remove(); } CK60=ren(c.innerHTML); } }catch(e){ CK60=''; }
 function fxStage(){
   const n=document.querySelector('#clock .num'); if(!n || !n.offsetWidth || !Element.prototype.animate) return null;
   const r=n.getBoundingClientRect(), cs=getComputedStyle(n), w0=r.width, W=Math.round(Math.min(130,Math.max(100,w0*1.7)));
   const cx=innerWidth/2, cy=Math.round(Math.min(innerHeight*.42, innerHeight/2));
   const root=document.createElement('div'); root.className='fxr';
-  root.innerHTML='<div class="fxbg"></div><div class="fxs"></div>'; document.body.appendChild(root);
-  const bg=root.firstChild, st=root.lastChild, txt=(n.textContent||'').trim(), fs=parseFloat(cs.fontSize)*W/w0;
-  const disc=c=>'<div class="fxd"'+(c?' style="clip-path:polygon('+c+')"':'')+'><span style="font-size:'+fs+'px;font-family:'+cs.fontFamily.replace(/"/g,"'")+'">'+txt+'</span></div>';
+  root.innerHTML='<div class="fxbg"></div><div class="fxs"></div>'+(CK60DEF?'<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>'+CK60DEF+'</defs></svg>':''); document.body.appendChild(root);
+  const bg=root.querySelector('.fxbg'), st=root.querySelector('.fxs'), txt=(n.textContent||'').trim(), fs=parseFloat(cs.fontSize)*W/w0;
+  const disc=c=>CK60 ? '<div class="fxd ck60"'+(c?' style="clip-path:polygon('+c+')"':'')+'><svg viewBox="-4 6 208 208" aria-hidden="true">'+CK60+'</svg></div>'
+    : '<div class="fxd"'+(c?' style="clip-path:polygon('+c+')"':'')+'><span style="font-size:'+fs+'px;font-family:'+cs.fontFamily.replace(/"/g,"'")+'">'+txt+'</span></div>';
   const ck=document.createElement('div'); ck.className='fxck'; ck.style.cssText='width:'+W+'px;height:'+W+'px;left:'+(cx-W/2)+'px;top:'+(cy-W/2)+'px';
   ck.innerHTML='<div class="fxw">'+disc('')+'</div>'; st.appendChild(ck); n.style.visibility='hidden';
   const anims=[], A=(el,kf,o)=>{ const a=fxA(el,kf,o); if(a) anims.push(a); return a; };
