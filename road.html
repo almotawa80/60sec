@@ -1779,7 +1779,7 @@ body.guest #home .hpt{display:none}
 /* Home header art (fixed) */
 #home{background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.2)),url(img/road/v2/m3.jpg) center top/cover no-repeat,#2a1408!important}
 #home.active{display:flex!important;flex-direction:column;height:100vh;height:100dvh;overflow:hidden!important}
-#home>.hero{flex:none;position:relative!important;width:100%;max-width:480px;margin:0 auto;aspect-ratio:900/585;padding:0!important;margin-top:env(safe-area-inset-top)!important;background:url(img/road/ui/header2.webp) center/100% 100% no-repeat!important;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
+#home>.hero{flex:none;position:relative!important;width:100%;max-width:480px;margin:0 auto;aspect-ratio:900/585;padding:0!important;margin-top:env(safe-area-inset-top)!important;background:url(img/road/ui/header4.webp) center/100% 100% no-repeat!important;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
 #home>.sheet>*{flex-shrink:0}
 #home>.sheet{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-top:4px!important}
 body:has(#home.active) #app>.bklogo{display:none!important}
@@ -1979,7 +1979,7 @@ html #srchTip{border:3px solid #e0a92e!important;background:#fffdf7!important;co
 #result .hero.res{flex-direction:column!important;align-items:center!important}
 
 /* زر السحب: طبقة ثابتة حتى ما تختفي خلفيته وقت السحب على iOS */
-#home #goBtn.slide,#home #goBtn.slide:active{border:0!important;border-image:none!important;-webkit-border-image:none!important;background:url(img/road/ui/track.webp) center/100% 100% no-repeat!important;transform:none!important}
+#home #goBtn.slide,#home #goBtn.slide:active{border:0!important;border-image:none!important;-webkit-border-image:none!important;background:url(img/road/ui/track2.webp) center/100% 100% no-repeat!important;transform:none!important}
 
 /* الرئيسية: العنوان وصورة اللاعب فوق، والنقود والكاس أيقونتان على اليمين مع رقم صغير */
 #home>.hero{aspect-ratio:900/515!important}
@@ -2046,15 +2046,15 @@ html #srchTip{border:3px solid #e0a92e!important;background:#fffdf7!important;co
 #home .hc .hl b,#home .hc .hl small{font-size:clamp(10px,3vw,12.5px)!important}
 
 /* الشعار مرفوع فوق البرج */
-#home>.hero{aspect-ratio:900/555!important}
-#home .ttl{top:74.2%!important;height:14.2%!important}
-#home .pfhold{top:47.2%!important}
-#home .hpt{top:37%!important}
-#home .hlb{top:62%!important}
+#home>.hero{aspect-ratio:900/519!important}
+#home .ttl{top:72.4%!important;height:15.2%!important}
+#home .pfhold{top:43.5%!important}
+#home .hpt{top:32.6%!important;height:20.3%!important}
+#home .hlb{top:59.4%!important;height:20.3%!important}
 
 /* الرئيسية في شاشة وحدة: كل شي يبين بدون سكرول */
 @media (max-height:920px){
-#home>.hero{width:min(100%,480px,calc((100dvh - 515px) * 900 / 555))!important;margin-left:auto!important;margin-right:auto!important}
+#home>.hero{width:min(100%,480px,calc((100dvh - 515px) * 900 / 519))!important;margin-left:auto!important;margin-right:auto!important}
 #home>.sheet{padding-top:0!important;padding-bottom:6px!important}
 #home .rcard{margin-bottom:6px!important;border-width:40px 16px 12px!important;border-image-width:40px 16px 12px!important}
 #home .rcard .rc-ch{top:-35px!important;height:24px!important}
@@ -2083,6 +2083,13 @@ html:has(#home.active),body:has(#home.active){overscroll-behavior:none;overflow:
 #lbPage .pod .p1 .blk{height:76px!important}#lbPage .pod .p2 .blk{height:62px!important}#lbPage .pod .p3 .blk{height:54px!important}
 #lbPage .pod .blk::before{flex:none;width:48px!important;height:48px!important;margin:0!important}
 #lbPage .pod .p2 .blk::before{width:40px!important;height:40px!important}#lbPage .pod .p3 .blk::before{width:36px!important;height:36px!important}
+
+#home #goBtn.slide::before{display:block!important;content:''!important;position:absolute!important;inset:0!important;border-radius:0!important;box-shadow:none!important;pointer-events:none;z-index:1;
+background-image:radial-gradient(closest-side,#fff 0,#fffbe0 22%,rgba(255,214,90,.75) 48%,rgba(255,190,40,0) 100%),radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,255,255,0)),radial-gradient(closest-side,#fff 0,#fffbe0 22%,rgba(255,214,90,.75) 48%,rgba(255,190,40,0) 100%),radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,255,255,0))!important;
+background-repeat:no-repeat!important;background-size:46px 18px,90px 3px,46px 18px,90px 3px!important;background-color:transparent!important;
+background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);animation:goSpk 3.6s ease-in-out infinite alternate}
+@keyframes goSpk{0%{background-position:12% 0,11% 7px,88% 100%,89% calc(100% - 7px)}100%{background-position:88% 0,89% 7px,12% 100%,11% calc(100% - 7px)}}
+@media (prefers-reduced-motion:reduce){#home #goBtn.slide::before{animation:none}}
 </style>
 </head>
 <body>
