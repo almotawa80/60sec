@@ -752,7 +752,7 @@ html #pfOut.pfout{width:auto;min-width:220px;margin:14px auto 28px;padding:12px 
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118185000">
+<meta name="app-version" content="road-20261118191000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1702,6 +1702,59 @@ html:has(#roadPage.active),body:has(#roadPage.active),#roadPage.active{overscrol
 .stc .ft{text-align:center;font-size:12px;font-weight:700;color:#8a6a45;margin-top:10px}
 img.mark.rdmark{background:none!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))}
 
+
+/* ===== Home v2 (ChatGPT mockup) ===== */
+#home{background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.08) 60%,rgba(0,0,0,.25) 100%),url(img/road/map0.jpg) center/cover no-repeat,#2a1408!important}
+#home .hero{position:relative;padding-top:calc(118px + env(safe-area-inset-top))!important;padding-bottom:10px!important}
+#home .hero-row{justify-content:center;min-height:0!important;position:static!important}
+#home .hero-row>*{position:static}
+#home .hero-row .mark{position:absolute!important;z-index:3;right:16px;top:calc(124px + env(safe-area-inset-top));width:46px!important;height:46px!important;border-radius:50%!important;padding:7px!important;background:radial-gradient(circle at 35% 30%,#fff3b0,#f0b822 55%,#b67c0c)!important;border:3px solid #fff;box-shadow:0 3px 0 rgba(0,0,0,.3),0 5px 10px rgba(0,0,0,.3);stroke:#7a3f06}
+#home .ttl{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 64px;overflow:visible!important;flex:1;min-width:0}
+#home .hero h1{font-size:24px!important;overflow:visible!important;font-weight:900;color:#d0142a;white-space:nowrap;letter-spacing:0;text-shadow:2px 0 0 #fff,-2px 0 0 #fff,0 2px 0 #fff,0 -2px 0 #fff,2px 2px 0 #fff,-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff,0 5px 0 #8f0f15,0 7px 10px rgba(0,0,0,.35)}
+#home .greet{position:relative;display:inline-block!important;margin-top:8px;padding:4px 22px!important;background:linear-gradient(#e0262f,#a50f1c);color:#fff!important;border:2px solid #f2c14e;border-radius:6px;font-size:14px!important;font-weight:800;box-shadow:0 3px 0 #6e0a12;max-width:220px!important;overflow:visible!important;text-overflow:clip!important}
+#home .greet::before,#home .greet::after{content:'';position:absolute;top:50%;width:26px;height:30px;margin-top:-15px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 30'%3E%3Cg fill='%23e8b33a' stroke='%239a6a0e' stroke-width='.8'%3E%3Cpath d='M20 29 Q8 22 6 6' fill='none' stroke-width='2'/%3E%3Cellipse cx='4' cy='8' rx='2.6' ry='5' transform='rotate(-20 4 8)'/%3E%3Cellipse cx='4' cy='15' rx='2.6' ry='5' transform='rotate(-40 4 15)'/%3E%3Cellipse cx='8' cy='21' rx='2.6' ry='5' transform='rotate(-60 8 21)'/%3E%3Cellipse cx='12' cy='11' rx='2.4' ry='4.6' transform='rotate(25 12 11)'/%3E%3Cellipse cx='14' cy='18' rx='2.4' ry='4.6' transform='rotate(5 14 18)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat}
+#home .greet::before{right:-30px;transform:scaleX(-1)}#home .greet::after{left:-30px}
+#home .pfhold{position:absolute!important;left:12px;z-index:4;top:calc(10px + env(safe-area-inset-top))}
+#home .hcol{position:absolute;left:14px;right:14px;top:calc(10px + env(safe-area-inset-top));display:flex;justify-content:space-between;gap:10px;z-index:3}
+#home .hc{display:flex;align-items:center;gap:8px;height:52px;padding:0 14px;border-radius:18px;background:linear-gradient(180deg,#fffaf0,#fff0d2);border:2px solid #fff;box-shadow:0 0 0 2px #e9c98a,0 5px 12px rgba(0,0,0,.3);color:#3b1d0e;font-family:inherit;cursor:pointer}
+#home .hc i{font-style:normal;font-size:30px;line-height:1;filter:drop-shadow(0 2px 1px rgba(0,0,0,.25))}
+#home .hc .hl{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
+#home .hc small{font-size:11.5px;font-weight:700;color:#5a3412}
+#home .hc b{font-size:20px;font-weight:900;color:#3b1d0e}
+#home .hc b.t{font-size:16px}
+#home .hc small:empty{display:none}
+#home .hc:active{transform:scale(.96)}
+#home .pfhold{top:calc(132px + env(safe-area-inset-top))!important;left:14px!important}
+#home .hero{padding-top:calc(132px + env(safe-area-inset-top))!important}
+#home .hero-row .mark{top:calc(136px + env(safe-area-inset-top))!important}
+body.guest #home .hpt{display:none}
+#home .lbrow,#home .wallet,#home #inviteBtn+.hint{display:none!important}
+#home .rcard{background:linear-gradient(180deg,#fffaf0,#fff1d6)!important;border:3px solid #fff!important;box-shadow:0 0 0 3px #c8102e,0 10px 22px rgba(0,0,0,.35)!important}
+#home .rcard #rcCur{color:#c8102e;font-size:30px}
+#home .rc-bar{height:12px!important;border-radius:8px!important}
+#home #goBtn.slide{margin-top:16px;height:84px;background:linear-gradient(180deg,#f04452,#c8102e 55%,#9e0c1d)!important;color:#fff!important;border:4px solid #f2c14e!important;box-shadow:0 0 0 2px #9a6a0e,inset 0 3px 0 rgba(255,255,255,.35),0 8px 16px rgba(0,0,0,.35)!important}
+#home #goBtn .slbl{font-size:25px;font-weight:900;color:#fff!important;text-shadow:0 2px 0 rgba(0,0,0,.25);padding-right:72px!important}
+#home #goBtn .sknob{width:64px!important;height:64px!important;margin-top:-32px!important;background:#c8102e!important;border:4px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.35)!important}
+#home #inviteBtn{margin-top:14px;background:linear-gradient(180deg,#fffaf0,#fff1d6)!important;border:3px solid #fff!important;box-shadow:0 0 0 3px #c8102e,0 10px 22px rgba(0,0,0,.3)!important;border-radius:24px!important;padding:14px 12px 16px!important}
+#home #inviteBtn .mlb{order:0;font-size:25px;font-weight:900;color:#3b1d0e}
+#home #inviteBtn .mbd{order:1;display:block!important;position:static!important;background:none!important;color:#5a3412!important;font-size:14px!important;font-weight:600!important;padding:0!important;border:0!important;box-shadow:none!important;transform:none!important}
+#home #inviteBtn .mrow{order:2;margin-top:4px}
+
+/* Home v2: ChatGPT art assets */
+#home .hc{border:6px solid transparent!important;border-image:url(img/road/ui/pill.webp) 62 fill / 26px stretch!important;background:none!important;box-shadow:none!important;height:58px!important;padding:0 8px!important;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3))}
+#home .hc .ic img{width:40px;height:auto;display:block}
+#home .hlb{padding:0 14px!important}
+#home .hpt{padding:0 14px 0 10px!important}
+#home .hc b{font-size:22px!important}
+#home .rcard,#home #inviteBtn{border:8px solid transparent!important;border-image:url(img/road/ui/card.webp) 58 fill / 24px stretch!important;background:none!important;box-shadow:none!important;border-radius:0!important;filter:drop-shadow(0 8px 12px rgba(0,0,0,.3))}
+#home #goBtn.slide{border:0!important;border-image:url(img/road/ui/btn.webp) 118 fill / 44px stretch!important;background:none!important;box-shadow:none!important;height:90px;border-radius:0!important;overflow:visible!important}
+#home #goBtn .sknob{background:url(img/road/ui/knob.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;width:56px!important;height:56px!important;margin-top:-27px!important;right:18px!important;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35))}
+#home #goBtn .sknob>svg{opacity:0}
+#home .hero-row .mark{background:url(img/road/ui/watch.webp) center/contain no-repeat!important;border:0!important;box-shadow:none!important;width:58px!important;height:64px!important;padding:0!important;border-radius:0!important;top:calc(126px + env(safe-area-inset-top))!important;right:12px!important;filter:drop-shadow(0 3px 4px rgba(0,0,0,.3))}
+#home .hero-row .mark>*{display:none}
+#home .hero h1{font-size:0!important;width:270px;max-width:100%;height:50px;background:url(img/road/ui/title.webp) center/contain no-repeat;text-shadow:none!important;filter:drop-shadow(0 4px 5px rgba(0,0,0,.35))}
+#home .greet{background:none!important;border:0!important;box-shadow:none!important;border-image:url(img/road/ui/ribbon.webp) 0 123 fill / 0 36px stretch!important;border-style:solid!important;border-width:0 34px!important;padding:6px 6px 9px!important;margin-top:4px!important;min-width:110px;text-align:center;text-shadow:0 1px 0 rgba(0,0,0,.3)}
+#home .greet::before,#home .greet::after{display:none!important}
 </style>
 </head>
 <body>
@@ -1717,9 +1770,10 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
         <svg class="mark" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" aria-hidden="true">
           <circle cx="24" cy="27" r="16"/><path d="M24 27V17M19 6h10M24 6v5M38 12l-3 3"/>
         </svg>
-        <div class="ttl"><h1>تحدّي الدقيقة</h1><span class="greet" id="greet"></span></div>
+        <div class="ttl"><h1>الطريق إلى الرئيسي</h1><span class="greet" id="greet"></span></div>
         <span class="pfhold"><button class="pfbtn" id="pfBtn" aria-label="ملفي"><span class="pfav" id="pfAv"></span></button></span>
       </div>
+      <div class="hcol"><button type="button" class="hc hpt" id="hPt" aria-label="نقاطك، استبدلها من المتجر"><span class="hl"><b id="hPtN">0</b></span><i class="ic"><img src="img/road/ui/coins.webp" alt=""></i></button><button type="button" class="hc hlb" id="hLb" aria-label="المتصدرون"><i class="ic"><img src="img/road/ui/trophy.webp" alt=""></i><span class="hl" style="display:none"><small id="hLbN"></small></span></button></div>
     </div>
     <div class="sheet">
       <div class="guestbox" id="guestBox" style="display:none"><b>أنت في وضع التدريب</b><p>تقدر تتدرّب ضد الكمبيوتر. عشان تجمع نقاط وتدخل المتصدرين وتتحدى زملاءك، سجّل دخولك برقمك الوظيفي والرمز.</p><button type="button" class="rbtn" id="guestLogin">تسجيل الدخول</button></div>
@@ -1741,7 +1795,7 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
       <div id="goDone" style="display:none;text-align:center;font-weight:800;font-size:17px;color:var(--text);margin-top:14px">أنهيت نقاط اليوم ✓</div>
       <div class="btn slide" id="goBtn" role="button" tabindex="0" aria-label="اسحب لبدء التحدّي"><div class="slbl" id="goLbl">اسحب لبدء التحدّي</div><div class="sknob" id="goKnob"><svg class="kemo" viewBox="-1 -1 34 34" width="36" height="36" fill="#fff" aria-hidden="true"><g transform="rotate(40 16 16) translate(0 .5)"><path d="M16 -1 L18.3 3 V19.6 H13.7 V3 Z"/><path d="M16 2 V18.6" stroke="#c8102e" stroke-opacity=".35" stroke-width=".8"/><rect x="9.4" y="19.2" width="13.2" height="3" rx="1.5"/><rect x="14.8" y="21.8" width="2.4" height="5.6" rx=".7"/><circle cx="16" cy="29.2" r="2.1"/></g></svg></div></div>
       <div class="onlrow"><span class="onl" id="onl" style="display:none"><i></i><span id="onlTxt"></span></span></div>
-      <button class="btn" id="inviteBtn" type="button" aria-label="تحدَّ زميلاً الآن"><span class="mrow"><span class="mav" id="invAv">أ</span><span class="mvs vs">VS</span><span class="mem">+</span></span><span class="mlb">تحدَّ زميلاً الآن</span><span class="mbd">+٥٠ نقطة</span></button>
+      <button class="btn" id="inviteBtn" type="button" aria-label="تحدَّ زميلاً الآن"><span class="mrow"><span class="mav" id="invAv">أ</span><span class="mvs vs">VS</span><span class="mem">+</span></span><span class="mlb">تحدَّ زميلاً الآن</span><span class="mbd">٥٠ نقطة إضافية عند الفوز على لاعب حقيقي</span></button>
       <div class="hint" style="margin-top:12px;text-align:center;line-height:1.5"><div class="pts50">اكسب ٥٠ نقطة إضافية</div><div style="font-weight:700;font-size:15px;color:var(--text)">عند فوزك على لاعب حقيقي</div></div>
       <div class="note" id="goNote"></div>
     </div>
@@ -4701,6 +4755,15 @@ drawCard = async function(r,name){
 /* أيقونة الساعة الجديدة بدل علامة الساعة البيضاء في الترويسة */
 document.querySelectorAll('svg.mark').forEach(function(s){ var i=document.createElement('img'); i.className='mark rdmark'; i.src='img/road/mark.svg'; i.alt=''; s.replaceWith(i); });
 
+
+/* Home v2: round HUD buttons */
+(function(){ try{
+  const lb=$('hLb'), pt=$('hPt'); if(!lb) return;
+  lb.onclick=()=>$('lbBtn').click(); pt.onclick=()=>$('storeBtn').click();
+  const sync=()=>{ const b=$('wBal'), m=$('lbMine'); $('hPtN').textContent=(b&&b.textContent)||'0';
+    const r=(m&&m.textContent||'').match(/#\s*([0-9٠-٩]+)/); $('hLbN').textContent=r?'ترتيبك #'+r[1]:''; };
+  sync(); const mo=new MutationObserver(sync); ['wBal','lbMine'].forEach(id=>{ const e=$(id); if(e) mo.observe(e,{childList:true,characterData:true,subtree:true}); });
+}catch(e){} })();
 </script>
 </body>
 </html>
