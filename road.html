@@ -2137,6 +2137,29 @@ background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);anim
 #profilePage #pfPkW i{background-size:78%,cover!important;background-position:center;background-repeat:no-repeat}
 #profilePage #pfPkA.ic i{background-size:64%!important}
 #profilePage .pfpk span{margin-top:-9px;position:relative;background:linear-gradient(#e8323f,#b20d1c);color:#fff;border:2px solid #fff;border-radius:9px;padding:0 9px;font-size:11.5px;font-weight:900;line-height:18px;box-shadow:0 2px 4px rgba(0,0,0,.3)}
+
+/* نافذة «تقدّمت فرع» بثيم اللعبة الجديد */
+.rfx .in{border:0!important;border-style:solid!important;border-width:16px!important;border-image:url(img/road/badges/card.webp) 60 fill / 16px stretch!important;background:none!important;box-shadow:none!important;border-radius:0!important;padding:70px 10px 10px!important;filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));overflow:visible}
+.rfx h2{clip-path:none!important;background:url(img/road/result/ribWin.webp) center/100% 100% no-repeat!important;left:50%!important;right:auto!important;transform:translateX(-50%);width:min(390px,100vw);height:96px!important;top:-58px!important;padding:0 80px 22px!important;box-sizing:border-box;font-size:26px!important;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))}
+.rfx .mv,.rfx .grid div{background:none!important;border-style:solid!important;border-width:12px!important;border-color:transparent!important;border-image:url(img/road/admin/cardS.webp) 40 fill/12px stretch!important;border-radius:0!important;box-shadow:none!important}
+.rfx .mv{padding:2px 4px!important}
+.rfx .grid div{padding:0 2px!important}
+.rfx .mini i{border:3px solid #fff;box-shadow:0 0 0 2.5px #e0a92e,0 3px 6px rgba(0,0,0,.25)}
+.rfx .mini i.c{background:url(img/road/ui/card.webp) center/cover,#fde9c4}
+.rfx .arr{height:6px;border-radius:3px;background:repeating-linear-gradient(90deg,#e0a92e 0 8px,transparent 8px 14px)!important}
+.rfx .chest,.rfx .note{border:0!important;border-style:solid!important;border-width:12px!important;border-image:url(img/road/admin/cardS.webp) 40 fill/12px stretch!important;background:none!important;border-radius:0!important;padding:2px 6px!important}
+.rfx .gold{background:url(img/road/result/btn.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;min-height:64px;filter:drop-shadow(0 5px 6px rgba(0,0,0,.3))}
+.rfx .gold:active{transform:scale(.97)}
+.rfx .ghost{background:url(img/road/result/btn2.webp) center/100% 100% no-repeat!important;min-height:48px;width:72%;color:#a50f1c!important;font-weight:900!important;font-size:15px!important}
+
+/* تعليمات التثبيت المختصرة */
+.a2s{display:flex;align-items:stretch;justify-content:center;gap:4px;margin:4px 0 2px;direction:rtl}
+.a2s>div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:2px solid #f0d9a8;border-radius:16px;padding:10px 4px;box-shadow:0 2px 0 #ead2a0}
+.a2s i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:19px;color:#fff;background:radial-gradient(circle at 40% 30%,#ff6b75,#c8102e 60%,#8a0a12);border:2px solid #fff;box-shadow:0 0 0 2px #e0a92e}
+.a2s i svg{vertical-align:0!important}
+.a2s span{font-size:11.5px;line-height:1.45;color:#8a6a45;text-align:center}.a2s b{color:#5a3412;font-size:12.5px}
+.a2s em{align-self:center;font-style:normal;font-weight:900;color:#e0a92e;font-size:22px}
+.a2n{margin:8px 0 0;text-align:center;font-size:11.5px;color:#8a6a45}
 </style>
 </head>
 <body>
@@ -4605,14 +4628,13 @@ if(!DEMO) rpc('auth_mode',{},5000).then(m=>{ if(m && typeof m.list==='boolean'){
   setTimeout(function(){
     if($('modal').classList.contains('on') || !$('home').classList.contains('active')) return;
     var shareIc='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
-    showModal('ثبّت التحدّي كتطبيق',
-      '<div style="line-height:2;text-align:right">لتجربة أسرع وبشاشة كاملة، أضف اللعبة إلى الشاشة الرئيسية:<br>'
-      +'<b>١.</b> اضغط زر المشاركة '+shareIc+' أسفل شاشة سفاري<br>'
-      +'<b>٢.</b> مرّر للأسفل واختر «إضافة إلى الشاشة الرئيسية»<br>'
-      +'<b>٣.</b> اضغط «إضافة» في الأعلى<br>'
-      +'ثم افتح اللعبة من الأيقونة الجديدة.</div>',
-      [{t:'فهمت',full:true,f:function(){ LS.setItem(K,'never'); closeModal(); }},
-       {t:'ذكّرني لاحقاً',ghost:true,full:true,f:function(){ LS.setItem(K,today); closeModal(); }}]);
+    showModal('ثبّت اللعبة على جوالك',
+      '<div class="a2s"><div><i>'+shareIc+'</i><span>اضغط<br><b>مشاركة</b></span></div><em>‹</em>'
+      +'<div><i style="font-size:26px;font-weight:900">+</i><span><b>إضافة إلى<br>الشاشة الرئيسية</b></span></div><em>‹</em>'
+      +'<div><i>✓</i><span>اضغط<br><b>إضافة</b></span></div></div>'
+      +'<p class="a2n">زر المشاركة تحت في سفاري، أو داخل ••• فوق</p>',
+      [{t:'تمام',full:true,f:function(){ LS.setItem(K,'never'); closeModal(); }},
+       {t:'بعدين',ghost:true,full:true,f:function(){ LS.setItem(K,today); closeModal(); }}]);
   }, 2500);
 }catch(e){} })();
 
