@@ -1780,7 +1780,7 @@ body.guest #home .hpt{display:none}
 /* Home header art (fixed) */
 #home{background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.2)),url(img/road/v2/m3.jpg) center top/cover no-repeat,#2a1408!important}
 #home.active{display:flex!important;flex-direction:column;height:100vh;height:100dvh;overflow:hidden!important}
-#home>.hero{flex:none;position:relative!important;width:100%;max-width:480px;margin:0 auto;aspect-ratio:900/585;padding:0!important;margin-top:env(safe-area-inset-top)!important;background:url(img/road/ui/header.webp) center/100% 100% no-repeat!important;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
+#home>.hero{flex:none;position:relative!important;width:100%;max-width:480px;margin:0 auto;aspect-ratio:900/585;padding:0!important;margin-top:env(safe-area-inset-top)!important;background:url(img/road/ui/header2.webp) center/100% 100% no-repeat!important;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
 #home>.sheet>*{flex-shrink:0}
 #home>.sheet{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-top:4px!important}
 body:has(#home.active) #app>.bklogo{display:none!important}
@@ -1978,6 +1978,18 @@ html #srchTip{border:3px solid #e0a92e!important;background:#fffdf7!important;co
 #result #shareBtn.ghost,#result #homeBtn.ghost{background:url(img/road/result/btn2.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;min-height:50px;color:#a50f1c!important;font-weight:900!important;font-size:16px!important}
 #result .btn:active{transform:scale(.97)}
 #result .hero.res{flex-direction:column!important;align-items:center!important}
+
+/* الرئيسية: العنوان وصورة اللاعب فوق، والنقود والكاس أيقونتان على اليمين مع رقم صغير */
+#home>.hero{aspect-ratio:900/515!important}
+#home .ttl{top:72.2%!important;height:15.3%!important}
+#home .pfhold{top:43.1%!important;width:14.6%!important}
+#home .hc{top:auto!important;height:auto!important;width:12%!important;aspect-ratio:1;padding:0!important;right:4%!important;left:auto!important;justify-content:center!important;overflow:visible!important}
+#home .hc .ic{display:block!important;width:100%;height:100%}
+#home .hc .ic img{width:100%!important;height:100%!important;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(0,0,0,.35))}
+#home .hc .hl{display:flex!important;position:absolute!important;left:auto!important;right:100%!important;top:50%!important;bottom:auto!important;transform:translateY(-50%);margin-right:2px;padding:2px 8px;border-radius:999px;background:rgba(255,250,240,.95);border:2px solid #e0a92e;box-shadow:0 2px 4px rgba(0,0,0,.25)}
+#home .hc .hl b,#home .hc .hl small{font-size:clamp(11px,3.4vw,14px)!important;font-weight:900!important;color:#5a3412!important;line-height:1.3}
+#home .hpt{top:5%!important}
+#home .hlb{top:31%!important}
 </style>
 </head>
 <body>
