@@ -4140,7 +4140,7 @@ else window._spGo=(()=>{ playSword(); swing(C2,C7,()=>sp.classList.add('cut1'),(
   timers.push(setTimeout(()=>{ cancelAnimationFrame(fadeRaf); playSword(.9); swing(C9,C3,()=>sp.classList.add('cut2'),()=>{ fadeLoop(); timers.push(setTimeout(close,1500)); },60); },380)); }); });
 if(window._spGo){ const nm=(()=>{ const v=String(stats.playerName||'').replace(/\s+/g,' ').trim(); if(!v) return ''; const m=v.match(/^([^،,]+)[،,]/); if(m) return m[1].trim(); return v.split(' ')[0]; })();
   sp.insertAdjacentHTML('beforeend','<div class="spNm">'+nm.replace(/[<>&]/g,'')+'</div><div class="spTap">جاهز؟ اكسر الدقيقة ⚔️</div>');
-  const W=sp.querySelector('.spW'); if(W) W.insertAdjacentHTML('beforeend','<img class="spFg" src="img/road/splash/hand.webp" alt="" aria-hidden="true"><img class="spSw" src="img/road/splash/sword.webp" alt="" aria-hidden="true">');
+  const W=sp.querySelector('.spW'); if(W) W.insertAdjacentHTML('beforeend','<img class="spSw" src="img/road/splash/sword.webp" alt="" aria-hidden="true">');
   const NUMS=[...sp.querySelectorAll('text')].filter(t=>t.textContent.trim()==='60'); let sec=60; const tk=setInterval(()=>{ if(!window._spGo){ clearInterval(tk); return; } sec=sec<=1?60:sec-1; NUMS.forEach(t=>t.textContent=String(sec)); sp.classList.remove('tick'); void sp.offsetWidth; sp.classList.add('tick'); },1000);
   sp.addEventListener('click',()=>{ const f=window._spGo; if(f){ window._spGo=null; clearInterval(tk); sp.classList.add('tapped','pull'); try{ unlockAudio(); }catch(e){} setTimeout(f,800); } else skip(); }); }
 else sp.addEventListener('click',skip);
