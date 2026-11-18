@@ -710,7 +710,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118070000">
+<meta name="app-version" content="road-20261118072000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1316,6 +1316,7 @@ body:has(#roadPage.active) .toast{top:calc(200px + env(safe-area-inset-top))}
 #searching .radar,#inviteWait .radar{width:104px;height:104px;margin:4px auto 14px;border:4px solid #fff;background:radial-gradient(circle at 40% 30%,#ff6b75,#d81f2e 55%,#a50f1c);box-shadow:0 0 0 4px #c8102e,0 6px 14px rgba(0,0,0,.25)}
 #searching .sub,#inviteWait .sub{color:#6b4520!important;opacity:1}
 #srchSub{font-weight:800;color:#7a0c12!important}
+#srchTip[hidden]{display:none!important}
 #srchTip{background:#fff;border:3px solid #3fb7c9;border-radius:18px;padding:10px 12px;font-weight:700;max-width:none!important}
 #srBr{display:inline-block;margin:0 auto 10px;padding:6px 14px;border-radius:999px;background:#fff;border:2px solid #f2b51e;color:#a50f1c;font-weight:900;font-size:15px}
 #skipWait{margin-top:18px!important;max-width:none!important;width:100%;border:3px solid #fff!important;border-radius:22px!important;background:linear-gradient(#ff5a65,#d81f2e 55%,#b20d1c)!important;box-shadow:0 6px 0 #7a0c12,0 10px 18px rgba(0,0,0,.3)!important;color:#fff!important;font-size:18px;font-weight:900;white-space:nowrap;padding-left:8px!important;padding-right:8px!important;text-shadow:0 2px 0 #7a0c12}
@@ -1735,7 +1736,7 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
         <div class="radar"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
         <div class="big">جارٍ البحث عن منافس…</div>
         <div class="sub" style="margin-top:6px" id="srchSub">نبحث عن لاعب متاح الآن</div>
-        <div class="sub" id="srchTip" style="margin:14px auto 0;max-width:300px;line-height:1.8">انتظر لاعباً حقيقياً واربح ٥٠ نقطة إضافية، أو ابدأ الآن ضد المنافس الآلي</div>
+        <div class="sub" id="srchTip" hidden style="margin:14px auto 0;max-width:300px;line-height:1.8">انتظر لاعباً حقيقياً واربح ٥٠ نقطة إضافية، أو ابدأ الآن ضد المنافس الآلي</div>
         <button class="btn" id="skipWait" type="button" style="max-width:320px;margin:16px auto 0">ابدأ الآن ضد المنافس الآلي</button>
       </div>
       <div id="inviteWait" style="display:none;width:100%;text-align:center">
@@ -2448,10 +2449,10 @@ async function startMatch(){
   const t0 = Date.now(); let res = null;
   const wait = 30000; let skip = false;
   const sb = $('skipWait'); if(sb) sb.onclick = ()=>{ skip = true; };
-  const tip=$('srchTip'); if(tip) tip.textContent = pointsAvailable() ? 'انتظر لاعباً حقيقياً واربح ٥٠ نقطة إضافية، أو ابدأ الآن ضد المنافس الآلي' : 'جولة تدريبية بدون نقاط. انتظر لاعباً حقيقياً أو ابدأ الآن ضد المنافس الآلي';
+  const tip=$('srchTip'); if(tip) tip.hidden=true;
   const sub = $('srchSub');
   while(Date.now()-t0 < wait && !skip){
-    if(sub) sub.textContent = 'نبحث عن لاعب متاح الآن… '+Math.max(0,Math.ceil((wait-(Date.now()-t0))/1000))+' ث';
+    if(sub) sub.textContent = 'نبحث عن لاعب… '+Math.max(0,Math.ceil((wait-(Date.now()-t0))/1000))+' ث'+(pointsAvailable()&&!RD.mall&&RD.replay==null?' · الفوز عليه +٥٠':'');
     res = await rpc('join_queue',{p_id:PID,p_name:stats.playerName},3500);
     if(tok!==matchTok) return;
     if(res && res.match) break;
@@ -4089,7 +4090,7 @@ function m2Build(){
     h+='<button type="button" class="r2mall '+(won?'won':open?'open':'off')+'" data-k="'+k+'" style="left:'+mx.toFixed(0)+'px;top:'+m2y(i+0.5).toFixed(0)+'px"><span class="b">'+(won?'✓':'🛍️')+'</span><span class="l">'+m.n+(open?' ⚡':'')+'</span></button>'; });
   RESTS.forEach((r,k)=>{ const v=(st.rests||{})[k], won=v===1, lost=v===0, open=v==null && pos>r.at, pt=PARTNERS[r.p], i=r.at;
     const xm=m2x(i+0.5), mx=Math.max(56,Math.min(M2.W-56,xm+(xm<M2.W/2?110:-110)));
-    h+='<button type="button" class="r2rest '+(won?'won':lost?'lost':open?'open':'off')+'" data-k="'+k+'" style="left:'+mx.toFixed(0)+'px;top:'+m2y(i+0.5).toFixed(0)+'px"><span class="b" style="background-image:url(\''+pt.logo+'\')">'+(open?'<i>!</i>':'')+'</span><span class="l">استراحة '+pt.n+'</span></button>'; });
+    h+='<button type="button" class="r2rest '+(won?'won':lost?'lost':open?'open':'off')+'" data-k="'+k+'" style="left:'+mx.toFixed(0)+'px;top:'+m2y(i+0.5).toFixed(0)+'px"><span class="b" style="background-image:url(\''+pt.logo+'\')">'+(open?'<i>!</i>':'')+'</span></button>'; });
   if(!arrived) h+='<div class="r2sw" id="r2Sw" style="left:'+m2x(pos).toFixed(0)+'px;top:'+m2y(pos).toFixed(0)+'px"><div class="sw">'+M2SWORD+'</div></div>';
   inner.innerHTML=h;
   inner.querySelectorAll('.r2mall').forEach(b=>b.onclick=e=>{ e.stopPropagation(); mallTap(+b.dataset.k); });
@@ -4240,8 +4241,16 @@ try{ const _ps=playSword; playSword=function(rate){ if(!stats.sound) return; try
   if(!AC || !SWORD){ _ps(rate); return; }
   try{ if(AC.state!=='running') AC.resume(); }catch(e){} swNow(rate); }; }catch(e){}
 /* الآيفون يوقّف الصوت لما تطلع من الصفحة أو تقفل الشاشة: نحاول نصحّيه أول ما ترجع */
-document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ try{ if(stats.sound && AC && AC.state!=='running') AC.resume(); }catch(e){} } });
-window.addEventListener('pageshow',()=>{ try{ if(stats.sound && AC && AC.state!=='running') AC.resume(); }catch(e){} });
+/* الآيفون بعد ما ترجع للتطبيق أحياناً يخلي محرّك الصوت القديم معلّق (حالته interrupted أو running بس صامت) و resume ما يفيد.
+   الحل: لما تطلع من الصفحة نرمي المحرّك، وأول لمسة بعد الرجوع تسوي محرّك جديد (لازم يكون داخل اللمسة عشان الآيفون يسمح) */
+let AC_DEAD=false;
+function acReset(){ try{ if(AC && AC.close) AC.close(); }catch(e){} AC=null; SWORD=null; UNL=false; SWPEND=null; }
+document.addEventListener('visibilitychange',()=>{ if(document.hidden){ AC_DEAD=true; return; }
+  if(AC_DEAD){ AC_DEAD=false; acReset(); } else { try{ if(stats.sound && AC && AC.state!=='running') AC.resume(); }catch(e){} } });
+window.addEventListener('pagehide',()=>{ AC_DEAD=true; });
+window.addEventListener('pageshow',()=>{ if(AC_DEAD){ AC_DEAD=false; acReset(); } });
+/* احتياط: لو لمس اللاعب والمحرّك مو شغّال بعد ثانية، نسوي واحد جديد مع اللمسة الجاية */
+document.addEventListener('touchend',()=>{ const a=AC; if(!a||!stats.sound) return; setTimeout(()=>{ if(AC===a && a.state!=='running' && !document.hidden) acReset(); },1000); },{capture:true,passive:true});
 /* الخريطة: نحمّل صورها ونفكّها من أول ما تفتح اللعبة، عشان لما تفتح الخريطة تطلع الرسمة على طول بدون الخلفية الخضرا */
 (()=>{ const pre=[]; const go=()=>{ for(let k=0;k<8;k++){ const im=new Image(); im.decoding='async'; im.src='img/road/map'+k+'.jpg'; pre.push(im); try{ im.decode().catch(()=>{}); }catch(e){} } window._rdPre=pre; };
   if(document.readyState==='complete') setTimeout(go,300); else window.addEventListener('load',()=>setTimeout(go,300)); })();
