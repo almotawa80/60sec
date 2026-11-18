@@ -2371,9 +2371,9 @@ var LS=(function(){ var P='rd_'; try{ var L=window.localStorage; return {getItem
 <script>
 /* ===== المكافآت (القيم تجريبية، عدّلها هنا) ===== */
 const REWARDS = [
-  {id:'gift_arabica', type:'gift', title:'قسيمة أرابيكا ٥ د.ك',       cost:1500, icon:'gift', logo:'img/arabica.png'},
-  {id:'gift_pick',    type:'gift', title:'قسيمة بيك ٥ د.ك',           cost:1500, icon:'gift', logo:'img/pick.png'},
-  {id:'gift_wooden',  type:'gift', title:'قسيمة وودن بيكري ٥ د.ك',    cost:1500, icon:'gift', logo:'img/wooden.png'}
+  {id:'gift_arabica', type:'gift', title:'قسيمة أرابيكا ٥ د.ك',       cost:2500, icon:'gift', logo:'img/arabica.png'},
+  {id:'gift_pick',    type:'gift', title:'قسيمة بيك ٥ د.ك',           cost:2500, icon:'gift', logo:'img/pick.png'},
+  {id:'gift_wooden',  type:'gift', title:'قسيمة وودن بيكري ٥ د.ك',    cost:2500, icon:'gift', logo:'img/wooden.png'}
 ];
 
 /* ===== بنك الأسئلة: [السؤال، الصحيح، خطأ١، خطأ٢، خطأ٣، المستوى(١ سهل ٢ متوسط ٣ صعب)، التفسير] ===== */
@@ -4447,7 +4447,7 @@ async function restTap(k){
   const r=RESTS[k], pt=PARTNERS[r.p], st=rdSt(), v=(st.rests||{})[k];
   if(!rdLoggedIn()){ toast('سجّل دخولك عشان تدخل الاستراحة'); return; }
   if(v===1){ toast('أخذت ختم هذي الاستراحة ✓'); return; }
-  if(v===0){ toast('جاوبت هذي الاستراحة قبل، تعوضها في استراحة '+pt.n+' الجاية'); return; }
+  if(v===0){ toast('جاوبت هذي الاستراحة قبل'); return; }
   if(st.pos<=r.at){ toast('🔒 تنفتح لك بعد ما تعدّي فرع '+ROUTE[r.at]); return; }
   const q=await rpc('rest_get',{p_id:PID,p_idx:k},6000);
   if(!q || !q.ok){ if(q && q.error==='done'){ roadLoad(); toast('جاوبت هذي الاستراحة قبل'); } else toast(q && q.error==='locked' ? 'الاستراحة لسه مقفلة' : 'تعذّر فتح الاستراحة، حاول مرة ثانية'); return; }
@@ -4478,7 +4478,7 @@ function renderStampCard(){
   const rs=(rdSt().rests)||{};
   el.innerHTML='<h3>🎫 بطاقة الأختام</h3>'+Object.keys(PARTNERS).map(p=>{ const pt=PARTNERS[p], n=rsStamps(p,rs), tot=RESTS.filter(r=>r.p===p).length, used=RESTS.filter((r,k)=>r.p===p && rs[k]!=null).length;
     const sub = n>=3 ? '🎉 أخذت القسيمة! تلقاها في «قسائمي»' : (n+(tot-used)<3 ? 'فاتتك قسيمة هالموسم' : (3-n===1?'باقي ختم واحد للقسيمة':3-n===2?'باقي ختمين للقسيمة':'جاوب صح في استراحاته وخذ ٣ أختام'));
-    return '<div class="srow'+(n>=3?' dn':'')+'"><span class="lg" style="background-image:url(\''+pt.logo+'\')"></span><span class="nm">'+pt.n+'<small>'+sub+'</small></span><span class="ss">'+rsDots(p,n)+'</span></div>'; }).join('')+'<div class="ft">٣ أختام من نفس الشريك = قسيمة ٥ د.ك · الاستراحات على خريطة الطريق</div>';
+    return '<div class="srow'+(n>=3?' dn':'')+'"><span class="lg" style="background-image:url(\''+pt.logo+'\')"></span><span class="nm">'+pt.n+'<small>'+sub+'</small></span><span class="ss">'+rsDots(p,n)+'</span></div>'; }).join('')+'<div class="ft">٣ أختام من نفس الشريك = كوبون شراء ٢ د.ك · الاستراحات على خريطة الطريق</div>';
 }
 let _pkAsked=false;
 function maybePick(){
