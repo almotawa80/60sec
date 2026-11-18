@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118041500">
+<meta name="app-version" content="road-20261118042000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -2326,7 +2326,7 @@ function showFound(name, human, tok){
   $('foundMsg').textContent = (human ? 'تحدٍّ مباشر مع لاعب حقيقي — مكافأة الفوز ٥٠ نقطة' : 'لا يوجد لاعب متاح الآن — ستلعب ضد الجهاز') + (pointsAvailable() ? '' : '\nجولة تدريبية بدون نقاط'); if(RD.mall) $('foundMsg').textContent = '⚡ محطة '+RD.mall.n+'\nافز على الجهاز واحصل على درع 🛡️ و١٠٠ نقطة'; if(RD.replay!=null) $('foundMsg').textContent = '🔁 إعادة فرع '+ROUTE[RD.replay]+'\nحسّن نجومك (بدون نقاط)';
   if(stats.avatar) setAv($('meAv'), stats.avatar); else { setAv($('meAv'), ''); $('meAv').innerHTML = svg('user',44); }
   $('botName').textContent = bot.name; $('botAv').classList.remove('hasimg'); $('botAv').style.backgroundImage=''; if(human){ $('botAv').textContent = bot.name.charAt(0); } $('botTag').innerHTML = human ? svg('bolt',13)+' متصل الآن' : svg('robot',14)+' منافس آلي'; $('meTag').innerHTML = svg('check',13)+' جاهز'; $('meName').textContent = stats.playerName || 'أنت'; if(stats.avatar) setAv($('meAv'), stats.avatar); else { $('meAv').classList.remove('hasimg'); $('meAv').style.backgroundImage=''; $('meAv').innerHTML=svg('user',44); }
-  if(!human){ const ba=botAvatar(bot.name); setAv($('botAv'), ba); window._oppAv=avMeta(ba).base; }
+  if(!human){ try{ const ba=botAvatar(bot.name); setAv($('botAv'), ba); window._oppAv=avMeta(ba).base; }catch(e){} }
   prefetchQs();
   if(human && PV){ const pv=PV; rpc('opp_avatar',{p_id:PID,p_match:pv.id},4000).then(a=>{ if(a && typeof a==='string' && PV===pv){ setAv($('botAv'), a); window._oppAv=a; } }); }
   let n = 3; $('cd').textContent = n; SND.count();
@@ -3236,7 +3236,7 @@ async function loadLB(){
   if(!top.length){ body.innerHTML='<div class="lbempty">لا أحد في الترتيب بعد '+LBP[LB.p]+'.<br>العب الآن وكن الأول!</div>'; }
   else {
     const pod=[top[1],top[0],top[2]].map((x,i)=>{ if(!x) return '<div class="pc"></div>'; const n=x.rank;
-      return '<div class="pc p'+n+'"><div class="pav"'+(x.av?' style="background-image:url(\''+x.av.replace(/'/g,'')+'\')"':'')+'>'+(x.av?'':esc(x.name.trim().charAt(0)))+(x.av&&WPS.some(w=>w.k===avMeta(x.av).w)?wpbHtml(avMeta(x.av).w):'')+'</div><div class="pn">'+esc(x.name)+'</div><div class="pp">'+fmt(x.pts)+'</div><div class="blk">'+n+'</div></div>'; }).join('');
+      return '<div class="pc p'+n+'"><div class="pav"'+(x.av?' style="background-image:url(\''+avMeta(x.av).base.replace(/'/g,'')+'\')"':'')+'>'+(x.av?'':esc(x.name.trim().charAt(0)))+(x.av&&WPS.some(w=>w.k===avMeta(x.av).w)?wpbHtml(avMeta(x.av).w):'')+'</div><div class="pn">'+esc(x.name)+'</div><div class="pp">'+fmt(x.pts)+'</div><div class="blk">'+n+'</div></div>'; }).join('');
     const rest=top.slice(3).map(x=>'<div class="lbi'+(x.me?' me':'')+'"><span class="rk">'+x.rank+'</span><span class="nm">'+esc(x.name)+'</span><span class="pt">'+fmt(x.pts)+'</span></div>').join('');
     let h='<div class="pod">'+pod+'</div>'+(rest?'<div class="lbl">'+rest+'</div>':'');
     if(r.count>LB.lim && LB.lim<100) h+='<button class="lbmore" id="lbMore" type="button">عرض أعلى '+(LB.lim<=10?'١٠٠':'١٠')+'</button>';
@@ -3397,7 +3397,7 @@ document.addEventListener('visibilitychange',function(){ if(document.visibilityS
 
 /* ===== ملفي ===== */
 function avInit(){ return ((stats.playerName||'أ').trim().charAt(0)||'أ'); }
-function setAv(el, src, txt){ if(!el) return; if(src){ el.style.backgroundImage='url("'+src+'")'; el.classList.add('hasimg'); el.textContent=''; } else { el.style.backgroundImage=''; el.classList.remove('hasimg'); if(txt!=null) el.textContent=txt; }
+function setAv(el, src, txt){ if(!el) return; if(src){ el.style.backgroundImage='url("'+avMeta(src).base+'")'; el.classList.add('hasimg'); el.textContent=''; } else { el.style.backgroundImage=''; el.classList.remove('hasimg'); if(txt!=null) el.textContent=txt; }
   if(el.hasAttribute('data-wb')){ const o=el.querySelector('.wpb'); if(o) o.remove(); const w=avMeta(src).w; if(w && WPS.some(x=>x.k===w)) el.insertAdjacentHTML('beforeend',wpbHtml(w)); } }
 function renderProfile(){
   setAv($('pfAv'), stats.avatar, avInit()); setAv($('pfBig'), stats.avatar, avInit());
@@ -3576,7 +3576,7 @@ async function savePick(){
 }
 /* صورة البوت: محارب ثابت لكل اسم (من نفس جنس الاسم، وغير محارب اللاعب نفسه) مع سلاح */
 function botAvatar(name){ let h=0; for(const c of String(name||'')) h=(h*31+c.charCodeAt(0))>>>0;
-  const mine=avMeta(stats.avatar).a, L=AVS.filter(x=>x.g===(stats.gender==='f'?'f':'m') && x.k!==mine), a=L[h%L.length], w=WPS[(h>>3)%WPS.length];
+  const mine=avMeta(stats.avatar).a, L=AVS.filter(x=>x.g===(stats.gender==='f'?'f':'m') && x.k!==mine), a=L[h%L.length], w=WPS[(h>>>3)%WPS.length];
   return avImg(a.k)+'#a='+a.k+'&w='+w.k; }
 let _pkAsked=false;
 function maybePick(){
