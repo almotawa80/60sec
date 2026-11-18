@@ -1033,6 +1033,7 @@ document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==
 /* ===== تقرير نقاط القوة والضعف ===== */
 const CATI={'شرعية عامة':'🕌','شرعية مالية':'💰','منتجات البنك':'🏦','ثقافة عامة':'🌍','جغرافيا':'🗺️','سرعة بديهة':'⚡','حساب ذهني':'🔢','ذاكرة':'🧠','انتباه':'👁️'};
 const RP={days:30,grp:'',dept:'',unit:'',cat:''};
+const qTxtA=q=>{ q=String(q||''); if(!q.startsWith('#color|')) return q; const a=q.split('|'); return (a[3]||'اختر لون الحبر')+' — كلمة «'+(a[1]||'')+'»'; };
 const pctOf=(ok,n)=>n?Math.round(100*ok/n):0;
 const tone=p=>p>=75?'g':(p>=55?'y':'r');
 function rbar(label,ok,n,bank,sub){ const p=pctOf(ok,n), t=tone(p);
@@ -1054,7 +1055,7 @@ async function loadRep(){
   b.innerHTML='<div class="ch"><h3>الملخص</h3><div class="rpk"><div><b>'+fmt(t.players)+'</b><span>موظف لعب</span></div><div><b>'+fmt(t.n)+'</b><span>إجابة</span></div><div><b class="c'+tone(pctOf(t.ok,t.n))+'">'+pctOf(t.ok,t.n)+'٪</b><span>نسبة الصح</span></div></div></div>'
    +'<div class="ch" style="margin-top:12px"><h3>حسب التصنيف</h3>'+cats.map(c=>rbar(catL(c.cat),c.ok,c.n,null,fmt(c.n)+' إجابة')).join('')
    +(ranked.length?'<div class="rtg">'+ranked.filter(x=>x.p>=75).slice(0,2).map(x=>'<span class="s">💪 '+esc(x.c)+'</span>').join('')+ranked.filter(x=>x.p<60).slice(-2).reverse().map(x=>'<span class="w">⚠️ '+esc(x.c)+'</span>').join('')+'</div>':'')+'</div>'
-   +'<div class="ch" style="margin-top:12px"><h3>أكثر الأسئلة غلط <em>'+catT+'</em></h3>'+((r.hard||[]).length?r.hard.map(q=>'<div class="rq"><span class="c">'+esc(q.cat)+'</span><p>'+esc(q.q)+'</p><div class="a">الصحيح <b>'+esc(q.right_ans)+'</b> · <span class="cr" style="font-weight:800">'+pctOf(q.bad,q.n)+'٪ غلطوا</span> من '+fmt(q.n)+' إجابة</div></div>').join(''):'<div class="rpe">يظهر السؤال هنا بعد ما يجاوبه ٣ مرات على الأقل</div>')+'</div>'
+   +'<div class="ch" style="margin-top:12px"><h3>أكثر الأسئلة غلط <em>'+catT+'</em></h3>'+((r.hard||[]).length?r.hard.map(q=>'<div class="rq"><span class="c">'+esc(q.cat)+'</span><p>'+esc(qTxtA(q.q))+'</p><div class="a">الصحيح <b>'+esc(q.right_ans)+'</b> · <span class="cr" style="font-weight:800">'+pctOf(q.bad,q.n)+'٪ غلطوا</span> من '+fmt(q.n)+' إجابة</div></div>').join(''):'<div class="rpe">يظهر السؤال هنا بعد ما يجاوبه ٣ مرات على الأقل</div>')+'</div>'
    +'<div class="ch" style="margin-top:12px"><h3>نسبة الصح '+unitT+' <em>'+catT+'</em></h3>'+(r.units||[]).map(u=>rbar(esc(u.k),u.pct,100,null,fmt(u.players)+' موظف')).join('')+'</div>';
 }
 document.querySelectorAll('#rpD button').forEach(x=>x.onclick=()=>{ RP.days=+x.dataset.v; document.querySelectorAll('#rpD button').forEach(y=>y.classList.toggle('on',y===x)); loadRep(); });
@@ -1181,7 +1182,7 @@ async function openPRep(p){
     h+='<div class="rpk"><div><b>'+fmt(t.n)+'</b><span>سؤال جاوبه</span></div><div><b class="c'+tone(pctOf(t.ok,t.n))+'">'+pctOf(t.ok,t.n)+'٪</b><span>نسبة الصح</span></div><div><b>'+(t.ms?(t.ms/1000).toFixed(1):'—')+'ث</b><span>متوسط السرعة</span></div></div>'
      +'<h4 style="margin:14px 0 4px;font-size:13.5px">حسب التصنيف <small style="color:var(--mu);font-weight:600;font-size:11px">· الخط = متوسط البنك</small></h4>'+cats.map(c=>rbar(catL(c.cat),c.ok,c.n,c.bank,fmt(c.n)+' سؤال')).join('')
      +(rk.length?'<h4 style="margin:12px 0 4px;font-size:13.5px">نقاط القوة والضعف</h4><div class="rtg">'+rk.filter(x=>x.p>=75).slice(0,3).map(x=>'<span class="s">💪 '+esc(x.c)+'</span>').join('')+rk.filter(x=>x.p<60).slice(-3).reverse().map(x=>'<span class="w">⚠️ '+esc(x.c)+'</span>').join('')+'</div>':'')
-     +'<h4 style="margin:14px 0 4px;font-size:13.5px">أسئلة غلط فيها</h4>'+((r.wrong||[]).length?r.wrong.map(q=>'<div class="rq"><span class="c">'+esc(q.cat)+'</span><p>'+esc(q.q)+'</p><div class="a">'+(q.pick?'جاوب <s>'+esc(q.pick)+'</s> · ':'<s>ما لحق يجاوب</s> · ')+'الصحيح <b>'+esc(q.right_ans)+'</b></div></div>').join(''):'<div class="rpe">ما غلط في ولا سؤال 👏</div>'); }
+     +'<h4 style="margin:14px 0 4px;font-size:13.5px">أسئلة غلط فيها</h4>'+((r.wrong||[]).length?r.wrong.map(q=>'<div class="rq"><span class="c">'+esc(q.cat)+'</span><p>'+esc(qTxtA(q.q))+'</p><div class="a">'+(q.pick?'جاوب <s>'+esc(q.pick)+'</s> · ':'<s>ما لحق يجاوب</s> · ')+'الصحيح <b>'+esc(q.right_ans)+'</b></div></div>').join(''):'<div class="rpe">ما غلط في ولا سؤال 👏</div>'); }
   ps.innerHTML=h; $('rpBk').onclick=drawPlayer; ps.scrollTop=0;
   if($('rpPdf')){ $('rpPdf').onclick=()=>pRepPdf(p,r); $('rpXls').onclick=()=>pRepXls(p,r); }
 }
