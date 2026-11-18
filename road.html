@@ -2095,7 +2095,7 @@ background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);anim
 
 #home #goBtn .sknob.hasw{background:var(--kw) center/112% no-repeat!important;border-radius:50%!important;border:3px solid #fff!important;box-sizing:border-box!important;box-shadow:0 0 0 2.5px #e0a92e,0 3px 6px rgba(0,0,0,.35)!important;filter:none!important}
 
-.r2sw .wpm{display:block;width:58px;height:58px;border-radius:50%;background:#c8102e center/112% no-repeat;border:3px solid #fff;box-shadow:0 0 0 3px #e0a92e,0 4px 8px rgba(0,0,0,.35);margin-bottom:14px}
+.r2sw .wpm{display:block;width:74px;height:74px;background:transparent center/contain no-repeat;margin-bottom:10px;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 2px #fff) drop-shadow(0 5px 5px rgba(0,0,0,.45))}
 
 /* شريط المحافظة فوق الخريطة: ريبون اللعبة الجديد، الاسم ما يركب على الأرقام */
 #roadPage .rp-chap{border:0!important;border-style:solid!important;border-width:0 30px!important;border-image:url(img/road/ui/ribbon.webp) 0 123 fill / 0 30px stretch!important;background:none!important;box-shadow:none!important;border-radius:0!important;height:46px;padding:0 4px 4px!important;gap:6px!important;justify-content:center!important;filter:drop-shadow(0 4px 5px rgba(0,0,0,.35));color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.35)}
@@ -2124,6 +2124,14 @@ background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);anim
 #rewards .stc h3{display:none}
 .stc h3{display:flex;align-items:center;justify-content:center;gap:6px}
 .stc h3 .sti{width:26px;height:26px;background:url(img/road/admin/i_voucher.webp) center/contain no-repeat;display:inline-block}
+
+/* أيقونات المحارب والسلاح جنب صورة ملفي */
+#profilePage .pfpk{position:absolute;right:6px;top:34px;display:flex;flex-direction:column;gap:12px;z-index:4}
+#profilePage .pfpk button{border:0;background:none;padding:0;font:inherit;display:flex;flex-direction:column;align-items:center;gap:0;cursor:pointer}
+#profilePage .pfpk i{display:block;width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#ff6b75,#c8102e 60%,#8a0a12) center/cover no-repeat;background-size:cover;border:3px solid #fff;box-shadow:0 0 0 3px #e0a92e,0 5px 10px rgba(0,0,0,.4)}
+#profilePage #pfPkW i{background-size:78%,cover!important;background-position:center;background-repeat:no-repeat}
+#profilePage #pfPkA.ic i{background-size:64%!important}
+#profilePage .pfpk span{margin-top:-9px;position:relative;background:linear-gradient(#e8323f,#b20d1c);color:#fff;border:2px solid #fff;border-radius:9px;padding:0 9px;font-size:11.5px;font-weight:900;line-height:18px;box-shadow:0 2px 4px rgba(0,0,0,.3)}
 </style>
 </head>
 <body>
@@ -2290,6 +2298,7 @@ background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);anim
     <div class="sheet">
       <div class="pfcard">
         <button class="pfwrap" id="pfWrap" type="button" aria-label="صورتك"><span class="pfbig" data-wb id="pfBig"></span><span class="pfplus" id="pfPlus">+</span></button>
+        <div class="pfpk"><button type="button" id="pfPkA"><i></i><span>محاربي</span></button><button type="button" id="pfPkW"><i></i><span>سلاحي</span></button></div>
         <input type="file" id="pfFile" accept="image/*" hidden>
       </div>
       <div class="pfsec">
@@ -2317,7 +2326,7 @@ background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);anim
   </section>
 
 <div class="asheet" id="avSheet"><div class="asbox">
-  <button type="button" id="avPick">⚔️ اختر محاربك وسلاحك</button>
+  <button type="button" id="avPick" hidden>⚔️ اختر محاربك وسلاحك</button>
   <button type="button" id="avEdit">تعديل الصورة</button>
   <button type="button" id="avChange">تغيير الصورة</button>
   <button type="button" id="avDel" class="danger">حذف الصورة</button>
@@ -4276,7 +4285,7 @@ document.addEventListener('visibilitychange',function(){ if(document.visibilityS
 function avInit(){ return ((stats.playerName||'أ').trim().charAt(0)||'أ'); }
 function setAv(el, src, txt){ if(!el) return; if(src){ el.style.backgroundImage='url("'+avMeta(src).base+'")'; el.classList.add('hasimg'); el.textContent=''; } else { el.style.backgroundImage=''; el.classList.remove('hasimg'); if(txt!=null) el.textContent=txt; }
   if(el.hasAttribute('data-wb')){ const o=el.querySelector('.wpb'); if(o) o.remove(); const w=avMeta(src).w; if(w && WPS.some(x=>x.k===w)) el.insertAdjacentHTML('beforeend',wpbHtml(w)); } }
-function renderProfile(){
+function renderProfile(){ try{ pfPkPaint(); }catch(e){}
   try{ renderStampCard(); }catch(e){}
   setAv($('pfAv'), stats.avatar, avInit()); setAv($('pfBig'), stats.avatar, avInit());
   try{ setAv($('invAv'), stats.avatar, avInit()); $('invAv').classList.toggle('flip', !!avMeta(stats.avatar||'').a); }catch(e){}
@@ -4380,6 +4389,10 @@ $('pfWrap').onclick=()=>{ if(!stats.avatar){ openPick(false); return; } $('avShe
 $('avSheet').onclick=e=>{ if(e.target.id==='avSheet') closeSheet(); };
 $('avCancel').onclick=closeSheet;
 $('avPick').onclick=()=>{ closeSheet(); openPick(false); };
+$('pfPkA').onclick=()=>openPick(false,1); $('pfPkW').onclick=()=>openPick(false,2);
+function pfPkPaint(){ try{ const m=avMeta(stats.avatar||''); const a=m.a&&AVS.some(x=>x.k===m.a)?m.a:'', w=m.w&&WPS.some(x=>x.k===m.w)?m.w:'longsword';
+  $('pfPkA').querySelector('i').style.backgroundImage=a?"url('"+avImg(a)+"')":"url('img/road/pick/shield.webp')"; $('pfPkA').classList.toggle('ic',!a);
+  $('pfPkW').querySelector('i').style.backgroundImage="url('img/wpn/cut/"+w+".webp'),radial-gradient(circle at 40% 30%,#ff6b75,#c8102e 60%,#8a0a12)"; }catch(e){} }
 $('avChange').onclick=()=>{ closeSheet(); $('pfFile').click(); };
 $('avEdit').onclick=()=>{ closeSheet(); let src=''; try{ src=LS.getItem('mc_avsrc')||''; }catch(_){} openCrop(src||stats.avatar); };
 $('avDel').onclick=async()=>{ closeSheet(); const old=stats.avatar; stats.avatar=''; save(stats); try{ LS.removeItem('mc_avsrc'); }catch(_){} renderProfile(); renderStats(); if(DEMO) return;
@@ -4398,7 +4411,7 @@ var WPS=[{k:'longsword',n:'سيف الفارس',at:0},{k:'scimitar',n:'السي�
 var OWN=new Set(); try{ JSON.parse(localStorage.getItem('rd_own')||'[]').forEach(k=>OWN.add(k)); }catch(e){}
 function setOwn(arr){ if(!Array.isArray(arr)) return; OWN=new Set(arr); try{ localStorage.setItem('rd_own',JSON.stringify(arr)); }catch(e){} }
 function loadOwn(){ if(DEMO||GUEST()||!PID) return Promise.resolve(); return rpc('shop_owned',{p_id:PID},4000).then(r=>{ if(r&&r.ok) setOwn(r.items||[]); },()=>{}); }
-const avImg=k=>'img/war/'+k+'.jpg', wpImg=k=>'img/wpn/'+k+'.jpg';
+const avImg=k=>'img/war/'+k+'.jpg', wpImg=k=>'img/wpn/'+k+((k==='longsword'||k==='scimitar')?'_up':'')+'.jpg';
 function avMeta(src){ const o={a:'',w:'',base:src||''}; if(!src) return o; const i=src.indexOf('#'); if(i<0) return o; o.base=src.slice(0,i);
   src.slice(i+1).split('&').forEach(kv=>{ const p=kv.split('='); if(p[0]==='a'||p[0]==='w') o[p[0]]=String(p[1]||'').replace(/[^a-z]/g,''); }); return o; }
 function wpbHtml(w){ return '<i class="wpb" style="background-image:url(\''+wpImg(w)+'\')"></i>'; }
@@ -4805,7 +4818,7 @@ function m2Build(){
   RESTS.forEach((r,k)=>{ const v=(st.rests||{})[k], won=v===1, lost=v===0, open=v==null && pos>r.at, pt=PARTNERS[r.p], i=r.at;
     const xm=m2x(i+0.5), mx=Math.max(56,Math.min(M2.W-56,xm+(xm<M2.W/2?110:-110)));
     h+='<button type="button" class="r2rest '+(won?'won':lost?'lost':open?'open':'off')+'" data-k="'+k+'" style="left:'+mx.toFixed(0)+'px;top:'+m2y(i+0.5).toFixed(0)+'px"><span class="b" style="background-image:url(\''+pt.logo+'\')">'+(open?'<i>!</i>':'')+'</span></button>'; });
-  if(!arrived) h+='<div class="r2sw" id="r2Sw" style="left:'+m2x(pos).toFixed(0)+'px;top:'+m2y(pos).toFixed(0)+'px"><div class="sw">'+(()=>{ const w=avMeta(stats.avatar||'').w; return (w&&WPS.some(x=>x.k===w)) ? '<i class="wpm" style="background-image:url(\''+wpImg(w)+'\')"></i>' : M2SWORD; })()+'</div></div>';
+  if(!arrived) h+='<div class="r2sw" id="r2Sw" style="left:'+m2x(pos).toFixed(0)+'px;top:'+m2y(pos).toFixed(0)+'px"><div class="sw">'+(()=>{ const w=avMeta(stats.avatar||'').w; return (w&&WPS.some(x=>x.k===w)) ? '<i class="wpm" style="background-image:url(\'img/wpn/cut/'+w+'.webp\')"></i>' : M2SWORD; })()+'</div></div>';
   inner.innerHTML=h;
   inner.querySelectorAll('.r2mall').forEach(b=>b.onclick=e=>{ e.stopPropagation(); mallTap(+b.dataset.k); });
   inner.querySelectorAll('.r2rest').forEach(b=>b.onclick=e=>{ e.stopPropagation(); restTap(+b.dataset.k); });
