@@ -1902,6 +1902,13 @@ body:has(#home.active) #app>.bklogo{display:none!important}
 #profilePage .pfstats div:nth-child(2)::before{background-image:url(img/road/profile/chest.webp)}
 #profilePage .pfstats div:nth-child(3)::before{background-image:url(img/road/profile/swords.webp)}
 #profilePage .pfstats div:nth-child(4)::before{background-image:url(img/road/profile/trophy.webp)}
+/* ترويسة: الأرقام في المساحة الفاضية بعيد عن الرسمة */
+#home .hc .hl{position:absolute;top:0;bottom:0;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+#home .hpt .hl{left:7%;right:39%}
+#home .hlb .hl{left:35%;right:9%}
+#home .hlb small{font-size:clamp(16px,5vw,21px)!important;font-weight:900!important;color:#3b1d0e!important;opacity:1!important}
+#home .hlb.nor small{font-size:clamp(11px,3.4vw,14px)!important}
+#home .hpt b{font-size:clamp(13px,4.3vw,19px)!important}
 </style>
 </head>
 <body>
@@ -1920,7 +1927,7 @@ body:has(#home.active) #app>.bklogo{display:none!important}
         <div class="ttl"><h1><svg class="ttlsvg" viewBox="0 0 300 64" aria-hidden="true"><text x="150" y="46" text-anchor="middle" class="d">تحدّي الدقيقة</text><text x="150" y="40" text-anchor="middle" class="w">تحدّي الدقيقة</text><text x="150" y="40" text-anchor="middle" class="r">تحدّي الدقيقة</text></svg><span class="sr">تحدّي الدقيقة</span></h1><span class="greet" id="greet"></span></div>
         <span class="pfhold"><button class="pfbtn" id="pfBtn" aria-label="ملفي"><span class="pfav" id="pfAv"></span></button></span>
       </div>
-      <div class="hcol"><button type="button" class="hc hpt" id="hPt" aria-label="نقاطك، استبدلها من المتجر"><span class="hl"><b id="hPtN">0</b></span><i class="ic"><img src="img/road/ui/coins.webp" alt=""></i></button><button type="button" class="hc hlb" id="hLb" aria-label="المتصدرون"><i class="ic"><img src="img/road/ui/trophy.webp" alt=""></i><span class="hl" style="display:none"><small id="hLbN"></small></span></button></div>
+      <div class="hcol"><button type="button" class="hc hpt" id="hPt" aria-label="نقاطك، استبدلها من المتجر"><span class="hl"><b id="hPtN">0</b></span><i class="ic"><img src="img/road/ui/coins.webp" alt=""></i></button><button type="button" class="hc hlb" id="hLb" aria-label="المتصدرون"><i class="ic"><img src="img/road/ui/trophy.webp" alt=""></i><span class="hl"><small id="hLbN"></small></span></button></div>
     </div>
     <div class="sheet">
       <div class="guestbox" id="guestBox" style="display:none"><b>أنت في وضع التدريب</b><p>تقدر تتدرّب ضد الكمبيوتر. عشان تجمع نقاط وتدخل المتصدرين وتتحدى زملاءك، سجّل دخولك برقمك الوظيفي والرمز.</p><button type="button" class="rbtn" id="guestLogin">تسجيل الدخول</button></div>
@@ -4908,7 +4915,7 @@ document.querySelectorAll('svg.mark').forEach(function(s){ var i=document.create
   const lb=$('hLb'), pt=$('hPt'); if(!lb) return;
   lb.onclick=()=>$('lbBtn').click(); pt.onclick=()=>$('storeBtn').click();
   const sync=()=>{ const b=$('wBal'), m=$('lbMine'); $('hPtN').textContent=(b&&b.textContent)||'0';
-    const r=(m&&m.textContent||'').match(/#\s*([0-9٠-٩]+)/); $('hLbN').textContent=r?'ترتيبك #'+r[1]:''; };
+    const r=(m&&m.textContent||'').match(/#\s*([0-9٠-٩]+)/); $('hLbN').textContent=r?'#'+r[1]:'الترتيب'; $('hLb').classList.toggle('nor',!r); };
   sync(); const mo=new MutationObserver(sync); ['wBal','lbMine'].forEach(id=>{ const e=$(id); if(e) mo.observe(e,{childList:true,characterData:true,subtree:true}); });
 }catch(e){} })();
 </script>
