@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#d3232f">
-<meta name="app-version" content="202611181500">
+<meta name="app-version" content="202611181530">
 <title>لوحة تحكّم الطريق إلى الرئيسي</title>
 <link rel="icon" href="img/road/favicon.svg?v=2" type="image/svg+xml">
 <link rel="icon" href="img/road/fav-32.png?v=2" sizes="32x32">
@@ -344,6 +344,7 @@ img.mark.rdmark{background:none!important;padding:0!important;border:0!important
 .ps .pcf{margin-top:8px;background:#fff3f3;border:1px solid #f1b9bf;border-radius:14px;padding:10px 12px;font-size:12.5px;font-weight:700;color:#7a0716;display:flex;align-items:center;gap:8px}.ps .pcf b{flex:1;line-height:1.5}.ps .pcf button{font:inherit;border:0;border-radius:999px;padding:7px 14px;font-weight:800;font-size:12.5px;cursor:pointer}.ps .pcf .y{background:var(--red);color:#fff}.ps .pcf .n{background:#f1e2c8;color:#4a2a0e}.ps .pcf button:disabled{opacity:.6}
 .ps .pam{margin-top:8px;text-align:center;font-size:12.5px;font-weight:800;color:var(--red)}.ps .pam.ok{color:#1a8f4c}.ps .pam:empty{display:none}
 .ps .rpx{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 12px}.ps .rpx button{font:inherit;border-radius:999px;padding:10px 6px;font-weight:800;font-size:13.5px;cursor:pointer;border:1.5px solid var(--red);background:var(--red);color:#fff}.ps .rpx button.x2{background:#1d6f42;border-color:#1d6f42}.ps .rpx button:disabled{opacity:.55}
+#pdfOv{position:fixed;inset:0;z-index:9999;background:#7d7d7d;overflow:auto;-webkit-overflow-scrolling:touch}#pdfOv .pvb{position:sticky;top:0;z-index:2;display:flex;gap:8px;justify-content:center;padding:calc(10px + env(safe-area-inset-top)) 10px 10px;background:#3d220b}#pdfOv .pvb button{font:800 13.5px "Noto Kufi Arabic",system-ui,sans-serif;border:0;border-radius:999px;padding:9px 13px;cursor:pointer;white-space:nowrap}#pdfOv .pvr{flex-wrap:nowrap!important;gap:6px!important}#pdfOv .pvs{background:#c8102e;color:#fff}#pdfOv .pvs:disabled{opacity:.7}#pdfOv .pvc,#pdfOv .pvo{background:#f1e2c8;color:#3d220b}#pdfOv .pvr{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}#pdfOv .pvb{flex-direction:column}#pdfOv .pvp{display:none;max-height:46vh;overflow:auto;padding:4px 2px 2px}#pdfOv.opt .pvp{display:block}#pdfOv.opt .pvo{background:#fff;color:#c8102e}#pdfOv .pvl{color:#f1e2c8;font-size:12px;font-weight:800;margin:8px 4px 4px}#pdfOv .pcs{display:flex;flex-wrap:wrap;gap:6px}#pdfOv .pch{font:700 12.5px "Noto Kufi Arabic",system-ui,sans-serif!important;padding:6px 12px!important;border-radius:999px;border:1.5px solid #8a6a45!important;background:transparent;color:#d9c4a0;cursor:pointer}#pdfOv .pch.on{background:#f1e2c8;color:#3d220b;border-color:#f1e2c8!important}#pdfOv .pvn{color:#f1e2c8;font-size:12px;text-align:center;margin-top:8px;opacity:.85}#pdfOv .pvw{margin:10px auto 30px;overflow:hidden}#pdfOv .pvz{width:794px;transform-origin:top right}#pdfOv .pvz .pg{margin-bottom:12px;box-shadow:0 4px 18px rgba(0,0,0,.3)}
 </style>
 </head>
 <body>
@@ -1071,20 +1072,24 @@ $('rpX').onclick=async()=>{ const bt=$('rpX'); bt.disabled=true; let r=null; try
     cats.forEach(c=>{ const v=o.c[c]; row[c+' ٪']=v?pctOf(v.ok,v.n):''; row[c+' (عدد)']=v?v.n:0; }); return row; });
   const wb=XLSX.utils.book_new(), ws=XLSX.utils.json_to_sheet(out); wb.Workbook={Views:[{RTL:true}]};
   XLSX.utils.book_append_sheet(wb,ws,'نقاط القوة والضعف'); XLSX.writeFile(wb,'تقرير-الموظفين-'+new Date().toISOString().slice(0,10)+'.xlsx'); };
-/* تقرير PDF احترافي للموظف (صفحات A4 بالرسومات). d = {emp:{name,emp_no,org}, tot:{n,ok,ms}, cats:[{cat,n,ok,bank}], wrong:[{cat,q,right_ans,pick}], st:{points,played,wins,rank,of}, logo:'<svg..>', date:'..'} */
-function empPdfHtml(d){
+/* تقرير PDF احترافي للموظف (صفحات A4 بالرسومات) مع خيارات إظهار وإخفاء الأقسام.
+   d = {emp,tot,cats,wrong,st,logo,date}; o = {id,core,bars,radar,sw,recs,wrong,bank,ans,nq,cats:[...]} */
+const PDF_CI={'شرعية عامة':'🕌','شرعية مالية':'💰','منتجات البنك':'🏦','ثقافة عامة':'🌍','جغرافيا':'🗺️','سرعة بديهة':'⚡','حساب ذهني':'🔢','ذاكرة':'🧠','انتباه':'👁️'};
+const PDF_CORE=['شرعية عامة','شرعية مالية','منتجات البنك'];
+const PDF_DEF={id:1,core:1,bars:1,radar:1,sw:1,recs:1,wrong:1,bank:1,ans:1,nq:0,cats:null};
+function empPdfParts(d,o){
+  o=Object.assign({},PDF_DEF,o||{});
   const E=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const P=(a,b)=>b?Math.round(100*a/b):0, ar=n=>String(n);
-  const CI={'شرعية عامة':'🕌','شرعية مالية':'💰','منتجات البنك':'🏦','ثقافة عامة':'🌍','جغرافيا':'🗺️','سرعة بديهة':'⚡','حساب ذهني':'🔢','ذاكرة':'🧠','انتباه':'👁️'};
-  const CORE=['شرعية عامة','شرعية مالية','منتجات البنك'];
+  const P=(a,b)=>b?Math.round(100*a/b):0, CI=PDF_CI, CORE=PDF_CORE, BK=!!o.bank;
   const col=p=>p>=75?'#1a8f4c':p>=60?'#e39b1c':'#c8102e', lvl=p=>p>=85?'ممتاز':p>=75?'جيد جداً':p>=60?'جيد':'يحتاج تطوير';
-  const tot=d.tot||{n:0,ok:0}, acc=P(tot.ok,tot.n), cats=(d.cats||[]).map(c=>({c:c.cat,n:c.n,p:P(c.ok,c.n),b:c.bank==null?null:Math.round(c.bank)}));
+  const sel=o.cats&&o.cats.length?o.cats:null, inSel=c=>!sel||sel.includes(c);
+  const raw=(d.cats||[]).filter(c=>inSel(c.cat));
+  const tot=sel?{n:raw.reduce((a,c)=>a+c.n,0),ok:raw.reduce((a,c)=>a+c.ok,0),ms:(d.tot||{}).ms}:(d.tot||{n:0,ok:0}), acc=P(tot.ok,tot.n);
+  const cats=raw.map(c=>({c:c.cat,n:c.n,p:P(c.ok,c.n),b:c.bank==null?null:Math.round(c.bank)}));
   const bankAll=(()=>{ const w=cats.filter(c=>c.b!=null); const s=w.reduce((a,c)=>a+c.n,0); return s?Math.round(w.reduce((a,c)=>a+c.b*c.n,0)/s):null; })();
-  /* حلقة */
   const ring=(p,sz,sw,c,lab,sub)=>{ const r=(sz-sw)/2, C=2*Math.PI*r, off=C*(1-p/100);
     return '<svg width="'+sz+'" height="'+sz+'" viewBox="0 0 '+sz+' '+sz+'"><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="#f1e4cc" stroke-width="'+sw+'"/><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+r+'" fill="none" stroke="'+c+'" stroke-width="'+sw+'" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 '+sz/2+' '+sz/2+')"/>'
       +'<text x="50%" y="'+(sub?'47%':'53%')+'" text-anchor="middle" dominant-baseline="middle" font-size="'+Math.round(sz*.24)+'" font-weight="800" fill="#3d220b">'+lab+'</text>'+(sub?'<text x="50%" y="68%" text-anchor="middle" font-size="'+Math.round(sz*.09)+'" fill="#8a6a45">'+sub+'</text>':'')+'</svg>'; };
-  /* أعمدة أفقية: الموظف مقابل متوسط البنك */
   const bars=()=>{ const rows=cats.slice().sort((a,b)=>b.p-a.p), H=40, W=430, L=170, h=rows.length*H+26;
     let s='<svg width="100%" direction="ltr" viewBox="0 0 '+(W+L+40)+' '+h+'" font-family="inherit">';
     [0,25,50,75,100].forEach(v=>{ const x=40+v/100*W; s+='<line x1="'+x+'" y1="4" x2="'+x+'" y2="'+(h-20)+'" stroke="#efe2c8" stroke-width="1"/><text x="'+x+'" y="'+(h-6)+'" text-anchor="middle" font-size="10" fill="#9a7b55">'+v+'٪</text>'; });
@@ -1093,32 +1098,42 @@ function empPdfHtml(d){
         +'<rect x="40" y="'+(y+4)+'" width="'+W+'" height="20" rx="10" fill="#f6ecd9"/>'
         +'<rect x="'+(40+W-bw)+'" y="'+(y+4)+'" width="'+bw+'" height="20" rx="10" fill="'+col(r.p)+'"/>'
         +'<text x="'+(40+W-bw-6)+'" y="'+(y+19)+'" text-anchor="end" font-size="13" font-weight="800" fill="'+col(r.p)+'">'+r.p+'٪</text>';
-      if(r.b!=null){ const bx=40+W-r.b/100*W; s+='<line x1="'+bx+'" y1="'+(y)+'" x2="'+bx+'" y2="'+(y+28)+'" stroke="#3d220b" stroke-width="2.2"/>'; } });
+      if(BK&&r.b!=null){ const bx=40+W-r.b/100*W; s+='<line x1="'+bx+'" y1="'+(y)+'" x2="'+bx+'" y2="'+(y+28)+'" stroke="#3d220b" stroke-width="2.2"/>'; } });
     return s+'</svg>'; };
-  /* رادار */
   const radar=()=>{ const r=cats.slice(0,8); if(r.length<3) return ''; const S=300, c=S/2, R=105, n=r.length, pt=(i,v)=>{ const a=-Math.PI/2+i*2*Math.PI/n; return [c+Math.cos(a)*R*v, c+Math.sin(a)*R*v]; };
     let s='<svg width="100%" direction="ltr" viewBox="0 0 '+S+' '+S+'">';
     [.25,.5,.75,1].forEach(k=>{ s+='<polygon points="'+r.map((_,i)=>pt(i,k).join(',')).join(' ')+'" fill="'+(k===1?'#fffaf0':'none')+'" stroke="#ecdcbc" stroke-width="1"/>'; });
     r.forEach((x,i)=>{ const [X,Y]=pt(i,1), [lx,ly]=pt(i,1.2); s+='<line x1="'+c+'" y1="'+c+'" x2="'+X+'" y2="'+Y+'" stroke="#ecdcbc"/><text x="'+lx+'" y="'+ly+'" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="700" fill="#5a3a18">'+E(x.c)+'</text>'; });
-    if(r.some(x=>x.b!=null)) s+='<polygon points="'+r.map((x,i)=>pt(i,(x.b||0)/100).join(',')).join(' ')+'" fill="rgba(61,34,11,.06)" stroke="#3d220b" stroke-width="1.6" stroke-dasharray="4 3"/>';
+    if(BK&&r.some(x=>x.b!=null)) s+='<polygon points="'+r.map((x,i)=>pt(i,(x.b||0)/100).join(',')).join(' ')+'" fill="rgba(61,34,11,.06)" stroke="#3d220b" stroke-width="1.6" stroke-dasharray="4 3"/>';
     s+='<polygon points="'+r.map((x,i)=>pt(i,x.p/100).join(',')).join(' ')+'" fill="rgba(200,16,46,.22)" stroke="#c8102e" stroke-width="2.4"/>';
     r.forEach((x,i)=>{ const [X,Y]=pt(i,x.p/100); s+='<circle cx="'+X+'" cy="'+Y+'" r="3.5" fill="#c8102e" stroke="#fff" stroke-width="1.5"/>'; });
     return s+'</svg>'; };
   const core=CORE.map(k=>cats.find(c=>c.c===k)).filter(Boolean);
   const coreCards=core.map(c=>'<div class="cc"><div class="cch">'+(CI[c.c]||'')+' '+E(c.c)+'</div>'+ring(c.p,108,12,col(c.p),c.p+'٪',c.n+' سؤال')
-    +'<div class="ccl" style="color:'+col(c.p)+'">'+lvl(c.p)+'</div><div class="ccb">'+(c.b==null?'':'متوسط البنك '+c.b+'٪ · '+(c.p>=c.b?'<b style="color:#1a8f4c">أعلى بـ '+(c.p-c.b)+'</b>':'<b style="color:#c8102e">أقل بـ '+(c.b-c.p)+'</b>'))+'</div></div>').join('');
+    +'<div class="ccl" style="color:'+col(c.p)+'">'+lvl(c.p)+'</div><div class="ccb">'+(!BK||c.b==null?'':'متوسط البنك '+c.b+'٪ · '+(c.p>=c.b?'<b style="color:#1a8f4c">أعلى بـ '+(c.p-c.b)+'</b>':'<b style="color:#c8102e">أقل بـ '+(c.b-c.p)+'</b>'))+'</div></div>').join('');
   const strong=cats.filter(c=>c.n>=3&&c.p>=75).sort((a,b)=>b.p-a.p).slice(0,3), weak=cats.filter(c=>c.n>=3&&c.p<60).sort((a,b)=>a.p-b.p).slice(0,3);
-  const recs=[]; core.filter(c=>c.p<75).forEach(c=>recs.push('مراجعة محور «'+c.c+'» ('+c.p+'٪) بالتركيز على الأسئلة الواردة في الجدول أدناه.'));
+  const wrong=(d.wrong||[]).filter(q=>inSel(q.cat)).sort((a,b)=>(CORE.includes(b.cat)?1:0)-(CORE.includes(a.cat)?1:0)).slice(0,o.nq>0?o.nq:99);
+  const recs=[]; core.filter(c=>c.p<75).forEach(c=>recs.push('مراجعة محور «'+c.c+'» ('+c.p+'٪)'+(o.wrong&&wrong.length?' بالتركيز على الأسئلة الواردة في الجدول.':'.')));
   weak.filter(c=>!CORE.includes(c.c)).forEach(c=>recs.push('تحسين مهارة «'+c.c+'» بالتدريب اليومي داخل التحدي.'));
   if(!recs.length) recs.push('أداء متميز؛ يُنصح بالمحافظة على المشاركة اليومية لترسيخ المعرفة.');
-  const wrong=(d.wrong||[]).slice().sort((a,b)=>(CORE.includes(b.cat)?1:0)-(CORE.includes(a.cat)?1:0));
   const st=d.st||{}, emp=d.emp||{};
-  const head=(pg,of)=>'<div class="hd"><div class="lg">'+(d.logo||'')+'</div><div class="ht"><b>تقرير أداء الموظف</b><span>تحدّي الدقيقة · الطريق إلى الرئيسي</span></div><div class="hdt">'+E(d.date||'')+'</div></div>';
-  const foot=(pg,of)=>'<div class="ft"><span>سري · للاستخدام الداخلي</span><span>'+pg+' / '+of+'</span></div>';
   const qtxt=q=>{ q=String(q||''); if(q.startsWith('#color|')){ const p=q.split('|'); return (p[3]||'اختر لون الحبر')+' — كلمة «'+p[1]+'»'; } return q; };
-  const pages=2;
-  let h='<div class="rp"><style>'
-   +'.rp{font-family:"Noto Kufi Arabic",system-ui,sans-serif;color:#3d220b;direction:rtl}'
+  const B=[];
+  if(o.id) B.push('<div class="id"><div class="av">'+E((emp.name||'؟').trim().charAt(0))+'</div><div><b>'+E(emp.name)+'</b><small>الرقم الوظيفي '+E(emp.emp_no)+(emp.org?' · '+E(emp.org):'')+'</small></div><div style="margin-inline-start:auto">'+ring(acc,92,10,col(acc),acc+'٪','نسبة الصح')+'</div></div>'
+   +'<div class="kp"><div><b>'+tot.n+'</b><span>سؤال جاوبه</span></div><div><b style="color:'+col(acc)+'">'+acc+'٪</b><span>نسبة الصح'+(BK&&bankAll!=null?' · البنك '+bankAll+'٪':'')+'</span></div><div><b>'+(tot.ms?(tot.ms/1000).toFixed(1)+'ث':'—')+'</b><span>متوسط سرعة الإجابة</span></div><div><b>'+(st.points!=null?st.points:'—')+'</b><span>النقاط'+(st.rank?' · الترتيب '+st.rank+(st.of?' من '+st.of:''):'')+'</span></div></div>');
+  else B.push('<div class="id"><div class="av">'+E((emp.name||'؟').trim().charAt(0))+'</div><div><b>'+E(emp.name)+'</b><small>الرقم الوظيفي '+E(emp.emp_no)+(emp.org?' · '+E(emp.org):'')+'</small></div></div>');
+  if(o.core&&core.length) B.push('<h3>المحاور الأساسية: الشرعية ومنتجات البنك</h3><div class="core">'+coreCards+'</div>');
+  const rd=o.radar?radar():'';
+  if(cats.length&&(o.bars||rd)){ const lg1='<div class="lgd"><span><i style="background:#1a8f4c"></i>٧٥٪ فأكثر</span><span><i style="background:#e39b1c"></i>٦٠–٧٤٪</span><span><i style="background:#c8102e"></i>أقل من ٦٠٪</span>'+(BK?'<span><i style="background:#3d220b;width:3px;height:12px"></i>متوسط البنك</span>':'')+'</div>';
+    const lg2='<div class="lgd" style="justify-content:center"><span><i style="background:#c8102e"></i>الموظف</span>'+(BK?'<span><i style="background:#3d220b"></i>متوسط البنك</span>':'')+'</div>';
+    B.push('<h3>الأداء حسب التصنيف</h3><div class="'+(o.bars&&rd?'two':'one')+'">'+(o.bars?'<div class="box">'+bars()+lg1+'</div>':'')+(rd?'<div class="box"'+(o.bars?'':' style="max-width:420px;margin:0 auto"')+'>'+rd+lg2+'</div>':'')+'</div>'); }
+  const chips=strong.map(x=>'<span class="s">💪 '+E(x.c)+' '+x.p+'٪</span>').join('')+weak.map(x=>'<span class="w">⚠️ '+E(x.c)+' '+x.p+'٪</span>').join('');
+  if(o.sw||o.recs) B.push('<h3>'+(o.sw&&o.recs?'الخلاصة والتوصيات':o.sw?'نقاط القوة والضعف':'التوصيات')+'</h3><div class="'+(o.sw&&o.recs?'sw':'one')+'">'+(o.sw?'<div class="box"><div class="chips">'+(chips||'<span class="s">—</span>')+'</div></div>':'')+(o.recs?'<div class="box"><ul class="rc">'+recs.slice(0,4).map(r=>'<li>'+E(r)+'</li>').join('')+'</ul></div>':'')+'</div>');
+  let T=null;
+  if(o.wrong){ if(wrong.length) T={pre:'<h3>أسئلة أخطأ فيها ('+wrong.length+')</h3>', th:'<tr><th>التصنيف</th><th>السؤال</th>'+(o.ans?'<th>إجابته</th>':'')+'<th>الإجابة الصحيحة</th></tr>',
+      rows:wrong.map(q=>'<tr><td><span class="tg'+(CORE.includes(q.cat)?' k':'')+'">'+(CI[q.cat]||'')+' '+E(q.cat)+'</span></td><td>'+E(qtxt(q.q))+'</td>'+(o.ans?(q.pick?'<td class="bad">'+E(q.pick):'<td style="color:#9a7b55">⏱️ انتهى الوقت')+'</td>':'')+'<td class="ok">'+E(q.right_ans)+'</td></tr>')};
+    else B.push('<div class="box" style="margin-top:14px;text-align:center">🎉 ما فيه أسئلة أخطأ فيها خلال الفترة</div>'); }
+  const style='<style>'+'.rp{font-family:"Noto Kufi Arabic",system-ui,sans-serif;color:#3d220b;direction:rtl}'
    +'.pg{width:794px;height:1123px;box-sizing:border-box;padding:0 0 46px;background:#fffdf8;position:relative;overflow:hidden;page-break-after:always;break-after:page}'
    +'.hd{display:flex;align-items:center;gap:16px;background:linear-gradient(120deg,#d81f2e,#9e0d1b);color:#fff;padding:22px 34px 20px}.hd .lg svg{height:34px;width:auto;color:#fff;display:block}.ht{flex:1}.ht b{display:block;font-size:22px;font-weight:800}.ht span{font-size:12px;opacity:.88}.hdt{font-size:12px;opacity:.9;text-align:left}'
    +'.bd{padding:20px 34px 0}.id{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #f0e0c2;border-radius:18px;padding:14px 16px}.av{width:54px;height:54px;border-radius:50%;background:#fde3e6;color:#c8102e;font-size:24px;font-weight:800;display:grid;place-items:center}.id b{font-size:19px;display:block}.id small{color:#8a6a45;font-size:12px}'
@@ -1130,32 +1145,74 @@ function empPdfHtml(d){
    +'ul.rc{margin:6px 0 0;padding:0 18px 0 0;font-size:12.5px;line-height:1.9}'
    +'.ft{position:absolute;bottom:0;left:0;right:0;height:38px;display:flex;justify-content:space-between;align-items:center;padding:0 34px;font-size:10.5px;color:#9a7b55;border-top:1px solid #f0e0c2}'
    +'table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:12px}th{font-size:11px;color:#8a6a45;text-align:right;padding:0 10px}td{background:#fff;border-top:1px solid #f0e0c2;border-bottom:1px solid #f0e0c2;padding:8px 10px;vertical-align:top}td:first-child{border-right:1px solid #f0e0c2;border-radius:0 12px 12px 0}td:last-child{border-left:1px solid #f0e0c2;border-radius:12px 0 0 12px}.tg{display:inline-block;background:#fbeed6;border-radius:999px;padding:2px 8px;font-size:10.5px;font-weight:700;white-space:nowrap}.tg.k{background:#fde3e6;color:#a50f1c}.bad{color:#c8102e;text-decoration:line-through}.ok{color:#1a8f4c;font-weight:800}'
-   +'</style>';
-  h+='<div class="pg">'+head(1,pages)+'<div class="bd">'
-   +'<div class="id"><div class="av">'+E((emp.name||'؟').trim().charAt(0))+'</div><div><b>'+E(emp.name)+'</b><small>الرقم الوظيفي '+E(emp.emp_no)+(emp.org?' · '+E(emp.org):'')+'</small></div><div style="margin-inline-start:auto">'+ring(acc,92,10,col(acc),acc+'٪','نسبة الصح')+'</div></div>'
-   +'<div class="kp"><div><b>'+tot.n+'</b><span>سؤال جاوبه</span></div><div><b style="color:'+col(acc)+'">'+acc+'٪</b><span>نسبة الصح'+(bankAll!=null?' · البنك '+bankAll+'٪':'')+'</span></div><div><b>'+(tot.ms?(tot.ms/1000).toFixed(1)+'ث':'—')+'</b><span>متوسط سرعة الإجابة</span></div><div><b>'+(st.points!=null?st.points:'—')+'</b><span>النقاط'+(st.rank?' · الترتيب '+st.rank+(st.of?' من '+st.of:''):'')+'</span></div></div>'
-   +(core.length?'<h3>المحاور الأساسية: الشرعية ومنتجات البنك</h3><div class="core">'+coreCards+'</div>':'')
-   +'<h3>الأداء حسب التصنيف</h3><div class="two"><div class="box">'+bars()+'<div class="lgd"><span><i style="background:#1a8f4c"></i>٧٥٪ فأكثر</span><span><i style="background:#e39b1c"></i>٦٠–٧٤٪</span><span><i style="background:#c8102e"></i>أقل من ٦٠٪</span><span><i style="background:#3d220b;width:3px;height:12px"></i>متوسط البنك</span></div></div>'
-   +'<div class="box">'+radar()+'<div class="lgd" style="justify-content:center"><span><i style="background:#c8102e"></i>الموظف</span><span><i style="background:#3d220b"></i>متوسط البنك</span></div></div></div>'
-   +'</div>'+foot(1,pages)+'</div>';
-  h+='<div class="pg">'+head(2,pages)+'<div class="bd">'+'<h3>الخلاصة والتوصيات</h3><div class="sw"><div class="box"><div class="chips">'+(strong.length?strong.map(x=>'<span class="s">💪 '+E(x.c)+' '+x.p+'٪</span>').join(''):'<span class="s">—</span>')+(weak.length?weak.map(x=>'<span class="w">⚠️ '+E(x.c)+' '+x.p+'٪</span>').join(''):'')+'</div></div><div class="box"><ul class="rc">'+recs.slice(0,4).map(r=>'<li>'+E(r)+'</li>').join('')+'</ul></div></div>';
-  if(wrong.length){ h+='<h3>أسئلة أخطأ فيها ('+wrong.length+')</h3><table><tr><th>التصنيف</th><th>السؤال</th><th>إجابته</th><th>الإجابة الصحيحة</th></tr>'
-     +wrong.slice(0,14).map(q=>'<tr><td><span class="tg'+(CORE.includes(q.cat)?' k':'')+'">'+(CI[q.cat]||'')+' '+E(q.cat)+'</span></td><td>'+E(qtxt(q.q))+'</td>'+(q.pick?'<td class="bad">'+E(q.pick):'<td style="color:#9a7b55">⏱️ انتهى الوقت')+'</td><td class="ok">'+E(q.right_ans)+'</td></tr>').join('')
-     +'</table>'; } else h+='<div class="box" style="margin-top:14px;text-align:center">🎉 ما فيه أسئلة أخطأ فيها خلال الفترة</div>';
-  h+='</div>'+foot(2,pages)+'</div>';
-  return h+'</div>';
+   +'.rp .one{display:grid;grid-template-columns:1fr;gap:12px}.rp .blk{padding-bottom:2px}</style>';
+  const head='<div class="hd"><div class="lg">'+(d.logo||'')+'</div><div class="ht"><b>تقرير أداء الموظف</b><span>تحدّي الدقيقة · الطريق إلى الرئيسي</span></div><div class="hdt">'+E(d.date||'')+'</div></div>';
+  const foot=(pg,of)=>'<div class="ft"><span>سري · للاستخدام الداخلي</span><span dir="ltr">'+pg+' / '+of+'</span></div>';
+  return {style,head,foot,blocks:B,table:T};
 }
-
+/* يوزّع الأقسام على صفحات A4 حسب الطول الفعلي (لازم يكون الهدف داخل الصفحة عشان القياس) */
+function empPdfLayout(target,d,o){
+  const P=empPdfParts(d,o), LIM=1123-46-8;
+  target.innerHTML='<div class="rp">'+P.style+'</div>'; const rp=target.firstChild, pages=[];
+  const newPage=()=>{ const pg=document.createElement('div'); pg.className='pg'; pg.innerHTML=P.head+'<div class="bd"></div>'; rp.appendChild(pg); pages.push(pg); return pg.querySelector('.bd'); };
+  const fits=bd=>bd.offsetTop+bd.scrollHeight<=LIM;
+  let bd=newPage();
+  const add=html=>{ const b=document.createElement('div'); b.className='blk'; b.innerHTML=html; bd.appendChild(b); if(!fits(bd)&&bd.children.length>1){ b.remove(); bd=newPage(); bd.appendChild(b); } return b; };
+  P.blocks.forEach(add);
+  if(P.table){ let b=add(P.table.pre+'<table>'+P.table.th+'</table>'), tb=b.querySelector('table');
+    P.table.rows.forEach(r=>{ tb.insertAdjacentHTML('beforeend',r); if(!fits(bd)){ tb.lastElementChild.remove(); if(tb.rows.length<=1) b.remove(); bd=newPage(); const nb=document.createElement('div'); nb.className='blk'; nb.innerHTML='<table>'+P.table.th+r+'</table>'; bd.appendChild(nb); b=nb; tb=nb.querySelector('table'); } }); }
+  pages.forEach((pg,i)=>pg.insertAdjacentHTML('beforeend',P.foot(i+1,pages.length)));
+  return pages.length;
+}
 function pRepData(p,r){ const e=(r&&r.emp)||{}, all=(D&&D.players)||[];
   return {emp:{name:offN(p),emp_no:p.emp_no,org:[e.grp,e.dept,((e.unit_type||'')+' '+(e.unit||'')).trim()].filter(Boolean).join(' › ')},
     tot:r.tot||{n:0,ok:0}, cats:r.cats||[], wrong:r.wrong||[], st:{points:p.total_points,played:p.played,wins:p.wins,rank:all.indexOf(p)+1,of:all.length},
-    logo:(document.querySelector('.bklogo')||{}).outerHTML||'', date:new Date().toLocaleDateString('ar-KW',{day:'numeric',month:'long',year:'numeric'})}; }
+    logo:(()=>{ const l=document.querySelector('.bklogo'); if(!l) return ''; const c=l.cloneNode(true); c.removeAttribute('class'); c.setAttribute('width','123'); c.setAttribute('height','34'); c.setAttribute('xmlns','http://www.w3.org/2000/svg'); return c.outerHTML.replace(/currentColor/g,'#ffffff'); })(), date:new Date().toLocaleDateString('ar-KW',{day:'numeric',month:'long',year:'numeric'})}; }
 const repFile=(p,ext)=>('تقرير-'+String(offN(p)||p.emp_no).replace(/[\\/:*?"<>|،,]+/g,' ').trim().replace(/\s+/g,'-')+'-'+p.emp_no+'-'+new Date().toISOString().slice(0,10)+(ext||''));
+/* معاينة التقرير داخل الصفحة + ملف PDF حقيقي (حفظ أو مشاركة) */
+const H2C='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', JSPDF='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+const ldJs=u=>new Promise((ok,no)=>{ if(document.querySelector('script[src="'+u+'"]')&&(u===H2C?window.html2canvas:window.jspdf)) return ok(); const e=document.createElement('script'); e.src=u; e.onload=ok; e.onerror=no; document.head.appendChild(e); });
+let PDFO={}; try{ PDFO=JSON.parse(localStorage.getItem('mc_pdf_opts')||'{}')||{}; }catch(e){}
 function pRepPdf(p,r){
-  const html='<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><meta name="viewport" content="width=820"><title>'+esc(repFile(p))+'</title><link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800&display=swap" rel="stylesheet"><style>html,body{margin:0;background:#8a8a8a}@page{size:A4;margin:0}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}.pbar{position:sticky;top:0;z-index:9;display:flex;gap:8px;justify-content:center;padding:10px;background:#3d220b}.pbar button{font:800 15px "Noto Kufi Arabic",sans-serif;border:0;border-radius:999px;padding:10px 22px;background:#c8102e;color:#fff;cursor:pointer}.pbar button.c{background:#f1e2c8;color:#3d220b}.wrap{width:794px;margin:12px auto}.wrap .pg{margin-bottom:12px;box-shadow:0 4px 18px rgba(0,0,0,.3)}@media print{html,body{background:#fff}.pbar{display:none}.wrap{margin:0}.wrap .pg{margin:0;box-shadow:none}}</style></head><body><div class="pbar"><button type="button" onclick="print()">⬇️ حفظ PDF / طباعة</button><button type="button" class="c" onclick="close()">إغلاق</button></div><div class="wrap">'+empPdfHtml(pRepData(p,r))+'</div><script>addEventListener("load",function(){(document.fonts?document.fonts.ready:Promise.resolve()).then(function(){setTimeout(print,350)})})<\/script></body></html>';
-  const w=window.open('','_blank');
-  if(w){ w.document.open(); w.document.write(html); w.document.close(); return; }
-  const u=URL.createObjectURL(new Blob([html],{type:'text/html'})); location.href=u;
+  const old=$('pdfOv'); if(old) old.remove();
+  const data=pRepData(p,r), allC=(data.cats||[]).map(c=>c.cat);
+  const O=Object.assign({},PDF_DEF,PDFO); if(O.cats) O.cats=O.cats.filter(c=>allC.includes(c)); if(O.cats&&!O.cats.length) O.cats=null;
+  const SEC=[['id','بطاقة الموظف والمؤشرات'],['core','المحاور الأساسية'],['bars','شارت التصنيفات'],['radar','الرادار'],['sw','نقاط القوة والضعف'],['recs','التوصيات'],['wrong','الأسئلة الغلط']];
+  const ov=document.createElement('div'); ov.id='pdfOv';
+  ov.innerHTML='<div class="pvb"><div class="pvr"><button type="button" class="pvs" id="pvSave">⬇️ حفظ / مشاركة PDF</button><button type="button" class="pvo" id="pvOpt">⚙️ الخيارات</button><button type="button" class="pvc" id="pvClose">إغلاق</button></div><div class="pvp" id="pvP"></div></div><div class="pvw"><div class="pvz" id="pvZ"></div></div>';
+  document.body.appendChild(ov); document.body.style.overflow='hidden';
+  const z=$('pvZ'), pan=$('pvP');
+  const fit=()=>{ const k=Math.min(1,(ov.clientWidth-16)/794); z.style.transform='scale('+k+')'; z.parentNode.style.height=(z.scrollHeight*k)+'px'; z.parentNode.style.width=(794*k)+'px'; };
+  const chip=(k,l,on)=>'<button type="button" class="pch'+(on?' on':'')+'" data-k="'+k+'">'+(on?'✓ ':'')+esc(l)+'</button>';
+  const drawPan=()=>{ pan.innerHTML='<div class="pvl">الأقسام</div><div class="pcs">'+SEC.map(([k,l])=>chip(k,l,O[k])).join('')+'</div>'
+      +'<div class="pvl">المهارات</div><div class="pcs">'+chip('c:*','الكل',!O.cats)+allC.map(c=>chip('c:'+c,c,!O.cats||O.cats.includes(c))).join('')+'</div>'
+      +'<div class="pvl">إضافات</div><div class="pcs">'+chip('bank','المقارنة بمتوسط البنك',O.bank)+(O.wrong?chip('ans','إجابته الغلط',O.ans)+chip('n:5','٥ أسئلة',O.nq===5)+chip('n:10','١٠ أسئلة',O.nq===10)+chip('n:0','كل الأسئلة',!O.nq):'')+'</div>'
+      +'<div class="pvn" id="pvN"></div>'; };
+  const render=()=>{ const n=empPdfLayout(z,data,O); fit(); const pn=$('pvN'); if(pn) pn.textContent='التقرير '+(n===1?'صفحة وحدة':n===2?'صفحتين':n+' صفحات'); blob=null; sv.textContent='⬇️ حفظ / مشاركة PDF'; try{ PDFO=Object.assign({},O); localStorage.setItem('mc_pdf_opts',JSON.stringify(PDFO)); }catch(e){} };
+  pan.onclick=e=>{ const b=e.target.closest('.pch'); if(!b) return; const k=b.dataset.k;
+    if(k==='c:*') O.cats=null;
+    else if(k.startsWith('c:')){ const c=k.slice(2); let cur=O.cats?O.cats.slice():allC.slice(); cur=cur.includes(c)?cur.filter(x=>x!==c):cur.concat(c); if(!cur.length) return; O.cats=cur.length===allC.length?null:cur; }
+    else if(k.startsWith('n:')) O.nq=+k.slice(2);
+    else { O[k]=O[k]?0:1; if(SEC.every(([q])=>!O[q])){ O[k]=1; return; } }
+    drawPan(); render(); };
+  $('pvOpt').onclick=()=>{ ov.classList.toggle('opt'); };
+  let blob=null, busy=false; const sv=$('pvSave'), fn=repFile(p,'.pdf');
+  drawPan(); render(); addEventListener('resize',fit);
+  const close=()=>{ removeEventListener('resize',fit); ov.remove(); if(!$('ov')||$('ov').classList.contains('hide')) document.body.style.overflow=''; };
+  $('pvClose').onclick=close;
+  const deliver=async()=>{ const file=new File([blob],fn,{type:'application/pdf'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){ try{ await navigator.share({files:[file],title:fn}); return; }catch(e){ if(e&&e.name==='AbortError') return; if(e&&e.name==='NotAllowedError'){ sv.textContent='✅ جاهز، اضغط للحفظ'; return; } } }
+    const u=URL.createObjectURL(blob), a=document.createElement('a'); a.href=u; a.download=fn; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),60000); };
+  sv.onclick=async()=>{ if(busy) return; if(blob){ await deliver(); return; } busy=true; sv.disabled=true; sv.textContent='جارٍ تجهيز الملف…';
+    let box=null;
+    try{ await ldJs(H2C); await ldJs(JSPDF); try{ await document.fonts.ready; }catch(e){}
+      box=document.createElement('div'); box.style.cssText='position:fixed;left:-10000px;top:0;width:794px'; document.body.appendChild(box); empPdfLayout(box,data,O);
+      const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4',compress:true}), pgs=[...box.querySelectorAll('.pg')];
+      for(let i=0;i<pgs.length;i++){ const c=await html2canvas(pgs[i],{scale:2,backgroundColor:'#fffdf8',logging:false,width:794,height:1123,windowWidth:794}); if(i) pdf.addPage(); pdf.addImage(c.toDataURL('image/jpeg',.9),'JPEG',0,0,210,297); }
+      blob=pdf.output('blob'); sv.textContent='⬇️ حفظ / مشاركة PDF';
+    }catch(e){ sv.textContent='تعذّر التجهيز، حاول مرة ثانية'; }
+    if(box) box.remove(); busy=false; sv.disabled=false; if(blob) await deliver();
+  };
 }
 function pRepXls(p,r){ if(typeof XLSX==='undefined') return; const d=pRepData(p,r), P=(a,b)=>b?Math.round(100*a/b):0, CORE=['شرعية عامة','شرعية مالية','منتجات البنك'];
   const lvl=x=>x>=85?'ممتاز':x>=75?'جيد جداً':x>=60?'جيد':'يحتاج تطوير';
