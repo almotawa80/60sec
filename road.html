@@ -2090,6 +2090,8 @@ background-repeat:no-repeat!important;background-size:46px 18px,90px 3px,46px 18
 background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);animation:goSpk 3.6s ease-in-out infinite alternate}
 @keyframes goSpk{0%{background-position:12% 0,11% 7px,88% 100%,89% calc(100% - 7px)}100%{background-position:88% 0,89% 7px,12% 100%,11% calc(100% - 7px)}}
 @media (prefers-reduced-motion:reduce){#home #goBtn.slide::before{animation:none}}
+
+#home #goBtn.slide::after{opacity:var(--lo,1)!important;transition:opacity .15s}
 </style>
 </head>
 <body>
@@ -3746,10 +3748,10 @@ function endGame(){
 (function(){
   var btn=$('goBtn'), knob=$('goKnob'), lbl=$('goLbl'); if(!btn||!knob) return;
   var startX=0, x=0, max=0, drag=false, done=false, raf=0, t0=0, lastX=0, lastT=0, vel=0, buzzed=false;
-  function paint(){ raf=0; knob.style.transform='translate3d('+(-x)+'px,0,0)'; lbl.style.opacity=String(Math.max(.05,1-1.4*x/max)); }
+  function paint(){ raf=0; knob.style.transform='translate3d('+(-x)+'px,0,0)'; lbl.style.opacity=String(Math.max(.05,1-1.4*x/max)); btn.style.setProperty('--lo',lbl.style.opacity); }
   function sched(){ if(!raf) raf=requestAnimationFrame(paint); }
-  function reset(){ knob.classList.add('back'); x=0; knob.style.transform='translate3d(0,0,0)'; lbl.style.opacity=1; done=false; buzzed=false; }
-  function fire(){ if(done) return; done=true; knob.classList.add('back'); knob.style.transform='translate3d('+(-max)+'px,0,0)'; lbl.style.opacity=.05; try{ navigator.vibrate&&navigator.vibrate(25); }catch(e){} try{ playSword(); }catch(e){}
+  function reset(){ knob.classList.add('back'); x=0; knob.style.transform='translate3d(0,0,0)'; lbl.style.opacity=1; btn.style.setProperty('--lo',1); done=false; buzzed=false; }
+  function fire(){ if(done) return; done=true; knob.classList.add('back'); knob.style.transform='translate3d('+(-max)+'px,0,0)'; lbl.style.opacity=.05; btn.style.setProperty('--lo',.05); try{ navigator.vibrate&&navigator.vibrate(25); }catch(e){} try{ playSword(); }catch(e){}
     setTimeout(function(){ startMatch(); setTimeout(reset,600); },120); }
   btn.addEventListener('pointerdown',function(e){
     if(done) return; try{ if(stats.sound){ audio(); loadSword(); } }catch(_){} drag=true; knob.classList.remove('back'); knob.classList.remove('hint'); knob.style.animation='none';
