@@ -700,7 +700,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261117203500">
+<meta name="app-version" content="road-20261118034000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -1373,6 +1373,32 @@ body:has(#roadPage.active) .toast{top:calc(200px + env(safe-area-inset-top))}
 #game .opts.grid .opt{position:relative;margin:0!important;min-height:66px!important;padding:6px 8px!important;gap:8px;font-size:15.5px;line-height:1.45}
 #game .opts.grid .opt .lt{width:30px!important;height:30px!important;font-size:15px!important}
 #game .opts.grid .opt .st{display:none!important}
+#game .qcard.spec{flex-direction:column;gap:6px}
+#game .qcard.spec .qhint{font-size:14.5px;font-weight:700;opacity:.8}
+#game .qcard.spec .qask{font-size:19px}
+#game .qcs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:6px 0}
+#game .qci{width:min(60px,16vw);aspect-ratio:4/5;border-radius:14px;background:#fff;border:3px solid #e6d3ae;box-shadow:0 4px 0 #d9c19a;display:flex;align-items:center;justify-content:center;animation:qciIn .35s both}
+#game .qci svg{width:64%;height:64%}
+#game .qci.num{font-size:28px;font-weight:900;color:#c8102e}
+#game .qci.back{background:repeating-linear-gradient(45deg,#d81f2e 0 8px,#b20d1c 8px 16px);border-color:#fff;box-shadow:0 0 0 2px #c8102e,0 4px 0 #8a0a12;color:#fff;font-size:24px;font-weight:900;animation:qciFlip .4s both}
+#game .qci.back.hi{background:#fff;color:#c8102e;box-shadow:0 0 0 3px #c8102e,0 4px 0 #8a0a12}
+@keyframes qciIn{from{transform:scale(.6);opacity:0}}
+@keyframes qciFlip{from{transform:rotateY(90deg)}}
+#game .qbar{width:100%;height:9px;border-radius:5px;background:#f0dcb5;overflow:hidden}
+#game .qbar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#d81f2e,#ff6b75);transform-origin:right;animation:qbar 3s linear forwards}
+@keyframes qbar{to{transform:scaleX(0)}}
+#game .qword{font-size:50px;font-weight:900;line-height:1.3}
+#game .opts.hide{visibility:hidden}
+#game .opts.icons .opt{justify-content:center!important;min-height:70px!important}
+#game .opts.icons .opt .lt{position:absolute;top:7px;right:7px;width:26px!important;height:26px!important;font-size:13px!important}
+#game .opts.icons .opt .tx{flex:none;display:flex}
+#game .opts.icons .opt .tx svg{width:46px;height:46px}
+#game .opts.cols .opt{background:var(--oc)!important;border-color:#fff!important;min-height:62px!important}
+#game .opts.cols .opt .lt{background:rgba(255,255,255,.95)!important;color:#5a3412!important;border-color:#fff}
+#game .opts.cols .opt.ok{box-shadow:0 0 0 4px #fff,0 0 0 8px #1e9e6a,0 0 22px 6px rgba(30,158,106,.8)!important}
+#game .opts.cols .opt.bad{box-shadow:0 0 0 4px #fff,0 0 0 8px #111,0 0 18px 4px rgba(0,0,0,.6)!important}
+#game .opts.cols .opt.ok .st,#game .opts.cols .opt.bad .st,#game .opts.icons .opt.ok .st,#game .opts.icons .opt.bad .st{display:flex!important;position:absolute;top:7px;left:7px;width:26px;height:26px}
+#game .opts.cols .opt.dim{opacity:.4;filter:none}
 #game .qcard{min-height:90px!important}
 /* ===== النوافذ الصغيرة (showModal) بنفس البطاقة ===== */
 .modal{background:rgba(20,10,5,.6)}
@@ -2468,21 +2494,78 @@ function nextQuestion(){
   if(PV && PV.seed!=null && G.rng){ for(let i=opts.length-1;i>0;i--){ const j=Math.floor(G.rng()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; } } else opts = shuffle(opts);
   $('qNum').textContent = 'السؤال '+G.n;
   $('lvlChip').textContent = LEVEL_NAME[it.lvl]; $('lvlChip').dataset.l = it.lvl;
-  const qc = $('qText'); qc.textContent = it.q; qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
+  const qc = $('qText'); const QK = renderQText(it, $('opts')); qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
   G.qMax = Q_BY_LEVEL[it.lvl] || Q_SECONDS; buildRing(); setQTimer(G.qMax);
   const ex = $('expl'); ex.textContent=''; ex.classList.remove('on');
   const box = $('opts'); box.innerHTML=''; box.classList.remove('lock');
-  box.classList.toggle('grid', opts.every(o=>String(o.t).length<=26));
+  box.classList.toggle('grid', !!QK || opts.every(o=>String(o.t).length<=26));
   G.locked = false;
   const LET = ['أ','ب','ج','د'];
   opts.forEach((o,idx)=>{
     const b = document.createElement('button');
     b.className='opt'; b.dataset.ok = o.ok ? '1':'0';
     b.innerHTML = `<span class="lt">${LET[idx]}</span><span class="tx"></span><span class="st">${svg(o.ok?'check':'x',16)}</span>`;
-    b.querySelector('.tx').textContent = o.t;
+    fillOptText(b, o.t, QK);
     b.onclick = ()=>answer(b,o.ok,box);
     box.appendChild(b);
   });
+}
+/* ===== أنواع أسئلة خاصة (ذاكرة / ألوان) — صيغة السؤال: #نوع|...  ===== */
+const QICON={
+ star:'<path d="M32 6l7.6 16 17.4 2-13 12 3.6 17.4L32 45l-15.6 8.4L20 36 7 24l17.4-2z" fill="#f2b51e" stroke="#c98a08" stroke-width="2"/>',
+ heart:'<path d="M32 54S8 40 8 23a12 12 0 0124-5 12 12 0 0124 5c0 17-24 31-24 31z" fill="#d81f2e"/>',
+ moon:'<path d="M40 8a24 24 0 1016 40A20 20 0 0140 8z" fill="#3a5bd9"/>',
+ key:'<circle cx="20" cy="32" r="11" fill="none" stroke="#1e9e6a" stroke-width="6"/><path d="M31 32h25M48 32v9M56 32v7" stroke="#1e9e6a" stroke-width="6" stroke-linecap="round"/>',
+ crown:'<path d="M8 46l4-26 12 12 8-18 8 18 12-12 4 26z" fill="#f2b51e" stroke="#c98a08" stroke-width="2"/><rect x="8" y="46" width="48" height="6" rx="2" fill="#c98a08"/>',
+ drop:'<path d="M32 6C22 22 14 31 14 40a18 18 0 0036 0c0-9-8-18-18-34z" fill="#3fb7c9"/>',
+ sun:'<circle cx="32" cy="32" r="12" fill="#f7a81b"/><g stroke="#f7a81b" stroke-width="5" stroke-linecap="round"><path d="M32 4v8M32 52v8M4 32h8M52 32h8M12 12l6 6M46 46l6 6M12 52l6-6M46 18l6-6"/></g>',
+ tree:'<path d="M32 4L12 34h12L10 50h44L40 34h12z" fill="#1e9e6a"/><rect x="28" y="50" width="8" height="10" fill="#8a5a2b"/>',
+ house:'<path d="M8 30L32 10l24 20" fill="none" stroke="#c8102e" stroke-width="5" stroke-linejoin="round"/><rect x="14" y="28" width="36" height="26" fill="#c8102e"/><rect x="27" y="38" width="10" height="16" fill="#fff"/>',
+ bell:'<path d="M32 8a16 16 0 0116 16v14l6 8H10l6-8V24A16 16 0 0132 8z" fill="#f2b51e" stroke="#c98a08" stroke-width="2"/><circle cx="32" cy="52" r="5" fill="#c98a08"/>',
+ fish:'<path d="M6 32c10-14 30-16 42 0-12 16-32 14-42 0z" fill="#f07c1b"/><path d="M46 32l12-10v20z" fill="#f07c1b"/><circle cx="18" cy="29" r="3" fill="#fff"/>',
+ car:'<path d="M8 40l6-14h36l6 14v8H8z" fill="#3a5bd9"/><rect x="18" y="29" width="28" height="9" rx="2" fill="#cfe3ff"/><circle cx="18" cy="48" r="6" fill="#222"/><circle cx="46" cy="48" r="6" fill="#222"/>',
+ cup:'<path d="M12 16h32v18a16 16 0 01-32 0z" fill="#7b3fc4"/><path d="M44 22h6a6 6 0 010 12h-6" fill="none" stroke="#7b3fc4" stroke-width="5"/><rect x="10" y="52" width="36" height="5" rx="2" fill="#7b3fc4"/>',
+ leaf:'<path d="M10 54C10 24 30 8 56 8c0 28-16 46-46 46z" fill="#5bbf4a"/><path d="M12 52L44 20" stroke="#2e7d32" stroke-width="3"/>',
+ phone:'<rect x="18" y="4" width="28" height="56" rx="6" fill="#333"/><rect x="22" y="10" width="20" height="38" fill="#9fd3ff"/><circle cx="32" cy="54" r="3" fill="#fff"/>',
+ gift:'<rect x="8" y="24" width="48" height="12" fill="#d81f2e"/><rect x="12" y="36" width="40" height="22" fill="#e8434f"/><rect x="29" y="24" width="6" height="34" fill="#f2b51e"/><path d="M32 24c-8-14-20-8-12 0M32 24c8-14 20-8 12 0" fill="none" stroke="#f2b51e" stroke-width="4"/>'
+};
+const QCOL={red:'#d81f2e',blue:'#1f6fd1',green:'#1e9e6a',yellow:'#f2b51e',purple:'#7b3fc4',orange:'#f07c1b',black:'#222',pink:'#e05a9b',brown:'#8a5a2b'};
+const QCOL_AR={red:'الأحمر',blue:'الأزرق',green:'الأخضر',yellow:'الأصفر',purple:'البنفسجي',orange:'البرتقالي',black:'الأسود',pink:'الوردي',brown:'البني'};
+const qIcon = k => `<svg viewBox="0 0 64 64" aria-hidden="true">${QICON[k]||''}</svg>`;
+function qKind(q){ if(typeof q!=='string' || q.charAt(0)!=='#' || q.indexOf('|')<0) return null; const p=q.split('|'); return {t:p[0].slice(1), a:p.slice(1)}; }
+let QSPEC_T = null;
+/* يكتب نص السؤال؛ ويرجع نوع السؤال الخاص أو null. للذاكرة: يخفي الخيارات ٣ ثوانٍ */
+function renderQText(it, box){
+  clearTimeout(QSPEC_T); QSPEC_T=null;
+  const qc=$('qText'), k=qKind(it.q);
+  box.classList.remove('cols','icons','hide');
+  qc.classList.toggle('spec', !!k);
+  if(!k){ qc.textContent = it.q; return null; }
+  if(k.t==='mem' || k.t==='memn'){
+    const items=(k.a[0]||'').split(',').filter(Boolean), ask=k.a[1]||'', hi=+(k.a[2]||0);
+    const cell = x => k.t==='mem' ? `<div class="qci">${qIcon(x)}</div>` : `<div class="qci num">${esc(x)}</div>`;
+    qc.innerHTML = `<div class="qhint">احفظ… تختفي بعد ٣ ثواني</div><div class="qcs">${items.map(cell).join('')}</div><div class="qbar"><i></i></div>`;
+    box.classList.add('hide'); if(k.t==='mem') box.classList.add('icons');
+    QSPEC_T = setTimeout(()=>{
+      qc.innerHTML = `<div class="qcs">${items.map((x,i)=>`<div class="qci back${hi===i+1?' hi':''}">؟</div>`).join('')}</div><div class="qask"></div>`;
+      qc.querySelector('.qask').textContent = ask; box.classList.remove('hide');
+      try{ buildRing(); }catch(e){}
+    }, 3000);
+    return k;
+  }
+  if(k.t==='color'){
+    qc.innerHTML = `<div class="qhint">لا تقرأ الكلمة… شوف لونها</div><div class="qword"></div><div class="qask"></div>`;
+    const w=qc.querySelector('.qword'); w.textContent=k.a[0]||''; w.style.color=QCOL[k.a[1]]||'#222';
+    qc.querySelector('.qask').textContent = k.a[2]||'شنو لون الكتابة؟';
+    box.classList.add('cols'); return k;
+  }
+  qc.textContent = k.a.join(' '); return null;
+}
+function fillOptText(b, t, k){
+  const tx=b.querySelector('.tx');
+  if(k && k.t==='mem' && QICON[t]){ tx.innerHTML=qIcon(t); b.setAttribute('aria-label',t); }
+  else if(k && k.t==='color' && QCOL[t]){ tx.textContent=''; b.style.setProperty('--oc',QCOL[t]); b.setAttribute('aria-label',QCOL_AR[t]||t); }
+  else tx.textContent=t;
 }
 function showExpl(prefix){
   const txt = (prefix?prefix+' — ':'') + (G.cur.ex||'');
@@ -2615,16 +2698,16 @@ function showQS(i, startAt){
   g.deadline = (startAt||performance.now()) + QMS; g.qMax = QMS/1000; g.pend=null; g.lastSec=0;
   $('qNum').textContent='السؤال '+toAr(i+1)+' من '+toAr(NQ);
   const lv=q.it.lvl; $('lvlChip').textContent = LEVEL_NAME[lv]+' '+toAr(PTS[lv])+'–'+toAr(PTS[lv]*1.5); $('lvlChip').dataset.l = lv;
-  const qc=$('qText'); qc.textContent=q.it.q; qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
+  const qc=$('qText'); const QK=renderQText(q.it, $('opts')); qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
   buildRing(); setQTimer(g.qMax);
   const ex=$('expl'); ex.textContent=''; ex.classList.remove('on');
   const box=$('opts'); box.innerHTML=''; box.classList.remove('lock');
-  box.classList.toggle('grid', q.opts.every(o=>String(o.t).length<=26));
+  box.classList.toggle('grid', !!QK || q.opts.every(o=>String(o.t).length<=26));
   const LET=['أ','ب','ج','د'];
   q.opts.forEach((o,idx)=>{
     const b=document.createElement('button'); b.className='opt'; b.dataset.ok=o.ok?'1':'0';
     b.innerHTML=`<span class="lt">${LET[idx]}</span><span class="tx"></span><span class="st">${svg(o.ok?'check':'x',16)}</span>`;
-    b.querySelector('.tx').textContent=o.t; b.onclick=()=>answerS(b,o.ok,box); box.appendChild(b);
+    fillOptText(b,o.t,QK); b.onclick=()=>answerS(b,o.ok,box); box.appendChild(b);
   });
   recompute();
   if(!PV) botAns(i, 0);
