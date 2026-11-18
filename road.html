@@ -729,7 +729,7 @@ html[data-theme="dark"] #inviteBtn .mvs.vs{color:#ff4d57}
 <meta property="og:image:width" content="512"><meta property="og:image:height" content="512">
 <meta property="og:url" content="https://almotawa80.github.io/60sec/road.html">
 <meta name="twitter:card" content="summary">
-<meta name="app-version" content="road-20261118100000">
+<meta name="app-version" content="road-20261118133000">
 <meta name="theme-color" content="#ffffff">
 <style>
 /* ===== الطريق إلى الرئيسي ===== */
@@ -2280,7 +2280,8 @@ const SND = {
   bad:  ()=>{ tone(220,0,.28,'sawtooth',.13,120); tone(165,.13,.34,'square',.08,85); },
   tick: ()=>tone(1200,0,.04,'square',.04),
   count:()=>tone(520,0,.14,'sine',.16),
-  heart:()=>{ tone(70,0,.16,'sine',.7,45); tone(60,.17,.18,'sine',.55,40); tone(1500,0,.04,'square',.05); },
+  /* نبضة «دُم-دُم» مسموعة على سماعة الجوال (الترددات تحت ١٥٠ ما تطلع من سماعة الآيفون) */
+  heart:()=>{ [[0,1],[.2,.72]].forEach(([t,k])=>{ tone(190,t,.13,'sine',.85*k,95); tone(380,t,.07,'triangle',.3*k,190); tone(70,t,.16,'sine',.5*k,40); noiseBurst(t,.06,.35*k,420); }); },
   alert:()=>{ tone(880,0,.12,'square',.08,660); tone(660,.12,.18,'square',.08,440); },
   lead: ()=>{ [659,880,1175].forEach((f,i)=>tone(f,i*.07,.18,'triangle',.15)); },
   go:   ()=>{ tone(784,0,.12,'triangle',.2); tone(1047,.1,.3,'triangle',.2); },
