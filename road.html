@@ -1739,6 +1739,19 @@ body.guest #home .hpt{display:none}
 #home #inviteBtn .mlb{order:0;font-size:25px;font-weight:900;color:#3b1d0e}
 #home #inviteBtn .mbd{order:1;display:block!important;position:static!important;background:none!important;color:#5a3412!important;font-size:14px!important;font-weight:600!important;padding:0!important;border:0!important;box-shadow:none!important;transform:none!important}
 #home #inviteBtn .mrow{order:2;margin-top:4px}
+
+/* Home v2: ChatGPT art assets */
+#home .hc{border:6px solid transparent!important;border-image:url(img/road/ui/pill.webp) 62 fill / 26px stretch!important;background:none!important;box-shadow:none!important;height:58px!important;padding:0 8px!important;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3))}
+#home .hc .ic img{width:40px;height:auto;display:block}
+#home .rcard,#home #inviteBtn{border:8px solid transparent!important;border-image:url(img/road/ui/card.webp) 58 fill / 24px stretch!important;background:none!important;box-shadow:none!important;border-radius:0!important;filter:drop-shadow(0 8px 12px rgba(0,0,0,.3))}
+#home #goBtn.slide{border:0!important;border-image:url(img/road/ui/btn.webp) 118 fill / 44px stretch!important;background:none!important;box-shadow:none!important;height:90px;border-radius:0!important;overflow:visible!important}
+#home #goBtn .sknob{background:url(img/road/ui/knob.webp) center/100% 100% no-repeat!important;border:0!important;box-shadow:none!important;width:72px!important;height:72px!important;margin-top:-36px!important;right:10px!important;filter:drop-shadow(0 3px 5px rgba(0,0,0,.35))}
+#home #goBtn .sknob>svg{opacity:0}
+#home .hero-row .mark{background:url(img/road/ui/watch.webp) center/contain no-repeat!important;border:0!important;box-shadow:none!important;width:58px!important;height:64px!important;padding:0!important;border-radius:0!important;top:calc(126px + env(safe-area-inset-top))!important;right:12px!important;filter:drop-shadow(0 3px 4px rgba(0,0,0,.3))}
+#home .hero-row .mark>*{display:none}
+#home .hero h1{font-size:0!important;width:270px;max-width:100%;height:50px;background:url(img/road/ui/title.webp) center/contain no-repeat;text-shadow:none!important;filter:drop-shadow(0 4px 5px rgba(0,0,0,.35))}
+#home .greet{background:none!important;border:0!important;box-shadow:none!important;border-image:url(img/road/ui/ribbon.webp) 0 123 fill / 0 36px stretch!important;border-style:solid!important;border-width:0 34px!important;padding:6px 6px 9px!important;margin-top:4px!important;min-width:110px;text-align:center;text-shadow:0 1px 0 rgba(0,0,0,.3)}
+#home .greet::before,#home .greet::after{display:none!important}
 </style>
 </head>
 <body>
@@ -1757,7 +1770,7 @@ body.guest #home .hpt{display:none}
         <div class="ttl"><h1>الطريق إلى الرئيسي</h1><span class="greet" id="greet"></span></div>
         <span class="pfhold"><button class="pfbtn" id="pfBtn" aria-label="ملفي"><span class="pfav" id="pfAv"></span></button></span>
       </div>
-      <div class="hcol"><button type="button" class="hc hpt" id="hPt" aria-label="نقاطك، استبدلها من المتجر"><span class="hl"><small>إجمالي نقاطك</small><b id="hPtN">0</b></span><i>🪙</i></button><button type="button" class="hc hlb" id="hLb" aria-label="المتصدرون"><i>🏆</i><span class="hl"><b class="t">المتصدرون</b><small id="hLbN"></small></span></button></div>
+      <div class="hcol"><button type="button" class="hc hpt" id="hPt" aria-label="نقاطك، استبدلها من المتجر"><span class="hl"><small>إجمالي نقاطك</small><b id="hPtN">0</b></span><i class="ic"><img src="img/road/ui/coins.webp" alt=""></i></button><button type="button" class="hc hlb" id="hLb" aria-label="المتصدرون"><i class="ic"><img src="img/road/ui/trophy.webp" alt=""></i><span class="hl"><b class="t">المتصدرون</b><small id="hLbN"></small></span></button></div>
     </div>
     <div class="sheet">
       <div class="guestbox" id="guestBox" style="display:none"><b>أنت في وضع التدريب</b><p>تقدر تتدرّب ضد الكمبيوتر. عشان تجمع نقاط وتدخل المتصدرين وتتحدى زملاءك، سجّل دخولك برقمك الوظيفي والرمز.</p><button type="button" class="rbtn" id="guestLogin">تسجيل الدخول</button></div>
