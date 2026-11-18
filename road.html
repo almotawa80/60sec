@@ -2199,6 +2199,15 @@ background-position:15% 0,calc(15% + 0px) 7px,85% 100%,85% calc(100% - 7px);anim
 @keyframes dts{50%{opacity:.25;transform:translateY(-3px)}}
 #game.waiting #quitBtn{display:none}
 @media (prefers-reduced-motion:reduce){#game .opt.pin,#game .qcard.in,#game .qcat.on,#game .clock.urg .num{animation:none!important}}
+
+/* تثبيت النوافذ: ما تنسحب يمين ويسار */
+html,body{overflow-x:clip;overscroll-behavior-x:none}
+.rfx,.modal,#rpPop,#pick,.asheet,#gate,#match{overflow-x:hidden!important;overscroll-behavior:contain}
+.rfx{touch-action:pan-y}
+.rfx .rays{position:fixed!important}
+#match .full:has(> #searching[style*="display: none"]){justify-content:center}
+#match .full{justify-content:flex-start;padding-top:calc(30px + env(safe-area-inset-top))}
+#found #cd{background-image:url(img/road/vs/cd2.webp)!important;width:124px!important;height:124px!important;margin-bottom:24px!important}
 </style>
 </head>
 <body>
