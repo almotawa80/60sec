@@ -2375,6 +2375,59 @@ body.cupFollow #home #cupMini{display:flex}
 .cupc .ctop .sc{color:#a50f1c}
 #cupPage .champ{font-size:24px;font-weight:900;color:#c8102e;margin:4px 0}
 #cupPage .cempty{color:#fff;text-align:center;font-weight:800;padding:30px 10px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+/* خريطة البطولة: كل الفروع تحت، وتقل لين المقر الرئيسي */
+#cupPage .cmap{position:relative;margin:0 -16px;overflow:hidden;border-radius:22px 22px 0 0;background:#7cc24a;min-height:520px}
+#cupPage .cmap .art{position:absolute;inset:0;pointer-events:none}
+#cupPage .cmap .art img{display:block;width:100%;height:auto}
+#cupPage .cmap .art::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(0,0,0,0) 150px,rgba(40,20,5,.28) 230px,rgba(40,20,5,.34))}
+#cupPage .cmap svg.lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible}
+#cupPage .cmap .in{position:relative;z-index:2;padding:0 5px 26px;display:flex;flex-direction:column;align-items:stretch}
+#cupPage .cmap .hq{height:178px;position:relative}
+#cupPage .cmap .hq .pt{position:absolute;left:50%;top:132px;width:1px;height:1px}
+#cupPage .cmap .flag{position:absolute;left:50%;top:6px;transform:translateX(-50%);white-space:nowrap;background:linear-gradient(180deg,#e2263a,#a50f1c);color:#fff;font-weight:900;font-size:13px;padding:5px 14px;border-radius:12px;border:2px solid #ffd34d;box-shadow:0 4px 10px rgba(0,0,0,.35)}
+#cupPage .cmap .flag.ch{font-size:15px;padding:7px 16px;animation:cmGlow 1.4s ease-in-out infinite alternate}
+#cupPage .cmap .flag small{display:block;font-size:10.5px;color:#ffe7b0;font-weight:800}
+@keyframes cmGlow{from{box-shadow:0 0 6px 2px rgba(255,211,77,.5)}to{box-shadow:0 0 18px 6px rgba(255,211,77,.95)}}
+#cupPage .cmap .tier{margin-top:30px;display:flex;flex-direction:column;align-items:center}
+#cupPage .cmap .cml{position:relative;display:inline-block;background:linear-gradient(180deg,#fff9ea,#f3d89c);border:2.5px solid #d39a2c;border-radius:16px;box-shadow:0 3px 0 #9a6418,0 5px 10px rgba(0,0,0,.3);color:#7a0c12;font-weight:900;font-size:13px;padding:5px 16px;margin-bottom:12px;white-space:nowrap}
+#cupPage .cmap .cml.now{animation:cmPulse 1s ease-in-out infinite alternate}
+#cupPage .cmap .cml i{font-style:normal;color:#8a6a45;font-weight:800;font-size:11px}
+@keyframes cmPulse{from{transform:scale(1)}to{transform:scale(1.07)}}
+#cupPage .cmap .row{display:flex;justify-content:space-around;gap:5px;width:100%}
+#cupPage .cmap .row.g{flex-wrap:wrap;row-gap:30px;justify-content:center}
+#cupPage .cmap .isl{position:relative;width:calc(25% - 5px);min-width:0;background:linear-gradient(180deg,#fff9ea,#f6e3bb);border:2px solid #b9772a;border-radius:14px;padding:14px 3px 4px;box-shadow:0 4px 8px rgba(0,0,0,.3)}
+#cupPage .cmap .row.c2 .isl{width:calc(50% - 8px)}
+#cupPage .cmap .row.c1 .isl{width:70%}
+#cupPage .cmap .isl .gl{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(180deg,#e2263a,#a50f1c);color:#fff;font-size:11px;font-weight:900;padding:2px 10px;border-radius:9px;border:1.5px solid #ffd34d;white-space:nowrap}
+#cupPage .cmap .isl.lock{opacity:.92}
+#cupPage .cmap .isl.lock .q{color:#b08a5c;font-size:22px;font-weight:900;padding:8px 0 4px;text-align:center}
+#cupPage .cmap .pl{position:relative;display:flex;align-items:center;gap:3px;height:22px;padding:0 3px;border-radius:8px;font-size:10.5px;font-weight:900;color:#3b1d0e}
+#cupPage .cmap .pl+.pl{border-top:1.5px dashed #e6cf9f}
+#cupPage .cmap .pl .d{flex:none;width:13px;height:13px;background:url(img/road/home/dDone.webp) center/contain no-repeat}
+#cupPage .cmap .pl .n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:start}
+#cupPage .cmap .pl .s{flex:none;color:#a50f1c;font-size:10px}
+#cupPage .cmap .row.g:not(.c2):not(.c1) .pl .d,#cupPage .cmap .row.k4 .pl .d{display:none}
+#cupPage .cmap .row.g:not(.c2):not(.c1) .pl,#cupPage .cmap .row.k4 .pl{font-size:10.5px;letter-spacing:-.2px;padding:0 4px}
+#cupPage .cmap .pl.q{background:linear-gradient(90deg,#ffe58a,#ffd34d);box-shadow:0 0 0 1.5px #e0a21a inset}
+#cupPage .cmap .pl.q .d{background-image:url(img/road/home/dCur.webp)}
+#cupPage .cmap .pl.out{color:#9b8b78}
+#cupPage .cmap .pl.out .d{filter:grayscale(1);opacity:.6}
+#cupPage .cmap .pl.out .n{text-decoration:line-through;text-decoration-color:rgba(155,139,120,.6)}
+#cupPage .cmap .pl.me{box-shadow:0 0 0 2px #c8102e inset;background-color:#fff0f0}
+#cupPage .cmap .pl.me.q{background:linear-gradient(90deg,#ffe58a,#ffd34d)}
+#cupPage .cmap .wm{position:absolute;top:-24px;inset-inline-start:-8px;width:30px;height:30px;z-index:3;pointer-events:none;animation:r2bob .9s ease-in-out infinite alternate;filter:drop-shadow(0 2px 2px rgba(0,0,0,.4))}
+#cupPage .cmap .wm i{display:block;width:100%;height:100%;background:center/contain no-repeat}
+#cupPage .cmap .wm svg{width:30px;height:30px}
+#cupPage .cmap .mk{position:relative;width:calc(25% - 6px);background:linear-gradient(180deg,#fff9ea,#f6e3bb);border:2px solid #b9772a;border-radius:12px;padding:3px;box-shadow:0 4px 8px rgba(0,0,0,.3)}
+#cupPage .cmap .row.k2 .mk{width:40%}
+#cupPage .cmap .row.k1 .mk{width:56%}
+#cupPage .cmap .mk.now{border-color:#e0a21a;box-shadow:0 0 0 3px rgba(255,211,77,.55),0 4px 8px rgba(0,0,0,.3)}
+#cupPage .cmap .mk.tbd .pl .n{color:#b08a5c;text-align:center}
+#cupPage .cmap .wbox{width:100%;background:linear-gradient(180deg,#fff9ea,#f6e3bb);border:2px solid #b9772a;border-radius:16px;padding:8px 6px 6px;box-shadow:0 4px 8px rgba(0,0,0,.3);display:grid;grid-template-columns:repeat(3,1fr);column-gap:6px}
+#cupPage .cmap .wbox .pl+.pl{border-top:0}
+#cupPage .cmap .wbox .pl{border-bottom:1.5px dashed #e6cf9f}
+#cupPage .cmap .wdone{background:rgba(255,249,234,.92);border:2px solid #b9772a;border-radius:12px;padding:5px 14px;font-size:12px;font-weight:900;color:#5a3412}
+#cupPage .cmap .note{margin-top:10px;color:#fff;font-size:11.5px;font-weight:800;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.7)}
 /* اللعب في وضع البطولة */
 body.cupG #game .top .pl:last-child{visibility:hidden}
 body.cupG #game .racew{visibility:hidden}
@@ -2532,7 +2585,7 @@ body.cupG #game .racew{visibility:hidden}
       </div>
     </div>
     <div class="sheet">
-      <div class="cptabs" id="cupTabs"><button type="button" data-t="today" class="on">اليوم</button><button type="button" data-t="groups">المجموعات</button><button type="button" data-t="ko">الأدوار</button></div>
+      <div class="cptabs" id="cupTabs"><button type="button" data-t="map" class="on">الخريطة</button><button type="button" data-t="today">اليوم</button><button type="button" data-t="groups">المجموعات</button></div>
       <div id="cupBody"></div>
     </div>
   </section>
@@ -5538,30 +5591,44 @@ function cupMyGroup(){ const v=CUP.v, me=CUP.me; if(!v||!v.groups||!me) return n
 function cupSortTeams(ts){ return (ts||[]).slice().sort((a,b)=>((b.pts||0)-(a.pts||0)) || ((b.gf||0)-(a.gf||0)) || String(a.branch).localeCompare(String(b.branch),'ar')); }
 function cupGroups(){ return ((CUP.v&&CUP.v.groups)||[]).slice().sort((a,b)=>CUP_GO.indexOf(a.grp)-CUP_GO.indexOf(b.grp)); }
 
-/* بيانات تجريبية للمعاينة: road.html?demo&cup=w | g | bye | ko | done | out | rest | hq | hqw | hqg */
+/* بيانات تجريبية للمعاينة: road.html?demo&cup=w | g | bye | ko | sf | champ | done | out | rest | hq | hqw | hqg */
 function cupDemo(kind){
   const td=cupToday(), add=(n)=>{ const d=new Date(td+'T12:00:00'); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); };
-  const ph=/w$/.test(kind)?'W':(/g$|bye/.test(kind)?'G':'K');
-  const base=ph==='W'?-1:(ph==='G'?-4:-6);
+  const ph=/w$/.test(kind)?'W':(/g$|bye/.test(kind)?'G':'K'), ks=kind==='sf'?'SF':(kind==='champ'?'X':'QF');
+  const base=ph==='W'?-1:(ph==='G'?-4:({QF:-6,SF:-7,X:-9})[ks]);
   const days=[1,2,3].map(i=>({day:add(base+i-1),stage:'W',idx:i})).concat([1,2,3].map(i=>({day:add(base+2+i),stage:'G',idx:i}))).concat([{day:add(base+6),stage:'QF',idx:1},{day:add(base+7),stage:'SF',idx:2},{day:add(base+8),stage:'F',idx:3}]);
-  const B=['الأحمدي','العديلية','السالمية','الجهراء','الفحيحيل','العدان','الرابية','الخالدية','المنقف','كيفان','بيان','القصر','خيطان','صباح السالم','الرميثية','اليرموك'];
-  const warm=B.map((b,i)=>({branch:b,roster:8+(i%5),avg:Math.round((150-i*4.3)*10)/10,pct:80-i*2}));
-  const G=[['الأحمدي','الرميثية','المنقف','خيطان'],['العديلية','القصر','الخالدية','اليرموك'],['السالمية','بيان','العدان','صباح السالم'],['الجهراء','كيفان','الفحيحيل','الرابية']];
+  const G=[['الأحمدي','الرميثية','المنقف','خيطان'],['العديلية','القصر','الخالدية','اليرموك'],['السالمية','بيان','العدان','صباح السالم'],['الجهراء','كيفان','الفحيحيل','الرابية'],
+    ['حطين','الظهر','الدعية','العقيلة'],['السرة','الرقة','جابر الأحمد','قرطبة'],['الأندلس','سعد العبدالله','أبو فطيرة'],['الشهداء','اشبيلية','الصديق']];
+  const B=[].concat(...G);
+  const warm=B.map((b,i)=>({branch:b,roster:8+(i%5),avg:Math.round((150-i*3.1)*10)/10,pct:85-i}));
   const rec=[[3,3,0,0,9,412],[3,2,0,1,6,371],[3,1,0,2,3,330],[3,0,0,3,0,281]], recG=[[1,1,0,0,3,92],[1,0,1,0,1,80],[1,0,1,0,1,80],[1,0,0,1,0,61]];
   const groups=ph==='W'?[]:G.map((ts,gi)=>({grp:CUP_GO[gi],teams:ts.map((b,i)=>{ const r=(ph==='G'?recG:rec)[i]; return {branch:b,roster:10,seed:ph==='K'&&i===0?gi+1:null,out:ph==='K'&&i>0?'G':null,pl:r[0],w:r[1],d:r[2],l:r[3],pts:r[4],gf:r[5]}; })}));
   let ms=[];
-  if(ph==='G'){ G.forEach((ts,gi)=>{ ms.push({stage:'G',grp:CUP_GO[gi],slot:gi*10+1,day:add(-1),a:ts[0],b:ts[3],a_score:92,b_score:61,winner:ts[0]},{stage:'G',grp:CUP_GO[gi],slot:gi*10+2,day:add(-1),a:ts[1],b:ts[2],a_score:80,b_score:80,winner:'='},
-      {stage:'G',grp:CUP_GO[gi],slot:gi*10+1,day:td,a:ts[0],b:ts[2],a_score:87,b_score:82},{stage:'G',grp:CUP_GO[gi],slot:gi*10+2,day:td,a:ts[3],b:ts[1],a_score:74,b_score:79}); }); }
-  if(ph==='K'){ ms=[{stage:'QF',slot:1,day:td,a:'الأحمدي',b:'الجهراء',a_score:87,b_score:82},{stage:'QF',slot:2,day:td,a:'العديلية',b:'السالمية',a_score:79,b_score:84}]; }
+  if(ph==='G'){ G.forEach((ts,gi)=>{ if(ts[3]) ms.push({stage:'G',grp:CUP_GO[gi],slot:gi*10+1,day:add(-1),a:ts[0],b:ts[3],a_score:92,b_score:61,winner:ts[0]});
+      ms.push({stage:'G',grp:CUP_GO[gi],slot:gi*10+2,day:add(-1),a:ts[1],b:ts[2],a_score:80,b_score:80,winner:'='},{stage:'G',grp:CUP_GO[gi],slot:gi*10+3,day:td,a:ts[0],b:ts[2],a_score:87,b_score:82});
+      if(ts[3]) ms.push({stage:'G',grp:CUP_GO[gi],slot:gi*10+4,day:td,a:ts[3],b:ts[1],a_score:74,b_score:79}); }); }
+  let champion=null;
+  if(ph==='K'){
+    const sd=G.map(t=>t[0]), S=n=>sd[n-1], qd=ks==='QF'?td:add(-1-({SF:0,X:2})[ks]);
+    const qf=[[1,8],[4,5],[2,7],[3,6]].map((x,i)=>({stage:'QF',slot:i+1,day:qd,a:S(x[0]),b:S(x[1]),a_score:[87,79,91,72][i],b_score:[82,84,77,88][i]}));
+    if(ks==='QF') ms=qf; else {
+      qf.forEach(m=>{ m.winner=m.a_score>m.b_score?m.a:m.b; });
+      const sdd=ks==='SF'?td:add(-2), sf=[0,1].map(i=>({stage:'SF',slot:i+1,day:sdd,a:qf[2*i].winner,b:qf[2*i+1].winner,a_score:[93,81][i],b_score:[86,89][i]}));
+      ms=qf.concat(sf);
+      if(ks==='X'){ sf.forEach(m=>{ m.winner=m.a_score>m.b_score?m.a:m.b; }); const f={stage:'F',slot:1,day:add(-1),a:sf[0].winner,b:sf[1].winner,a_score:95,b_score:90}; f.winner=f.a; ms.push(f); champion=f.winner; }
+      const lost={}; ms.forEach(m=>{ if(m.winner){ lost[m.winner===m.a?m.b:m.a]=m.stage; } });
+      groups.forEach(g=>g.teams.forEach(t=>{ if(lost[t.branch]) t.out=lost[t.branch]; }));
+    }
+  }
   const top=[{name:'بوخالد',score:142,av:'knight'},{name:'أم سارة',score:118,av:'valkyrie'},{name:'بوفهد',score:96,av:'desert'}];
   const member=!/^hq/.test(kind), br=kind==='bye'?'الجهراء':'الأحمدي';
-  const stg=ph==='W'?'W':(ph==='G'?'G':'QF');
+  const stg=ph==='W'?'W':(ph==='G'?'G':(ks==='X'?null:ks)), status=ph==='W'?'warm':(ph==='G'?'groups':(ks==='X'?'done':'ko'));
   let att=null; if(kind==='done') att={qi:4,score:128,correct:3,finished:true};
-  const me={season:{id:1,name:'تحدي الفروع 2026',status:ph==='W'?'warm':(ph==='G'?'groups':'ko'),stage:stg,h_start:8,h_end:22,min_pct:.4},member:member};
+  const me={season:{id:1,name:'تحدي الفروع 2026',status:status,stage:stg,h_start:8,h_end:22,min_pct:.4},member:member};
   let mt=null; if(member && kind!=='bye'){ const m=ms.find(x=>x.day===td&&(x.a===br||x.b===br)); if(m) mt={stage:m.stage,a:m.a,b:m.b,a_score:m.a_score,b_score:m.b_score,a_played:7,b_played:5,a_roster:10,b_roster:9}; }
   if(member) Object.assign(me,{branch:br,grp:ph==='W'?null:(kind==='bye'?'د':'أ'),roster:10,out:kind==='out'?'QF':null,alive:kind!=='out',open:kind!=='rest',attempt:att,today:{score:91.5,played:7},match:kind==='out'?null:mt});
   if(kind==='bye'){ ms=ms.filter(m=>!(m.day===td&&(m.a===br||m.b===br))); }
-  return {me:me, v:{me:me,branch:member?br:null,season:{id:1,name:me.season.name,status:me.season.status,champion:null,ko_size:4,grp_n:4},days:days,warm:warm,groups:groups,matches:ms,top:member?top:[]}};
+  return {me:me, v:{me:me,branch:member?br:null,season:{id:1,name:me.season.name,status:status,champion:champion,ko_size:8,grp_n:8},days:days,warm:warm,groups:groups,matches:ms,top:member?top:[]}};
 }
 
 async function cupLoad(force){
@@ -5660,8 +5727,8 @@ function cupGoUI(){
 (function(){ const _g=rdGoLbl; rdGoLbl=function(){ const r=_g.apply(this,arguments); try{ cupGoUI(); }catch(e){} return r; }; })();
 (function(){ const _sm=startMatch; startMatch=function(){ if(cupMode()) return cupPlay(); return _sm.apply(this,arguments); }; })();
 (function(){ const _sh=show; show=function(id){ const r=_sh.apply(this,arguments); if(id==='home'){ try{ cupLoad(false); }catch(e){} } return r; }; })();
-$('cupCard').onclick=()=>cupOpen();
-$('cupMini').onclick=()=>cupOpen();
+$('cupCard').onclick=()=>{ CUP.tab='map'; cupOpen(); };
+$('cupMini').onclick=()=>{ CUP.tab='map'; cupOpen(); };
 $('cupTop').onclick=()=>{ CUP.tab='today'; cupOpen(); };
 $('cupBack').onclick=()=>show('home');
 document.querySelectorAll('#cupTabs button').forEach(b=>b.onclick=()=>{ CUP.tab=b.dataset.t; cupPageRender(); });
@@ -5669,8 +5736,8 @@ document.querySelectorAll('#cupTabs button').forEach(b=>b.onclick=()=>{ CUP.tab=
 /* صفحة البطولة */
 function cupOpen(){
   const s=cupSeason();
-  if(!CUP.tab){ CUP.tab = (CUP.me&&CUP.me.member) || (s&&s.status!=='warm') ? 'today' : 'groups'; }
-  cupPageRender(); show('cupPage'); cupLoad(true);
+  if(!CUP.tab) CUP.tab='map';
+  CUP.mapScrolled=false; cupPageRender(); show('cupPage'); cupLoad(true);
 }
 function cupGroupTable(g,myBr){
   const ts=cupSortTeams(g.teams);
@@ -5706,22 +5773,97 @@ function cupPageRender(){
       h+='<div class="cnote" style="color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6);text-align:center">الفوز ٣ نقاط والتعادل نقطة · يتأهل أول كل مجموعة ●</div>';
     }
   } else {
-    if(s.status==='done' && s.champion) h+='<div class="cupc"><span class="rib">🏆 البطل</span><div class="champ">فرع '+esc(s.champion)+'</div></div>';
-    const ko=s.ko_size||0;
-    if(ko<2){ h+='<div class="cupc"><span class="rib">🏆 طريق الكأس</span><div class="cmsg">البطولة مجموعة وحدة، وأول المجموعة هو البطل.</div></div>'; }
-    else {
-      const stages=ko>=8?['QF','SF','F']:(ko>=4?['SF','F']:['F']), cnt={QF:4,SF:2,F:1};
-      let bx='';
-      stages.forEach(st=>{
-        const d=(v.days||[]).find(x=>x.stage===st), ms=(v.matches||[]).filter(m=>m.stage===st).sort((a,b)=>a.slot-b.slot);
-        bx+='<div style="text-align:start"><span class="cst'+(d&&d.day===td?'':' n')+'">'+CUP_ST[st]+(d?' · '+(d.day===td?'اليوم':cupWd(d.day)):'')+'</span></div>';
-        if(ms.length) bx+=ms.map(m=>cupMatchRow(m,myBr)).join('');
-        else for(let i=0;i<cnt[st];i++) bx+='<div class="cm tbd">؟ × ؟</div>';
-      });
-      h+='<div class="cupc"><span class="rib">🏆 طريق الكأس</span>'+bx+'</div>';
-    }
+    h=cupMapHtml(v,me);
   }
   b.innerHTML=h;
+  if(CUP.tab==='map') cupMapWire();
+}
+/* خريطة البطولة: تحت كل الفروع، وكل دور تقل الفروع لين المقر الرئيسي */
+function cupMapPl(name,o){ o=o||{}; const c=['pl']; if(o.q) c.push('q'); if(o.out) c.push('out'); if(name&&name===o.my) c.push('me');
+  return '<div class="'+c.join(' ')+'"'+(name?' data-br="'+esc(name)+'"':'')+'><span class="d"></span><span class="n">'+(name?esc(name):'؟')+'</span>'+(o.s!=null?'<span class="s">'+o.s+'</span>':'')+'</div>'; }
+function cupMapHtml(v,me){
+  const s=v.season||{}, myBr=v.branch, td=cupToday(), days=v.days||[], ko=s.ko_size||0, warm=s.status==='warm';
+  const dayOf=st=>days.find(x=>x.stage===st&&x.day===td)||days.find(x=>x.stage===st&&x.day>td)||days.find(x=>x.stage===st), lbl=(st,extra)=>{ const d=dayOf(st), now=d&&d.day===td; return '<span class="cml'+(now?' now':'')+'">'+CUP_ST[st]+(extra||'')+(d?' <i>· '+(now?'اليوم':cupWd(d.day))+'</i>':'')+'</span>'; };
+  const stages=ko>=8?['F','SF','QF']:(ko>=4?['F','SF']:(ko>=2?['F']:[])), cnt={QF:4,SF:2,F:1};
+  let h='<div class="cmap"><div class="art">'+[0,1,2,3].map(k=>'<img src="img/road/v2/m'+k+'.jpg" alt="">').join('')+'</div><svg class="lines"></svg><div class="in">';
+  /* المقر الرئيسي */
+  h+='<div class="hq" data-node="hq"><span class="pt"></span>'+(s.champion?'<span class="flag ch">🏆 فرع '+esc(s.champion)+'<small>بطل تحدي الفروع</small></span>':'<span class="flag">🏆 المقر الرئيسي<small>هني يوصل البطل</small></span>')+'</div>';
+  /* خروج المغلوب */
+  stages.forEach(st=>{
+    const ms=(v.matches||[]).filter(m=>m.stage===st).sort((a,b)=>a.slot-b.slot), d=dayOf(st), now=d&&d.day===td;
+    h+='<div class="tier" data-st="'+st+'">'+lbl(st)+'<div class="row k'+cnt[st]+'">';
+    for(let i=0;i<cnt[st];i++){
+      const m=ms[i];
+      if(m){ const done=!!m.winner, w=n=>done&&m.winner===n, l=n=>done&&m.winner!==n&&m.winner!=='=';
+        h+='<div class="mk'+(now&&!done?' now':'')+'" data-node="'+st+(i+1)+'" data-hot="'+(done?1:0)+'">'+cupMapPl(m.a,{my:myBr,q:w(m.a),out:l(m.a),s:m.a_score!=null?cupN(m.a_score):null})+cupMapPl(m.b,{my:myBr,q:w(m.b),out:l(m.b),s:m.b_score!=null?cupN(m.b_score):null})+'</div>'; }
+      else h+='<div class="mk tbd" data-node="'+st+(i+1)+'">'+cupMapPl(null)+cupMapPl(null)+'</div>';
+    }
+    h+='</div></div>';
+  });
+  /* المجموعات */
+  const gs=cupGroups(), nG=s.grp_n||gs.length||0, cols=nG>=4?'':(nG===2?' c2':' c1');
+  h+='<div class="tier" data-st="G">'+lbl('G',ko<2&&!warm?' · أولها البطل':'')+'<div class="row g'+cols+'">';
+  if(warm || !gs.length){ for(let i=0;i<Math.max(nG,1);i++) h+='<div class="isl lock" data-node="g'+i+'"><span class="gl">مجموعة '+CUP_GO[i]+'</span><div class="q">🔒</div></div>'; }
+  else gs.forEach((g,i)=>{
+    const ts=cupSortTeams(g.teams), fin=ts.some(t=>t.seed||t.out);
+    h+='<div class="isl" data-node="g'+i+'" data-grp="'+esc(g.grp)+'" data-hot="'+(ts.some(t=>t.seed)?1:0)+'"><span class="gl">مجموعة '+esc(g.grp)+'</span>'
+      +ts.map(t=>cupMapPl(t.branch,{my:myBr,q:!!t.seed,out:fin&&!t.seed,s:t.pts||0})).join('')+'</div>';
+  });
+  h+='</div>'+(warm?'<div class="note">🔒 القرعة بعد التسخين، وكل مجموعة فيها فروع من كل المستويات</div>':'')+'</div>';
+  /* التسخين */
+  const L=(v.warm||[]).slice(), wd=dayOf('W');
+  if(warm){
+    L.sort((a,b)=>String(a.branch).localeCompare(String(b.branch),'ar'));
+    const di=cupDayInfo()||{};
+    h+='<div class="tier" data-st="W"><span class="cml now">التسخين 🔥 <i>· يوم '+(di.d?di.d.idx:1)+' من '+(di.wN||3)+'</i></span><div class="wbox" data-node="w">'+L.map(t=>cupMapPl(t.branch,{my:myBr})).join('')+'</div></div>';
+  } else {
+    const n=L.length||gs.reduce((a,g)=>a+(g.teams||[]).length,0);
+    h+='<div class="tier" data-st="W"><span class="wdone" data-node="w">✓ التسخين خلص · '+n+' فرع</span></div>';
+  }
+  h+='</div></div>';
+  return h;
+}
+function cupMapWire(){
+  const box=document.querySelector('#cupBody .cmap'); if(!box) return;
+  const draw=()=>{
+    const svg=box.querySelector('svg.lines'), R=box.getBoundingClientRect(); let p='';
+    const node=k=>box.querySelector('[data-node="'+k+'"]');
+    const top=el=>{ const r=el.getBoundingClientRect(); return [r.left+r.width/2-R.left, r.top-R.top]; };
+    const bot=el=>{ const r=el.getBoundingClientRect(); return [r.left+r.width/2-R.left, r.bottom-R.top]; };
+    const line=(a,b,hot)=>{ const my=(a[1]+b[1])/2; p+='<path d="M'+a[0].toFixed(1)+' '+a[1].toFixed(1)+' V'+my.toFixed(1)+' H'+b[0].toFixed(1)+' V'+b[1].toFixed(1)+'" fill="none" stroke-linecap="round" stroke-linejoin="round" '+(hot?'stroke="#ffd34d" stroke-width="5" filter="url(#cmg)"':'stroke="rgba(255,255,255,.75)" stroke-width="3" stroke-dasharray="2 7"')+'/>'; };
+    const tiers=[...box.querySelectorAll('.tier')].map(t=>t.dataset.st); /* من فوق لتحت */
+    const hq=box.querySelector('.hq .pt');
+    /* كل دور خروج مغلوب يوصل للي فوقه */
+    tiers.forEach((st,ti)=>{
+      const up=ti===0?null:tiers[ti-1];
+      if(st==='W'){ const w=node('w'), lab=box.querySelector('.tier[data-st="G"] .cml'); if(w&&lab) line(top(w),bot(lab),!box.querySelector('.wbox')); return; }
+      if(st==='G'){
+        box.querySelectorAll('.isl').forEach(isl=>{
+          let tgt=null; const win=isl.querySelector('.pl.q'), hot=isl.dataset.hot==='1';
+          if(up&&win){ const br=win.dataset.br; tgt=[...box.querySelectorAll('.tier[data-st="'+up+'"] .mk')].find(mk=>[...mk.querySelectorAll('.pl')].some(x=>x.dataset.br===br)); }
+          const lab=up?box.querySelector('.tier[data-st="'+up+'"] .cml'):null;
+          const end=tgt?bot(tgt):(up?bot(lab):[hq.getBoundingClientRect().left-R.left,hq.getBoundingClientRect().top-R.top+40]);
+          line(top(isl),end,hot);
+        });
+        return;
+      }
+      box.querySelectorAll('.tier[data-st="'+st+'"] .mk').forEach((mk,i)=>{
+        const hot=mk.dataset.hot==='1';
+        if(!up){ const r=hq.getBoundingClientRect(); line(top(mk),[r.left-R.left,r.top-R.top],hot); return; }
+        const par=node(up+(Math.floor(i/2)+1)); if(par) line(top(mk),bot(par),hot);
+      });
+    });
+    svg.innerHTML='<defs><filter id="cmg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'+p;
+  };
+  /* سلاح اللاعب على فرعه في أعلى مكان وصله */
+  const my=box.querySelector('.pl.me');
+  if(my){ const w=(()=>{ try{ return avMeta(stats.avatar||'').w; }catch(e){ return ''; } })();
+    my.insertAdjacentHTML('beforeend','<span class="wm">'+((w&&typeof WPS!=='undefined'&&WPS.some(x=>x.k===w))?'<i style="background-image:url(\'img/wpn/cut/'+w+'.webp\')"></i>':M2SWORD)+'</span>'); }
+  requestAnimationFrame(draw); setTimeout(draw,300);
+  box.querySelectorAll('.art img').forEach(im=>{ if(!im.complete) im.addEventListener('load',draw,{once:true}); });
+  if(!CUP.mapScrolled){ CUP.mapScrolled=true;
+    const tgt=box.querySelector('.cml.now')||my||box.querySelector('.hq');
+    setTimeout(()=>{ try{ tgt.scrollIntoView({block:'center',behavior:'smooth'}); }catch(e){} },350); }
 }
 function cupMatchRow(m,myBr){
   const done=!!m.winner, cls=n=>done?(m.winner==='='?'':(m.winner===n?'w':'l')):'';
