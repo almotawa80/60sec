@@ -27,7 +27,7 @@ function roadCard(){
   const st=rdSt(), g=govOf(Math.min(st.pos,HQ)), done=!!st.arrived;
   $('rcCh').textContent = done ? 'وصلت الفرع الرئيسي 🏁' : 'الفصل '+(g+1)+' من 6 · '+GOV[g].n;
   $('rcSt').textContent=st.streak||0; $('rcSh').textContent=st.shields||0; $('rcK').textContent=st.keys||0;
-  if(!rdLoggedIn()){ $('rcCurL').textContent='الطريق إلى الرئيسي'; $('rcCur').textContent='ابدأ من صباح الأحمد'; }
+  if(!rdLoggedIn()){ $('rcCurL').textContent='تحدّي الدقيقة'; $('rcCur').textContent='ابدأ من صباح الأحمد'; }
   else { $('rcCurL').textContent = done ? 'ترتيبك بين الواصلين' : 'أنت في'; $('rcCur').textContent = done ? '#'+(st.rank||1) : 'فرع '+ROUTE[st.pos]; }
   let h='';
   for(let k=0;k<5;k++){ const i=st.pos+k; if(i>HQ) break;
