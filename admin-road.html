@@ -1209,10 +1209,10 @@ checkVersion();
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') checkVersion(); });
 
 /* ===== تحدي الفروع ===== */
-const CUP_ST={G:'المجموعات',QF:'ربع النهائي',SF:'نصف النهائي',F:'النهائي'};
+const CUP_ST={W:'التسخين',G:'المجموعات',QF:'ربع النهائي',SF:'نصف النهائي',F:'النهائي'};
 const CUP_GOV=['العاصمة','حولي','الفروانية','الأحمدي','الجهراء','مبارك الكبير'];
 const CUP_WD=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-const CUP_NOSQL='تحدي الفروع يحتاج تشغيل ملف SQL (road-branch-cup.sql) مرة وحدة في Supabase.';
+const CUP_NOSQL='تحدي الفروع يحتاج تشغيل ملفين SQL مرة وحدة في Supabase: road-branch-cup.sql ثم road-branch-cup-v2.sql.';
 var CUP=null, CUPB=null, CUPBR=null, CUPEND=0;
 const cupD=s=>{ const d=new Date(s+'T12:00:00'); return {wd:CUP_WD[d.getDay()],dm:d.getDate()+'/'+(d.getMonth()+1)}; };
 const cupN=v=>v==null?'—':(Math.round(v*10)/10).toLocaleString('en-US');
@@ -1222,40 +1222,50 @@ async function loadCup(){
   if(CUPB) return loadCupBranch();
   let o=null, br=null; try{ [o,br]=await Promise.all([rpc('admin_cup_overview',{p_key:KEY,p_season:null}),rpc('admin_cup_branches',{p_key:KEY})]); }catch(e){}
   if(!o||!o.ok||!br||!br.ok){ b.innerHTML='<div class="ch"><div class="rpe">'+CUP_NOSQL+'</div></div>'; return; }
+  if(br.v!==2){ b.innerHTML='<div class="ch"><div class="rpe">الشكل الجديد للبطولة (تسخين ثم قرعة متوازنة) يحتاج تشغيل ملف SQL: road-branch-cup-v2.sql مرة وحدة في Supabase.</div></div>'; return; }
   CUP={o:o,br:br}; renderCup();
 }
 function renderCup(){
-  const b=$('cupBody'), o=CUP.o, s=o.season, act=s&&(s.status==='groups'||s.status==='ko');
+  const b=$('cupBody'), o=CUP.o, s=o.season, act=s&&(s.status==='warm'||s.status==='groups'||s.status==='ko');
   b.innerHTML=(act?cupActive(o):'')+(act?'':cupSetup(CUP.br))+cupPast(CUP.br.seasons||[],s);
   cupWire();
 }
 function cupActive(o){
   const s=o.season, k=o.kpi||{}, days=o.days||[], td=o.today, cur=days.find(d=>d.day===td);
-  const gd=days.filter(d=>d.stage==='G').length, minp=+s.min_pct||0.4;
+  const gd=days.filter(d=>d.stage==='G').length, wdn=days.filter(d=>d.stage==='W').length, minp=+s.min_pct||0.4;
   let big, st;
-  if(cur){ big=CUP_ST[cur.stage]+(cur.stage==='G'?' · اليوم '+cur.idx+' من '+gd:''); st='يُلعب اليوم من '+s.h_start+' الصبح لين '+(s.h_end>12?s.h_end-12:s.h_end)+' بالليل'; }
+  if(cur){ big=CUP_ST[cur.stage]+(cur.stage==='G'?' · الجولة '+cur.idx+' من '+gd:(cur.stage==='W'?' · اليوم '+cur.idx+' من '+wdn:'')); st='يُلعب اليوم من '+s.h_start+' الصبح لين '+(s.h_end>12?s.h_end-12:s.h_end)+' بالليل'; }
   else if(td<days[0].day){ big='تبدأ '+cupD(days[0].day).wd+' '+cupD(days[0].day).dm; st='الفرق والقوائم جاهزة'; }
   else { big='يوم راحة'; st='المباراة الجاية '+((days.find(d=>d.day>td)||{}).day?cupD(days.find(d=>d.day>td).day).wd:''); }
   const pct=k.roster?Math.round(100*k.attempts/k.roster):0;
   let h='<div class="hro cuph"><h3>'+esc(s.name)+'</h3><div class="big">'+big+'</div><span class="st">'+st+'</span>'
    +'<div class="sub"><div><b>'+pct+'٪</b><span>مشاركة اليوم</span></div><div><b>'+fmt(k.attempts)+'</b><span>محاولات اليوم</span></div><div><b>'+(k.avg==null?'—':fmt(k.avg))+'</b><span>متوسط النقاط</span></div><div><b>'+k.alive+'<small style="font-size:12px;opacity:.8"> من '+k.teams+'</small></b><span>فروع باقية</span></div></div></div>';
-  h+='<div class="ch"><h3>الجدول</h3><div class="cdays">'+days.map(d=>{ const x=cupD(d.day); return '<span class="'+(d.day===td?'on':(d.day<td?'past':''))+'"><b>'+(d.stage==='G'?'يوم '+d.idx:CUP_ST[d.stage].replace(' النهائي',''))+'</b>'+x.wd+'<br>'+x.dm+'</span>'; }).join('')+'</div></div>';
+  h+='<div class="ch"><h3>الجدول</h3><div class="cdays">'+days.map(d=>{ const x=cupD(d.day); return '<span class="'+(d.day===td?'on':(d.day<td?'past':''))+'"><b>'+(d.stage==='W'?'تسخين '+d.idx:(d.stage==='G'?'جولة '+d.idx:CUP_ST[d.stage].replace(' النهائي','')))+'</b>'+x.wd+'<br>'+x.dm+'</span>'; }).join('')+'</div></div>';
   const ms=o.matches||[], tm=ms.filter(m=>m.day===td), T={}; (o.teams||[]).forEach(t=>T[t.branch]=t);
   if(tm.length){
-    h+='<div class="ch"><h3>مباريات اليوم · '+CUP_ST[tm[0].stage]+'</h3>'+tm.map(m=>{ const A=T[m.a]||{}, B=T[m.b]||{}, aw=m.winner?m.winner===m.a:null;
+    h+='<div class="ch"><h3>مباريات اليوم · '+CUP_ST[tm[0].stage]+'</h3>'+tm.map(m=>{ const A=T[m.a]||{}, B=T[m.b]||{}; let aw=m.winner?m.winner===m.a:null;
+      if(m.winner==='=') aw=null;
       const side=(t,sc,w)=>'<div class="t'+(w===true?' w':(w===false?' l':''))+'" data-b="'+esc(t.branch)+'"><b>'+esc(t.branch)+'</b><strong>'+cupN(sc)+'</strong>'+cupChip(t.played||0,t.roster||0,minp)+'</div>';
       return '<div class="cmt">'+side(A,m.a_score,aw==null?null:aw)+'<span class="vs">VS</span>'+side(B,m.b_score,aw==null?null:!aw)+'</div>'; }).join('')
      +(tm.some(m=>[T[m.a],T[m.b]].some(t=>t&&t.played<Math.ceil(t.roster*minp)))?'<div class="cwarn">⚠️ فيه فرع مشاركته تحت '+Math.round(minp*100)+'٪، ذكّر مدير الفرع</div>':'')+'</div>';
   }
-  if(ms.length) h+=cupBracket(ms,o.season.ko_size);
-  const gs={}; (o.teams||[]).forEach(t=>(gs[t.gov]=gs[t.gov]||[]).push(t));
-  const inG=s.status==='groups';
-  h+='<div class="ch"><h3>'+(inG?'المجموعات':'ترتيب المجموعات')+' <em>اضغط على الفرع للتفاصيل</em></h3>'+Object.keys(gs).sort().map(g=>{
-    const L=gs[g].slice().sort((a,b)=>(a.grp_rank||99)-(b.grp_rank||99)||(b.avg||0)-(a.avg||0));
-    return '<table class="ctb"><tr><th>'+esc(g)+'</th><th class="n">المعدل</th><th class="n">'+(cur&&inG?'اليوم':'')+'</th><th class="n">'+(cur&&inG?'المشاركة':'')+'</th></tr>'
-      +L.map((t,i)=>'<tr data-b="'+esc(t.branch)+'" class="'+(t.seed?'q':'')+(t.out?' out':'')+'"><td><span class="rk">'+(i+1)+'</span><b>'+esc(t.branch)+'</b></td><td class="n">'+cupN(t.grp_avg!=null?t.grp_avg:t.avg)+'</td><td class="n">'+(cur&&inG?cupN(t.score):'')+'</td><td class="n">'+(cur&&inG?cupChip(t.played,t.roster,minp):'')+'</td></tr>').join('')+'</table>';
-  }).join('<div style="height:10px"></div>')
-   +(inG?'<p class="cnote">يتأهل الأول من كل محافظة، والباقي يكمّلون من أعلى المعدلات لين يصيرون '+o.season.ko_size+'.</p>':'')+'</div>';
+  if(o.season.ko_size>=2 && (s.status==='ko'||ms.some(m=>m.stage!=='G'))) h+=cupBracket(ms.filter(m=>m.stage!=='G'),o.season.ko_size);
+  const inW=s.status==='warm', LV=['قوي','فوق المتوسط','متوسط','صاعد','صاعد'];
+  if(inW){
+    const L=(o.teams||[]).slice().sort((a,b)=>(b.warm||0)-(a.warm||0)), k=+s.grp_n||1;
+    h+='<div class="ch"><h3>ترتيب التسخين <em>اضغط على الفرع للتفاصيل</em></h3><table class="ctb"><tr><th>الفرع</th><th class="n">المعدل</th><th class="n">المستوى المتوقع</th><th class="n">'+(cur?'المشاركة اليوم':'')+'</th></tr>'
+      +L.map((t,i)=>'<tr data-b="'+esc(t.branch)+'"><td><span class="rk">'+(i+1)+'</span><b>'+esc(t.branch)+'</b></td><td class="n">'+cupN(t.warm)+'</td><td class="n">'+LV[Math.min(4,Math.floor(i/k))]+'</td><td class="n">'+(cur?cupChip(t.played,t.roster,minp):'')+'</td></tr>').join('')+'</table>'
+      +'<p class="cnote">المستوى يشوفه الأدمن بس. بعد آخر يوم تسخين تنعمل القرعة: كل مجموعة تاخذ فرع واحد من كل مستوى، فتصير '+k+' مجموعات متوازنة.</p></div>';
+  } else {
+    const gs={}; (o.teams||[]).forEach(t=>{ if(t.grp) (gs[t.grp]=gs[t.grp]||[]).push(t); });
+    const ORD=['أ','ب','ج','د','هـ','و','ز','ح'];
+    h+='<div class="ch"><h3>المجموعات <em>اضغط على الفرع للتفاصيل</em></h3>'+Object.keys(gs).sort((a,b)=>ORD.indexOf(a)-ORD.indexOf(b)).map(g=>{
+      const L=gs[g].slice().sort((a,b)=>(b.pts||0)-(a.pts||0)||(b.gf||0)-(a.gf||0));
+      return '<table class="ctb"><tr><th>مجموعة '+esc(g)+'</th><th class="n">لعب</th><th class="n">ف/ت/خ</th><th class="n">نقاط</th><th class="n">المستوى</th></tr>'
+        +L.map((t,i)=>'<tr data-b="'+esc(t.branch)+'" class="'+(t.seed?'q':'')+(t.out?' out':'')+'"><td><span class="rk">'+(i+1)+'</span><b>'+esc(t.branch)+'</b></td><td class="n">'+(t.pl||0)+'</td><td class="n">'+(t.l||0)+'/'+(t.d||0)+'/'+(t.w||0)+'</td><td class="n">'+(t.pts||0)+'</td><td class="n">'+(t.pot!=null?LV[Math.min(4,t.pot)]:'')+'</td></tr>').join('')+'</table>';
+    }).join('<div style="height:10px"></div>')
+     +(s.status==='groups'?'<p class="cnote">الفوز ٣ نقاط والتعادل نقطة. يتأهل الأول من كل مجموعة'+(s.ko_size>=2?' إلى '+CUP_ST[s.ko_size===8?'QF':(s.ko_size===4?'SF':'F')]:' ويكون البطل')+'. التساوي بالنقاط: مجموع النتائج.</p>':'')+'</div>';
+  }
   h+='<div class="ch"><h3>الإجمالي</h3><div class="rpk"><div><b>'+fmt(k.players)+'</b><span>موظف شارك</span></div><div><b>'+fmt(k.total_attempts)+'</b><span>محاولة</span></div><div><b>'+fmt(k.teams)+'</b><span>فرع</span></div></div></div>';
   h+='<div class="cact"><button class="sb wide" type="button" id="cupX">⬇️ تصدير Excel</button><button class="sb ghost wide2" type="button" id="cupEnd">'+(CUPEND>Date.now()?'متأكد؟ اضغط مرة ثانية':'إيقاف البطولة')+'</button></div><div class="cmsg" id="cupMsg"></div>';
   return h;
@@ -1267,16 +1277,16 @@ function cupBracket(ms,ko){
     return '<div><h4>'+CUP_ST[st]+'</h4>'+Array.from({length:n},(_,i)=>cell(L.find(m=>m.slot===i+1))).join('')+'</div>'; }).join('')+'</div></div>';
 }
 function cupSetup(br){
-  const L=br.branches||[], ok=L.filter(x=>x.gov&&x.emps>=2).length;
+  const L=br.branches||[], ok=L.filter(x=>x.emps>=2).length, k=ok>=24?8:(ok>=12?4:(ok>=6?2:1)), mx=Math.ceil(ok/k), gd=mx%2?mx:mx-1;
   const nx=new Date(); nx.setDate(nx.getDate()+((7-nx.getDay())%7||7)); const def=nx.toISOString().slice(0,10);
-  let h='<div class="ch"><h3>الفروع والمحافظات</h3>';
-  h+=L.length?L.map(x=>'<div class="cgov"><div class="nm"><b>'+esc(x.branch)+'</b><small>'+x.emps+' موظف · '+x.players+' سجّلوا في اللعبة'+(x.emps<2?' · يحتاج ٢ على الأقل':'')+'</small></div><select data-g="'+esc(x.branch)+'"><option value="">المحافظة</option>'+CUP_GOV.map(g=>'<option'+(g===x.gov?' selected':'')+'>'+g+'</option>').join('')+'</select></div>').join('')
+  let h='<div class="ch"><h3>الفروع الجاهزة</h3>';
+  h+=L.length?L.map(x=>'<div class="cgov"><div class="nm"><b>'+esc(x.branch)+'</b><small>'+x.emps+' موظف · '+x.players+' سجّلوا في اللعبة'+(x.emps<2?' · يحتاج ٢ على الأقل':'')+'</small></div></div>').join('')
     :'<div class="rpe">ما فيه فروع بعد. من تبويب الموظفون خل نوع الموظف «فرع» واكتب اسم الفرع، أو ارفعها بملف Excel.</div>';
   h+='<p class="cnote">الفرق تتكوّن من موظفي كل فرع (النوع «فرع»). القائمة تتثبّت أول ما تبدأ البطولة.'+(br.no_unit?' فيه '+br.no_unit+' موظف بدون فرع أو قسم.':'')+'</p></div>';
   h+='<div class="ch"><h3>بطولة جديدة</h3><div class="cfm"><label class="f">اسم البطولة<input id="cupNm" maxlength="60" value="تحدي الفروع"></label>'
-   +'<label>تبدأ<input id="cupSt" type="date" value="'+def+'"></label><label>أيام المجموعات<select id="cupGd">'+[3,4,5,6,7,8,9,10].map(n=>'<option'+(n===5?' selected':'')+'>'+n+'</option>').join('')+'</select></label>'
+   +'<label>تبدأ<input id="cupSt" type="date" value="'+def+'"></label><label>أيام التسخين<select id="cupGd">'+[2,3,4,5].map(n=>'<option'+(n===3?' selected':'')+'>'+n+'</option>').join('')+'</select></label>'
    +'<label class="f">أقل مشاركة تُحسب<select id="cupMp">'+[30,40,50,60].map(n=>'<option value="'+n/100+'"'+(n===40?' selected':'')+'>'+n+'٪ من موظفي الفرع</option>').join('')+'</select></label></div>'
-   +'<p class="cnote">جاهز للبطولة: <b>'+ok+'</b> فرع. اللعب أيام العمل (الأحد إلى الخميس). بعد المجموعات: '+(ok>=8?'ربع النهائي ثم نصف النهائي ثم النهائي':ok>=4?'نصف النهائي ثم النهائي':'النهائي')+'، كل دور يوم واحد.</p>'
+   +'<p class="cnote">جاهز للبطولة: <b>'+ok+'</b> فرع. اللعب أيام العمل (الأحد إلى الخميس).'+(ok>=2?'<br>الشكل: أيام تسخين، بعدها قرعة متوازنة على <b>'+k+'</b> '+(k>1?'مجموعات':'مجموعة')+' ('+gd+' '+(gd>1?'جولات':'جولة')+' فرع ضد فرع)'+(k>=2?'، بعدها '+(k===8?'ربع النهائي ثم نصف النهائي ثم النهائي':(k===4?'نصف النهائي ثم النهائي':'النهائي'))+'، كل دور يوم':'، وأول المجموعة هو البطل')+'.':'')+'</p>'
    +'<button class="sb wide" type="button" id="cupGo" style="margin-top:8px"'+(ok<2?' disabled':'')+'>🏆 ابدأ البطولة</button><div class="cmsg" id="cupMsg"></div></div>';
   return h;
 }
@@ -1290,7 +1300,7 @@ function cupWire(){
   b.querySelectorAll('[data-b]').forEach(el=>el.onclick=()=>{ CUPB=el.dataset.b; loadCupBranch(); window.scrollTo(0,0); });
   b.querySelectorAll('select[data-g]').forEach(el=>el.onchange=async()=>{ el.disabled=true; try{ await rpc('admin_cup_set_gov',{p_key:KEY,p_branch:el.dataset.g,p_gov:el.value}); }catch(e){} el.disabled=false; loadCup(); });
   const go=$('cupGo'); if(go) go.onclick=async()=>{ go.disabled=true; let r=null; try{ r=await rpc('admin_cup_create',{p_key:KEY,p_name:$('cupNm').value,p_starts:$('cupSt').value,p_min_pct:+$('cupMp').value,p_group_days:+$('cupGd').value}); }catch(e){}
-    if(!r||!r.ok){ go.disabled=false; const m=$('cupMsg'); m.className='cmsg e'; m.textContent=r&&r.error==='teams'?'يحتاج فرعين على الأقل، كل فرع فيه موظفين ومحدد له محافظة':(r&&r.error==='active'?'فيه بطولة شغّالة':'تعذّر إنشاء البطولة'); return; }
+    if(!r||!r.ok){ go.disabled=false; const m=$('cupMsg'); m.className='cmsg e'; m.textContent=r&&r.error==='teams'?'يحتاج فرعين على الأقل، كل فرع فيه موظفين اثنين أو أكثر':(r&&r.error==='active'?'فيه بطولة شغّالة':'تعذّر إنشاء البطولة'); return; }
     loadCup(); };
   const x=$('cupX'); if(x) x.onclick=cupExport;
   const en=$('cupEnd'); if(en) en.onclick=async()=>{ if(CUPEND<Date.now()){ CUPEND=Date.now()+4000; en.textContent='متأكد؟ اضغط مرة ثانية'; setTimeout(()=>{ if(CUPEND<Date.now()&&en.isConnected) en.textContent='إيقاف البطولة'; },4100); return; }
@@ -1303,9 +1313,9 @@ async function loadCupBranch(){
   CUPBR=r; const t=r.team, s=CUP.o.season, minp=+s.min_pct||0.4, E=r.emps||[], td=r.today, dy=r.days||[], cur=dy.find(d=>d.day===td);
   const pl=E.filter(e=>e.today_score!=null).length, need=Math.ceil(t.roster*minp), mx=Math.max(1,...dy.map(d=>+d.score||0));
   let h='<button class="rpbk" type="button" id="cupBk">→ رجوع لكل الفروع</button>';
-  h+='<div class="hro cuph"><h3>'+esc(t.gov)+(t.out_stage?' · خرج من '+CUP_ST[t.out_stage]:(t.seed?' · متأهل':''))+'</h3><div class="big">'+esc(t.branch)+'</div><span class="st">'+(cur?(pl>=need?'✅ وصلوا الحد الأدنى اليوم':'⚠️ باقي '+(need-pl)+' عشان يوصلون '+Math.round(minp*100)+'٪'):'ما فيه لعب اليوم')+'</span>'
-   +'<div class="sub"><div><b>'+t.roster+'</b><span>موظف</span></div><div><b>'+pl+'</b><span>لعبوا اليوم</span></div><div><b>'+cupN(cur?cur.score:null)+'</b><span>نتيجة اليوم</span></div><div><b>'+cupN(t.grp_avg!=null?t.grp_avg:(dy.filter(d=>d.stage==='G').length?dy.filter(d=>d.stage==='G').reduce((a,d)=>a+(+d.score||0),0)/dy.filter(d=>d.stage==='G').length:null))+'</b><span>معدل المجموعات</span></div></div></div>';
-  if(dy.length) h+='<div class="ch"><h3>كل يوم</h3><div class="cbar">'+dy.map(d=>'<div><b>'+cupN(d.score)+'</b><i class="'+(d.played<need?'lo':'')+'" style="height:'+Math.round(60*(+d.score||0)/mx)+'px"></i>'+(d.stage==='G'?cupD(d.day).wd.replace('ال',''):CUP_ST[d.stage].replace(' النهائي',''))+'<br>'+d.played+' من '+t.roster+'</div>').join('')+'</div><p class="cnote">الأصفر: يوم ما وصلوا فيه الحد الأدنى للمشاركة.</p></div>';
+  h+='<div class="hro cuph"><h3>'+(t.gov?'مجموعة '+esc(t.gov):'التسخين')+(t.out_stage?' · خرج من '+CUP_ST[t.out_stage]:(t.seed?' · متأهل':''))+'</h3><div class="big">'+esc(t.branch)+'</div><span class="st">'+(cur?(pl>=need?'✅ وصلوا الحد الأدنى اليوم':'⚠️ باقي '+(need-pl)+' عشان يوصلون '+Math.round(minp*100)+'٪'):'ما فيه لعب اليوم')+'</span>'
+   +'<div class="sub"><div><b>'+t.roster+'</b><span>موظف</span></div><div><b>'+pl+'</b><span>لعبوا اليوم</span></div><div><b>'+cupN(cur?cur.score:null)+'</b><span>نتيجة اليوم</span></div><div><b>'+cupN(t.grp_avg!=null?t.grp_avg:(dy.filter(d=>d.stage==='G').length?dy.filter(d=>d.stage==='G').reduce((a,d)=>a+(+d.score||0),0)/dy.filter(d=>d.stage==='G').length:null))+'</b><span>المعدل</span></div></div></div>';
+  if(dy.length) h+='<div class="ch"><h3>كل يوم</h3><div class="cbar">'+dy.map(d=>'<div><b>'+cupN(d.score)+'</b><i class="'+(d.played<need?'lo':'')+'" style="height:'+Math.round(60*(+d.score||0)/mx)+'px"></i>'+(d.stage==='W'?'تسخين':(d.stage==='G'?cupD(d.day).wd.replace('ال',''):CUP_ST[d.stage].replace(' النهائي','')))+'<br>'+d.played+' من '+t.roster+'</div>').join('')+'</div><p class="cnote">الأصفر: يوم ما وصلوا فيه الحد الأدنى للمشاركة.</p></div>';
   const done=E.filter(e=>e.today_score!=null), not=E.filter(e=>e.today_score==null);
   h+='<div class="ch"><h3>الموظفون '+(cur?'اليوم':'')+' <em>'+done.length+' من '+E.length+'</em></h3>'
    +done.map((e,i)=>'<div class="cemp"><span class="rk">'+(i+1)+'</span><div class="nm"><b>'+esc(e.name||e.emp_no)+'</b><small>'+e.today_correct+' من ٤ صح · لعب '+e.days+' يوم · المجموع '+fmt(e.total)+'</small></div><span class="sc">'+fmt(e.today_score)+'</span></div>').join('')
@@ -1316,9 +1326,9 @@ async function cupExport(){
   const bt=$('cupX'); bt.disabled=true; let r=null; try{ r=await rpc('admin_cup_export',{p_key:KEY,p_season:CUP.o.season.id}); }catch(e){} bt.disabled=false;
   if(!r||!r.ok||!(r.rows||[]).length){ bt.textContent='ما فيه محاولات بعد'; setTimeout(()=>{ bt.textContent='⬇️ تصدير Excel'; },2500); return; }
   const wb=XLSX.utils.book_new(); wb.Workbook={Views:[{RTL:true}]};
-  const tm=(CUP.o.teams||[]).map(t=>({'الفرع':t.branch,'المحافظة':t.gov,'عدد الموظفين':t.roster,'معدل المجموعات':t.grp_avg!=null?t.grp_avg:t.avg,'ترتيبه في المجموعة':t.grp_rank||'','التأهل':t.seed?'متأهل':'','خرج من':t.out?CUP_ST[t.out]:''}));
+  const tm=(CUP.o.teams||[]).map(t=>({'الفرع':t.branch,'المجموعة':t.grp||'','المستوى (مخفي)':t.pot!=null?t.pot+1:'','عدد الموظفين':t.roster,'معدل التسخين':t.warm,'لعب':t.pl,'فاز':t.w,'تعادل':t.d,'خسر':t.l,'النقاط':t.pts,'التأهل':t.seed?'متأهل':'','خرج من':t.out?CUP_ST[t.out]:''}));
   XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(tm),'الفروع');
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(r.rows.map(x=>({'اليوم':x.day,'الفرع':x.branch,'المحافظة':x.gov,'الرقم الوظيفي':x.emp_no,'الاسم':x.name,'النقاط':x.score,'الصح من ٤':x.correct,'كمّل':x.finished?'نعم':'لا'}))),'المحاولات');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(r.rows.map(x=>({'اليوم':x.day,'الفرع':x.branch,'المجموعة':x.gov||'','الرقم الوظيفي':x.emp_no,'الاسم':x.name,'النقاط':x.score,'الصح من ٤':x.correct,'كمّل':x.finished?'نعم':'لا'}))),'المحاولات');
   XLSX.writeFile(wb,'تحدي-الفروع-'+new Date().toISOString().slice(0,10)+'.xlsx');
 }
 </script>
