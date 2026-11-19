@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>تحدّي الدقيقة · الطريق إلى الرئيسي</title>
+<title>تحدّي الدقيقة</title>
 <link rel="preload" as="image" href="img/road/splash/watch.webp" fetchpriority="high">
 <link rel="preload" as="image" href="img/road/splash/bg.jpg" fetchpriority="high">
 <link rel="preload" as="image" href="img/road/splash/sword.webp" fetchpriority="high">
@@ -2318,7 +2318,7 @@ html .toast{white-space:nowrap;max-width:94vw;width:auto!important;font-size:14p
         <div class="stat"><b id="stStreak">0</b><small>أيام متتالية</small></div>
       </div></div>
       <button class="rcard" id="rCard" type="button" aria-label="افتح خريطة الطريق">
-        <div class="rc-top"><span class="rc-ch" id="rcCh">الطريق إلى الرئيسي</span><span class="rc-chips"><i>🔥<b id="rcSt">0</b></i><i>🛡️<b id="rcSh">0</b></i><i>🔑<b id="rcK">1</b></i></span></div>
+        <div class="rc-top"><span class="rc-ch" id="rcCh">تحدّي الدقيقة</span><span class="rc-chips"><i>🔥<b id="rcSt">0</b></i><i>🛡️<b id="rcSh">0</b></i><i>🔑<b id="rcK">1</b></i></span></div>
         <div class="rc-mid"><div class="rc-cur"><small id="rcCurL">أنت في</small><b id="rcCur">صباح الأحمد</b></div><div class="rc-path" id="rcPath"></div></div>
         <div class="rc-bar"><i id="rcBar"></i></div>
         <div class="rc-bot"><span id="rcLeft">باقي 39 فرع للرئيسي</span><span class="rc-open">افتح الخريطة <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span></div>
@@ -4833,7 +4833,7 @@ function roadCard(){
   const st=rdSt(), g=govOf(Math.min(st.pos,HQ)), done=!!st.arrived;
   $('rcCh').textContent = done ? 'وصلت الفرع الرئيسي 🏁' : (g+1)+'\u200F/\u200F6 · '+GOV[g].n;
   $('rcSt').textContent=st.streak||0; $('rcSh').textContent=st.shields||0; $('rcK').textContent=st.keys||0;
-  if(!rdLoggedIn()){ $('rcCurL').textContent='الطريق إلى الرئيسي'; $('rcCur').textContent='ابدأ من صباح الأحمد'; }
+  if(!rdLoggedIn()){ $('rcCurL').textContent='تحدّي الدقيقة'; $('rcCur').textContent='ابدأ من صباح الأحمد'; }
   else { $('rcCurL').textContent = done ? 'ترتيبك بين الواصلين' : 'أنت في'; $('rcCur').textContent = done ? '#'+(st.rank||1) : 'فرع '+ROUTE[st.pos]; }
   let h='';
   for(let k=0;k<5;k++){ const i=st.pos+k; if(i>HQ) break;

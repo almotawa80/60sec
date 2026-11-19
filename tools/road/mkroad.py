@@ -27,7 +27,7 @@ s = s[:i] + ls_shim + s[i:]
 import time
 s = re.sub(r'<meta name="app-version" content="[^"]*">', '<meta name="app-version" content="road-'+time.strftime('%Y%m%d%H%M%S')+'">', s, count=1)
 # ---------- titles ----------
-s = re.sub(r'<title>[^<]*</title>', '<title>تحدّي الدقيقة · الطريق إلى الرئيسي</title>', s, count=1)
+s = re.sub(r'<title>[^<]*</title>', '<title>تحدّي الدقيقة</title>', s, count=1)
 s = s.replace('content="https://almotawa80.github.io/60sec/"', 'content="https://almotawa80.github.io/60sec/road.html"')
 
 s = s.replace('٦٠ ثانية · أسئلة سريعة · نقاط وجوائز','🏁 من الخيران إلى الفرع الرئيسي')
@@ -40,7 +40,7 @@ m = re.search(r'<div class="stats">.*?</div>\s*</div>', s, re.S)
 stats_html = m.group(0)
 card = '''<div style="display:none">''' + stats_html + '''</div>
       <button class="rcard" id="rCard" type="button" aria-label="افتح خريطة الطريق">
-        <div class="rc-top"><span class="rc-ch" id="rcCh">الطريق إلى الرئيسي</span><span class="rc-chips"><i>🔥<b id="rcSt">0</b></i><i>🛡️<b id="rcSh">0</b></i><i>🔑<b id="rcK">1</b></i></span></div>
+        <div class="rc-top"><span class="rc-ch" id="rcCh">تحدّي الدقيقة</span><span class="rc-chips"><i>🔥<b id="rcSt">0</b></i><i>🛡️<b id="rcSh">0</b></i><i>🔑<b id="rcK">1</b></i></span></div>
         <div class="rc-mid"><div class="rc-cur"><small id="rcCurL">أنت في</small><b id="rcCur">الخيران</b></div><div class="rc-path" id="rcPath"></div></div>
         <div class="rc-bar"><i id="rcBar"></i></div>
         <div class="rc-bot"><span id="rcLeft">باقي 39 فرع للرئيسي</span><span class="rc-open">افتح الخريطة <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span></div>
