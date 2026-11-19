@@ -2328,6 +2328,7 @@ body.cupFollow #home #cupMini{display:flex}
 #cupMini .t{flex:none;font-weight:900;font-size:13px;color:#fff;background:linear-gradient(#ff5a65,#c8102e);border-radius:999px;padding:2px 10px;text-shadow:0 1px 0 #7a0c12}
 #cupMini .mm{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:5px;font-size:13px;font-weight:900;overflow:hidden;text-overflow:ellipsis}
 #cupMini .mm i{font-style:normal;color:#c8102e}
+#cupMini .mm span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #cupMini .mm .x{flex:none;width:26px;height:20px;background:url(img/road/home/vs.webp) center/contain no-repeat}
 #cupMini .go{flex:none;color:#a50f1c;font-weight:900;font-size:16px}
 #home #goDone.cupDone{color:#fff!important;text-shadow:0 2px 3px rgba(0,0,0,.6);background:rgba(0,0,0,.28);border-radius:16px;padding:10px 8px;line-height:1.6}
@@ -5615,7 +5616,7 @@ function cupTopHtml(top){ return '<div class="ctop">'+top.map((p,i)=>'<div class
 function cupTopRender(on){ const el=$('cupTop'), top=(CUP.v&&CUP.v.top)||[]; const ok=on&&top.length>0; el.classList.toggle('has',ok); if(ok) el.innerHTML='<span class="rib">أبطال فرعك اليوم</span>'+cupTopHtml(top.slice(0,3)); }
 function cupMiniRender(){
   const v=CUP.v||{}, di=cupDayInfo()||{}, el=$('cupMini'), td=cupToday(); let mm='';
-  if(!cupStarted() && di.first) mm='<span>تبدأ '+cupWd(di.first.day)+' · مجموعات المحافظات</span>';
+  if(!cupStarted() && di.first) mm='<span>تبدأ يوم '+cupWd(di.first.day)+'</span>';
   else {
     const today=(v.matches||[]).filter(m=>m.day===td);
     if(today.length){ const m=today.slice().sort((a,b)=>((b.a_score||0)+(b.b_score||0))-((a.a_score||0)+(a.b_score||0)))[0];
