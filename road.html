@@ -2289,6 +2289,93 @@ html .toast{white-space:nowrap;max-width:94vw;width:auto!important;font-size:14p
 
 #gate h1{width:270px!important;height:170px!important;background-image:url(img/road/splash/title-clock.webp)!important}
 
+
+/* ===== تحدي الفروع (البطولة) ===== */
+#cupPage{background:transparent!important}
+body.cupOn #home #rCard,body.cupOn #home #inviteBtn,body.cupOn #home #inviteBtn+.hint{display:none!important}
+#home .cupc{display:none}
+body.cupOn #home #cupCard,body.cupOn #home #cupTop.has{display:block}
+#home #cupTop .ctop div{padding:5px 4px}#home #cupTop .ctop .av{width:30px;height:30px}
+#goBtn.cupHide{display:none!important}
+.cupc{position:relative;width:100%;font:inherit;text-align:center;cursor:pointer;color:#5a3412;background:none;border:0;border-style:solid;border-width:40px 16px 12px;border-image:url(img/road/home/cardA.webp) 110 46 40 46 fill / 40px 16px 12px stretch;padding:0 6px 4px;margin:6px 0 8px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.3));box-sizing:border-box}
+.cupc:active{transform:scale(.985)}
+.cupc .rib{position:absolute;top:-35px;left:20%;right:20%;height:26px;display:flex;align-items:center;justify-content:center;gap:4px;color:#fff;font-size:14px;font-weight:900;text-shadow:0 1px 0 #7a0c12,1px 0 0 #7a0c12,-1px 0 0 #7a0c12;white-space:nowrap;overflow:hidden}
+.cupc .cvs{display:grid;grid-template-columns:1fr 52px 1fr;align-items:center;gap:4px;margin-top:2px}
+.cupc .ct{display:flex;flex-direction:column;align-items:center;min-width:0}
+.cupc .ct b{font-size:16px;font-weight:900;color:#3b1d0e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:flex;align-items:center;gap:4px}
+.cupc .ct b em{font-style:normal;font-size:10.5px;font-weight:800;color:#a50f1c;background:#fff;border:1.5px solid #f0c048;border-radius:999px;padding:0 7px;line-height:18px}
+.cupc .ct strong{font-size:30px;font-weight:900;line-height:1.15;color:#c8102e}
+.cupc .ct.b strong{color:#16798a}
+.cupc .ct .br{display:block;width:84%;height:7px;border-radius:9px;background:#ecdcbc;overflow:hidden;margin:2px 0 1px}
+.cupc .ct .br u{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#ff5a65,#c8102e)}
+.cupc .ct.b .br u{background:linear-gradient(90deg,#4cc3d4,#16798a)}
+.cupc .ct small{font-size:11px;font-weight:700;color:#7a5a36}
+.cupc .cx{width:52px;height:40px;background:url(img/road/home/vs.webp) center/contain no-repeat}
+.cupc .cg{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 6px}
+.cupc .cg .l{display:flex;flex-direction:column;align-items:flex-start;min-width:0;text-align:start}
+.cupc .cg .l b{font-size:20px;font-weight:900;color:#c8102e}
+.cupc .cg .l small{font-size:11.5px;font-weight:700;color:#7a5a36}
+.cupc .cg .r{display:flex;flex-direction:column;align-items:center}
+.cupc .cg .r strong{font-size:30px;font-weight:900;color:#3b1d0e;line-height:1.1}
+.cupc .cg .r small{font-size:10.5px;font-weight:700;color:#7a5a36}
+.cupc .cpb{display:block;height:7px;border-radius:9px;background:#ecdcbc;overflow:hidden;margin:6px 6px 2px}
+.cupc .cpb u{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#ff5a65,#c8102e)}
+.cupc .cf{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:6px;font-size:12px;font-weight:800;color:#a50f1c;padding:0 4px}
+.cupc .cf span:last-child{white-space:nowrap;color:#7a5a36}
+.cupc .cmsg{font-size:14px;font-weight:800;color:#3b1d0e;line-height:1.7;padding:4px 6px}
+#home #cupMini{display:none;width:100%;font:inherit;cursor:pointer;margin:2px 0 8px;padding:7px 12px;border-radius:999px;background:linear-gradient(#fffaf0,#fde9c4);border:3px solid #f0c048;box-shadow:0 0 0 2px #c8102e,0 6px 12px rgba(0,0,0,.3);color:#3b1d0e;align-items:center;gap:8px;white-space:nowrap;overflow:hidden}
+body.cupFollow #home #cupMini{display:flex}
+#cupMini .t{flex:none;font-weight:900;font-size:13px;color:#fff;background:linear-gradient(#ff5a65,#c8102e);border-radius:999px;padding:2px 10px;text-shadow:0 1px 0 #7a0c12}
+#cupMini .mm{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:5px;font-size:13px;font-weight:900;overflow:hidden;text-overflow:ellipsis}
+#cupMini .mm i{font-style:normal;color:#c8102e}
+#cupMini .mm .x{flex:none;width:26px;height:20px;background:url(img/road/home/vs.webp) center/contain no-repeat}
+#cupMini .go{flex:none;color:#a50f1c;font-weight:900;font-size:16px}
+#home #goDone.cupDone{color:#fff!important;text-shadow:0 2px 3px rgba(0,0,0,.6);background:rgba(0,0,0,.28);border-radius:16px;padding:10px 8px;line-height:1.6}
+/* صفحة البطولة */
+#cupPage .hero-row{display:flex;align-items:center;gap:10px}
+#cupPage .cpback{flex:none;width:44px;height:44px;border:0;padding:0;background:url(img/road/profile/back.webp) center/contain no-repeat;cursor:pointer}
+#cupPage .ttl h1{margin:0;color:#fff;font-size:26px;font-weight:900;text-shadow:0 2px 0 #7a0c12,0 3px 8px rgba(0,0,0,.45)}
+#cupPage .ttl .greet{color:#ffe7b0;font-size:12.5px;font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+#cupPage .cptabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 14px}
+#cupPage .cptabs button{border:0;font:inherit;font-weight:900;font-size:14.5px;padding:12px 4px;background:url(img/road/lb/tabOff.webp) center/100% 100% no-repeat;color:#6b4520;cursor:pointer}
+#cupPage .cptabs button.on{background-image:url(img/road/lb/tabOn.webp);color:#7a0c12}
+#cupPage .sheet{background:transparent!important;box-shadow:none!important}
+#cupPage .cupc{display:block;cursor:default;margin-bottom:14px}
+#cupPage .cupc:active{transform:none}
+#cupPage .ctab{width:calc(100% - 6px);margin:0 3px;border-collapse:collapse;font-size:13.5px}
+#cupPage .ctab th{font-size:11.5px;font-weight:800;color:#8a6a45;padding:4px 3px 6px;text-align:center}
+#cupPage .ctab th:nth-child(2){text-align:start}
+#cupPage .ctab td{padding:8px 3px;border-top:2px dashed #ecd9b4;text-align:center;font-weight:800;color:#3b1d0e}
+#cupPage .ctab td:nth-child(2){text-align:start;font-weight:900}
+#cupPage .ctab td:first-child{color:#a50f1c;width:26px}
+#cupPage .ctab tr.q td:nth-child(2)::after{content:' ●';color:#1a8f4c;font-size:11px}
+#cupPage .ctab tr.me td{background:#fff3cf}
+#cupPage .ctab tr.out td{opacity:.55}
+#cupPage .cnote{font-size:11.5px;font-weight:700;color:#7a5a36;margin-top:8px;line-height:1.6}
+#cupPage .cst{display:inline-block;margin:6px 0 6px;padding:3px 12px;border-radius:999px;background:#a50f1c;color:#fff;font-size:12px;font-weight:900}
+#cupPage .cst.n{background:#8a6a45}
+#cupPage .cm{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;background:#fff;border:2.5px solid #f0c048;border-radius:16px;padding:8px 12px;margin-bottom:8px;text-align:start}
+#cupPage .cm.me{border-color:#c8102e;box-shadow:0 0 0 2px rgba(200,16,46,.2)}
+#cupPage .cm b{font-weight:900;color:#3b1d0e;font-size:14.5px;display:flex;align-items:center;gap:5px}
+#cupPage .cm b em{font-style:normal;font-size:10.5px;font-weight:800;color:#a50f1c;border:1.5px solid #f0c048;border-radius:999px;padding:0 6px;line-height:17px}
+#cupPage .cm strong{font-weight:900;color:#a50f1c;font-size:15px}
+#cupPage .cm .w{color:#1a8f4c}
+#cupPage .cm .w::after{content:' ✓';font-size:12px}
+#cupPage .cm .l{opacity:.55}
+#cupPage .cm.tbd{grid-template-columns:1fr;text-align:center;color:#8a6a45;font-weight:800}
+.cupc .ctop{display:flex;flex-direction:column}
+.cupc .ctop div{display:flex;align-items:center;gap:10px;padding:8px 4px;border-top:2px dashed #ecd9b4;font-weight:900;color:#3b1d0e}
+.cupc .ctop div:first-child{border-top:0}
+.cupc .ctop div.me{background:#fff3cf;border-radius:10px}
+.cupc .ctop .rk{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#ffd34d;color:#7a0c12;font-size:13px;flex:none}
+.cupc .ctop .av{width:34px;height:34px;border-radius:50%;background:#eee center/cover no-repeat;flex:none;border:2px solid #f0c048}
+.cupc .ctop .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:start}
+.cupc .ctop .sc{color:#a50f1c}
+#cupPage .champ{font-size:24px;font-weight:900;color:#c8102e;margin:4px 0}
+#cupPage .cempty{color:#fff;text-align:center;font-weight:800;padding:30px 10px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+/* اللعب في وضع البطولة */
+body.cupG #game .top .pl:last-child{visibility:hidden}
+body.cupG #game .racew{visibility:hidden}
 </style>
 </head>
 <body>
@@ -2317,6 +2404,9 @@ html .toast{white-space:nowrap;max-width:94vw;width:auto!important;font-size:14p
         <div class="stat"><b id="stWins">0</b><small>مرات الفوز</small></div>
         <div class="stat"><b id="stStreak">0</b><small>أيام متتالية</small></div>
       </div></div>
+      <button class="cupc" id="cupCard" type="button" aria-label="تحدي الفروع"></button>
+      <button class="cupc" id="cupTop" type="button" aria-label="أبطال فرعك اليوم"></button>
+      <button id="cupMini" type="button" aria-label="تابع تحدي الفروع"></button>
       <button class="rcard" id="rCard" type="button" aria-label="افتح خريطة الطريق">
         <div class="rc-top"><span class="rc-ch" id="rcCh">تحدّي الدقيقة</span><span class="rc-chips"><i>🔥<b id="rcSt">0</b></i><i>🛡️<b id="rcSh">0</b></i><i>🔑<b id="rcK">1</b></i></span></div>
         <div class="rc-mid"><div class="rc-cur"><small id="rcCurL">أنت في</small><b id="rcCur">صباح الأحمد</b></div><div class="rc-path" id="rcPath"></div></div>
@@ -2429,6 +2519,20 @@ html .toast{white-space:nowrap;max-width:94vw;width:auto!important;font-size:14p
       <div id="lbBody"></div>
     </div>
     <div class="lbme" id="lbMe" style="display:none"></div>
+  </section>
+
+  <!-- تحدي الفروع -->
+  <section id="cupPage" class="screen">
+    <div class="hero compact">
+      <div class="hero-row">
+        <button class="cpback" id="cupBack" type="button" aria-label="رجوع"></button>
+        <div class="ttl"><h1>تحدي الفروع</h1><span class="greet" id="cupSub"></span></div>
+      </div>
+    </div>
+    <div class="sheet">
+      <div class="cptabs" id="cupTabs"><button type="button" data-t="today" class="on">اليوم</button><button type="button" data-t="groups">المجموعات</button><button type="button" data-t="ko">الأدوار</button></div>
+      <div id="cupBody"></div>
+    </div>
   </section>
 
   <!-- صفحة الشارات -->
@@ -5411,6 +5515,276 @@ document.querySelectorAll('svg.mark').forEach(function(s){ var i=document.create
     const r=(m&&m.textContent||'').match(/#\s*([0-9٠-٩]+)/); $('hLbN').textContent=r?'#'+r[1]:'الترتيب'; $('hLb').classList.toggle('nor',!r); };
   sync(); const mo=new MutationObserver(sync); ['wBal','lbMine'].forEach(id=>{ const e=$(id); if(e) mo.observe(e,{childList:true,characterData:true,subtree:true}); });
 }catch(e){} })();
+
+/* ===================== تحدي الفروع (البطولة) =====================
+   أثناء البطولة: موظف الفرع المسجّل يشوف البطولة بس، والسيف يبدأ محاولة اليوم (4 أسئلة، السيرفر يحسب النقاط).
+   باقي الموظفين يلعبون تحدّي الدقيقة عادي ويتابعون البطولة من كرت صغير. بعد البطولة يرجع الكل للعبة العادية. */
+const CUP_ST={G:'المجموعات',QF:'ربع النهائي',SF:'نصف النهائي',F:'النهائي'};
+const CUP_WD=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const CUP={me:null,v:null,at:0,busy:false,tab:null};
+const cupToday=()=>{ try{ return new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Kuwait'}); }catch(e){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); } };
+const cupWd=d=>CUP_WD[new Date(d+'T12:00:00').getDay()];
+const cupN=v=>v==null?'—':String(Math.round(v*10)/10);
+const cupPct=(p,r)=>r?Math.min(100,Math.round(100*p/r)):0;
+function cupSeason(){ const m=CUP.me; return m && m.season ? m.season : null; }
+function cupStarted(){ const v=CUP.v; if(!v||!Array.isArray(v.days)||!v.days.length) return !!cupSeason(); return v.days[0].day<=cupToday(); }
+function cupMode(){ return !!(cupSeason() && CUP.me.member && cupStarted()); }
+function cupDayInfo(){ const v=CUP.v, td=cupToday(); if(!v||!v.days) return null; const days=v.days, d=days.find(x=>x.day===td), gN=days.filter(x=>x.stage==='G').length, nx=days.find(x=>x.day>td); return {d:d||null, gN:gN, next:nx||null, first:days[0]||null}; }
+function cupMyGroup(){ const v=CUP.v, me=CUP.me; if(!v||!v.groups||!me) return null; for(const g of v.groups){ if((g.teams||[]).some(t=>t.branch===me.branch)) return g; } return null; }
+function cupSortTeams(ts){ return (ts||[]).slice().sort((a,b)=>((a.seed?0:1)-(b.seed?0:1)) || ((b.avg||0)-(a.avg||0)) || String(a.branch).localeCompare(String(b.branch),'ar')); }
+
+/* بيانات تجريبية للمعاينة: road.html?demo&cup=ko | g | hq | hqg | done | out | rest */
+function cupDemo(kind){
+  const td=cupToday(), add=(n)=>{ const d=new Date(td+'T12:00:00'); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); };
+  const G=kind==='g'||kind==='hqg', base=G?-2:-5;
+  const days=[0,1,2,3,4].map(i=>({day:add(base+i),stage:'G',idx:i+1})).concat([{day:add(base+5),stage:'QF',idx:1},{day:add(base+6),stage:'SF',idx:1},{day:add(base+7),stage:'F',idx:1}]);
+  if(!G){ days.forEach((d,i)=>{ if(d.stage==='QF') d.day=td; }); }
+  const groups=[{gov:'الأحمدي',teams:[['الأحمدي',10,94,76],['الفحيحيل',12,89,68],['المنقف',9,85,81],['صباح الأحمد',8,83,59],['العقيلة',11,78,44]]},{gov:'الجهراء',teams:[['الجهراء',12,90,71],['القصر',8,82,63],['سعد العبدالله',9,77,52]]},{gov:'مبارك الكبير',teams:[['العدان',12,86,70],['صباح السالم',10,81,64],['أبو فطيرة',7,75,49]]},{gov:'حولي',teams:[['السالمية',14,88,73],['الرميثية',10,80,58],['بيان',9,76,50]]},{gov:'العاصمة',teams:[['العديلية',9,84,66],['الخالدية',11,86,61],['كيفان',8,73,47]]},{gov:'الفروانية',teams:[['الرابية',10,86,62],['خيطان',11,79,55],['الأندلس',9,72,41]]}];
+  const seeds=G?{}:{'الأحمدي':1,'الجهراء':2,'السالمية':3,'العدان':4,'الرابية':5,'الخالدية':6,'الفحيحيل':7,'العديلية':8};
+  const gs=groups.map(g=>({gov:g.gov,teams:g.teams.map(t=>({branch:t[0],roster:t[1],avg:t[2],pct:t[3],seed:seeds[t[0]]||null,out:G?null:(seeds[t[0]]?null:'G')}))}));
+  const ms=G?[]:[{stage:'QF',slot:1,day:td,a:'الأحمدي',b:'العديلية',a_score:87,b_score:82},{stage:'QF',slot:2,day:td,a:'العدان',b:'الرابية',a_score:79,b_score:84},{stage:'QF',slot:3,day:td,a:'الجهراء',b:'الفحيحيل',a_score:90,b_score:88},{stage:'QF',slot:4,day:td,a:'السالمية',b:'الخالدية',a_score:71,b_score:76}];
+  const top=[{name:'بوخالد',score:142,av:'knight'},{name:'أم سارة',score:118,av:'valkyrie'},{name:'بوفهد',score:96,av:'desert'}];
+  const member=!/^hq/.test(kind), br='الأحمدي';
+  let att=null; if(kind==='done') att={qi:4,score:128,correct:3,finished:true};
+  const me={season:{id:1,name:'تحدي الفروع 2026',status:G?'groups':'ko',stage:G?'G':'QF',h_start:8,h_end:22,min_pct:.4},member:member};
+  if(member) Object.assign(me,{branch:br,gov:'الأحمدي',roster:10,out:kind==='out'?'QF':null,alive:kind!=='out',open:kind!=='rest',attempt:att,
+    today:{score:G?91.5:87,played:7},
+    match:G?null:{stage:'QF',a:'الأحمدي',b:'العديلية',a_score:87,b_score:82,a_played:7,b_played:5,a_roster:10,b_roster:9}});
+  if(kind==='out'){ me.match=null; gs[0].teams[0].out='QF'; }
+  return {me:me, v:{me:me,branch:member?br:null,season:{id:1,name:me.season.name,status:me.season.status,champion:null,ko_size:8},days:days,groups:gs,matches:ms,top:member?top:[]}};
+}
+
+async function cupLoad(force){
+  if(CUP.busy) return; if(!force && Date.now()-CUP.at<45000) return;
+  let kind=null; try{ kind=new URLSearchParams(location.search).get('cup'); }catch(e){}
+  if(DEMO){ if(kind){ const d=cupDemo(kind); if(!CUP.me){ CUP.me=d.me; CUP.v=d.v; } } CUP.at=Date.now(); cupApply(); return; }
+  if(!rdLoggedIn()) { CUP.me=null; CUP.v=null; cupApply(); return; }
+  CUP.busy=true;
+  try{
+    const me=await rpc('cup_me',{p_id:PID},5000);
+    if(me && me.season){ CUP.me=me; const v=await rpc('cup_view',{p_id:PID},6000); if(v) CUP.v=v; }
+    else if(me){ CUP.me=null; CUP.v=null; }
+    CUP.at=Date.now();
+    try{ if(me) localStorage.setItem('rd_cup',JSON.stringify({d:cupToday(),me:CUP.me,v:CUP.v})); }catch(e){}
+  }finally{ CUP.busy=false; }
+  cupApply();
+}
+
+function cupApply(){
+  const on=cupMode(), fol=!!cupSeason() && !on;
+  document.body.classList.toggle('cupOn',on); document.body.classList.toggle('cupFollow',fol);
+  try{ if(on) cupCardRender(); }catch(e){}
+  try{ cupTopRender(on); }catch(e){}
+  try{ if(fol) cupMiniRender(); }catch(e){}
+  try{ rdGoLbl(); }catch(e){}
+  if($('cupPage').classList.contains('active')) cupPageRender();
+}
+
+function cupVsHtml(m,myBr){
+  const side=(n,sc,pl,ro,b)=>'<div class="ct'+(b?' b':'')+'"><b>'+esc(n)+(n===myBr?'<em>فرعك</em>':'')+'</b><strong>'+cupN(sc)+'</strong><i class="br"><u style="width:'+cupPct(pl,ro)+'%"></u></i><small>شارك '+(pl||0)+' من '+(ro||0)+'</small></div>';
+  const mine=m.b===myBr; /* فرعي دايماً على اليمين */
+  return '<div class="cvs">'+(mine?side(m.b,m.b_score,m.b_played,m.b_roster,false)+'<i class="cx"></i>'+side(m.a,m.a_score,m.a_played,m.a_roster,true)
+    :side(m.a,m.a_score,m.a_played,m.a_roster,false)+'<i class="cx"></i>'+side(m.b,m.b_score,m.b_played,m.b_roster,true))+'</div>';
+}
+
+function cupCardRender(){
+  const me=CUP.me, s=me.season, di=cupDayInfo()||{}, el=$('cupCard'); let h='', rib='', foot='';
+  const minp=s.min_pct||.4, need=Math.ceil((me.roster||0)*minp);
+  if(me.out || me.alive===false && !me.match && s.stage && s.stage!=='G'){
+    rib='🏆 تحدي الفروع';
+    h='<div class="cmsg">'+(me.out?'خرج فرع '+esc(me.branch)+' من '+(CUP_ST[me.out]||'البطولة')+'.<br>شكراً على مشاركتك! تابع باقي المباريات.':'فرعك ما يلعب اليوم. تابع المباريات.')+'</div>';
+    foot='<span></span><span>تابع البطولة ‹</span>';
+  } else if(me.match){
+    const m=me.match; rib=(CUP_ST[m.stage]||'')+' · اليوم';
+    h=cupVsHtml(m,me.branch);
+    foot='<span>'+(me.open?'المحاولات مفتوحة لين '+(s.h_end>12?s.h_end-12:s.h_end)+' الليل':'المحاولات تفتح '+(s.h_start||8)+' الصبح')+'</span><span>التفاصيل ‹</span>';
+  } else {
+    const g=cupMyGroup(), ts=g?cupSortTeams(g.teams):[], rk=ts.findIndex(t=>t.branch===me.branch)+1, t=me.today||{};
+    const gi=di.d&&di.d.stage==='G'?di.d.idx:null;
+    rib='مجموعة '+esc(me.gov||(g&&g.gov)||'');
+    h='<div class="cg"><div class="l"><small>فرعك</small><b>'+esc(me.branch)+'</b><small>'+(rk?'المركز '+rk+' من '+ts.length+' في المجموعة':'')+'</small></div>'
+      +'<div class="r"><strong>'+cupN(t.score)+'</strong><small>متوسط فرعك اليوم</small></div></div>'
+      +'<i class="cpb"><u style="width:'+cupPct(t.played||0,me.roster)+'%"></u></i>'
+      +'<div class="cf" style="margin-top:2px"><span>شارك '+(t.played||0)+' من '+(me.roster||0)+(need&&(t.played||0)<need?' · نحتاج '+need+' على الأقل':'')+'</span><span></span></div>';
+    foot='<span>'+(gi?'يوم '+gi+' من '+di.gN+' في المجموعات':(di.next?'الجولة الجاية '+cupWd(di.next.day):''))+'</span><span>التفاصيل ‹</span>';
+  }
+  el.innerHTML='<span class="rib">'+rib+'</span>'+h+'<div class="cf">'+foot+'</div>';
+}
+
+function cupTopHtml(top){ return '<div class="ctop">'+top.map((p,i)=>'<div class="'+(p.me?'me':'')+'"><span class="rk">'+(i+1)+'</span><span class="av"'+(p.av?' style="background-image:url('+avImg(p.av)+')"':'')+'></span><span class="nm">'+(p.me?'أنت':esc(p.name))+'</span><span class="sc">'+p.score+'</span></div>').join('')+'</div>'; }
+function cupTopRender(on){ const el=$('cupTop'), top=(CUP.v&&CUP.v.top)||[]; const ok=on&&top.length>0; el.classList.toggle('has',ok); if(ok) el.innerHTML='<span class="rib">أبطال فرعك اليوم</span>'+cupTopHtml(top.slice(0,3)); }
+function cupMiniRender(){
+  const v=CUP.v||{}, di=cupDayInfo()||{}, el=$('cupMini'), td=cupToday(); let mm='';
+  if(!cupStarted() && di.first) mm='<span>تبدأ '+cupWd(di.first.day)+' · مجموعات المحافظات</span>';
+  else {
+    const today=(v.matches||[]).filter(m=>m.day===td);
+    if(today.length){ const m=today.slice().sort((a,b)=>((b.a_score||0)+(b.b_score||0))-((a.a_score||0)+(a.b_score||0)))[0];
+      mm='<span>'+esc(m.a)+'</span><i>'+cupN(m.a_score)+'</i><span class="x"></span><i>'+cupN(m.b_score)+'</i><span>'+esc(m.b)+'</span>'; }
+    else { const all=[]; (v.groups||[]).forEach(g=>(g.teams||[]).forEach(t=>all.push(t))); all.sort((a,b)=>(b.avg||0)-(a.avg||0));
+      mm='<span>'+(di.d&&di.d.stage==='G'?'المجموعات '+di.d.idx+'/'+di.gN:'المجموعات')+(all[0]?' · الأول '+esc(all[0].branch):'')+'</span>'; }
+  }
+  el.innerHTML='<span class="t">🏆 تحدي الفروع</span><span class="mm">'+mm+'</span><span class="go">‹</span>';
+}
+
+/* زر السيف في وضع البطولة */
+function cupGoUI(){
+  const btn=$('goBtn'), d=$('goDone'), l=$('goLbl'); if(!btn||!d) return;
+  if(!cupMode()){ btn.classList.remove('cupHide'); d.classList.remove('cupDone'); return; }
+  const me=CUP.me, s=me.season, a=me.attempt, di=cupDayInfo()||{}; let msg='';
+  if(a && a.finished) msg='✓ لعبت محاولة اليوم: '+(a.score||0)+' نقطة<br><small>ذكّر زملاءك في الفرع يلعبون</small>';
+  else if(me.out) msg='خرج فرعك من البطولة · تابع النتائج';
+  else if(!me.alive) msg='فرعك ما يلعب اليوم · تابع المباريات';
+  else if(!s.stage) msg='اليوم راحة'+(di.next?' · الجولة الجاية '+cupWd(di.next.day):'');
+  else if(!me.open) msg='المحاولات من '+(s.h_start||8)+' الصبح لين '+((s.h_end||22)>12?(s.h_end||22)-12:s.h_end)+' الليل';
+  btn.classList.toggle('cupHide',!!msg); d.classList.toggle('cupDone',!!msg);
+  d.style.display=msg?'block':'none'; if(msg) d.innerHTML=msg;
+  if(!msg && l){ l.textContent = a && a.qi>0 ? 'كمّل محاولتك' : 'العب محاولتك'; }
+}
+(function(){ const _g=rdGoLbl; rdGoLbl=function(){ const r=_g.apply(this,arguments); try{ cupGoUI(); }catch(e){} return r; }; })();
+(function(){ const _sm=startMatch; startMatch=function(){ if(cupMode()) return cupPlay(); return _sm.apply(this,arguments); }; })();
+(function(){ const _sh=show; show=function(id){ const r=_sh.apply(this,arguments); if(id==='home'){ try{ cupLoad(false); }catch(e){} } return r; }; })();
+$('cupCard').onclick=()=>cupOpen();
+$('cupMini').onclick=()=>cupOpen();
+$('cupTop').onclick=()=>{ CUP.tab='today'; cupOpen(); };
+$('cupBack').onclick=()=>show('home');
+document.querySelectorAll('#cupTabs button').forEach(b=>b.onclick=()=>{ CUP.tab=b.dataset.t; cupPageRender(); });
+
+/* صفحة البطولة */
+function cupOpen(){
+  const s=cupSeason();
+  if(!CUP.tab){ CUP.tab = (CUP.me&&CUP.me.member) || (s&&s.status==='ko') ? 'today' : 'groups'; }
+  cupPageRender(); show('cupPage'); cupLoad(true);
+}
+function cupPageRender(){
+  const v=CUP.v, me=CUP.me||{}, b=$('cupBody'), s=v&&v.season;
+  $('cupSub').textContent = s ? s.name : '';
+  document.querySelectorAll('#cupTabs button').forEach(x=>x.classList.toggle('on',x.dataset.t===CUP.tab));
+  if(!v||!s){ b.innerHTML='<div class="cempty">ما فيه بطولة الحين</div>'; return; }
+  const myBr=v.branch, td=cupToday(), di=cupDayInfo()||{};
+  let h='';
+  if(CUP.tab==='today'){
+    if(s.status==='done' && s.champion) h+='<div class="cupc"><span class="rib">🏆 البطل</span><div class="champ">فرع '+esc(s.champion)+'</div></div>';
+    if(me.member && me.match) h+='<div class="cupc"><span class="rib">'+(CUP_ST[me.match.stage]||'')+' · مباراة فرعك</span>'+cupVsHtml(me.match,myBr)+'</div>';
+    else if(me.member && me.today && (!di.d||di.d.stage==='G')){ h+='<div class="cupc"><span class="rib">فرعك اليوم</span><div class="cg"><div class="l"><small>فرع</small><b>'+esc(myBr)+'</b></div><div class="r"><strong>'+cupN(me.today.score)+'</strong><small>المتوسط · شارك '+(me.today.played||0)+' من '+(me.roster||0)+'</small></div></div></div>'; }
+    const todayMs=(v.matches||[]).filter(m=>m.day===td && !(me.match && m.a===me.match.a && m.b===me.match.b));
+    if(todayMs.length) h+='<div class="cupc"><span class="rib">مباريات اليوم</span>'+todayMs.map(m=>cupMatchRow(m,myBr)).join('')+'</div>';
+    if(Array.isArray(v.top) && v.top.length) h+='<div class="cupc"><span class="rib">أبطال فرعك اليوم</span>'+cupTopHtml(v.top)+'</div>';
+    if(!h){ h+='<div class="cupc"><span class="rib">'+(di.d?(CUP_ST[di.d.stage]||'')+' · اليوم':'تحدي الفروع')+'</span><div class="cmsg">'+(di.d?'شوف ترتيب الفروع في المجموعات':(di.next?'الجولة الجاية '+cupWd(di.next.day)+' ('+(CUP_ST[di.next.stage]||'')+')':'اليوم راحة'))+'</div></div>'; }
+    h+='<div class="cupc"><span class="rib">طريقة اللعب</span><div class="cnote" style="text-align:start">• كل موظف فرع له محاولة وحدة باليوم: ٤ أسئلة ضد الوقت.<br>• نقاط الفرع = متوسط لاعبيه، والحد الأدنى للمشاركة '+Math.round(100*((me.season&&me.season.min_pct)||.4))+'٪ من الفرع.<br>• كل محاولة تعطيك +٢٠ نقطة لحسابك.<br>• مجموعات المحافظات، بعدها ربع النهائي ونصف النهائي والنهائي.</div></div>';
+  } else if(CUP.tab==='groups'){
+    (v.groups||[]).slice().sort((a,b)=>((b.teams||[]).some(t=>t.branch===myBr))-((a.teams||[]).some(t=>t.branch===myBr))).forEach(g=>{
+      const ts=cupSortTeams(g.teams);
+      h+='<div class="cupc"><span class="rib">مجموعة '+esc(g.gov)+'</span><table class="ctab"><tr><th>#</th><th>الفرع</th><th>المشاركة</th><th>المتوسط</th></tr>'
+        +ts.map((t,i)=>'<tr class="'+(t.seed?'q ':'')+(t.out?'out ':'')+(t.branch===myBr?'me':'')+'"><td>'+(i+1)+'</td><td>'+esc(t.branch)+'</td><td>'+(t.pct==null?'—':t.pct+'٪')+'</td><td>'+cupN(t.avg)+'</td></tr>').join('')+'</table></div>';
+    });
+    h+='<div class="cnote" style="color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6);text-align:center">يتأهل الأول من كل مجموعة وأفضل الثواني إلى ربع النهائي ●</div>';
+  } else {
+    if(s.status==='done' && s.champion) h+='<div class="cupc"><span class="rib">🏆 البطل</span><div class="champ">فرع '+esc(s.champion)+'</div></div>';
+    const ko=s.ko_size||8, stages=ko>=8?['QF','SF','F']:(ko>=4?['SF','F']:['F']), cnt={QF:4,SF:2,F:1};
+    let bx='';
+    stages.forEach(st=>{
+      const d=(v.days||[]).find(x=>x.stage===st), ms=(v.matches||[]).filter(m=>m.stage===st).sort((a,b)=>a.slot-b.slot);
+      bx+='<div style="text-align:start"><span class="cst'+(d&&d.day===td?'':' n')+'">'+CUP_ST[st]+(d?' · '+(d.day===td?'اليوم':cupWd(d.day)):'')+'</span></div>';
+      if(ms.length) bx+=ms.map(m=>cupMatchRow(m,myBr)).join('');
+      else for(let i=0;i<cnt[st];i++) bx+='<div class="cm tbd">؟ × ؟</div>';
+    });
+    h+='<div class="cupc"><span class="rib">🏆 طريق الكأس</span>'+bx+'</div>';
+  }
+  b.innerHTML=h;
+}
+function cupMatchRow(m,myBr){
+  const done=!!m.winner, cls=n=>done?(m.winner===n?'w':'l'):'';
+  const row=(n,sc)=>'<b class="'+cls(n)+'">'+esc(n||'؟')+(n&&n===myBr?'<em>فرعك</em>':'')+'</b><strong class="'+cls(n)+'">'+(sc==null?'':cupN(sc))+'</strong>';
+  return '<div class="cm'+(myBr&&(m.a===myBr||m.b===myBr)?' me':'')+'">'+row(m.a,m.a_score)+row(m.b,m.b_score)+'</div>';
+}
+
+/* محاولة البطولة: نفس شاشة اللعب، والسيرفر يحسب الوقت والنقاط */
+const CG={on:false,q:null,dl:0,max:15,t:0,lock:false,score:0,correct:0,demo:null};
+function cupDemoQ(){ const d=CG.demo, it=d.qs[d.qi]; if(!it) return {ok:true,done:true,score:d.score}; if(d.servedFor!==d.qi){ d.servedFor=d.qi; d.at=Date.now(); }
+  return {ok:true,done:false,qi:d.qi,n:4,lvl:it.lvl,cat:it.cat||'',q:it.q,opts:shuffle([it.right].concat(it.w)),left_ms:Math.max(0,15000-(Date.now()-d.at)),score:d.score}; }
+function cupDemoA(pick){ const d=CG.demo, it=d.qs[d.qi], ms=Date.now()-d.at, ok=pick===it.right, b={1:15,2:30,3:45}[it.lvl]||30, pts=ok?b+Math.round(b*.5*Math.max(0,15000-ms)/15000):0;
+  d.qi++; d.score+=pts; d.correct+=ok?1:0; return {ok:true,correct:ok,right:it.right,pts:pts,score:d.score,qi:d.qi,done:d.qi>=4,ex:it.ex||''}; }
+async function cupPlay(){
+  const me=CUP.me; if(!me) return;
+  if(me.attempt && me.attempt.finished){ toast('لعبت محاولة اليوم ✓'); return; }
+  try{ audio(); }catch(e){}
+  if(DEMO){ const pool=ALL.filter(x=>typeof x.q==='string' && x.q.charAt(0)!=='#'), pk=l=>{ const c=pool.filter(x=>x.lvl===l); return c[Math.floor(Math.random()*c.length)]||pool[0]; };
+    CG.demo={qs:[pk(1),pk(2),pk(2),pk(3)],qi:0,score:0,correct:0,servedFor:-1,at:0}; }
+  else { CG.demo=null; const r=await rpc('cup_start',{p_id:PID},6000);
+    if(!r){ toast('تعذّر الاتصال، حاول مرة ثانية'); return; }
+    if(!r.ok){ toast({closed:'المحاولات مقفلة الحين',not_playing:'فرعك ما يلعب اليوم',not_member:'أنت مو مسجّل في فرع بالبطولة',no_season:'البطولة خلصت'}[r.error]||'ما قدرنا نبدأ المحاولة'); cupLoad(true); return; }
+    if(r.finished){ toast('لعبت محاولة اليوم ✓'); cupLoad(true); return; } }
+  CG.on=true; CG.score=0; CG.correct=0; document.body.classList.add('cupG');
+  $('myLbl').textContent='أنت'; $('myScore').textContent='0'; $('botLbl').textContent=''; $('botScore').textContent='';
+  try{ $('quitBtn').textContent='خروج'; }catch(e){}
+  show('game'); try{ SND.go(); }catch(e){}
+  cupNextQ();
+}
+async function cupNextQ(){
+  if(!CG.on) return;
+  const q = CG.demo ? cupDemoQ() : await rpc('cup_q',{p_id:PID},6000);
+  if(!CG.on) return;
+  if(!q || !q.ok){ cupExit('تعذّر الاتصال. محاولتك محفوظة، كمّلها بعدين'); return; }
+  if(q.done){ cupFinish(q.score, CG.correct); return; }
+  CG.q=q; CG.lock=false; CG.score=q.score||CG.score; $('myScore').textContent=toAr(CG.score);
+  $('qNum').textContent='السؤال '+toAr(q.qi+1)+' من '+toAr(q.n||4);
+  const lv=q.lvl||1; $('lvlChip').innerHTML='<i class="stz">'+'★'.repeat(lv)+'</i>'+(LEVEL_NAME[lv]||'')+' · '+toAr(PTS[lv]||'')+' نقطة'; $('lvlChip').dataset.l=lv;
+  try{ qCatSet(q.cat); qWaitSet(''); }catch(e){}
+  const qc=$('qText'); qc.textContent=q.q; qc.classList.remove('in'); void qc.offsetWidth; qc.classList.add('in');
+  const ex=$('expl'); ex.textContent=''; ex.classList.remove('on');
+  const box=$('opts'); box.innerHTML=''; box.classList.remove('lock'); box.classList.toggle('grid',(q.opts||[]).every(o=>String(o).length<=26));
+  const LET=['أ','ب','ج','د'];
+  (q.opts||[]).forEach((o,i)=>{ const b=document.createElement('button'); b.className='opt pin'; b.style.setProperty('--i',i);
+    b.innerHTML='<span class="lt">'+LET[i]+'</span><span class="tx"></span><span class="st"></span>'; b.querySelector('.tx').textContent=o; b.dataset.v=o;
+    b.onclick=()=>cupAnswer(b,o); box.appendChild(b); });
+  CG.max=15; CG.dl=performance.now()+Math.max(0,q.left_ms==null?15000:q.left_ms);
+  try{ buildRing(); }catch(e){}
+  clearInterval(CG.t); CG.t=setInterval(cupTick,100); cupTick();
+}
+function cupTick(){
+  if(!CG.on||CG.lock) return;
+  const left=Math.max(0,(CG.dl-performance.now())/1000), f=left/CG.max, sec=Math.ceil(left);
+  try{ $('timer').textContent=toAr(sec); $('ringFg').style.strokeDashoffset=RING*(1-f); $('qRingPath').style.strokeDashoffset=-(1-f)*100; $('qSec').textContent=toAr(sec)+' ث';
+    const wr=$('qWrap'); wr.classList.toggle('danger',sec<=5); wr.classList.toggle('warn',sec>5&&sec<=8); $('clock').classList.toggle('urg',sec<=5&&sec>0); }catch(e){}
+  if(sec!==CG.lastSec){ CG.lastSec=sec; if(sec<=5&&sec>0) try{ SND.tick(); }catch(e){} }
+  if(left<=0) cupAnswer(null,'');
+}
+async function cupAnswer(btn,pick){
+  if(!CG.on||CG.lock) return; CG.lock=true; clearInterval(CG.t);
+  const box=$('opts'); box.classList.add('lock'); if(btn) btn.classList.add('sel');
+  const r = CG.demo ? cupDemoA(pick) : await rpc('cup_answer',{p_id:PID,p_pick:pick},6000);
+  if(!CG.on) return;
+  if(!r || !r.ok){ cupExit('تعذّر الاتصال. محاولتك محفوظة، كمّلها بعدين'); return; }
+  if(r.done && r.correct==null){ cupFinish(r.score,CG.correct); return; }
+  [...box.children].forEach(c=>{ if(c.dataset.v===r.right) c.classList.add('ok'); else if(c===btn) c.classList.add('bad'); else c.classList.add('dim'); });
+  if(r.correct){ CG.correct++; try{ SND.slash(); FXV.flash('rgba(26,143,76,.55)'); }catch(e){} try{ floatPts(r.pts, CG.q.lvl, r.pts>(PTS[CG.q.lvl]||0)*1.25); }catch(e){} }
+  else { try{ SND.stab(); FXV.flash('rgba(200,16,46,.6)'); FXV.shake($('qWrap')); }catch(e){} }
+  if(r.ex){ const ex=$('expl'); ex.textContent=r.ex; ex.classList.add('on'); }
+  CG.score=r.score; $('myScore').textContent=toAr(r.score);
+  try{ navigator.vibrate && navigator.vibrate(r.correct?20:[30,40,30]); }catch(e){}
+  setTimeout(()=>{ if(!CG.on) return; if(r.done) cupFinish(r.score,CG.correct); else cupNextQ(); }, r.ex?2200:1300);
+}
+function cupEnd(){ CG.on=false; clearInterval(CG.t); document.body.classList.remove('cupG'); try{ $('quitBtn').textContent='استسلم'; }catch(e){} }
+function cupExit(msg){ cupEnd(); show('home'); if(msg) toast(msg); cupLoad(true); }
+async function cupFinish(score,correct){
+  cupEnd();
+  const me=CUP.me||{}, prev=me.today?me.today.score:null;
+  if(me){ me.attempt={qi:4,score:score,correct:correct,finished:true}; }
+  stats.balance=(stats.balance||0)+20; stats.totalPoints=(stats.totalPoints||0)+20; save(stats);
+  show('home'); try{ renderStats(); }catch(e){}
+  if(!DEMO){ CUP.at=0; await cupLoad(true); try{ syncPlayer(); }catch(e){} }
+  const now=CUP.me&&CUP.me.today?CUP.me.today.score:null;
+  showModal('خلصت محاولتك 👏',
+    '<div style="text-align:center;line-height:1.9"><div style="font-size:40px;font-weight:900;color:#c8102e">'+toAr(score||0)+'</div><div style="font-weight:800">نقطة لفرع '+esc(me.branch||'')+'</div><div style="font-weight:700;color:#7a5a36">جاوبت '+toAr(correct||0)+' من ٤ صح</div>'
+    +'<div style="font-weight:800;color:#1a8f4c">+٢٠ نقطة لحسابك</div>'
+    +(now!=null?'<div style="font-weight:700;color:#7a5a36">متوسط فرعك الحين: '+cupN(now)+(prev!=null&&now!==prev?' (كان '+cupN(prev)+')':'')+'</div>':'')+'</div>',
+    [{t:'تابع البطولة',full:true,f:()=>{ closeModal(); CUP.tab='today'; cupOpen(); }},{t:'تمام',ghost:true,full:true,f:()=>closeModal()}]);
+  try{ FXV.confetti(); }catch(e){}
+}
+document.getElementById('quitBtn').addEventListener('click',function(e){ if(!CG.on) return; e.stopImmediatePropagation(); e.preventDefault(); cupExit('محاولتك محفوظة، كمّلها قبل نهاية اليوم'); },true);
+/* آخر حالة محفوظة تنطبق فوراً عشان موظف الفرع ما يشوف اللعبة العادية لحظة قبل البطولة */
+try{ if(!DEMO && rdLoggedIn()){ const c=JSON.parse(localStorage.getItem('rd_cup')||'null'); if(c && c.d===cupToday() && c.me){ CUP.me=c.me; CUP.v=c.v; cupApply(); } } }catch(e){}
+setTimeout(()=>{ try{ cupLoad(true); }catch(e){} },600);
 </script>
 
 <script>
